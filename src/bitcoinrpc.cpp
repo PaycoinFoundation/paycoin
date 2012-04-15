@@ -37,6 +37,8 @@ CReserveKey* pMiningKey = NULL;
 
 static std::string strRPCUserColonPass;
 
+void ThreadRPCServer3(void* parg);
+
 Object JSONRPCError(int code, const string& message)
 {
     Object error;
@@ -298,7 +300,7 @@ Value getwork(const Array& params, bool fHelp)
 
 
     typedef map<uint256, pair<CBlock*, CScript> > mapNewBlock_t;
-    static mapNewBlock_t mapNewBlock;
+    static mapNewBlock_t mapNewBlock;    // FIXME: thread safety
     static vector<CBlock*> vNewBlock;
 
     if (params.size() == 0)
@@ -1049,6 +1051,20 @@ private:
     SSLStream& stream;
 };
 
+class AcceptedConnection
+{
+    public:
+    SSLStream sslStream;
+    SSLIOStreamDevice d;
+    iostreams::stream<SSLIOStreamDevice> stream;
+
+    ip::tcp::endpoint peer;
+
+    AcceptedConnection(asio::io_service &io_service, ssl::context &context,
+     bool fUseSSL) : sslStream(io_service, context), d(sslStream, fUseSSL),
+     stream(d) { ; }
+};
+
 void ThreadRPCServer(void* parg)
 {
     // getwork/getblocktemplate mining rewards paid here:
@@ -1056,15 +1072,15 @@ void ThreadRPCServer(void* parg)
 
     try
     {
-        vnThreadsRunning[THREAD_RPCSERVER]++;
+        vnThreadsRunning[THREAD_RPCLISTENER]++;
         ThreadRPCServer2(parg);
-        vnThreadsRunning[THREAD_RPCSERVER]--;
+        vnThreadsRunning[THREAD_RPCLISTENER]--;
     }
     catch (std::exception& e) {
-        vnThreadsRunning[THREAD_RPCSERVER]--;
+        vnThreadsRunning[THREAD_RPCLISTENER]--;
         PrintException(&e, "ThreadRPCServer()");
     } catch (...) {
-        vnThreadsRunning[THREAD_RPCSERVER]--;
+        vnThreadsRunning[THREAD_RPCLISTENER]--;
         PrintException(NULL, "ThreadRPCServer()");
     }
 
@@ -1200,54 +1216,66 @@ void ThreadRPCServer2(void* parg)
     for (;;)
     {
         // Accept connection
-        SSLStream sslStream(io_service, context);
-        SSLIOStreamDevice d(sslStream, fUseSSL);
-        iostreams::stream<SSLIOStreamDevice> stream(d);
+        AcceptedConnection *conn =
+	            new AcceptedConnection(io_service, context, fUseSSL);
 
-        ip::tcp::endpoint peer;
-        vnThreadsRunning[THREAD_RPCSERVER]--;
-        acceptor.accept(sslStream.lowest_layer(), peer);
-        vnThreadsRunning[4]++;
+        vnThreadsRunning[THREAD_RPCLISTENER]--;
+        acceptor.accept(conn->sslStream.lowest_layer(), conn->peer);
+        vnThreadsRunning[THREAD_RPCLISTENER]++;
+
         if (fShutdown)
+        {
+            delete conn;
             return;
+        }
 
-        // Restrict callers by IP
-        if (!ClientAllowed(peer.address().to_string()))
+        // Restrict callers by IP.  It is important to
+        // do this before starting client thread, to filter out
+        // certain DoS and misbehaving clients.
+        if (!ClientAllowed(conn->peer.address().to_string()))
         {
             // Only send a 403 if we're not using SSL to prevent a DoS during the SSL handshake.
             if (!fUseSSL)
-                stream << HTTPReply(403, "") << std::flush;
-            continue;
+                conn->stream << HTTPReply(403, "") << std::flush;
+            delete conn;
         }
 
+        // start HTTP client thread
+        else if (!NewThread(ThreadRPCServer3, conn)) {
+            printf("Failed to create RPC server client thread\n");
+            delete conn;
+        }
+    }
+}
+
+void ThreadRPCServer3(void* parg)
+{
+    vnThreadsRunning[THREAD_RPCHANDLER]++;
+    AcceptedConnection *conn = (AcceptedConnection *) parg;
+
+    do {
         map<string, string> mapHeaders;
         string strRequest;
 
-        boost::thread api_caller(ReadHTTP, boost::ref(stream), boost::ref(mapHeaders), boost::ref(strRequest));
-        if (!api_caller.timed_join(boost::posix_time::seconds(GetArg("-rpctimeout", 30))))
-        {   // Timed out:
-            acceptor.cancel();
-            printf("ThreadRPCServer ReadHTTP timeout\n");
-            continue;
-        }
+        ReadHTTP(conn->stream, mapHeaders, strRequest);
 
         // Check authorization
         if (mapHeaders.count("authorization") == 0)
         {
-            stream << HTTPReply(401, "") << std::flush;
-            continue;
+            conn->stream << HTTPReply(401, "") << std::flush;
+            break;
         }
         if (!HTTPAuthorized(mapHeaders))
         {
-            printf("ThreadRPCServer incorrect password attempt from %s\n",peer.address().to_string().c_str());
+            printf("ThreadRPCServer incorrect password attempt from %s\n", conn->peer.address().to_string().c_str());
             /* Deter brute-forcing short passwords.
                If this results in a DOS the user really
                shouldn't have their RPC port exposed.*/
             if (mapArgs["-rpcpassword"].size() < 20)
                 Sleep(250);
 
-            stream << HTTPReply(401, "") << std::flush;
-            continue;
+            conn->stream << HTTPReply(401, "") << std::flush;
+            break;
         }
 
         Value id = Value::null;
@@ -1271,17 +1299,22 @@ void ThreadRPCServer2(void* parg)
               throw JSONRPCError(-32600, "Top-level object parse error");
 
             // Send reply
-            stream << HTTPReply(200, strReply) << std::flush;
+            conn->stream << HTTPReply(200, strReply) << std::flush;
         }
         catch (Object& objError)
         {
-            ErrorReply(stream, objError, id);
+            ErrorReply(conn->stream, objError, id);
+            break;
         }
         catch (std::exception& e)
         {
-            ErrorReply(stream, JSONRPCError(-32700, e.what()), id);
+            ErrorReply(conn->stream, JSONRPCError(-32700, e.what()), id);
+            break;
         }
     }
+    while (0);
+    delete conn;
+    vnThreadsRunning[THREAD_RPCHANDLER]--;
 }
 
 json_spirit::Value CRPCTable::execute(const std::string &strMethod, const json_spirit::Array &params) const
