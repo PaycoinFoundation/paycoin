@@ -60,7 +60,6 @@ namespace boost {
 #endif
 
 using namespace std;
-using namespace boost;
 
 map<string, string> mapArgs;
 map<string, vector<string> > mapMultiArgs;
@@ -478,7 +477,7 @@ static void InterpretNegativeSetting(string name, map<string, string>& mapSettin
     }
 }
 
-void ParseParameters(int argc, const char*const argv[])
+void ParseParameters(int argc, const char* const argv[])
 {
     mapArgs.clear();
     mapMultiArgs.clear();
@@ -745,8 +744,7 @@ bool WildcardMatch(const string& str, const string& mask)
 static std::string FormatException(std::exception* pex, const char* pszThread)
 {
 #ifdef WIN32
-    char pszModule[MAX_PATH];
-    pszModule[0] = '\0';
+    char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(NULL, pszModule, sizeof(pszModule));
 #else
     const char* pszModule = "paycoin";
@@ -795,38 +793,17 @@ void PrintExceptionContinue(std::exception* pex, const char* pszThread)
     strMiscWarning = message;
 }
 
-#ifdef WIN32
-boost::filesystem::path MyGetSpecialFolderPath(int nFolder, bool fCreate)
-{
-    namespace fs = boost::filesystem;
-
-    char pszPath[MAX_PATH] = "";
-    if(SHGetSpecialFolderPathA(NULL, pszPath, nFolder, fCreate))
-    {
-        return fs::path(pszPath);
-    }
-    else if (nFolder == CSIDL_STARTUP)
-    {
-        return fs::path(getenv("USERPROFILE")) / "Start Menu" / "Programs" / "Startup";
-    }
-    else if (nFolder == CSIDL_APPDATA)
-    {
-        return fs::path(getenv("APPDATA"));
-    }
-    return fs::path("");
-}
-#endif
-
 boost::filesystem::path GetDefaultDataDir()
 {
     namespace fs = boost::filesystem;
 
-    // Windows: C:\Documents and Settings\username\Application Data\Paycoin
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Paycoin
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Paycoin
     // Mac: ~/Library/Application Support/Paycoin
     // Unix: ~/.paycoin
 #ifdef WIN32
     // Windows
-    return MyGetSpecialFolderPath(CSIDL_APPDATA, true) / "Paycoin";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Paycoin";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -874,9 +851,7 @@ const boost::filesystem::path &GetDataDir(bool fNetSpecific)
 
 boost::filesystem::path GetConfigFile()
 {
-    namespace fs = boost::filesystem;
-
-    fs::path pathConfigFile(GetArg("-conf", "paycoin.conf"));
+    boost::filesystem::path pathConfigFile(GetArg("-conf", "paycoin.conf"));
     if (!pathConfigFile.is_complete()) pathConfigFile = GetDataDir(false) / pathConfigFile;
     return pathConfigFile;
 }
@@ -884,12 +859,9 @@ boost::filesystem::path GetConfigFile()
 void ReadConfigFile(map<string, string>& mapSettingsRet,
                     map<string, vector<string> >& mapMultiSettingsRet)
 {
-    namespace fs = boost::filesystem;
-    namespace pod = boost::program_options::detail;
-
-    fs::ifstream streamConfig(GetConfigFile());
+    boost::filesystem::ifstream streamConfig(GetConfigFile());
     if (!streamConfig.good())
-        return; // No bitcoin.conf file is OK
+        return; // No paycoin.conf file is OK
 
     // clear path cache after loading config file
     fCachedPath[0] = fCachedPath[1] = false;
@@ -897,14 +869,14 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
     set<string> setOptions;
     setOptions.insert("*");
 
-    for (pod::config_file_iterator it(streamConfig, setOptions), end; it != end; ++it)
+    for (boost::program_options::detail::config_file_iterator it(streamConfig, setOptions), end; it != end; ++it)
     {
-        // Don't overwrite existing settings so command line settings override bitcoin.conf
+        // Don't overwrite existing settings so command line settings override paycoin.conf
         string strKey = string("-") + it->string_key;
         if (mapSettingsRet.count(strKey) == 0)
         {
             mapSettingsRet[strKey] = it->value[0];
-            //  interpret nofoo=1 as foo=0 (and nofoo=0 as foo=1) as long as foo not set)
+            // interpret nofoo=1 as foo=0 (and nofoo=0 as foo=1) as long as foo not set)
             InterpretNegativeSetting(strKey, mapSettingsRet);
         }
         mapMultiSettingsRet[strKey].push_back(it->value[0]);
@@ -913,9 +885,7 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
 
 boost::filesystem::path GetPidFile()
 {
-    namespace fs = boost::filesystem;
-
-    fs::path pathPidFile(GetArg("-pid", "paycoind.pid"));
+    boost::filesystem::path pathPidFile(GetArg("-pid", "paycoind.pid"));
     if (!pathPidFile.is_complete()) pathPidFile = GetDataDir() / pathPidFile;
     return pathPidFile;
 }
