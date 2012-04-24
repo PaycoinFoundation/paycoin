@@ -827,7 +827,7 @@ string rfc1123Time()
     return string(buffer);
 }
 
-static string HTTPReply(int nStatus, const string& strMsg)
+static string HTTPReply(int nStatus, const string& strMsg, bool keepalive)
 {
     if (nStatus == 401)
         return strprintf("HTTP/1.0 401 Authorization Required\r\n"
@@ -856,7 +856,7 @@ static string HTTPReply(int nStatus, const string& strMsg)
     return strprintf(
             "HTTP/1.1 %d %s\r\n"
             "Date: %s\r\n"
-            "Connection: close\r\n"
+            "Connection: %s\r\n"
             "Content-Length: %d\r\n"
             "Content-Type: application/json\r\n"
             "Server: paycoin-json-rpc/%s\r\n"
@@ -865,12 +865,13 @@ static string HTTPReply(int nStatus, const string& strMsg)
         nStatus,
         cStatus,
         rfc1123Time().c_str(),
+        keepalive ? "keep-alive" : "close",
         strMsg.size(),
         FormatFullVersion().c_str(),
         strMsg.c_str());
 }
 
-int ReadHTTPStatus(std::basic_istream<char>& stream)
+int ReadHTTPStatus(std::basic_istream<char>& stream, int &proto)
 {
     string str;
     getline(stream, str);
@@ -878,6 +879,10 @@ int ReadHTTPStatus(std::basic_istream<char>& stream)
     boost::split(vWords, str, boost::is_any_of(" "));
     if (vWords.size() < 2)
         return 500;
+    proto = 0;
+    const char *ver = strstr(str.c_str(), "HTTP/1.");
+    if (ver != NULL)
+        proto = atoi(ver+7);
     return atoi(vWords[1].c_str());
 }
 
@@ -912,7 +917,8 @@ int ReadHTTP(std::basic_istream<char>& stream, map<string, string>& mapHeadersRe
     strMessageRet = "";
 
     // Read status
-    int nStatus = ReadHTTPStatus(stream);
+    int nProto;
+    int nStatus = ReadHTTPStatus(stream, nProto);
 
     // Read header
     int nLen = ReadHTTPHeader(stream, mapHeadersRet);
@@ -925,6 +931,16 @@ int ReadHTTP(std::basic_istream<char>& stream, map<string, string>& mapHeadersRe
         vector<char> vch(nLen);
         stream.read(&vch[0], nLen);
         strMessageRet = string(vch.begin(), vch.end());
+    }
+
+    string sConHdr = mapHeadersRet["connection"];
+
+    if ((sConHdr != "close") && (sConHdr != "keep-alive"))
+    {
+        if (nProto >= 1)
+            mapHeadersRet["connection"] = "keep-alive";
+        else
+            mapHeadersRet["connection"] = "close";
     }
 
     return nStatus;
@@ -985,7 +1001,7 @@ void ErrorReply(std::ostream& stream, const Object& objError, const Value& id)
     if (code == -32600) nStatus = 400;
     else if (code == -32601) nStatus = 404;
     string strReply = JSONRPCReply(Value::null, objError, id);
-    stream << HTTPReply(nStatus, strReply) << std::flush;
+    stream << HTTPReply(nStatus, strReply, false) << std::flush;
 }
 
 bool ClientAllowed(const string& strAddress)
@@ -1217,7 +1233,7 @@ void ThreadRPCServer2(void* parg)
     {
         // Accept connection
         AcceptedConnection *conn =
-	            new AcceptedConnection(io_service, context, fUseSSL);
+                    new AcceptedConnection(io_service, context, fUseSSL);
 
         vnThreadsRunning[THREAD_RPCLISTENER]--;
         acceptor.accept(conn->sslStream.lowest_layer(), conn->peer);
@@ -1236,7 +1252,7 @@ void ThreadRPCServer2(void* parg)
         {
             // Only send a 403 if we're not using SSL to prevent a DoS during the SSL handshake.
             if (!fUseSSL)
-                conn->stream << HTTPReply(403, "") << std::flush;
+                conn->stream << HTTPReply(403, "", false) << std::flush;
             delete conn;
         }
 
@@ -1253,7 +1269,15 @@ void ThreadRPCServer3(void* parg)
     vnThreadsRunning[THREAD_RPCHANDLER]++;
     AcceptedConnection *conn = (AcceptedConnection *) parg;
 
-    do {
+    bool fRun = true;
+    for (;;) {
+        if (fShutdown || !fRun)
+        {
+            conn->stream.close();
+            delete conn;
+            --vnThreadsRunning[THREAD_RPCHANDLER];
+            return;
+        }
         map<string, string> mapHeaders;
         string strRequest;
 
@@ -1262,7 +1286,7 @@ void ThreadRPCServer3(void* parg)
         // Check authorization
         if (mapHeaders.count("authorization") == 0)
         {
-            conn->stream << HTTPReply(401, "") << std::flush;
+            conn->stream << HTTPReply(401, "", false) << std::flush;
             break;
         }
         if (!HTTPAuthorized(mapHeaders))
@@ -1274,9 +1298,11 @@ void ThreadRPCServer3(void* parg)
             if (mapArgs["-rpcpassword"].size() < 20)
                 Sleep(250);
 
-            conn->stream << HTTPReply(401, "") << std::flush;
+            conn->stream << HTTPReply(401, "", false) << std::flush;
             break;
         }
+        if (mapHeaders["connection"] == "close")
+            fRun = false;
 
         Value id = Value::null;
         try
@@ -1299,7 +1325,7 @@ void ThreadRPCServer3(void* parg)
               throw JSONRPCError(-32600, "Top-level object parse error");
 
             // Send reply
-            conn->stream << HTTPReply(200, strReply) << std::flush;
+            conn->stream << HTTPReply(200, strReply, fRun) << std::flush;
         }
         catch (Object& objError)
         {
@@ -1312,7 +1338,7 @@ void ThreadRPCServer3(void* parg)
             break;
         }
     }
-    while (0);
+
     delete conn;
     vnThreadsRunning[THREAD_RPCHANDLER]--;
 }
