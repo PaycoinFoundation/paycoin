@@ -25,7 +25,7 @@ enum Network
     NET_TOR,
     NET_I2P,
 
-    NET_MAX
+    NET_MAX,
 };
 
 enum Network ParseNetwork(std::string net);
