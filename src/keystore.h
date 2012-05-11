@@ -7,6 +7,7 @@
 
 #include "crypter.h"
 #include "util.h"
+#include "sync.h"
 #include <boost/signals2/signal.hpp>
 
 class CScript;

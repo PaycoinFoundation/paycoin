@@ -110,6 +110,7 @@ OBJS= \
     obj/rpcwallet.o \
     obj/rpcrawtransaction.o \
     obj/script.o \
+    obj/sync.o \
     obj/util.o \
     obj/wallet.o \
     obj/walletdb.o \
