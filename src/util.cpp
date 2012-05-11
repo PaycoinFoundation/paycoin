@@ -155,8 +155,8 @@ void RandAddSeedPerfmon()
     if (ret == ERROR_SUCCESS)
     {
         RAND_add(pdata, nSize, nSize/100.0);
-        OPENSSL_cleanse(pdata, nSize);
-        printf("%s RandAddSeed() %d bytes\n", DateTimeStrFormat(GetTime()).c_str(), nSize);
+        memset(pdata, 0, nSize);
+        printf("RandAddSeed() %d bytes\n", nSize);
     }
 #endif
 }
