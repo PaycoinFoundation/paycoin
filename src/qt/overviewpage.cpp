@@ -95,7 +95,7 @@ OverviewPage::OverviewPage(QWidget *parent) :
     currentBalance(-1),
     currentStake(0),
     currentUnconfirmedBalance(-1),
-    txdelegate(new TxViewDelegate())
+    txdelegate(new TxViewDelegate()), filter(0)
 {
     ui->setupUi(this);
 
@@ -105,7 +105,7 @@ OverviewPage::OverviewPage(QWidget *parent) :
     ui->listTransactions->setMinimumHeight(NUM_ITEMS * (DECORATION_SIZE + 2));
     ui->listTransactions->setAttribute(Qt::WA_MacShowFocusRect, false);
 
-    connect(ui->listTransactions, SIGNAL(clicked(QModelIndex)), this, SIGNAL(transactionClicked(QModelIndex)));
+    connect(ui->listTransactions, SIGNAL(clicked(QModelIndex)), this, SLOT(handleTransactionClicked(QModelIndex)));
 
     // init "out of sync" warning labels
     ui->labelWalletStatus->setText("(" + tr("out of sync") + ")");
@@ -113,6 +113,12 @@ OverviewPage::OverviewPage(QWidget *parent) :
 
     // start with displaying the "out of sync" warnings
     showOutOfSyncWarning(true);
+}
+
+void OverviewPage::handleTransactionClicked(const QModelIndex &index)
+{
+    if(filter)
+        emit transactionClicked(filter->mapToSource(index));
 }
 
 OverviewPage::~OverviewPage()
@@ -142,7 +148,7 @@ void OverviewPage::setModel(WalletModel *model)
     if(model)
     {
         // Set up transaction list
-        TransactionFilterProxy *filter = new TransactionFilterProxy();
+        filter = new TransactionFilterProxy();
         filter->setSourceModel(model->getTransactionTableModel());
         filter->setLimit(NUM_ITEMS);
         filter->setDynamicSortFilter(true);
