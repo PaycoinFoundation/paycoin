@@ -30,6 +30,7 @@ namespace boost {
 #include <boost/thread.hpp>
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
+#include <stdarg.h>
 
 #ifdef WIN32
 #ifdef _MSC_VER
