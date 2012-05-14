@@ -72,9 +72,9 @@ void Shutdown(void* parg)
     {
         fShutdown = true;
         nTransactionsUpdated++;
-        DBFlush(false);
+        bitdb.Flush(false);
         StopNode();
-        DBFlush(true);
+        bitdb.Flush(true);
         boost::filesystem::remove(GetPidFile());
         UnregisterWallet(pwalletMain);
         delete pwalletMain;
@@ -326,7 +326,7 @@ bool AppInit2()
     fTestNet = GetBoolArg("-testnet");
 
     fDebug = GetBoolArg("-debug");
-    fDetachDB = GetBoolArg("-detachdb", false);
+    bitdb.SetDetach(GetBoolArg("-detachdb", false));
 
 #if !defined(WIN32) && !defined(QT_GUI)
     fDaemon = GetBoolArg("-daemon");
