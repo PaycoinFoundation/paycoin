@@ -57,6 +57,15 @@ public:
      * to be checked outside of CDBEnv as a wortkaround until a more proper
      * solution is determined. */
     bool GetDetached() { return fDetachDB; }
+
+    DbTxn *TxnBegin(DbTxn *baseTxn, int flags=DB_TXN_WRITE_NOSYNC)
+    {
+        DbTxn* ptxn = NULL;
+        int ret = dbenv.txn_begin(baseTxn, &ptxn, flags);
+        if (!ptxn || ret != 0)
+            return NULL;
+        return ptxn;
+    }
 };
 
 extern CDBEnv bitdb;
@@ -248,9 +257,8 @@ public:
     {
         if (!pdb)
             return false;
-        DbTxn* ptxn = NULL;
-        int ret = bitdb.dbenv.txn_begin(GetTxn(), &ptxn, DB_TXN_WRITE_NOSYNC);
-        if (!ptxn || ret != 0)
+        DbTxn* ptxn = bitdb.TxnBegin(GetTxn());
+        if (!ptxn)
             return false;
         vTxn.push_back(ptxn);
         return true;
