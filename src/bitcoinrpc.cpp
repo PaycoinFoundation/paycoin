@@ -3237,7 +3237,7 @@ void ThreadRPCServer(void* parg)
 
     delete pMiningKey; pMiningKey = NULL;
 
-    printf("ThreadRPCServer exiting\n");
+    printf("ThreadRPCServer exited\n");
 }
 
 static Object JSONRPCExecOne(const Value& request)
