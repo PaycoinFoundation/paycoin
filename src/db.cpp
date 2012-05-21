@@ -71,6 +71,10 @@ bool CDBEnv::Open(const boost::filesystem::path& path)
     if (fShutdown)
         return false;
 
+    unsigned int nEnvFlags = 0;
+    if (GetBoolArg("-privdb", true))
+        nEnvFlags |= DB_PRIVATE;
+
     filesystem::path pathLogDir = path / "database";
     filesystem::create_directory(pathLogDir);
     filesystem::path pathErrorFile = path / "db.log";
@@ -94,7 +98,8 @@ bool CDBEnv::Open(const boost::filesystem::path& path)
                      DB_INIT_MPOOL |
                      DB_INIT_TXN   |
                      DB_THREAD     |
-                     DB_RECOVER,
+                     DB_RECOVER    |
+                     nEnvFlags,
                      S_IRUSR | S_IWUSR);
     if (ret > 0)
         return error("CDB() : error %d opening database environment", ret);
