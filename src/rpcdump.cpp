@@ -17,7 +17,6 @@
 
 #define printf OutputDebugStringF
 
-// using namespace boost::asio;
 using namespace json_spirit;
 using namespace std;
 
