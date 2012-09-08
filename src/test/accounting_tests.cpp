@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(acc_basics)
 
     ae.nTime = 1333333330;
     ae.strOtherAccount = "d";
-    ae.nOrderPos = pwalletMain->nOrderPosNext++;
+    ae.nOrderPos = pwalletMain->IncOrderPosNext();
     walletdb.WriteAccountingEntry(ae);
 
     GetResults(walletdb, results);

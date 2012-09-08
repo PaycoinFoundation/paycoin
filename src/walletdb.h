@@ -91,6 +91,18 @@ public:
         return Read(std::string("bestblock"), locator);
     }
 
+    bool WriteOrderPosNext(int64 nOrderPosNext)
+    {
+        nWalletDBUpdated++;
+        return Write(std::string("orderposnext"), nOrderPosNext);
+    }
+
+    bool ReadDefaultKey(std::vector<unsigned char>& vchPubKey)
+    {
+        vchPubKey.clear();
+        return Read(std::string("defaultkey"), vchPubKey);
+    }
+
     bool WriteDefaultKey(const CPubKey& vchPubKey)
     {
         nWalletDBUpdated++;
