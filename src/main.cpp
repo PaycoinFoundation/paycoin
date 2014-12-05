@@ -916,7 +916,7 @@ int64 GetProofOfWorkReward(int nHeight, unsigned int nTime)
         nSubsidy = 10204000 * COIN;
     }else if(nTime <= POW_START_TIME){
         nSubsidy = 0 * COIN;
-    }else if(nHeight <= POW_END_TIME){
+    }else if(nTime <= POW_END_TIME){
         nSubsidy = 227 * COIN;
     }
     return nSubsidy;
@@ -1939,7 +1939,7 @@ bool CBlock::CheckBlock() const
     int nHeight = 0;
     unsigned int nTime = 0;
     if(pindexBest != NULL){
-        nHeight = GetLastBlockIndex(pindexBest, false)->nHeight + 1;
+        nHeight = GetLastBlockIndex(pindexBest, false)->nHeight;
         nTime = GetLastBlockIndex(pindexBest, false)->nTime;
     }
 
@@ -3906,7 +3906,7 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, CWallet* pwallet, bool fProofOfS
     int nHeight = 0;
     unsigned int nTime = 0;
     if(pindexBest != NULL){
-        nHeight = GetLastBlockIndex(pindexBest, false)->nHeight + 1;
+        nHeight = GetLastBlockIndex(pindexBest, false)->nHeight;
         nTime = GetLastBlockIndex(pindexBest, false)->nTime;
     }
 
