@@ -1,0 +1,4 @@
+Troubleshoot, recompile, retest and release Linux Paycoin x32 and x64 deamon - 2.25
+Troubleshoot, recompile, retest and release Linux Paycoin x32 snd x64 Qt - 1.75
+
+Total hours - 4

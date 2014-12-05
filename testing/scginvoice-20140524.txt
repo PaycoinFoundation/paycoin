@@ -1,0 +1,8 @@
+may5-1.5-Updating Peershares dividends and "Paycoin/Peershares networks" sections on wiki
+may13-1-Paycoin clinet testing
+may14-3-Paycoin client testing
+may15-2-Paycoin client testing
+
+Total Peershares: 1.5
+Total Paycoin: 6
+Total: 7.5
