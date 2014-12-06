@@ -1937,10 +1937,8 @@ bool CBlock::CheckBlock() const
         return DoS(50, error("CheckBlock() : coinstake timestamp violation nTimeBlock=%u nTimeTx=%u", GetBlockTime(), vtx[1].nTime));
 
     int nHeight = 0;
-    unsigned int nTime = 0;
     if(pindexBest != NULL){
-        nHeight = GetLastBlockIndex(pindexBest, false)->nHeight;
-        nTime = GetLastBlockIndex(pindexBest, false)->nTime;
+        nHeight = GetLastBlockIndex(pindexBest, false)->nHeight + 1;
     }
 
     // Check coinbase reward
@@ -3904,16 +3902,12 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, CWallet* pwallet, bool fProofOfS
     }
 
     int nHeight = 0;
-    unsigned int nTime = 0;
     if(pindexBest != NULL){
-        nHeight = GetLastBlockIndex(pindexBest, false)->nHeight;
-        nTime = GetLastBlockIndex(pindexBest, false)->nTime;
+        nHeight = GetLastBlockIndex(pindexBest, false)->nHeight + 1;
     }
 
     // Fill in header
     pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
-    if (pblock->IsProofOfWork())
-        pblock->vtx[0].vout[0].nValue = GetProofOfWorkReward(nHeight, nTime);
     pblock->hashMerkleRoot = pblock->BuildMerkleTree();
     if (pblock->IsProofOfStake())
         pblock->nTime      = pblock->vtx[1].nTime; //same as coinstake timestamp
@@ -3922,6 +3916,8 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, CWallet* pwallet, bool fProofOfS
     if (pblock->IsProofOfWork())
         pblock->UpdateTime(pindexPrev);
     pblock->nNonce         = 0;
+    if (pblock->IsProofOfWork())
+        pblock->vtx[0].vout[0].nValue = GetProofOfWorkReward(nHeight, pblock->nTime );
 
     return pblock.release();
 }
