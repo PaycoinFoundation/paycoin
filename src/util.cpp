@@ -880,35 +880,27 @@ boost::filesystem::path GetDefaultDataDir()
 const boost::filesystem::path &GetDataDir(bool fNetSpecific)
 {
     namespace fs = boost::filesystem;
-
     static fs::path pathCached[2];
     static CCriticalSection csPathCached;
     static bool cachedPath[2] = {false, false};
-
     fs::path &path = pathCached[fNetSpecific];
-
     // This can be called during exceptions by printf, so we cache the
     // value so we don't have to do memory allocations after that.
     if (cachedPath[fNetSpecific])
         return path;
-
     LOCK(csPathCached);
-
     if (mapArgs.count("-datadir")) {
         path = fs::system_complete(mapArgs["-datadir"]);
-        if (!fs::is_directory(path)) {
-            path = "";
-            return path;
-        }
-    } else {
-        path = GetDefaultDataDir();
+        if (!fs::is_directory(path))
+            path = GetDefaultDataDir();
     }
+    else
+        path = GetDefaultDataDir();
     if (fNetSpecific && GetBoolArg("-testnet", false))
-        path /= "testnet";
-
-    fs::create_directory(path);
-
-    cachedPath[fNetSpecific]=true;
+        path /= "testnet3";
+    if (!fs::exists(path))
+        fs::create_directory(path);
+    cachedPath[fNetSpecific] = true;
     return path;
 }
 
