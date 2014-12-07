@@ -1088,7 +1088,7 @@ public:
     bool ReadFromDisk(const CBlockIndex* pindex, bool fReadTransactions=true);
     bool SetBestChain(CTxDB& txdb, CBlockIndex* pindexNew);
     bool AddToBlockIndex(unsigned int nFile, unsigned int nBlockPos);
-    bool CheckBlock() const;
+    bool CheckBlock(int64 nHeight=-1) const;
     bool AcceptBlock();
     bool GetCoinAge(uint64& nCoinAge) const; // paycoin: calculate total coin age spent in block
     bool SignBlock(const CKeyStore& keystore);

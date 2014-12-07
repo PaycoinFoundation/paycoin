@@ -1895,7 +1895,7 @@ bool CBlock::AddToBlockIndex(unsigned int nFile, unsigned int nBlockPos)
 
 
 
-bool CBlock::CheckBlock() const
+bool CBlock::CheckBlock(int64 nHeight) const
 {
     // These are checks that are independent of context
     // that can be verified before saving an orphan block.
@@ -1936,16 +1936,21 @@ bool CBlock::CheckBlock() const
     if (IsProofOfStake() && !CheckCoinStakeTimestamp(GetBlockTime(), (int64)vtx[1].nTime))
         return DoS(50, error("CheckBlock() : coinstake timestamp violation nTimeBlock=%u nTimeTx=%u", GetBlockTime(), vtx[1].nTime));
 
-    int nHeight = 0;
-    if(pindexBest != NULL){
-        nHeight = GetLastBlockIndex(pindexBest, false)->nHeight + 1;
+
+    int64 nHeightTmp = 0;
+    if(nHeight == -1){
+        if(pindexBest != NULL){
+            nHeightTmp = GetLastBlockIndex(pindexBest, false)->nHeight + 1;
+        }
+    }else{
+        nHeightTmp = nHeight;
     }
 
     // Check coinbase reward
-    if (vtx[0].GetValueOut() > (IsProofOfWork()? (GetProofOfWorkReward(nHeight, nTime) - vtx[0].GetMinFee() + MIN_TX_FEE) : 0))
+    if (vtx[0].GetValueOut() > (IsProofOfWork()? (GetProofOfWorkReward(nHeightTmp, nTime) - vtx[0].GetMinFee() + MIN_TX_FEE) : 0))
         return DoS(50, error("CheckBlock() : coinbase reward exceeded %s > %s",
                    FormatMoney(vtx[0].GetValueOut()).c_str(),
-                   FormatMoney(IsProofOfWork()? GetProofOfWorkReward(nHeight, nTime) : 0).c_str()));
+                   FormatMoney(IsProofOfWork()? GetProofOfWorkReward(nHeightTmp, nTime) : 0).c_str()));
 
 
     // Check transactions
