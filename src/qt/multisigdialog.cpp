@@ -40,7 +40,7 @@ MultisigDialog::MultisigDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Mu
 
     addInput();
     addOutput();
-    updateAmounts();
+
 
     connect(ui->addInputButton, SIGNAL(clicked()), this, SLOT(addInput()));
     connect(ui->addOutputButton, SIGNAL(clicked()), this, SLOT(addOutput()));
@@ -80,6 +80,8 @@ void MultisigDialog::setModel(WalletModel *model)
         if(entry)
             entry->setModel(model);
     }
+
+    updateAmounts();
 }
 
 void MultisigDialog::updateRemoveEnabled()
