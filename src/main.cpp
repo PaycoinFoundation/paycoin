@@ -34,7 +34,8 @@ set<pair<COutPoint, unsigned int> > setStakeSeen;
 uint256 hashGenesisBlock = hashGenesisBlockOfficial;
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20);
 static CBigNum bnInitialHashTarget(~uint256(0) >> 28);
-static CBigNum bnProofOfStakeLimit(~uint256(0) >> 16);
+//static CBigNum bnProofOfStakeLimit(~uint256(0) >> 16);
+static CBigNum bnProofOfStakeLimit(~uint256(0) >> 4);
 unsigned int nStakeMinAge = STAKE_MIN_AGE;
 int nCoinbaseMaturity = COINBASE_MATURITY_PPC;
 CBlockIndex* pindexGenesisBlock = NULL;
@@ -935,11 +936,11 @@ int64 GetProofOfWorkReward(int nHeight, unsigned int nTime)
 {
     int64 nSubsidy = 0;
     if(nHeight == 1){
-        nSubsidy = 10204000 * COIN;
+        nSubsidy = 11330000 * COIN;
     }else if(nTime <= POW_START_TIME){
         nSubsidy = 0 * COIN;
-    }else if(nTime <= POW_END_TIME){
-        nSubsidy = 227 * COIN;
+    }else if(nTime < POW_END_TIME){
+        nSubsidy = 115 * COIN;
     }
     return nSubsidy;
 }
@@ -2027,6 +2028,7 @@ bool CBlock::AcceptBlock()
         return DoS(10, error("AcceptBlock() : prev block not found"));
     CBlockIndex* pindexPrev = (*mi).second;
     int nHeight = pindexPrev->nHeight+1;
+    unsigned int nTimePoW = pindexPrev->nTime+1;
 
     // Check proof-of-work or proof-of-stake
     if (nBits != GetNextTargetRequired(pindexPrev, IsProofOfStake()))
@@ -2036,7 +2038,7 @@ bool CBlock::AcceptBlock()
     if (GetBlockTime() <= pindexPrev->GetMedianTimePast() || GetBlockTime() + nMaxClockDrift < pindexPrev->GetBlockTime())
         return error("AcceptBlock() : block's timestamp is too early");
 
-    if (IsProofOfWork() && nHeight > LAST_POW_BLOCK)
+    if (IsProofOfWork() && nTimePoW > POW_END_TIME)
         return DoS(100, error("AcceptBlock() : reject proof-of-work at height %d", nHeight));
 
     // Check that all transactions are finalized
@@ -2582,7 +2584,7 @@ string GetWarnings(string strFor)
 
     // paycoin: should not enter safe mode for longer invalid chain
     // paycoin: if sync-checkpoint is too old do not enter safe mode
-    if (Checkpoints::IsSyncCheckpointTooOld(60 * 60 * 24 * 10) && !fTestNet)
+    if (Checkpoints::IsSyncCheckpointTooOld(60 * 60 * 24 * 30) && !fTestNet)
     {
         nPriority = 100;
         strStatusBar = "WARNING: Checkpoint is too old. Wait for block chain to download, or notify developers of the issue.";

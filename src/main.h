@@ -28,13 +28,12 @@ class CInv;
 class CRequestTracker;
 class CNode;
 
-static const int LAST_POW_BLOCK = 12960; // 9 days
 static const unsigned int MAX_BLOCK_SIZE = 1000000;
 static const unsigned int MAX_BLOCK_SIZE_GEN = MAX_BLOCK_SIZE/2;
 static const unsigned int MAX_BLOCK_SIGOPS = MAX_BLOCK_SIZE/50;
 static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100;
-static const int64 MIN_TX_FEE = CENT;
-static const int64 MIN_RELAY_TX_FEE = CENT;
+static const int64 MIN_TX_FEE = 0.1 * CENT;
+static const int64 MIN_RELAY_TX_FEE = 0.1 * CENT;
 static const int64 MAX_MONEY = 2000000000 * COIN;
 static const int64 MAX_MINT_PROOF_OF_WORK = 9999 * COIN;
 static const int64 MIN_TXOUT_AMOUNT = MIN_TX_FEE;
@@ -42,12 +41,21 @@ inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONE
 static const int COINBASE_MATURITY_PPC = 100;
 // Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp.
 static const int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
-static const int STAKE_TARGET_SPACING = 1 * 60; // 10-minute block spacing
+static const int STAKE_TARGET_SPACING = 1 * 60; // 1-minute block
+//static const int STAKE_TARGET_SPACING = 1; // 1 second block spacing
 static const int STAKE_MIN_AGE = 60 * 60 * 24; // minimum age for coin age
+//static const int STAKE_MIN_AGE = 60; // minimum age for coin age
 static const int STAKE_MAX_AGE = 60 * 60 * 24 * 30; // stake age of full weight
-static const int STAKE_START_TIME = 1418428800; // Sat, 13 Dec 2014 00:00:00 GMT
-static const unsigned int POW_START_TIME = 1417996800; // Mon, 08 Dec 2014 00:00:00 GMT
-static const unsigned int POW_END_TIME = 1418601600; // Mon, 15 Dec 2014 00:00:00 GMT
+//static const int STAKE_MAX_AGE = 60 * 2; // stake age of full weight
+static const int STAKE_START_TIME = 1418922000; // Thu 18 Dec 2014 12:00:00 PM EST
+//static const int STAKE_START_TIME = 1418345400; // Thu 11 Dec 2014 05:30:00 PM EST
+static const unsigned int POW_START_TIME = 1418403600; // Fri 12 Dec 2014 12:00:00 PM EST
+//static const unsigned int POW_START_TIME = 1418345100; // Thu 11 Dec 2014 05:00:00 PM EST
+static const unsigned int POW_END_TIME = 1419012000; // Fri 19 Dec 2014 01:00:00 PM EST
+//static const unsigned int POW_END_TIME = 1418345700; // Thu 11 Dec 2014 05:40:00 PM EST
+// MODIFIER_INTERVAL: time to elapse before new modifier is computed
+static const unsigned int MODIFIER_INTERVAL = 6 * 60 * 60;
+//static const unsigned int MODIFIER_INTERVAL = 10;
 
 
 #ifdef USE_UPNP

@@ -552,7 +552,7 @@ Value getnetworkghps(const Array& params, bool fHelp)
             "getnetworkghps\n"
             "Returns a recent Ghash/second network mining estimate.");
 
-    if (pindexBest != NULL && pindexBest->nHeight >= LAST_POW_BLOCK)
+    if (pindexBest != NULL && pindexBest->nTime > POW_END_TIME)
         return (double)0.00f;
 
     int64 nTargetSpacingWorkMin = 30;
@@ -2130,7 +2130,7 @@ Value getwork(const Array& params, bool fHelp)
     if (IsInitialBlockDownload())
         throw JSONRPCError(-10, "Paycoin is downloading blocks...");
 
-    if (pindexBest != NULL && pindexBest->nHeight >= LAST_POW_BLOCK)
+    if (pindexBest != NULL && pindexBest->nTime > POW_END_TIME)
         throw JSONRPCError(-10, "Paycoin is currently on pure PoS state");
 
 
@@ -2271,7 +2271,7 @@ Value getblocktemplate(const Array& params, bool fHelp)
         if (IsInitialBlockDownload())
             throw JSONRPCError(-10, "Paycoin is downloading blocks...");
 
-        if (pindexBest != NULL && pindexBest->nHeight >= LAST_POW_BLOCK)
+        if (pindexBest != NULL && pindexBest->nTime > POW_END_TIME)
             throw JSONRPCError(-10, "Paycoin is currently on pure PoS state");
 
         // Update block
