@@ -979,7 +979,6 @@ unsigned int ComputeMinWork(unsigned int nBase, int64 nTime, bool fProofOfStake)
     }
     if (bnResult > bnLimit)
         bnResult = bnLimit;
-    printf("ComputeMinWork(): bnResult.GetCompact() = %d", bnResult.GetCompact());
     return bnResult.GetCompact();
 }
 
@@ -1025,7 +1024,6 @@ unsigned int static GetNextTargetRequired(const CBlockIndex* pindexLast, bool fP
     if (bnNew > bnProofOfWorkLimit)
         bnNew = bnProofOfWorkLimit;
 
-    printf("bnNew.GetCompact() = %d\n\n", bnNew.GetCompact());
     return bnNew.GetCompact();
 }
 
