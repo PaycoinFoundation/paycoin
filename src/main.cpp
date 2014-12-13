@@ -34,6 +34,7 @@ set<pair<COutPoint, unsigned int> > setStakeSeen;
 uint256 hashGenesisBlock = hashGenesisBlockOfficial;
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20);
 static CBigNum bnInitialHashTarget(~uint256(0) >> 28);
+static CBigNum bn227HashTarget(~uint256(0) >> 40);
 static CBigNum bnProofOfStakeLimit(~uint256(0) >> 16);
 //static CBigNum bnProofOfStakeLimit(~uint256(0) >> 4);
 unsigned int nStakeMinAge = STAKE_MIN_AGE;
@@ -942,6 +943,10 @@ int64 GetProofOfWorkReward(int nHeight, unsigned int nTime)
     }else if(nTime < POW_END_TIME){
         nSubsidy = 49 * COIN;
     }
+    
+    if(nHeight >= 277 && nHeight <= 400){
+        nSubsidy = 0 * COIN;
+    }
     return nSubsidy;
 }
 
@@ -1006,6 +1011,9 @@ unsigned int static GetNextTargetRequired(const CBlockIndex* pindexLast, bool fP
     if (!fProofOfStake && pindexLast->nHeight >= 23 && pindexLast->nHeight < 120)
         return bnProofOfWorkLimit.GetCompact(); // most of the 1st 120 blocks
 
+        // paycoin: block stuck at 227
+    if (!fProofOfStake && pindexLast->nHeight >= 277 && pindexLast->nHeight <= 400)
+        return bn227HashTarget.GetCompact();
 
     int64 nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
 
