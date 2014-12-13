@@ -26,6 +26,7 @@ namespace Checkpoints
     static MapCheckpoints mapCheckpoints =
         boost::assign::map_list_of
         ( 0, hashGenesisBlockOfficial )
+        ( 276, uint256("0x0000000000000073a6b02412fc261414fde6304366ca7d90cc0c175516d52272"))
         ;
 
     bool CheckHardened(int nHeight, const uint256& hash)

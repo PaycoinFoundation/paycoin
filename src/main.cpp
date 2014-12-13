@@ -973,12 +973,13 @@ unsigned int ComputeMinWork(unsigned int nBase, int64 nTime, bool fProofOfStake)
     bnResult *= 2;
     while (nTime > 0 && bnResult < bnLimit)
     {
-        // Maximum 200% adjustment per day...
-        bnResult *= 2;
+        // Maximum 20000% adjustment per day...
+        bnResult *= 200;
         nTime -= 24 * 60 * 60;
     }
     if (bnResult > bnLimit)
         bnResult = bnLimit;
+    printf("ComputeMinWork(): bnResult.GetCompact() = %d", bnResult.GetCompact());
     return bnResult.GetCompact();
 }
 
@@ -1024,6 +1025,7 @@ unsigned int static GetNextTargetRequired(const CBlockIndex* pindexLast, bool fP
     if (bnNew > bnProofOfWorkLimit)
         bnNew = bnProofOfWorkLimit;
 
+    printf("bnNew.GetCompact() = %d\n\n", bnNew.GetCompact());
     return bnNew.GetCompact();
 }
 
