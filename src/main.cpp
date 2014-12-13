@@ -978,9 +978,9 @@ unsigned int ComputeMinWork(unsigned int nBase, int64 nTime, bool fProofOfStake)
     bnResult *= 2;
     while (nTime > 0 && bnResult < bnLimit)
     {
-        // Maximum 20000% adjustment per day...
-        bnResult *= 200;
-        nTime -= 24 * 60 * 60;
+        // Maximum 25600% adjustment per day...
+        bnResult *= 256;
+        nTime -= nTargetTimespan * 4;
     }
     if (bnResult > bnLimit)
         bnResult = bnLimit;
