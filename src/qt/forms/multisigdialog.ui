@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabCreateAddress">
       <attribute name="title">
@@ -34,8 +34,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1283</width>
-            <height>310</height>
+            <width>1285</width>
+            <height>314</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -339,8 +339,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>613</width>
-                   <height>221</height>
+                   <width>611</width>
+                   <height>242</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -399,7 +399,7 @@
                 <item>
                  <widget class="QLabel" name="label">
                   <property name="text">
-                   <string>PPC</string>
+                   <string>XPY</string>
                   </property>
                  </widget>
                 </item>
@@ -458,8 +458,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>612</width>
-                   <height>193</height>
+                   <width>610</width>
+                   <height>214</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -518,7 +518,7 @@
                 <item>
                  <widget class="QLabel" name="label_2">
                   <property name="text">
-                   <string>PPC</string>
+                   <string>XPY</string>
                   </property>
                  </widget>
                 </item>
@@ -556,7 +556,7 @@
                 <item>
                  <widget class="QLabel" name="label_3">
                   <property name="text">
-                   <string>PPC</string>
+                   <string>XPY</string>
                   </property>
                  </widget>
                 </item>
