@@ -39,6 +39,7 @@
         <file>res/icons/horizontal_trans-no-shadow.png</file>
         <file>res/icons/paycoin_testnet.png</file>
         <file>res/icons/paycoin.png</file>
+        <file alias="paycoin_tooltip">res/icons/paycoin.ico</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="about">res/images/about.png</file>
