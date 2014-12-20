@@ -117,7 +117,7 @@
      <item>
       <widget class="QLabel" name="label_paycoin_copyright">
        <property name="text">
-        <string>Copyright © 2011-2014 Paycoin Developers</string>
+        <string>Copyright © 2011-2014 Peercoin Developers</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>

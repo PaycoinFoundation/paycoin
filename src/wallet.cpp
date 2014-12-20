@@ -1271,12 +1271,14 @@ bool CWallet::CreateTransaction(CScript scriptPubKey, int64 nValue, CWalletTx& w
 }
 
 // paycoin: create coin stake transaction
-bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int64 nSearchInterval, CTransaction& txNew)
+bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int64 nSearchInterval, CTransaction& txNew, int64 nMoneySupply)
 {
     // The following split & combine thresholds are important to security
     // Should not be adjusted if you don't understand the consequences
-    static unsigned int nStakeSplitAge = (60 * 60 * 24 * 90);
-    int64 nCombineThreshold = 50 * COIN;
+    static unsigned int nStakeSplitAge = (60 * 60 * 24 * 15);
+    // static unsigned int nStakeSplitAge = (60 * 6);
+    // orion controller
+    int64 nCombineThreshold = MINIMUM_FOR_ORION;
 
 
     CBigNum bnTargetPerCoinDay;
@@ -1287,12 +1289,50 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     txNew.vout.clear();
 
     // Make variable interested rate
-    bool isPrimeNode = false;
+    unsigned int primeNodeRate = 0;
 
-    // Mark coin stake transaction
-    CScript scriptEmpty;
-    scriptEmpty.clear();
-    txNew.vout.push_back(CTxOut(0, scriptEmpty));
+    if (mapArgs.count("-primenodekey") && mapArgs.count("-primenoderate")) // paycoin: primenode priv key
+    {
+            std::string strPrivKey = GetArg("-primenodekey", "");
+            std::vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
+            CKey key;
+            key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end())); // if key is not correct openssl may crash
+            CScript scriptTime;
+            scriptTime << txNew.nTime;
+            uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
+            std::vector<unsigned char> vchSig;
+            if(!key.Sign(hashScriptTime, vchSig)){
+                return error("CreateCoinStake : Unable to sign checkpoint, wrong primenodekey?");
+            }
+            CScript scriptPrimeNode;
+            std::string primeNodeRateArg = GetArg("-primenoderate", "");
+            if (primeNodeRateArg.compare("350") == 0){
+                scriptPrimeNode << OP_PRIMENODE350 << vchSig;
+                primeNodeRate = 350;
+                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+            }else if (primeNodeRateArg.compare("100") == 0){
+                scriptPrimeNode << OP_PRIMENODE100 << vchSig;
+                primeNodeRate = 100;
+                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+            }else if (primeNodeRateArg.compare("20") == 0){
+                scriptPrimeNode << OP_PRIMENODE20 << vchSig;
+                primeNodeRate = 20;
+                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+            }else if (primeNodeRateArg.compare("10") == 0){
+                scriptPrimeNode << OP_PRIMENODE10 << vchSig;
+                primeNodeRate = 10;
+                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+            }else{
+                return error("CreateCoinStake : Primenode rate configuration is wrong or missing");
+            }
+            txNew.vout.push_back(CTxOut(0, scriptPrimeNode));
+     }else{
+         // Mark coin stake transaction
+         CScript scriptEmpty;
+         scriptEmpty.clear();
+         txNew.vout.push_back(CTxOut(0, scriptEmpty));
+     }
+
     // Choose coins to use
     int64 nBalance = GetBalance();
     int64 nReserveBalance = 0;
@@ -1395,24 +1435,30 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             && pcoin.first->GetHash() != txNew.vin[0].prevout.hash)
         {
             // Stop adding more inputs if already too many inputs
-            if (txNew.vin.size() >= 100)
+            if (txNew.vin.size() >= 100){
                 break;
+            }
             // Stop adding more inputs if value is already pretty significant
-            if (nCredit > nCombineThreshold)
+            if (nCredit >= nCombineThreshold){
                 break;
+            }
             // Stop adding inputs if reached reserve limit
-            if (nCredit + pcoin.first->vout[pcoin.second].nValue > nBalance - nReserveBalance)
+            if (nCredit + pcoin.first->vout[pcoin.second].nValue > nBalance - nReserveBalance){
                 break;
+            }
             // Do not add additional significant input
-            if (pcoin.first->vout[pcoin.second].nValue > nCombineThreshold)
+            if (pcoin.first->vout[pcoin.second].nValue >= nCombineThreshold){
                 continue;
+            }
             // Do not add input that is still too young
-            if (pcoin.first->nTime + STAKE_MAX_AGE > txNew.nTime)
+            if (pcoin.first->nTime + STAKE_MAX_AGE > txNew.nTime){
                 continue;
+            }
             txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
             nCredit += pcoin.first->vout[pcoin.second].nValue;
             vwtxPrev.push_back(pcoin.first);
         }
+
     }
     // Calculate coin age reward
     {
@@ -1421,7 +1467,14 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         if (!txNew.GetCoinAge(txdb, nCoinAge))
             return error("CreateCoinStake : failed to calculate coin age");
 
-        int64 nReward = GetProofOfStakeReward(nCoinAge, isPrimeNode);
+        if (primeNodeRate != 0 && nCredit < MINIMUM_FOR_PRIMENODE){
+            return error("CreateCoinStake : credit doesn't meet requirement for primenode; credit = %lld; requirement = %lld nCombineThreshold = %lld\n", nCredit, MINIMUM_FOR_PRIMENODE, nCombineThreshold);
+        }else if (primeNodeRate == 0 && nCredit < MINIMUM_FOR_ORION){
+            return error("CreateCoinStake : credit doesn't meet requirement for orion controller; credit = %lld; requirement = %lld nCombineThreshold = %lld\n", nCredit, MINIMUM_FOR_ORION, nCombineThreshold);
+        }
+
+        int64 nReward = GetProofOfStakeReward(nCoinAge, primeNodeRate);
+
         // Refuse to create mint that has zero or negative reward
         if(nReward <= 0) {
           return false;
