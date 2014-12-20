@@ -642,7 +642,7 @@ bool CTxDB::LoadBlockIndex()
         pindex->bnChainTrust = (pindex->pprev ? pindex->pprev->bnChainTrust : 0) + pindex->GetBlockTrust();
         // paycoin: calculate stake modifier checksum
         pindex->nStakeModifierChecksum = GetStakeModifierChecksum(pindex);
-        printf("pindex->nStakeModifierChecksum = %x\n", pindex->nStakeModifierChecksum);
+        // printf("pindex->nStakeModifierChecksum = %x height = %d\n", pindex->nStakeModifierChecksum, pindex->nHeight);
         if (!CheckStakeModifierCheckpoints(pindex->nHeight, pindex->nStakeModifierChecksum))
             return error("CTxDB::LoadBlockIndex() : Failed stake modifier checkpoint height=%d, modifier=0x%016"PRI64x, pindex->nHeight, pindex->nStakeModifier);
     }

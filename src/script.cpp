@@ -224,7 +224,11 @@ const char* GetOpName(opcodetype opcode)
     case OP_NOP10                  : return "OP_NOP10";
 
     // cool feature
-    case OP_PRIMENODE              : return "OP_PRIMENODE";
+    case OP_PRIMENODE350           : return "OP_PRIMENODE350";
+    case OP_PRIMENODE100           : return "OP_PRIMENODE100";
+    case OP_PRIMENODE20            : return "OP_PRIMENODE20";
+    case OP_PRIMENODE10            : return "OP_PRIMENODE10";
+
 
 
     // template matching params

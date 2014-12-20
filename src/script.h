@@ -191,7 +191,11 @@ enum opcodetype
     OP_NOP10 = 0xb9,
 
     // cool feature
-    OP_PRIMENODE = 0xc1,
+    OP_PRIMENODE350 = 0xc1,
+    OP_PRIMENODE100 = 0xc2,
+    OP_PRIMENODE20 = 0xc3,
+    OP_PRIMENODE10 = 0xc4,
+
 
     // template matching params
     OP_SMALLINTEGER = 0xfa,
