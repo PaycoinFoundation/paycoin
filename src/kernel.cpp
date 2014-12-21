@@ -141,11 +141,13 @@ static bool SelectBlockFromCandidates(
 bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64& nStakeModifier, bool& fGeneratedStakeModifier)
 {
     // interval issue : 12/21/2014 change from 6hr to 10mins
-    if( pindexCurrent->nTime >= 1419181200 ){
+    if( pindexCurrent->nTime >= STAKE_START_TIME ){
         nModifierInterval = MODIFIER_INTERVAL_NEW;
     }
     
     printf("\nnModifierInterval = %d\n", nModifierInterval);
+    printf("pindexCurrent->nTime = %d\n", pindexCurrent->nTime);
+    printf("pindexCurrent->nHeight = %d\n", pindexCurrent->nHeight);
 
     const CBlockIndex* pindexPrev = pindexCurrent->pprev;
     nStakeModifier = 0;
@@ -271,11 +273,13 @@ static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier
     nStakeModifierTime = pindexFrom->GetBlockTime();
 
     // interval issue : 12/21/2014 change from 6hr to 10mins
-    if( pindexFrom->nTime >= 1419181200 ){
+    if( pindexFrom->nTime >= STAKE_START_TIME ){
         nModifierInterval = MODIFIER_INTERVAL_NEW;
     }
     
     printf("\nnModifierInterval = %d\n", nModifierInterval);
+    printf("pindexFrom->nTime = %d\n", pindexFrom->nTime);
+    printf("pindexFrom->nHeight = %d\n", pindexFrom->nHeight);
     
     int64 nStakeModifierSelectionInterval = GetStakeModifierSelectionInterval(nModifierInterval);
     const CBlockIndex* pindex = pindexFrom;
