@@ -55,8 +55,8 @@ static const unsigned int POW_START_TIME = 1418403600; // Fri 12 Dec 2014 12:00:
 static const unsigned int POW_END_TIME = 1419181200; // Sun 21 Dec 2014 12:00:00 PM EST
 //static const unsigned int POW_END_TIME = 1418345700; // Thu 11 Dec 2014 05:40:00 PM EST
 // MODIFIER_INTERVAL: time to elapse before new modifier is computed
-static const unsigned int MODIFIER_INTERVAL = 6 * 60 * 60;
-static const unsigned int MODIFIER_INTERVAL_NEW = 10 * 60;
+//static const unsigned int MODIFIER_INTERVAL = 6 * 60 * 60;
+static const unsigned int MODIFIER_INTERVAL = 10 * 60;
 //static const unsigned int MODIFIER_INTERVAL = 10;
 static const int64 NUMBER_OF_PRIMENODE = 50;
 static const int64 MINIMUM_FOR_ORION = 50 * COIN;

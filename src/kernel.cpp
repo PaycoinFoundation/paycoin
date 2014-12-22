@@ -30,7 +30,6 @@ unsigned int nModifierInterval = MODIFIER_INTERVAL;
 static std::map<int, unsigned int> mapStakeModifierCheckpoints =
     boost::assign::map_list_of
     ( 0, 0x0e00670bu )
-    ( 276, 0xb0807bc0u )
     ;
 
 // Whether the given coinstake is subject to new v0.3 protocol
@@ -60,18 +59,18 @@ static bool GetLastStakeModifier(const CBlockIndex* pindex, uint64& nStakeModifi
 }
 
 // Get selection interval section (in seconds)
-static int64 GetStakeModifierSelectionIntervalSection(int nSection, unsigned int nModifierIntervalNew)
+static int64 GetStakeModifierSelectionIntervalSection(int nSection)
 {
     assert (nSection >= 0 && nSection < 64);
-    return (nModifierIntervalNew * 63 / (63 + ((63 - nSection) * (MODIFIER_INTERVAL_RATIO - 1))));
+    return (nModifierInterval * 63 / (63 + ((63 - nSection) * (MODIFIER_INTERVAL_RATIO - 1))));
 }
 
 // Get stake modifier selection interval (in seconds)
-static int64 GetStakeModifierSelectionInterval(unsigned int nModifierIntervalNew)
+static int64 GetStakeModifierSelectionInterval()
 {
     int64 nSelectionInterval = 0;
     for (int nSection=0; nSection<64; nSection++)
-        nSelectionInterval += GetStakeModifierSelectionIntervalSection(nSection, nModifierIntervalNew);
+        nSelectionInterval += GetStakeModifierSelectionIntervalSection(nSection);
     return nSelectionInterval;
 }
 
@@ -139,15 +138,6 @@ static bool SelectBlockFromCandidates(
 // blocks.
 bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64& nStakeModifier, bool& fGeneratedStakeModifier)
 {
-    // interval issue : 12/21/2014 change from 6hr to 10mins
-    if( pindexCurrent->nTime >= STAKE_START_TIME ){
-        nModifierInterval = MODIFIER_INTERVAL_NEW;
-    }
-    
-    printf("\nnModifierInterval = %d\n", nModifierInterval);
-    printf("pindexCurrent->nTime = %d\n", pindexCurrent->nTime);
-    printf("pindexCurrent->nHeight = %d\n", pindexCurrent->nHeight);
-
     const CBlockIndex* pindexPrev = pindexCurrent->pprev;
     nStakeModifier = 0;
     fGeneratedStakeModifier = false;
@@ -196,7 +186,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64& nStakeMo
     // Sort candidate blocks by timestamp
     vector<pair<int64, uint256> > vSortedByTimestamp;
     vSortedByTimestamp.reserve(64 * nModifierInterval / STAKE_TARGET_SPACING);
-    int64 nSelectionInterval = GetStakeModifierSelectionInterval(nModifierInterval);
+    int64 nSelectionInterval = GetStakeModifierSelectionInterval();
     int64 nSelectionIntervalStart = (pindexPrev->GetBlockTime() / nModifierInterval) * nModifierInterval - nSelectionInterval;
     const CBlockIndex* pindex = pindexPrev;
     while (pindex && pindex->GetBlockTime() >= nSelectionIntervalStart)
@@ -215,7 +205,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexCurrent, uint64& nStakeMo
     for (int nRound=0; nRound<min(64, (int)vSortedByTimestamp.size()); nRound++)
     {
         // add an interval section to the current selection round
-        nSelectionIntervalStop += GetStakeModifierSelectionIntervalSection(nRound, nModifierInterval);
+        nSelectionIntervalStop += GetStakeModifierSelectionIntervalSection(nRound);
         // select a block from the candidates of current round
         if (!SelectBlockFromCandidates(vSortedByTimestamp, mapSelectedBlocks, nSelectionIntervalStop, nStakeModifier, &pindex))
             return error("ComputeNextStakeModifier: unable to select block at round %d", nRound);
@@ -270,17 +260,7 @@ static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier
     const CBlockIndex* pindexFrom = mapBlockIndex[hashBlockFrom];
     nStakeModifierHeight = pindexFrom->nHeight;
     nStakeModifierTime = pindexFrom->GetBlockTime();
-
-    // interval issue : 12/21/2014 change from 6hr to 10mins
-    if( pindexFrom->nTime >= STAKE_START_TIME ){
-        nModifierInterval = MODIFIER_INTERVAL_NEW;
-    }
-    
-    printf("\nnModifierInterval = %d\n", nModifierInterval);
-    printf("pindexFrom->nTime = %d\n", pindexFrom->nTime);
-    printf("pindexFrom->nHeight = %d\n", pindexFrom->nHeight);
-    
-    int64 nStakeModifierSelectionInterval = GetStakeModifierSelectionInterval(nModifierInterval);
+    int64 nStakeModifierSelectionInterval = GetStakeModifierSelectionInterval();
     const CBlockIndex* pindex = pindexFrom;
     // loop to find the stake modifier later by a selection interval
     while (nStakeModifierTime < pindexFrom->GetBlockTime() + nStakeModifierSelectionInterval)
