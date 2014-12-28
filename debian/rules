@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+PACKAGE ?= $(shell dpkg-parsechangelog | grep -E ^Source: | sed -e 's/Source: //')
+VERSION ?= $(shell cd ../$(PACKAGE).upstream; git describe --tags --always | sed -e 's/^v//')
+
+make-orig:
+	cd ../$(PACKAGE).upstream; git archive --prefix=$(PACKAGE)_$(VERSION)/ --output=../tarballs/$(PACKAGE)_$(VERSION).orig.tar.gz HEAD
+
+override_dh_auto_build:
+	cd src; $(MAKE) -f makefile.unix USE_UPNP=1
+	$(MAKE)
+
+override_dh_auto_configure:
+	qmake-qt4 -makefile paycoin.pro USE_QRCODE=1 USE_UPNP=1
+
+%:
+	dh $@ 
