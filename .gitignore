@@ -4,6 +4,10 @@
 Makefile
 
 #
+# Igonre QT creator generate files
+#
+paycoin.pro.user
+#
 # Ignore build dir as well.
 #
 build/

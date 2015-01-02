@@ -1301,9 +1301,13 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             scriptTime << txNew.nTime;
             uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
             std::vector<unsigned char> vchSig;
+
             if(!key.Sign(hashScriptTime, vchSig)){
                 return error("CreateCoinStake : Unable to sign checkpoint, wrong primenodekey?");
+            }else{
+                printf("Primenode key is correct for activating a prime controller\n");
             }
+
             CScript scriptPrimeNode;
             std::string primeNodeRateArg = GetArg("-primenoderate", "");
             if (primeNodeRateArg.compare("350") == 0){
@@ -1325,6 +1329,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             }else{
                 return error("CreateCoinStake : Primenode rate configuration is wrong or missing");
             }
+            printf("Primenode rate for staking is %d\n", primeNodeRate);
             txNew.vout.push_back(CTxOut(0, scriptPrimeNode));
      }else{
          // Mark coin stake transaction
@@ -1435,7 +1440,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             && pcoin.first->GetHash() != txNew.vin[0].prevout.hash)
         {
             // Stop adding more inputs if already too many inputs
-            if (txNew.vin.size() >= 100){
+            if (txNew.vin.size() >= 10000){
                 break;
             }
             // Stop adding more inputs if value is already pretty significant
