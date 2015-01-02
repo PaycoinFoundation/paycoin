@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2012 Bitcoin Developers
-// Copyright (c) 2012-2013 The Paycoin developers
+// Copyright (c) 2012-2015 The Peercoin developers
+// Copyright (c) 2014-2015 The Paycoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
