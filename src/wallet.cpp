@@ -1419,7 +1419,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 nCredit += pcoin.first->vout[pcoin.second].nValue;
                 vwtxPrev.push_back(pcoin.first);
                 txNew.vout.push_back(CTxOut(0, scriptPubKeyOut));
-                if ((block.GetBlockTime() + nStakeSplitAge > txNew.nTime) && (nCredit < MINIMUM_FOR_PRIMENODE))
+                if ((block.GetBlockTime() + nStakeSplitAge > txNew.nTime) && ((nCredit < MINIMUM_FOR_PRIMENODE) || primeNodeRate == 0 ))
                     txNew.vout.push_back(CTxOut(0, scriptPubKeyOut)); //split stake
                 if (fDebug && GetBoolArg("-printcoinstake"))
                     printf("CreateCoinStake : added kernel type=%d\n", whichType);
@@ -1456,7 +1456,9 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 continue;
             }
             // Do not add input that is still too young
-            if (pcoin.first->nTime + STAKE_MAX_AGE > txNew.nTime){
+            if (primeNodeRate ==0 && (pcoin.first->nTime + STAKE_MAX_AGE > txNew.nTime)){
+                continue;
+            }else if(primeNodeRate !=0 && (pcoin.first->nTime + STAKE_MIN_AGE > txNew.nTime)){
                 continue;
             }
             txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
