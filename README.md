@@ -16,7 +16,7 @@ To help faciliate broad community cooperation, a number of trusted Paycoin/Peers
 
 
 ### About Paycoin
-[Paycoin](http://paycoin.com/) (abbreviated XPY), also known as Paycoin and Peer-to-Peer Coin is the first [cryptocurrency](https://en.wikipedia.org/wiki/Cryptocurrency) design introducing [proof-of-stake consensus](http://paycoin.com) as a security model, with a combined [proof-of-stake](http://paycoin.com)/[proof-of-work](https://en.wikipedia.org/wiki/Proof-of-work_system) minting system. Paycoin is based on [Bitcoin](http://bitcoin.org/en/), while introducing many important innovations to cryptocurrency field including new security model, energy efficiency, better minting model and more adaptive response to rapid change in network computation power.
+[Paycoin](http://paycoin.com/) (abbreviated XPY), also known as Paycoin and Peer-to-Peer Coin is the first [cryptocurrency](https://en.wikipedia.org/wiki/Cryptocurrency) design introducing [proof-of-stake consensus](http://paycoin.com) as a security model, with a combined [proof-of-stake](http://paycoin.com)/[proof-of-work](https://en.wikipedia.org/wiki/Proof-of-work_system) minting system. Paycoin is based on [Peercoin](http://www.peercoin.net/), while introducing many important innovations to cryptocurrency field including new security model, energy efficiency, better minting model and more adaptive response to rapid change in network computation power.
 
 
 ## Repo Guidelines
