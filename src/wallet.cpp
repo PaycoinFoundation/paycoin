@@ -1465,6 +1465,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             }
             txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
             nCredit += pcoin.first->vout[pcoin.second].nValue;
+            printf("CreateCoinStake : nCombineThreshold = %lld pcoin.first->vout[pcoin.second].nValue = %lld\n", nCombineThreshold, pcoin.first->vout[pcoin.second].nValue);
             vwtxPrev.push_back(pcoin.first);
         }
 
