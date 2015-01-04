@@ -1276,7 +1276,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 {
     // The following split & combine thresholds are important to security
     // Should not be adjusted if you don't understand the consequences
-    static unsigned int nStakeSplitAge = (60 * 60 * 24 * 15);
+    static unsigned int nStakeSplitAge = (60 * 60 * 24 * 5);
     // static unsigned int nStakeSplitAge = (60 * 6);
     // orion controller
     int64 nCombineThreshold = MINIMUM_FOR_ORION;
@@ -1302,9 +1302,13 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             scriptTime << txNew.nTime;
             uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
             std::vector<unsigned char> vchSig;
+
             if(!key.Sign(hashScriptTime, vchSig)){
                 return error("CreateCoinStake : Unable to sign checkpoint, wrong primenodekey?");
+            }else{
+                printf("Primenode key is correct for activating a prime controller\n");
             }
+
             CScript scriptPrimeNode;
             std::string primeNodeRateArg = GetArg("-primenoderate", "");
             if (primeNodeRateArg.compare("350") == 0){
@@ -1326,6 +1330,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             }else{
                 return error("CreateCoinStake : Primenode rate configuration is wrong or missing");
             }
+            printf("Primenode rate for staking is %d\n", primeNodeRate);
             txNew.vout.push_back(CTxOut(0, scriptPrimeNode));
      }else{
          // Mark coin stake transaction
@@ -1339,6 +1344,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     int64 nReserveBalance = 0;
     if (mapArgs.count("-reservebalance") && !ParseMoney(mapArgs["-reservebalance"], nReserveBalance))
         return error("CreateCoinStake : invalid reserve balance amount");
+    printf("Your balance is %lld and reservebalance is %lld\n", nBalance, nReserveBalance);
     if (nBalance <= nReserveBalance)
         return false;
     set<pair<const CWalletTx*,unsigned int> > setCoins;
@@ -1415,7 +1421,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 nCredit += pcoin.first->vout[pcoin.second].nValue;
                 vwtxPrev.push_back(pcoin.first);
                 txNew.vout.push_back(CTxOut(0, scriptPubKeyOut));
-                if (block.GetBlockTime() + nStakeSplitAge > txNew.nTime)
+                if ((block.GetBlockTime() + nStakeSplitAge > txNew.nTime) && ((nCredit < MINIMUM_FOR_PRIMENODE) || primeNodeRate == 0 ))
                     txNew.vout.push_back(CTxOut(0, scriptPubKeyOut)); //split stake
                 if (fDebug && GetBoolArg("-printcoinstake"))
                     printf("CreateCoinStake : added kernel type=%d\n", whichType);
@@ -1436,7 +1442,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             && pcoin.first->GetHash() != txNew.vin[0].prevout.hash)
         {
             // Stop adding more inputs if already too many inputs
-            if (txNew.vin.size() >= 100){
+            if (txNew.vin.size() >= 10000){
                 break;
             }
             // Stop adding more inputs if value is already pretty significant
@@ -1452,7 +1458,9 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 continue;
             }
             // Do not add input that is still too young
-            if (pcoin.first->nTime + STAKE_MAX_AGE > txNew.nTime){
+            if (primeNodeRate ==0 && (pcoin.first->nTime + STAKE_MAX_AGE > txNew.nTime)){
+                continue;
+            }else if(primeNodeRate !=0 && (pcoin.first->nTime + STAKE_MIN_AGE > txNew.nTime)){
                 continue;
             }
             txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
