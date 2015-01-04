@@ -5,7 +5,7 @@ SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.1.2.25
+!define VERSION 0.1.2.26
 !define COMPANY "Paycoin project"
 !define URL https://github.com/GAWMiners/paycoin/
 
