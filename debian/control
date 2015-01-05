@@ -15,7 +15,7 @@ Build-Depends: debhelper (>= 9.0.0),
  libssl-dev,
  libminiupnpc-dev,
  libqrencode-dev
-Standards-Version: 0.1.2.25
+Standards-Version: 0.1.2.26
 Homepage: http://paycoin.com/
 Vcs-Git: https://github.com/GAWMiners/paycoin.git
 
