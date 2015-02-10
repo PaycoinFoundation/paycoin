@@ -54,18 +54,18 @@ Paycoin owes it's existance to the time and effort put forth by
 the developers and supporters of the following projects:
 
 
-	Paycoin (Paycoin) 0.4.0 BETA
-	Copyright (c) 2011-2014 Bitcoin Developers
+	Peercoin (PPC) 0.4.0 BETA
+	Copyright (c) 2011-2014 Peercoin Developers
 
 	Distributed under the MIT/X11 software license
 	(http://www.opensource.org/licenses/mit-license.php)
 
-	Paycoin is a free open source project with the goal of providing a 
+	Peercoin is a free open source project with the goal of providing a 
 	long-term energy-efficient crypto-currency. Built on the foundation 
 	of Bitcoin, innovations such as proof-of-stake help further advance 
 	the field of crypto-currency.
 
-	http://github.com/paycoin/paycoin
+	https://github.com/ppcoin/ppcoin
 
 
 	------------------
