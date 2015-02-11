@@ -1,3 +1,9 @@
+paycoin (0.1.2.26) stable; urgency=low
+
+  * Bring package version number inline with application
+
+ -- Nathan Bass (IngCr3at1on) <nathan@btc.com>  Wed, 11 Feb 2015 12:48:31 -0600
+
 paycoin (0.1.2.25) stable; urgency=low
 
   * Initial release
