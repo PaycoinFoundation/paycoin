@@ -12,3 +12,18 @@ paycoin.pro.user
 #
 build/
 
+#
+# Ignore binaries
+#
+paycoin-qt
+src/paycoind
+
+#
+# Ignore generated resources
+#
+qrc_bitcoin.cpp
+
+#
+# Ignore generated locale files
+#
+src/qt/locale/*.qm

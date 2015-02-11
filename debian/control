@@ -1,0 +1,32 @@
+Source: paycoin
+Section: utils
+Priority: optional
+Maintainer: wdl1908 <wdlbit@linux-lovers.be>
+Build-Depends: debhelper (>= 9.0.0),
+ devscripts,
+ libqt4-dev,
+ qt4-qmake,
+ libdb++-dev,
+ libboost-system-dev,
+ libboost-filesystem-dev,
+ libboost-program-options-dev,
+ libboost-thread-dev,
+ libboost-test-dev,
+ libssl-dev,
+ libminiupnpc-dev,
+ libqrencode-dev
+Standards-Version: 0.1.2.26
+Homepage: http://paycoin.com/
+Vcs-Git: https://github.com/GAWMiners/paycoin.git
+
+Package: paycoin-qt
+Architecture: any-amd64 any-i386 any-arm
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Paycoin wallet GUI
+ Peer-to-Peer cryptocurrency with Proof-of-Stake.
+
+Package: paycoind
+Architecture: any-amd64 any-i386 any-arm
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Paycoin daemon
+ Peer-to-Peer cryptocurrency with Proof-of-Stake.
