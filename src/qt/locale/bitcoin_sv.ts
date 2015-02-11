@@ -711,8 +711,8 @@ Adress:%4
         <location filename="../forms/coincontroldialog.ui" line="224"/>
         <location filename="../forms/coincontroldialog.ui" line="310"/>
         <location filename="../forms/coincontroldialog.ui" line="348"/>
-        <source>0.00 BTC</source>
-        <translation>123,456 BTC {0.00 ?}</translation>
+        <source>0.00 XPY</source>
+        <translation>123,456 XPY {0.00 ?}</translation>
     </message>
     <message>
         <location filename="../forms/coincontroldialog.ui" line="157"/>
@@ -1621,8 +1621,8 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <location filename="../forms/sendcoinsdialog.ui" line="410"/>
         <location filename="../forms/sendcoinsdialog.ui" line="496"/>
         <location filename="../forms/sendcoinsdialog.ui" line="528"/>
-        <source>0.00 BTC</source>
-        <translation>123,456 BTC {0.00 ?}</translation>
+        <source>0.00 XPY</source>
+        <translation>123,456 XPY {0.00 ?}</translation>
     </message>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="337"/>
@@ -1691,8 +1691,8 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     </message>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="714"/>
-        <source>123.456 BTC</source>
-        <translation>123,456 BTC</translation>
+        <source>123.456 XPY</source>
+        <translation>123,456 XPY</translation>
     </message>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="745"/>
