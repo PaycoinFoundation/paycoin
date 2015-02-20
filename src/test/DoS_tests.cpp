@@ -89,7 +89,7 @@ static bool CheckNBits(unsigned int nbits1, int64 time1, unsigned int nbits2, in
     int64 deltaTime = time2-time1;
 
     CBigNum required;
-    required.SetCompact(ComputeMinWork(nbits1, deltaTime));
+    required.SetCompact(ComputeMinWork(nbits1, deltaTime, false));
     CBigNum have;
     have.SetCompact(nbits2);
     return (have <= required);
