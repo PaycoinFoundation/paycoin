@@ -14,7 +14,7 @@ Paycoin is a Paycoin network-compatible, community-developed wallet client.
 
 The project has been designed to provide people with a
 stable, secure, and feature-rich alternative to the Paycoin reference
-wallet (http://github.com/paycoin/paycoin). 
+wallet (http://github.com/PaycoinFoundation/paycoin). 
 
 To help faciliate broad community cooperation, a number of trusted 
 Paycoin/Peershares community leaders have write permissions to the project's 
@@ -34,17 +34,17 @@ Development Roadmap
 
 Resources
 ---------
-Paycoin source code: https://github.com/Paycoin/Paycoin
+Paycoin source code: https://github.com/PaycoinFoundation/Paycoin
 
 For the most current instructions covering how to compile Paycoin from 
 source on a variety of operating systems, please visit:
-https://github.com/Paycoin/Paycoin/tree/master/doc
+https://github.com/PaycoinFoundation/Paycoin/tree/master/doc
 
 Open software issues can be viewed, and new issues can be reported at:
-https://github.com/Paycoin/Paycoin/issues?state=open
+https://github.com/PaycoinFoundation/Paycoin/issues?state=open
 
-Paycoin discussion forums (hosted by PaycoinTalk.org): 
-http://www.paycointalk.org/index.php?board=64.0
+Paycoin discussion forums (hosted by paycoin.com): 
+http://talk.paycoin.com/categories/coincode
 
 
 
@@ -65,7 +65,7 @@ the developers and supporters of the following projects:
 	of Bitcoin, innovations such as proof-of-stake help further advance 
 	the field of crypto-currency.
 
-	http://github.com/paycoin/paycoin
+	http://github.com/PaycoinFoundation/paycoin
 
 
 	------------------
