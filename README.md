@@ -12,7 +12,7 @@ To help faciliate broad community cooperation, a number of trusted Paycoin/Peers
 ### Paycoin Resources
 * Source: [Source Code](https://github.com/PaycoinFoundation/paycoin)
 * Documentation: [Build Instructions](https://github.com/PaycoinFoundation/paycoin/tree/master/doc)
-* Support: [Talk Paycoin](http://talk.paycoin.com/categories/coin-code), [Issue Tracker](https://github.com/GAWMiners/paycoin/issues?state=open)
+* Support: [Talk Paycoin](http://talk.paycoin.com/categories/coin-code), [Issue Tracker](https://github.com/PaycoinFoundation/paycoin/issues)
 
 
 ### About Paycoin
