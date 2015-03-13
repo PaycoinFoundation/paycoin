@@ -106,9 +106,6 @@ public:
         pwalletdbEncryption = NULL;
     }
 
-    // Treefunder Additions
-    std::set< std::set<CTxDestination> > GetAddressGroupings();
-    std::map<CTxDestination, int64> GetAddressBalances();
     
     std::map<uint256, CWalletTx> mapWallet;
     std::vector<uint256> vWalletUpdated;
