@@ -56,6 +56,6 @@ public:
 extern const CRPCTable tableRPC;
 extern CReserveKey* pMiningKey;
 
-//extern json_spirit::Value listaddressgroupings(const json_spirit::Array& params, bool fHelp);
+extern json_spirit::Value listaddressgroupings(const json_spirit::Array& params, bool fHelp);
 
 #endif
