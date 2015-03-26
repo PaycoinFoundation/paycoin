@@ -33,7 +33,7 @@ sudo ln -s /usr/local/lib /opt/local/lib/db48
 
 4.  Clone the github tree to get the source code
 
-git clone https://github.com/GAWMiners/paycoin.git
+git clone https://github.com/PaycoinFoundation/paycoin.git
 
 
 Building paycoind

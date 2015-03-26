@@ -17,7 +17,7 @@ Build-Depends: debhelper (>= 9.0.0),
  libqrencode-dev
 Standards-Version: 0.1.2.26
 Homepage: http://paycoin.com/
-Vcs-Git: https://github.com/GAWMiners/paycoin.git
+Vcs-Git: https://github.com/PaycoinFoundation/paycoin.git
 
 Package: paycoin-qt
 Architecture: any-amd64 any-i386 any-arm
