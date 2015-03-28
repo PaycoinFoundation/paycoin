@@ -68,7 +68,7 @@ sudo cp -r boost_1_55_0/boost/ /usr/include/boost/
 
 9.  Clone the github tree to get the source code
 
-git clone https://github.com/GAWMiners/paycoin.git
+git clone https://github.com/PaycoinFoundation/paycoin.git
 
 
 Building paycoind

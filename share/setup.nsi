@@ -7,7 +7,7 @@ SetCompressor /SOLID lzma
 !define REGKEY "SOFTWARE\$(^Name)"
 !define VERSION 0.1.2.26
 !define COMPANY "Paycoin project"
-!define URL https://github.com/GAWMiners/paycoin/
+!define URL https://github.com/PaycoinFoundation/paycoin/
 
 # MUI Symbol Definitions
 !define MUI_ICON "../share/pixmaps/paycoin.ico"

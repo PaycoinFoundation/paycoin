@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: paycoin
-Source: https://github.com/GAWMiners/paycoin.git
+Source: https://github.com/PaycoinFoundation/paycoin.git
 
 Files: *
 Copyright: Copyright (c) 2014 Paycoin (Paycoin) Developers
