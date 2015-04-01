@@ -1418,8 +1418,15 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                     return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
                 if (GetValueOut() < MINIMUM_FOR_PRIMENODE)
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-                if (nStakeReward > GetProofOfStakeReward(nCoinAge, 350) - GetMinFee() + MIN_TX_FEE)
-                    return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                /* Use time instead of block number because we can better
+                 * control when a manditory wallet update is required. */
+                if (nTime >= RESET_PRIMERATES) {
+                    if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
+                        return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                } else {
+                    if (nStakeReward > GetProofOfStakeReward(nCoinAge, 350) - GetMinFee() + MIN_TX_FEE)
+                        return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                }
 
             }else if (!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODE100){
                 std::vector<string> pubKeyList;
@@ -1453,7 +1460,8 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                     return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
                 if (GetValueOut() < MINIMUM_FOR_PRIMENODE)
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-               if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
+                // No need to adjust as this is already at 100.
+                if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
                     return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
 
             }else if (!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODE20){
@@ -1481,8 +1489,16 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                     return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
                 if (GetValueOut() < MINIMUM_FOR_PRIMENODE)
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-                if (nStakeReward > GetProofOfStakeReward(nCoinAge, 20) - GetMinFee() + MIN_TX_FEE)
-                    return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+
+                /* Use time instead of block number because we can better
+                 * control when a manditory wallet update is required. */
+                if (nTime >= RESET_PRIMERATES) {
+                    if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
+                        return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                } else {
+                    if (nStakeReward > GetProofOfStakeReward(nCoinAge, 20) - GetMinFee() + MIN_TX_FEE)
+                        return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                }
 
             }else if (!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODE10){
                 std::vector<string> pubKeyList;
@@ -1509,8 +1525,15 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                     return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
                 if (GetValueOut() < MINIMUM_FOR_PRIMENODE)
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-                if (nStakeReward > GetProofOfStakeReward(nCoinAge, 10) - GetMinFee() + MIN_TX_FEE)
-                    return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                /* Use time instead of block number because we can better
+                 * control when a manditory wallet update is required. */
+                if (nTime >= RESET_PRIMERATES) {
+                    if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
+                        return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                } else {
+                    if (nStakeReward > GetProofOfStakeReward(nCoinAge, 10) - GetMinFee() + MIN_TX_FEE)
+                        return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                }
 
             }else if (vout[0].IsEmpty()) {
                 if(GetValueOut() <= MINIMUM_FOR_ORION){
