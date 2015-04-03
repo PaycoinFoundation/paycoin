@@ -110,7 +110,7 @@ QT_TRANSLATE_NOOP("bitcoin-core", ""
 "If the file does not exist, create it with owner-readable-only file "
 "permissions.\n"),
 QT_TRANSLATE_NOOP("bitcoin-core", "Error"),
-QT_TRANSLATE_NOOP("bitcoin-core", "An error occured while setting up the RPC port %i for listening: %s"),
+QT_TRANSLATE_NOOP("bitcoin-core", "An error occurred while setting up the RPC port %i for listening: %s"),
 QT_TRANSLATE_NOOP("bitcoin-core", ""
 "You must set rpcpassword=<password> in the configuration file:\n"
 "%s\n"

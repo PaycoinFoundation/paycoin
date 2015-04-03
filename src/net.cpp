@@ -1501,7 +1501,7 @@ void ThreadOpenAddedConnections2(void* parg)
     }
 }
 
-// if succesful, this moves the passed grant to the constructed node
+// if successful, this moves the passed grant to the constructed node
 bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOutbound, const char *strDest, bool fOneShot)
 {
     //

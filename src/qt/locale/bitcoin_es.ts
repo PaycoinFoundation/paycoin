@@ -295,7 +295,7 @@ Are you sure you wish to encrypt your wallet?</source>
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="166"/>
-        <source>Wallet passphrase was succesfully changed.</source>
+        <source>Wallet passphrase was successfully changed.</source>
         <translation>La contraseña de cartera ha sido cambiada con exit.</translation>
     </message>
 </context>
@@ -673,7 +673,7 @@ Dirección: %4</translation>
     </message>
     <message>
         <location filename="../bitcoin.cpp" line="128"/>
-        <source>A fatal error occured. Paycoin can no longer continue safely and will quit.</source>
+        <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3010,7 +3010,7 @@ If the file does not exist, create it with owner-readable-only file permissions.
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="113"/>
-        <source>An error occured while setting up the RPC port %i for listening: %s</source>
+        <source>An error occurred while setting up the RPC port %i for listening: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

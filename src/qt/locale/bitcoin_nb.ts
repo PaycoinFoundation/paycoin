@@ -299,7 +299,7 @@ Er du sikker på at du vil kryptere lommeboken din?</translation>
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="166"/>
-        <source>Wallet passphrase was succesfully changed.</source>
+        <source>Wallet passphrase was successfully changed.</source>
         <translation>Lommebokens passord ble endret.</translation>
     </message>
 </context>
@@ -678,7 +678,7 @@ Adresse: %4
     </message>
     <message>
         <location filename="../bitcoin.cpp" line="128"/>
-        <source>A fatal error occured. Paycoin can no longer continue safely and will quit.</source>
+        <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation>En fatal feil har inntruffet. Det er ikke trygt å fortsette og Paycoin må derfor avslutte.</translation>
     </message>
 </context>
@@ -2998,7 +2998,7 @@ If the file does not exist, create it with owner-readable-only file permissions.
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="113"/>
-        <source>An error occured while setting up the RPC port %i for listening: %s</source>
+        <source>An error occurred while setting up the RPC port %i for listening: %s</source>
         <translation>En feil oppstod ved opprettelse av RPC-port %i for lytting: %s</translation>
     </message>
     <message>
