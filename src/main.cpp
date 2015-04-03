@@ -3032,7 +3032,6 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         // to new node if waited longer than MAX_TIME_SINCE_BEST_BLOCK.
         int64_t TimeSinceBestBlock = GetTime() - nTimeBestReceived;
         if (TimeSinceBestBlock > MAX_TIME_SINCE_BEST_BLOCK) {
-            printf("INFO: Waiting %"PRId64" sec which is too long. Sending GetBlocks(0)\n", TimeSinceBestBlock);
             pfrom->PushGetBlocks(pindexBest, uint256(0));
         }
 
@@ -3398,7 +3397,6 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             // an error related to new block download.
             int64_t TimeSinceBestBlock = GetTime() - nTimeBestReceived;
             if (TimeSinceBestBlock > MAX_TIME_SINCE_BEST_BLOCK) {
-                printf("INFO: Waiting %"PRId64" sec which is too long. Sending GetBlocks(0)\n", TimeSinceBestBlock);
                 pfrom->PushGetBlocks(pindexBest, uint256(0));
             }
         }
