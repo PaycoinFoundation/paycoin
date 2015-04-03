@@ -299,7 +299,7 @@ Sei sicuro che vuoi cifrare il tuo portafoglio?</translation>
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="166"/>
-        <source>Wallet passphrase was succesfully changed.</source>
+        <source>Wallet passphrase was successfully changed.</source>
         <translation>Parola chiave del portafoglio modificata con successo.</translation>
     </message>
 </context>
@@ -679,7 +679,7 @@ Indirizzo: %4
     </message>
     <message>
         <location filename="../bitcoin.cpp" line="128"/>
-        <source>A fatal error occured. Paycoin can no longer continue safely and will quit.</source>
+        <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation>Un errore fatale è occorso. Paycoin non può più continuare in modo sicuro e sarà terminato.</translation>
     </message>
 </context>
@@ -3022,7 +3022,7 @@ If the file does not exist, create it with owner-readable-only file permissions.
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="113"/>
-        <source>An error occured while setting up the RPC port %i for listening: %s</source>
+        <source>An error occurred while setting up the RPC port %i for listening: %s</source>
         <translation>Errore durante il settaggio della porta RPC %i per l&apos;ascolto: %s</translation>
     </message>
     <message>
