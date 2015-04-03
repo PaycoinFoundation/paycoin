@@ -14,7 +14,7 @@ packages:
 
 reference_datetime: "2013-06-01 00:00:00"
 remotes:
-- "url": "https://github.com/paycoin/paycoin.git"
+- "url": "https://github.com/paycoinfoundation/paycoin.git"
   "dir": "paycoin"
 files:
 - "qt-win32-4.8.5-gitian-r3.zip"

@@ -16,7 +16,7 @@ packages:
 - "libqt4-dev"
 reference_datetime: "2011-01-30 00:00:00"
 remotes:
-- "url": "https://github.com/paycoin/paycoin.git"
+- "url": "https://github.com/paycoinfoundation/paycoin.git"
   "dir": "paycoin"
 files:
 - "paycoin-deps-linux32-gitian-r5.zip"
