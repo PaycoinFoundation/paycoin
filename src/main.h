@@ -62,6 +62,8 @@ static const unsigned int MODIFIER_INTERVAL = 10 * 60;
 static const int64 NUMBER_OF_PRIMENODE = 50;
 static const int64 MINIMUM_FOR_ORION = 50 * COIN;
 static const int64 MINIMUM_FOR_PRIMENODE = 125000 * COIN;
+static const int MAX_TIME_SINCE_BEST_BLOCK = 10; // how many seconds to wait before sending next PushGetBlocks()
+
 
 #ifdef USE_UPNP
 static const int fHaveUPnP = true;
