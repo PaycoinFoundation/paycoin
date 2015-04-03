@@ -299,7 +299,7 @@ Sei sicuro che vuoi cifrare il tuo portafoglio?</translation>
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="166"/>
-        <source>Wallet passphrase was succesfully changed.</source>
+        <source>Wallet passphrase was successfully changed.</source>
         <translation>Parola chiave del portafoglio modificata con successo.</translation>
     </message>
 </context>
