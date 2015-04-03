@@ -50,7 +50,7 @@ script: |
 
   qmake INCLUDEPATH="$STAGING/include" LIBS="-L$STAGING/lib" USE_QRCODE=1 RELEASE=1 BOOST_LIB_SUFFIX=-mt QMAKE_CXXFLAGS=-frandom-seed=paycoin QMAKE_LFLAGS=-frandom-seed=paycoin
   make $MAKEOPTS
-  install -s paycoin $BINDIR
+  install -s paycoin-qt $BINDIR
 
   cd src
   make -f makefile.unix STATIC=1 $MAKEOPTS paycoind USE_UPNP=1 BDB_INCLUDE_PATH=$STAGING/include BDB_LIB_PATH=$STAGING/lib BOOST_LIB_SUFFIX=-mt DEBUGFLAGS=
