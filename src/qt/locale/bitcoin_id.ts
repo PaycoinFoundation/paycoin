@@ -299,7 +299,7 @@ Apakah Anda yakin ingin mengenkripsi dompet Anda?</translation>
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="166"/>
-        <source>Wallet passphrase was succesfully changed.</source>
+        <source>Wallet passphrase was successfully changed.</source>
         <translation>Dompet passphrase yang berhasil diubah.</translation>
     </message>
 </context>
