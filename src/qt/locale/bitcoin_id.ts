@@ -32,11 +32,11 @@ This is experimental software.
 
 Distributed under the MIT/X11 software license, see the accompanying file license.txt or http://www.opensource.org/licenses/mit-license.php.
 
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
+This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
         <translation>Copyright © 2009-2014 Bitcoin Developers
 Ini adalah perangkat lunak eksperimental.
 Didistribusikan di bawah lisensi software MIT / X11, melihat file terlampir license.txt or http://www.opensource.org/licenses/mit-license.php.
-Produk ini berisi software yang dikembangkan oleh OpenSSL Project untuk digunakan dalam OpenSSL Toolkit (http://www.openssl.org/) dan software kriptografi yang ditulis oleh Eric Young (eay@cryptsoft.com) dan software UPnP yang ditulis oleh Thomas Bernard.</translation>
+Produk ini berisi software yang dikembangkan oleh OpenSSL Project untuk digunakan dalam OpenSSL Toolkit (https://www.openssl.org/) dan software kriptografi yang ditulis oleh Eric Young (eay@cryptsoft.com) dan software UPnP yang ditulis oleh Thomas Bernard.</translation>
     </message>
 </context>
 <context>

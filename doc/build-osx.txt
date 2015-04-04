@@ -3,7 +3,7 @@ Copyright (c) 2009-2012 Bitcoin Developers
 Distributed under the MIT/X11 software license, see the accompanying file
 license.txt or http://www.opensource.org/licenses/mit-license.php.  This
 product includes software developed by the OpenSSL Project for use in the
-OpenSSL Toolkit (http://www.openssl.org/).  This product includes cryptographic
+OpenSSL Toolkit (https://www.openssl.org/).  This product includes cryptographic
 software written by Eric Young (eay@cryptsoft.com) and UPnP software written by
 Thomas Bernard.
 
@@ -26,7 +26,7 @@ All of the commands should be executed in Terminal.app.. it's in
 
 You need to install XCode with all the options checked so that the compiler and
 everything is available in /usr not just /Developer I think it comes on the DVD
-but you can get the current version from http://developer.apple.com
+but you can get the current version from https://developer.apple.com
 
 
 1.  Clone the github tree to get the source code:

@@ -10,14 +10,14 @@
 # - Add/edit 'MAKE' environment variable with value '/c/MinGW32/bin/mingw32-make.exe'
 #
 # - Build openssl library version: 1.0.1g
-#   download from  http://www.openssl.org/source/
+#   download from  https://www.openssl.org/source/
 #   Extract to c:\openssl-1.0.1g-mgw
 #   In MinGW MSYS:
 #     ./config
 #     make
 #
 # - Build Berkeley DB library version: 4.8.30.NC
-#   download from  http://www.oracle.com/technology/software/products/berkeley-db/index.html
+#   download from  https://www.oracle.com/technology/software/products/berkeley-db/index.html
 #   Extract to c:\db-4.8.30.NC-mgw
 #   In MinGW MSYS:
 #     cd build_unix

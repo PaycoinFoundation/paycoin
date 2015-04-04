@@ -1,7 +1,7 @@
 --- 
 name: bitcoin
 urls:
-- http://bitcoin.org/bitcoin-latest-linux-gitian.zip
+- https://bitcoin.org/bitcoin-latest-linux-gitian.zip
 rss:
 - url: http://sourceforge.net/api/file/index/project-id/244765/mtime/desc/limit/100/rss
   xpath: //item/link/text()
