@@ -13,7 +13,7 @@
 
 // For the current run of Paycoin releases, the client name should be selected from
 // the list of ancient coinage, from oldest known to more recent. 
-// You can find ideas for future client names, here: http://en.wikipedia.org/wiki/List_of_historical_currencies
+// You can find ideas for future client names, here: https://en.wikipedia.org/wiki/List_of_historical_currencies
 
 const std::string CLIENT_NAME("Satoshi");
 

@@ -18,9 +18,9 @@ Build-Depends: debhelper,
  libqt4-dev,
  libqrencode-dev
 Standards-Version: 3.9.2
-Homepage: http://www.bitcoin.org/
+Homepage: https://www.bitcoin.org/
 Vcs-Git: git://github.com/bitcoin/bitcoin.git
-Vcs-Browser: http://github.com/bitcoin/bitcoin
+Vcs-Browser: https://github.com/bitcoin/bitcoin
 
 Package: bitcoind
 Architecture: any
