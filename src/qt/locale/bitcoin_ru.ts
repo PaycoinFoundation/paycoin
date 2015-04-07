@@ -30,12 +30,12 @@
 
 This is experimental software.
 
-Distributed under the MIT software license, see the accompanying file license.txt or http://www.opensource.org/licenses/mit-license.php.
+Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
         <translation>Право собственности © 2009-2014 Bitcoin Developers
 Это экспериментальное программное обеспечение.
-Распространяется под лицензией программного обеспечения MIT, смотри прилагаемый файл license.txt или http://www.opensource.org/licenses/mit-license.php.
+Распространяется под лицензией программного обеспечения MIT, смотри прилагаемый файл COPYING или http://www.opensource.org/licenses/mit-license.php.
 Этот продукт включает программное обеспечение, разработанное OpenSSL Project для использования в OpenSSL Toolkit (https://www.openssl.org/) и криптографическое программное обеспечение, разработанное Эриком Янгом (eay@cryptsoft.com) и программное обеспечеие UPnP, разработанное Томасом Бернардом. </translation>
     </message>
 </context>

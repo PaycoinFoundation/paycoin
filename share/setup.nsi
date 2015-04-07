@@ -74,7 +74,7 @@ Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
     File ../release/Paycoin.exe
-    File /oname=license.txt ../COPYING
+    File /oname=COPYING.txt ../COPYING
     File /oname=readme.txt ../doc/README_windows.txt
     SetOutPath $INSTDIR\daemon
     File ../release/paycoind.exe
@@ -125,7 +125,7 @@ done${UNSECTION_ID}:
 # Uninstaller sections
 Section /o -un.Main UNSEC0000
     Delete /REBOOTOK $INSTDIR\paycoin.exe
-    Delete /REBOOTOK $INSTDIR\license.txt
+    Delete /REBOOTOK $INSTDIR\COPYING.txt
     Delete /REBOOTOK $INSTDIR\readme.txt
     RMDir /r /REBOOTOK $INSTDIR\daemon
 #    RMDir /r /REBOOTOK $INSTDIR\src

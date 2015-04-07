@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2011 The Bitcoin developers
 # Distributed under the MIT software license, see the accompanying
-# file license.txt or http://www.opensource.org/licenses/mit-license.php.
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #
 
 import time
