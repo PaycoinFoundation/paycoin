@@ -52,7 +52,7 @@ script: |
       cd $HOME/build/paycoin
       git archive --format=tar -o paycoin.tar HEAD
       cp doc/README_windows.txt $OUTDIR/readme.txt
-      cp COPYING $OUTDIR/license.txt
+      cp COPYING $OUTDIR/COPYING.txt
       DISTNAME=paycoin.tar
       NEEDDIST=0
     fi

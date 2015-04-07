@@ -2,7 +2,7 @@
 # Copyright (c) 2009-2010 Satoshi Nakamoto
 # Copyright (c) 2011-2012 The Paycoin developers
 # Distributed under the MIT software license, see the accompanying
-# file license.txt or http://www.opensource.org/licenses/mit-license.php.
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 # Mac OS X makefile for paycoin
 # Originally by Laszlo Hanyecz (solar@heliacal.net)
