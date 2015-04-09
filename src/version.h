@@ -68,10 +68,6 @@ static const int PROTOCOL_VERSION = 70002;
 // uses MIN_PROTO_VERSION(209), where message format uses PROTOCOL_VERSION
 static int MIN_PROTO_VERSION = 70001;
 
-/* We update the minimum protocol at runtime after the given date to ensure
- * proper change. */
-static const unsigned int UPDATE_MIN_PROTO = 1429487940; // Sun, 19 Apr 2015 23:59:00 GMT
-
 // nTime field added to CAddress, starting with this version;
 // if possible, avoid requesting addresses nodes older than this
 static const int CADDR_TIME_VERSION = 31402;

@@ -375,10 +375,11 @@ bool AppInit2(int argc, char* argv[])
         return false;
     }
 
-    /* Check and update minium version protocol after a given time; do this here
-     * to insure that it's done before attempting to load the blockchain, etc
-     * (this is also why we use a time instead of a block number). */
-    if(time(NULL) >= UPDATE_MIN_PROTO)
+    /* Check and update minium version protocol after a given time (same time
+     * as resetting the primenode stake rates; do this here to insure that it's
+     * done before attempting to load the blockchain, etc (this is also why we
+     * use a time instead of a block number). */
+    if(time(NULL) >= RESET_PRIMERATES)
         MIN_PROTO_VERSION = 70002;
 
     std::ostringstream strErrors;
