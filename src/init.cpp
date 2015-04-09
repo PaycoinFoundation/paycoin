@@ -27,6 +27,7 @@ using namespace std;
 using namespace boost;
 
 CWallet* pwalletMain;
+int MIN_PROTO_VERSION = 70001;
 
 //////////////////////////////////////////////////////////////////////////////
 //
