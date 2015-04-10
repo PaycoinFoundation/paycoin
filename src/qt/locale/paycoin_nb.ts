@@ -21,7 +21,7 @@
     </message>
     <message>
         <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Paycoin Developers</source>
+        <source>Copyright © 2011-2014 Peercoin Developers</source>
         <translation>Copyright © 2011-2014 Paycoin Utviklerne</translation>
     </message>
     <message>
@@ -259,9 +259,9 @@ Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i Op
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="107"/>
-        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PEERCOINS&lt;/b&gt;!
+        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
-        <translation>ADVARSEL: Hvis du krypterer lommeboken og mister passordet, så vil du &lt;b&gt;MISTE ALLE DINE PEERCOINS&lt;/b&gt;! 
+        <translation>ADVARSEL: Hvis du krypterer lommeboken og mister passordet, så vil du &lt;b&gt;MISTE ALLE DINE PAYCOINS&lt;/b&gt;! 
 Er du sikker på at du vil kryptere lommeboken din?</translation>
     </message>
     <message>
@@ -1785,7 +1785,7 @@ Dette betyr at et gebyr på minst %2 er påkrevd.</translation>
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="457"/>
-        <source>Warning: Invalid Bitcoin address</source>
+        <source>Warning: Invalid Paycoin address</source>
         <translation>Advarsel: Ugyldig Paycoin-adresse</translation>
     </message>
     <message>

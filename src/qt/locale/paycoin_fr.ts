@@ -21,7 +21,7 @@
     </message>
     <message>
         <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Paycoin Developers</source>
+        <source>Copyright © 2011-2014 Peercoin Developers</source>
         <translation>Copyright © 2011-2014 Développeurs de Paycoin</translation>
     </message>
     <message>
@@ -262,9 +262,9 @@ Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisat
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="107"/>
-        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PEERCOINS&lt;/b&gt;!
+        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
-        <translation>ATTENTION : si vous cryptez votre porte-monnaie et perdez votre mot de passe, vous &lt;b&gt;PERDREZ TOUS VOS PEERCOINS&lt;/b&gt; !
+        <translation>ATTENTION : si vous cryptez votre porte-monnaie et perdez votre mot de passe, vous &lt;b&gt;PERDREZ TOUS VOS PAYCOINS&lt;/b&gt; !
 Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
     </message>
     <message>
@@ -1792,7 +1792,7 @@ Cette étiquette devient rouge si la priorité est inférieure à &quot;moyenne&
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="457"/>
-        <source>Warning: Invalid Bitcoin address</source>
+        <source>Warning: Invalid Paycoin address</source>
         <translation>Attention : Adresse Paycoin invalide</translation>
     </message>
     <message>

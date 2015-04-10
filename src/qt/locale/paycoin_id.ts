@@ -21,8 +21,8 @@
     </message>
     <message>
         <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Paycoin Developers</source>
-        <translation>Copyright © 2011-2014 Paycoin Developers</translation>
+        <source>Copyright © 2011-2014 Peercoin Developers</source>
+        <translation>Copyright © 2011-2014 Peercoin Developers</translation>
     </message>
     <message>
         <location filename="../forms/aboutdialog.ui" line="133"/>
@@ -259,9 +259,9 @@ Produk ini berisi software yang dikembangkan oleh OpenSSL Project untuk digunaka
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="107"/>
-        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PEERCOINS&lt;/b&gt;!
+        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
-        <translation>PERINGATAN: Jika Anda mengenkripsi dompet Anda dan kehilangan passphrase, Anda akan &lt;b&gt;KEHILANGAN SEMUA PEERCOINS ANDA&lt;/b&gt;! 
+        <translation>PERINGATAN: Jika Anda mengenkripsi dompet Anda dan kehilangan passphrase, Anda akan &lt;b&gt;KEHILANGAN SEMUA PAYCOINS ANDA&lt;/b&gt;! 
 Apakah Anda yakin ingin mengenkripsi dompet Anda?</translation>
     </message>
     <message>
@@ -1775,7 +1775,7 @@ Ini berarti diperlukan biaya minimal %2.</translation>
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="457"/>
-        <source>Warning: Invalid Bitcoin address</source>
+        <source>Warning: Invalid Paycoin address</source>
         <translation>Peringatan: Alamat Bitcoin tidak valid</translation>
     </message>
     <message>

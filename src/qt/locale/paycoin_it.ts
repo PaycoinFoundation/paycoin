@@ -21,7 +21,7 @@
     </message>
     <message>
         <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Paycoin Developers</source>
+        <source>Copyright © 2011-2014 Peercoin Developers</source>
         <translation>Copyright © 2011-2014 Sviluppatori Paycoin </translation>
     </message>
     <message>
@@ -259,9 +259,9 @@ Questo prodotto include software sviluppato dal progetto OpenSSL per l&apos;util
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="107"/>
-        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PEERCOINS&lt;/b&gt;!
+        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
-        <translation>ATTENZIONE: Se cifri il tuo portafoglio e perdi la tua parola chiave, &lt;b&gt;PERDERAI TUTTI I TUOI PEERCOINS&lt;/b&gt;!
+        <translation>ATTENZIONE: Se cifri il tuo portafoglio e perdi la tua parola chiave, &lt;b&gt;PERDERAI TUTTI I TUOI PAYCOINS&lt;/b&gt;!
 Sei sicuro che vuoi cifrare il tuo portafoglio?</translation>
     </message>
     <message>
@@ -1783,7 +1783,7 @@ Questo significa che è necessaria una tariffa di almeno %2.</translation>
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="457"/>
-        <source>Warning: Invalid Bitcoin address</source>
+        <source>Warning: Invalid Paycoin address</source>
         <translation>Attenzione: Indirizzo Bittcoin non vaildo</translation>
     </message>
     <message>

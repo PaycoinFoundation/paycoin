@@ -21,7 +21,7 @@
     </message>
     <message>
         <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Paycoin Developers</source>
+        <source>Copyright © 2011-2014 Peercoin Developers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -256,7 +256,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="107"/>
-        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PEERCOINS&lt;/b&gt;!
+        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1761,7 +1761,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="457"/>
-        <source>Warning: Invalid Bitcoin address</source>
+        <source>Warning: Invalid Paycoin address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
