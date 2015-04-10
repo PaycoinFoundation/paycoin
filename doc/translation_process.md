@@ -18,7 +18,7 @@ This file must be updated whenever a new translation is added. Please note that
 files must end with `.qm`, not `.ts`.
 
     <qresource prefix="/translations">
-        <file alias="en">locale/bitcoin_en.qm</file>
+        <file alias="en">locale/paycoin_en.qm</file>
         ...
     </qresource>
 
@@ -26,11 +26,11 @@ files must end with `.qm`, not `.ts`.
 
 This directory contains all translations. Filenames must adhere to this format:
 
-    bitcoin_xx_YY.ts or bitcoin_xx.ts
+    paycoin_xx_YY.ts or paycoin_xx.ts
 
 #### Source file
 
-`src/qt/locale/bitcoin_en.ts` is treated in a special way. It is used as the
+`src/qt/locale/paycoin_en.ts` is treated in a special way. It is used as the
 source for all other translations. Whenever a string in the code is changed
 this file must be updated to reflect those changes. Usually, this can be
 accomplished by running `lupdate` (included in the Qt SDK).
@@ -56,8 +56,8 @@ config to be able to connect with the client.
     host = https://www.transifex.net
 
     [bitcoin.tx]
-    file_filter = src/qt/locale/bitcoin_<lang>.ts
-    source_file = src/qt/locale/bitcoin_en.ts
+    file_filter = src/qt/locale/paycoin_<lang>.ts
+    source_file = src/qt/locale/paycoin_en.ts
     source_lang = en
     
 ### .tx/config (for Windows)
@@ -66,8 +66,8 @@ config to be able to connect with the client.
     host = https://www.transifex.net
 
     [bitcoin.tx]
-    file_filter = src\qt\locale\bitcoin_<lang>.ts
-    source_file = src\qt\locale\bitcoin_en.ts
+    file_filter = src\qt\locale\paycoin_<lang>.ts
+    source_file = src\qt\locale\paycoin_en.ts
     source_lang = en
 
 It is also possible to directly download new translations one by one from transifex.
@@ -76,5 +76,5 @@ It is also possible to directly download new translations one by one from transi
 
 1. `tx pull -a`
 2. update `src/qt/bitcoin.qrc` manually or via
-   `ls src/qt/locale/*ts|xargs -n1 basename|sed 's/\(bitcoin_\(.*\)\).ts/<file alias="\2">locale/\1.qm<\/file>/'`
+   `ls src/qt/locale/*ts|xargs -n1 basename|sed 's/\(paycoin_\(.*\)\).ts/<file alias="\2">locale/\1.qm<\/file>/'`
 3. `git add` new translations from `src/qt/locale/`
