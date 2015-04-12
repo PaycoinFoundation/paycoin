@@ -1,7 +1,7 @@
 * update translations
 
 * update (commit) version in sources
-  bitcoin-qt.pro
+  paycoin.pro
   src/version.h
   share/setup.nsi
   doc/README*

@@ -1,4 +1,4 @@
-Paycoin 0.1.2.26
+Paycoin 0.2.0.0
 Copyright (c) 2014 Paycoin developers
 
 Distributed under the MIT software license, see the accompanying
