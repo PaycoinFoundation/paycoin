@@ -12,10 +12,12 @@
 #include "util.h"
 #include "ui_interface.h"
 #include "checkpoints.h"
+#include "version.h"
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/convenience.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
+#include <ctime>
 
 #ifndef WIN32
 #include <signal.h>
@@ -25,6 +27,7 @@ using namespace std;
 using namespace boost;
 
 CWallet* pwalletMain;
+int MIN_PROTO_VERSION = 70001;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -372,6 +375,13 @@ bool AppInit2(int argc, char* argv[])
         ThreadSafeMessageBox(strprintf(_("Cannot obtain a lock on data directory %s.  Paycoin is probably already running."), GetDataDir().string().c_str()), _("Paycoin"), wxOK|wxMODAL);
         return false;
     }
+
+    /* Check and update minium version protocol after a given time (same time
+     * as resetting the primenode stake rates; do this here to insure that it's
+     * done before attempting to load the blockchain, etc (this is also why we
+     * use a time instead of a block number). */
+    if(time(NULL) >= RESET_PRIMERATES)
+        MIN_PROTO_VERSION = 70002;
 
     std::ostringstream strErrors;
     //

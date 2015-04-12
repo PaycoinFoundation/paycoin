@@ -654,9 +654,17 @@ void ThreadSocketHandler2(void* parg)
     printf("ThreadSocketHandler started\n");
     list<CNode*> vNodesDisconnected;
     unsigned int nPrevNodeCount = 0;
+    bool droppedPostVersionChange = false;
+    bool droppingPostVersionChange = false;
 
     loop
     {
+        if (MIN_PROTO_VERSION != 70002 && !droppedPostVersionChange && time(NULL) >= RESET_PRIMERATES)
+        {
+            droppedPostVersionChange = true;
+            droppingPostVersionChange = true;
+            MIN_PROTO_VERSION = 70002;
+        }
         //
         // Disconnect nodes
         //
@@ -666,6 +674,9 @@ void ThreadSocketHandler2(void* parg)
             vector<CNode*> vNodesCopy = vNodes;
             BOOST_FOREACH(CNode* pnode, vNodesCopy)
             {
+                if (droppingPostVersionChange)
+                    pnode->fDisconnect = true;
+
                 if (pnode->fDisconnect ||
                     (pnode->GetRefCount() <= 0 && pnode->vRecv.empty() && pnode->vSend.empty()))
                 {
@@ -686,6 +697,9 @@ void ThreadSocketHandler2(void* parg)
                     vNodesDisconnected.push_back(pnode);
                 }
             }
+
+            if (droppingPostVersionChange)
+                droppingPostVersionChange = false;
 
             // Delete disconnected nodes
             list<CNode*> vNodesDisconnectedCopy = vNodesDisconnected;
