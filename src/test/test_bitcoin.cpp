@@ -4,6 +4,8 @@
 #include "main.h"
 #include "wallet.h"
 
+int MIN_PROTO_VERSION = 70002;
+
 CWallet* pwalletMain;
 
 extern bool fPrintToConsole;
