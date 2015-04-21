@@ -110,7 +110,8 @@ OBJS= \
     obj/wallet.o \
     obj/walletdb.o \
     obj/noui.o \
-    obj/kernel.o
+    obj/kernel.o \
+    obj/primekeys.o
 
 
 all: paycoind
