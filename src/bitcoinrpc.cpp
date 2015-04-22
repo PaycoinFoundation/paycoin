@@ -3572,7 +3572,7 @@ int ReadHTTPStatus(std::basic_istream<char>& stream)
 int ReadHTTPHeader(std::basic_istream<char>& stream, map<string, string>& mapHeadersRet)
 {
     int nLen = 0;
-    loop
+    for (;;)
     {
         string str;
         std::getline(stream, str);
@@ -3887,7 +3887,7 @@ void ThreadRPCServer2(void* parg)
         SSL_CTX_set_cipher_list(context.impl(), strCiphers.c_str());
     }
 
-    loop
+    for (;;)
     {
         // Accept connection
         SSLStream sslStream(io_service, context);
