@@ -17,6 +17,7 @@ build/
 #
 paycoin-qt
 src/paycoind
+src/test_paycoin
 
 #
 # Ignore generated resources
