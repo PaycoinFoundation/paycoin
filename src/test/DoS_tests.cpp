@@ -82,19 +82,6 @@ BOOST_AUTO_TEST_CASE(DoS_bantime)
     BOOST_CHECK(!CNode::IsBanned(addr));
 }
 
-static bool CheckNBits(unsigned int nbits1, int64 time1, unsigned int nbits2, int64 time2)\
-{
-    if (time1 > time2)
-        return CheckNBits(nbits2, time2, nbits1, time1);
-    int64 deltaTime = time2-time1;
-
-    CBigNum required;
-    required.SetCompact(ComputeMinWork(nbits1, deltaTime, false));
-    CBigNum have;
-    have.SetCompact(nbits2);
-    return (have <= required);
-}
-
 CTransaction RandomOrphan()
 {
     std::map<uint256, CDataStream*>::iterator it;
