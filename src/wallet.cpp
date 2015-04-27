@@ -1331,7 +1331,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 return error("CreateCoinStake : Primenode rate configuration is wrong or missing");
             }
 
-            if (txNew.nTime >= RESET_PRIMERATES) {
+            if (txNew.nTime >= REMOVE_PRIMERATES) {
                 primeNodeRate = 5;
             } else if (txNew.nTime >= RESET_PRIMERATES) {
                 primeNodeRate = 100;
