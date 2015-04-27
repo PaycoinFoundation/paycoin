@@ -1420,7 +1420,10 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
                 /* Use time instead of block number because we can better
                  * control when a manditory wallet update is required. */
-                if (nTime >= RESET_PRIMERATES) {
+                if (nTime >= REMOVE_PRIMERATES) {
+                    if (nStakeReward > GetProofOfStakeReward(nCoinAge, 5) - GetMinFee() + MIN_TX_FEE)
+                        return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                } else if (nTime >= RESET_PRIMERATES) {
                     if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
                         return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
                 } else {
@@ -1492,7 +1495,10 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
 
                 /* Use time instead of block number because we can better
                  * control when a manditory wallet update is required. */
-                if (nTime >= RESET_PRIMERATES) {
+                if (nTime >= REMOVE_PRIMERATES) {
+                    if (nStakeReward > GetProofOfStakeReward(nCoinAge, 5) - GetMinFee() + MIN_TX_FEE)
+                        return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                } else if (nTime >= RESET_PRIMERATES) {
                     if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
                         return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
                 } else {
@@ -1527,7 +1533,10 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
                 /* Use time instead of block number because we can better
                  * control when a manditory wallet update is required. */
-                if (nTime >= RESET_PRIMERATES) {
+                if (nTime >= REMOVE_PRIMERATES) {
+                    if (nStakeReward > GetProofOfStakeReward(nCoinAge, 5) - GetMinFee() + MIN_TX_FEE)
+                        return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                } else if (nTime >= RESET_PRIMERATES) {
                     if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
                         return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
                 } else {
