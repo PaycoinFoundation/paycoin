@@ -1332,6 +1332,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             }
 
             if (txNew.nTime >= RESET_PRIMERATES) {
+                primeNodeRate = 5;
+            } else if (txNew.nTime >= RESET_PRIMERATES) {
                 primeNodeRate = 100;
             }
 
