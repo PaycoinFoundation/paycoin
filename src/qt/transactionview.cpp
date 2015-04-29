@@ -28,6 +28,7 @@
 #include <QClipboard>
 #include <QLabel>
 #include <QDateTimeEdit>
+#include <QFrame>
 
 TransactionView::TransactionView(QWidget *parent) :
     QWidget(parent), model(0), transactionProxyModel(0),
@@ -35,8 +36,11 @@ TransactionView::TransactionView(QWidget *parent) :
 {
     // Build filter row
     setContentsMargins(0,0,0,0);
+    setObjectName("transactionView");
 
-    QHBoxLayout *hlayout = new QHBoxLayout();
+    QFrame* topFrame = new QFrame(this);
+    topFrame->setObjectName("frameTop");
+    QHBoxLayout *hlayout = new QHBoxLayout(topFrame);
     hlayout->setContentsMargins(0,0,0,0);
 #ifdef Q_WS_MAC
     hlayout->setSpacing(5);
@@ -103,10 +107,9 @@ TransactionView::TransactionView(QWidget *parent) :
     vlayout->setSpacing(0);
 
     QTableView *view = new QTableView(this);
-    vlayout->addLayout(hlayout);
+    vlayout->addWidget(topFrame);
     vlayout->addWidget(createDateRangeWidget());
     vlayout->addWidget(view);
-    vlayout->setSpacing(0);
     int width = view->verticalScrollBar()->sizeHint().width();
     // Cover scroll bar width with spacing
 #ifdef Q_WS_MAC
@@ -120,6 +123,7 @@ TransactionView::TransactionView(QWidget *parent) :
     view->setContextMenuPolicy(Qt::CustomContextMenu);
 
     transactionView = view;
+    transactionView->setObjectName("viewTransaction");
 
     // Actions
     QAction *copyAddressAction = new QAction(tr("Copy address"), this);
@@ -173,7 +177,7 @@ void TransactionView::setModel(WalletModel *model)
         transactionView->setAlternatingRowColors(true);
         transactionView->setSelectionBehavior(QAbstractItemView::SelectRows);
         transactionView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-        transactionView->setSortingEnabled(true);
+        transactionView->setSortingEnabled(false);
         transactionView->sortByColumn(TransactionTableModel::Date, Qt::DescendingOrder);
         transactionView->verticalHeader()->hide();
 

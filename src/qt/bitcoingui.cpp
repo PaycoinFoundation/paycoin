@@ -55,12 +55,21 @@
 #include <QFileDialog>
 #include <QDesktopServices>
 #include <QTimer>
+#include <QMimeData>
 
 #include <QDragEnterEvent>
 #include <QUrl>
+#include <QShortcut>
+
+#include <QTextStream>
+#include <QSizeGrip>
+#include <QFontDatabase>
 
 #include <iostream>
 
+#ifdef QT_DEBUG
+#   include <QDebug>
+#endif
 BitcoinGUI::BitcoinGUI(QWidget *parent):
     QMainWindow(parent),
     clientModel(0),
@@ -73,6 +82,14 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     notificator(0),
     rpcConsole(0)
 {
+#ifdef QT_DEBUG
+    int fid = QFontDatabase::addApplicationFont(":/fonts/gothampro");
+    if (fid == -1)
+    {
+        error(qApp->applicationName(), "Error loading font", true);
+    }
+    qDebug() << QFontDatabase::applicationFontFamilies(fid);
+#endif
     resize(850, 550);
     setWindowTitle(tr("Paycoin Wallet"));
 #ifndef Q_WS_MAC
@@ -88,7 +105,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     createActions();
 
     // Create application menu bar
-    createMenuBar();
+    //createMenuBar();
 
     // Create the toolbars
     createToolBars();
@@ -101,12 +118,16 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     transactionsPage = new QWidget(this);
     QVBoxLayout *vbox = new QVBoxLayout();
+    vbox->setContentsMargins(0,0,0,0);
+    vbox->setSpacing(0);
     transactionView = new TransactionView(this);
     vbox->addWidget(transactionView);
     transactionsPage->setLayout(vbox);
 
     mintingPage = new QWidget(this);
     QVBoxLayout *vboxMinting = new QVBoxLayout();
+    vboxMinting->setContentsMargins(0,0,0,0);
+    vboxMinting->setSpacing(0);
     mintingView = new MintingView(this);
     vboxMinting->addWidget(mintingView);
     mintingPage->setLayout(vboxMinting);
@@ -121,23 +142,88 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     multisigPage = new MultisigDialog(this);
 
-    centralWidget = new QStackedWidget(this);
-    centralWidget->addWidget(overviewPage);
-    centralWidget->addWidget(transactionsPage);
-    centralWidget->addWidget(mintingPage);
-    centralWidget->addWidget(addressBookPage);
-    centralWidget->addWidget(receiveCoinsPage);
-    centralWidget->addWidget(sendCoinsPage);
+    QWidget* centralWidget = new QWidget(this);
+    pageWidget = new QStackedWidget(centralWidget);
+    pageWidget->addWidget(overviewPage);
+    pageWidget->addWidget(transactionsPage);
+    pageWidget->addWidget(mintingPage);
+    pageWidget->addWidget(addressBookPage);
+    pageWidget->addWidget(receiveCoinsPage);
+    pageWidget->addWidget(sendCoinsPage);
 #ifdef FIRST_CLASS_MESSAGING
-    centralWidget->addWidget(messagePage);
+    pageWidget->addWidget(messagePage);
 #endif
-    setCentralWidget(centralWidget);
+    QVBoxLayout* verticalLayout = new QVBoxLayout(centralWidget);
+    verticalLayout->setSpacing(0);
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
 
-    // Create status bar
-    statusBar();
+    QHBoxLayout* horizontalLayout = new QHBoxLayout(centralWidget);
+    horizontalLayout->setSpacing(0);
+    horizontalLayout->setContentsMargins(0, 0, 0, 0);
+    verticalLayout->addLayout(horizontalLayout);
+
+    QHBoxLayout* bottomHLayout = new QHBoxLayout(centralWidget);
+    bottomHLayout->setSpacing(0);
+    bottomHLayout->setContentsMargins(0, 0, 0, 0);
+    verticalLayout->addLayout(bottomHLayout);
+
+    createMenuFrame();
+    bottomHLayout->addWidget(menuFrame);
+
+    statusPanel = new QFrame(this);
+    statusPanel->setObjectName("statusPanel");
+    QHBoxLayout* statusPanelLayout = new QHBoxLayout(statusPanel);
+    statusPanelLayout->setSpacing(0);
+    statusPanelLayout->setContentsMargins(0, 0, 0, 0);
+
+    bottomHLayout->addWidget(statusPanel);
+
+
+    QFrame* toolbarFrame = new QFrame(centralWidget);
+    toolbarFrame->setFrameShape(QFrame::NoFrame);
+    toolbarFrame->setObjectName(QStringLiteral("toolbarFrame"));
+
+    QFrame* pageFrame = new QFrame(centralWidget);
+    pageFrame->setFrameShape(QFrame::NoFrame);
+    pageFrame->setObjectName(QStringLiteral("pageFrame"));
+
+    QVBoxLayout* leftVerticalLayout = new QVBoxLayout(toolbarFrame);
+    leftVerticalLayout->setSpacing(0);
+    leftVerticalLayout->setContentsMargins(0, 0, 0, 0);
+
+    QVBoxLayout* rightVerticalLayout = new QVBoxLayout(pageFrame);
+    rightVerticalLayout->setSpacing(0);
+    rightVerticalLayout->setContentsMargins(0, 0, 0, 0);
+
+    labelLogo = new QLabel(centralWidget);
+    labelLogo->setPixmap(QPixmap(QStringLiteral(":/images/bitcoin-top-logo")));
+    labelLogo->setAlignment(Qt::AlignLeft);
+    leftVerticalLayout->addWidget(labelLogo);
+
+    leftVerticalLayout->addWidget(toolbar);
+    leftVerticalLayout->addItem(
+        new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
+
+//    QFrame* rightTopFrame = new QFrame;
+//    rightTopFrame->setFrameShape(QFrame::NoFrame);
+//    QHBoxLayout* rightTopLayout = new QHBoxLayout(rightTopFrame);
+//    rightTopLayout->addWidget(appMenuBar);
+
+    QHBoxLayout* gripLayout = new QHBoxLayout;
+    QSizeGrip* sizeGrip = new QSizeGrip(statusPanel);
+    gripLayout->addWidget(sizeGrip, 0, Qt::AlignBottom | Qt::AlignRight);
+
+    //rightVerticalLayout->addWidget(rightTopFrame);
+    rightVerticalLayout->addWidget(pageWidget);
+
+    horizontalLayout->addWidget(toolbarFrame);
+    horizontalLayout->addWidget(pageFrame);
+
+    setCentralWidget(centralWidget);
 
     // Status bar notification icons
     QFrame *frameBlocks = new QFrame();
+    frameBlocks->setObjectName("frameBlocks");
     frameBlocks->setContentsMargins(0,0,0,0);
     frameBlocks->setMinimumWidth(56);
     frameBlocks->setMaximumWidth(56);
@@ -157,14 +243,23 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     // Progress bar and label for blocks download
     progressBarLabel = new QLabel();
-    progressBarLabel->setVisible(false);
+//    progressBarLabel->setVisible(false);
     progressBar = new QProgressBar();
     progressBar->setAlignment(Qt::AlignCenter);
-    progressBar->setVisible(false);
+//    progressBar->setVisible(false);
 
-    statusBar()->addWidget(progressBarLabel);
-    statusBar()->addWidget(progressBar);
-    statusBar()->addPermanentWidget(frameBlocks);
+
+    statusPanelLayout->addWidget(progressBarLabel);
+    statusPanelLayout->addWidget(progressBar);
+    statusPanelLayout->addItem(
+        new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    statusPanelLayout->addWidget(frameBlocks);
+    statusPanelLayout->addItem(gripLayout);
+
+#ifdef QT_DEBUG
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_R), this, SLOT(setStyle()));
+#endif
+    setStyle();
 
     syncIconMovie = new QMovie(":/movies/update_spinner", "mng", this);
 
@@ -203,7 +298,7 @@ void BitcoinGUI::createActions()
     historyAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_4));
     tabGroup->addAction(historyAction);
 
-    mintingAction = new QAction(QIcon(":/icons/history"), tr("&Minting"), this);
+    mintingAction = new QAction(QIcon(":/icons/minting"), tr("&Minting"), this);
     mintingAction->setToolTip(tr("Show your minting capacity"));
     mintingAction->setCheckable(true);
     mintingAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
@@ -258,7 +353,7 @@ void BitcoinGUI::createActions()
     quitAction->setToolTip(tr("Quit application"));
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     quitAction->setMenuRole(QAction::QuitRole);
-    aboutAction = new QAction(QIcon(":/icons/paycoin_tooltip"), tr("&About Paycoin"), this);
+    aboutAction = new QAction(QIcon(":/icons/help"), tr("&About Paycoin"), this);
     aboutAction->setToolTip(tr("Show information about Paycoin"));
     aboutAction->setMenuRole(QAction::AboutRole);
     aboutQtAction = new QAction(tr("About &Qt"), this);
@@ -330,23 +425,58 @@ void BitcoinGUI::createMenuBar()
     help->addAction(aboutQtAction);
 }
 
+QWidget* BitcoinGUI::createToolBarLine()
+{
+  QFrame* line = new QFrame(this);
+  line->setFrameShape(QFrame::HLine);
+  line->setLineWidth(1);
+  line->setFrameShadow(QFrame::Plain);
+  line->setStyleSheet("color: #373837");
+  toolbar->addWidget(line);
+  return line;
+}
+
+
+QToolButton* BitcoinGUI::createToolBarButton(QAction* const action)
+{
+  QToolButton* result(new QToolButton(this));
+  QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  sizePolicy.setHorizontalStretch(0);
+  sizePolicy.setVerticalStretch(0);
+  sizePolicy.setHeightForWidth(result->sizePolicy().hasHeightForWidth());
+  result->setSizePolicy(sizePolicy);
+  result->setDefaultAction(action);
+  BOOST_VERIFY(
+    result->connect(result, SIGNAL(clicked()), action, SLOT(trigger()))
+  );
+  result->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  QFont fnt = result->font();
+  fnt.setPointSize(fnt.pointSize() + 0);
+  result->setFont(fnt);
+
+  createToolBarLine();
+  toolbar->addWidget(result);
+  return result;
+}
+
 void BitcoinGUI::createToolBars()
 {
-    QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
+    toolbar = new QToolBar(tr("Tabs toolbar"), this);
+    toolbar->setMovable(false);
+    addToolBar( Qt::LeftToolBarArea, toolbar);
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    toolbar->addAction(overviewAction);
-    toolbar->addAction(sendCoinsAction);
-    toolbar->addAction(receiveCoinsAction);
-    toolbar->addAction(historyAction);
-    toolbar->addAction(mintingAction);
-    toolbar->addAction(addressBookAction);
-#ifdef FIRST_CLASS_MESSAGING
-    toolbar->addAction(messageAction);
-#endif
+    toolbar->setOrientation(Qt::Vertical);
+    toolbar->setMinimumHeight(380);
+    toolbar->setIconSize(QSize(46, 44));
 
-    QToolBar *toolbar2 = addToolBar(tr("Actions toolbar"));
-    toolbar2->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    toolbar2->addAction(exportAction);
+    createToolBarButton(overviewAction);
+    createToolBarButton(sendCoinsAction);
+    createToolBarButton(receiveCoinsAction);
+    createToolBarButton(historyAction);
+    createToolBarButton(mintingAction);
+    createToolBarButton(addressBookAction);
+    createToolBarButton(exportAction);
+    createToolBarLine();
 }
 
 void BitcoinGUI::setClientModel(ClientModel *clientModel)
@@ -712,7 +842,7 @@ void BitcoinGUI::incomingTransaction(const QModelIndex & parent, int start, int 
 void BitcoinGUI::gotoOverviewPage()
 {
     overviewAction->setChecked(true);
-    centralWidget->setCurrentWidget(overviewPage);
+    pageWidget->setCurrentWidget(overviewPage);
 
     exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -721,7 +851,7 @@ void BitcoinGUI::gotoOverviewPage()
 void BitcoinGUI::gotoHistoryPage()
 {
     historyAction->setChecked(true);
-    centralWidget->setCurrentWidget(transactionsPage);
+    pageWidget->setCurrentWidget(transactionsPage);
 
     exportAction->setEnabled(true);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -731,7 +861,7 @@ void BitcoinGUI::gotoHistoryPage()
 void BitcoinGUI::gotoMintingPage()
 {
     mintingAction->setChecked(true);
-    centralWidget->setCurrentWidget(mintingPage);
+    pageWidget->setCurrentWidget(mintingPage);
 
     exportAction->setEnabled(true);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -741,7 +871,7 @@ void BitcoinGUI::gotoMintingPage()
 void BitcoinGUI::gotoAddressBookPage()
 {
     addressBookAction->setChecked(true);
-    centralWidget->setCurrentWidget(addressBookPage);
+    pageWidget->setCurrentWidget(addressBookPage);
 
     exportAction->setEnabled(true);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -751,7 +881,7 @@ void BitcoinGUI::gotoAddressBookPage()
 void BitcoinGUI::gotoReceiveCoinsPage()
 {
     receiveCoinsAction->setChecked(true);
-    centralWidget->setCurrentWidget(receiveCoinsPage);
+    pageWidget->setCurrentWidget(receiveCoinsPage);
 
     exportAction->setEnabled(true);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -761,7 +891,7 @@ void BitcoinGUI::gotoReceiveCoinsPage()
 void BitcoinGUI::gotoSendCoinsPage()
 {
     sendCoinsAction->setChecked(true);
-    centralWidget->setCurrentWidget(sendCoinsPage);
+    pageWidget->setCurrentWidget(sendCoinsPage);
 
     exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -771,7 +901,7 @@ void BitcoinGUI::gotoMessagePage()
 {
 #ifdef FIRST_CLASS_MESSAGING
     messageAction->setChecked(true);
-    centralWidget->setCurrentWidget(messagePage);
+    pageWidget->setCurrentWidget(messagePage);
 
     exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -936,4 +1066,75 @@ void BitcoinGUI::showNormalIfMinimized()
         show();
     if(isMinimized()) // Unminimize, if minimized
         showNormal();
+}
+
+
+void BitcoinGUI::setStyle()
+{
+#ifdef QT_DEBUG
+    QString fileName(QCoreApplication::applicationDirPath() + "/default.qs");
+#else
+    QString fileName(":/styles/default");
+#endif
+  QFile f(fileName);
+  if (f.open(QIODevice::ReadOnly | QIODevice::Text))
+  {
+    QTextStream s(&f);
+    qApp->setStyleSheet(s.readAll());
+  }
+  else
+  {
+      error(qApp->applicationName(), "Error loading style", true);
+  }
+}
+
+void BitcoinGUI::createMenuFrame()
+{
+    menuFrame = new QFrame(this);
+    menuFrame->setObjectName(QStringLiteral("menuFrame"));
+    menuFrame->setFrameShape(QFrame::NoFrame);
+    menuFrame->setFrameShadow(QFrame::Raised);
+
+    QHBoxLayout* horizontalLayout = new QHBoxLayout(menuFrame);
+    horizontalLayout->setSpacing(0);
+    horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+    horizontalLayout->setContentsMargins(0, 0, 0, 0);
+
+    QToolButton* buttonFile = new QToolButton(menuFrame);
+    buttonFile->setObjectName(QStringLiteral("buttonFile"));
+    buttonFile->setFocusPolicy(Qt::NoFocus);
+    QIcon icon;
+    buttonFile->setIcon(icon);
+    buttonFile->setAutoExclusive(true);
+    buttonFile->setAutoRaise(true);
+    buttonFile->setDefaultAction(openRPCConsoleAction);
+    icon.addFile(QStringLiteral(":/icons/file"), QSize(), QIcon::Normal, QIcon::Off);
+    openRPCConsoleAction->setIcon(icon);
+
+    horizontalLayout->addWidget(buttonFile);
+
+    QToolButton* buttonOptions = new QToolButton(menuFrame);
+    buttonOptions->setObjectName(QStringLiteral("buttonOptions"));
+    buttonOptions->setFocusPolicy(Qt::NoFocus);
+    QIcon icon1;
+    icon1.addFile(QStringLiteral(":/icons/options"), QSize(), QIcon::Normal, QIcon::Off);
+    buttonOptions->setIcon(icon1);
+    buttonOptions->setAutoExclusive(true);
+    buttonOptions->setAutoRaise(true);
+    buttonOptions->setDefaultAction(optionsAction);
+
+    horizontalLayout->addWidget(buttonOptions);
+
+    QToolButton* buttonHelp = new QToolButton(menuFrame);
+    buttonHelp->setObjectName(QStringLiteral("buttonHelp"));
+    buttonHelp->setFocusPolicy(Qt::NoFocus);
+    QIcon icon2;
+    buttonHelp->setIcon(icon2);
+    buttonHelp->setAutoExclusive(true);
+    buttonHelp->setAutoRaise(true);
+    buttonHelp->setDefaultAction(aboutAction);
+    icon2.addFile(QStringLiteral(":/icons/help"), QSize(), QIcon::Normal, QIcon::Off);
+
+    horizontalLayout->addWidget(buttonHelp);
+
 }

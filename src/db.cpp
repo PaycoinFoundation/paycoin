@@ -423,7 +423,7 @@ bool CTxDB::ReadOwnerTxes(uint160 hash160, int nMinHeight, vector<CTransaction>&
             ssValue >> nItemHeight;
         }
         catch (std::exception &e) {
-            return error("%s() : deserialize error", __PRETTY_FUNCTION__);
+            return error("%s() : deserialize error", BOOST_CURRENT_FUNCTION);
         }
 
         // Read transaction
@@ -620,7 +620,7 @@ bool CTxDB::LoadBlockIndex()
         }
         }    // try
         catch (std::exception &e) {
-            return error("%s() : deserialize error", __PRETTY_FUNCTION__);
+          return error("%s() : deserialize error", BOOST_CURRENT_FUNCTION);
         }
     }
     pcursor->close();

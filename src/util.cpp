@@ -9,6 +9,7 @@
 #include "strlcpy.h"
 #include "version.h"
 #include "ui_interface.h"
+#include <cstdarg>
 #include <boost/algorithm/string/join.hpp>
 
 // Work around clang compilation problem in Boost 1.46:
@@ -288,33 +289,25 @@ inline int OutputDebugStringF(const char* pszFormat, ...)
 //  - prints up to limit-1 characters
 //  - output string is always null terminated even if limit reached
 //  - return value is the number of characters actually printed
-int my_snprintf(char* buffer, size_t limit, const char* format, ...)
-{
-    if (limit == 0)
-        return 0;
-    va_list arg_ptr;
-    va_start(arg_ptr, format);
-    int ret = _vsnprintf(buffer, limit, format, arg_ptr);
-    va_end(arg_ptr);
-    if (ret < 0 || ret >= (int)limit)
-    {
-        ret = limit - 1;
-        buffer[limit-1] = 0;
-    }
-    return ret;
-}
-
-string real_strprintf(const std::string &format, int dummy, ...)
+string vstrprintf(const char *format, va_list ap)
 {
     char buffer[50000];
+#ifdef _MSC_VER
+    int ret = _vsnprintf_s(buffer, sizeof(buffer), format, ap);
+    return string (buffer, buffer + ret);
+#else
     char* p = buffer;
     int limit = sizeof(buffer);
     int ret;
     loop
     {
         va_list arg_ptr;
-        va_start(arg_ptr, dummy);
-        ret = _vsnprintf(p, limit, format.c_str(), arg_ptr);
+        va_copy(arg_ptr, ap);
+#ifdef WIN32
+        ret = _vsnprintf(p, limit, format, arg_ptr);
+#else
+        ret = vsnprintf(p, limit, format, arg_ptr);
+#endif
         va_end(arg_ptr);
         if (ret >= 0 && ret < limit)
             break;
@@ -329,21 +322,34 @@ string real_strprintf(const std::string &format, int dummy, ...)
     if (p != buffer)
         delete[] p;
     return str;
+#endif
+}
+
+string real_strprintf(const char *format, int dummy, ...)
+{
+    va_list arg_ptr;
+    va_start(arg_ptr, dummy);
+    string str = vstrprintf(format, arg_ptr);
+    va_end(arg_ptr);
+    return str;
+}
+
+string real_strprintf(const std::string &format, int dummy, ...)
+{
+    va_list arg_ptr;
+    va_start(arg_ptr, dummy);
+    string str = vstrprintf(format.c_str(), arg_ptr);
+    va_end(arg_ptr);
+    return str;
 }
 
 bool error(const char *format, ...)
 {
-    char buffer[50000];
-    int limit = sizeof(buffer);
     va_list arg_ptr;
     va_start(arg_ptr, format);
-    int ret = _vsnprintf(buffer, limit, format, arg_ptr);
+    std::string str = vstrprintf(format, arg_ptr);
     va_end(arg_ptr);
-    if (ret < 0 || ret >= limit)
-    {
-        buffer[limit-1] = 0;
-    }
-    printf("ERROR: %s\n", buffer);
+    printf("ERROR: %s\n", str.c_str());
     return false;
 }
 
@@ -771,37 +777,34 @@ bool WildcardMatch(const string& str, const string& mask)
 
 
 
-void FormatException(char* pszMessage, std::exception* pex, const char* pszThread)
+static std::string FormatException(std::exception* pex, const char* pszThread)
 {
 #ifdef WIN32
-    char pszModule[MAX_PATH];
-    pszModule[0] = '\0';
+    char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(NULL, pszModule, sizeof(pszModule));
 #else
     const char* pszModule = "paycoin";
 #endif
     if (pex)
-        snprintf(pszMessage, 1000,
+        return strprintf(
             "EXCEPTION: %s       \n%s       \n%s in %s       \n", typeid(*pex).name(), pex->what(), pszModule, pszThread);
     else
-        snprintf(pszMessage, 1000,
+        return strprintf(
             "UNKNOWN EXCEPTION       \n%s in %s       \n", pszModule, pszThread);
 }
 
 void LogException(std::exception* pex, const char* pszThread)
 {
-    char pszMessage[10000];
-    FormatException(pszMessage, pex, pszThread);
-    printf("\n%s", pszMessage);
+    std::string message = FormatException(pex, pszThread);
+    printf("\n%s", message.c_str());
 }
 
 void PrintException(std::exception* pex, const char* pszThread)
 {
-    char pszMessage[10000];
-    FormatException(pszMessage, pex, pszThread);
-    printf("\n\n************************\n%s\n", pszMessage);
-    fprintf(stderr, "\n\n************************\n%s\n", pszMessage);
-    strMiscWarning = pszMessage;
+    std::string message = FormatException(pex, pszThread);
+    printf("\n\n************************\n%s\n", message.c_str());
+    fprintf(stderr, "\n\n************************\n%s\n", message.c_str());
+    strMiscWarning = message;
     throw;
 }
 
@@ -820,11 +823,10 @@ void LogStackTrace() {
 
 void PrintExceptionContinue(std::exception* pex, const char* pszThread)
 {
-    char pszMessage[10000];
-    FormatException(pszMessage, pex, pszThread);
-    printf("\n\n************************\n%s\n", pszMessage);
-    fprintf(stderr, "\n\n************************\n%s\n", pszMessage);
-    strMiscWarning = pszMessage;
+    std::string message = FormatException(pex, pszThread);
+    printf("\n\n************************\n%s\n", message.c_str());
+    fprintf(stderr, "\n\n************************\n%s\n", message.c_str());
+    strMiscWarning = message;
 }
 
 #ifdef WIN32

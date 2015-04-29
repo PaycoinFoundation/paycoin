@@ -11,13 +11,17 @@ paycoin.pro.user
 # Ignore build dir as well.
 #
 build/
+maket/
+*.qm
+*.pro.user.*
+*.pro.user
+src/core
 
 #
 # Ignore binaries
 #
 paycoin-qt
 src/paycoind
-
 #
 # Ignore generated resources
 #

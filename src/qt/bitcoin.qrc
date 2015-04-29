@@ -16,7 +16,6 @@
         <file alias="transaction_3">res/icons/clock3.png</file>
         <file alias="transaction_4">res/icons/clock4.png</file>
         <file alias="transaction_5">res/icons/clock5.png</file>
-        <file alias="options">res/icons/configure.png</file>
         <file alias="receiving_addresses">res/icons/receive.png</file>
         <file alias="editpaste">res/icons/editpaste.png</file>
         <file alias="editcopy">res/icons/editcopy.png</file>
@@ -40,11 +39,21 @@
         <file>res/icons/paycoin_testnet.png</file>
         <file alias="paycoin_tooltip">res/icons/paycoin.png</file>
         <file>res/icons/paycoin.ico</file>
+        <file alias="wallet">res/icons/coins.png</file>
+        <file alias="minting">res/icons/minting.png</file>
+        <file alias="options">res/icons/options.png</file>
+        <file alias="lasttran">res/icons/check.png</file>
+        <file alias="file">res/icons/file.png</file>
+        <file alias="help">res/icons/search.png</file>
+        <file alias="arrow-down">res/icons/arrow-down.png</file>
+        <file alias="arrow-up">res/icons/arrow-up.png</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="about">res/images/about.png</file>
         <file alias="splash">res/images/paycoin_splash.png</file>
         <file alias="qrcode">res/images/qrcode.png</file>
+        <file alias="bitcoin">res/images/bitcoin.png</file>
+        <file alias="bitcoin-top-logo">res/images/bitcoin-top-logo.png</file>
     </qresource>
     <qresource prefix="/movies">
         <file alias="update_spinner">res/movies/update_spinner.mng</file>
@@ -81,5 +90,11 @@
         <file alias="uk">locale/paycoin_uk.qm</file>
         <file alias="zh_CN">locale/paycoin_zh_CN.qm</file>
         <file alias="zh_TW">locale/paycoin_zh_TW.qm</file>
+    </qresource>
+    <qresource prefix="/styles">
+        <file alias="default">res/styles/default.qs</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file alias="gothampro">res/fonts/GothamPro/GothaProReg.otf</file>
     </qresource>
 </RCC>

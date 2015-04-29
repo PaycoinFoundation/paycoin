@@ -10,6 +10,10 @@
 #include <sys/fcntl.h>
 #endif
 
+#if defined _MSC_VER && !defined(ssize_t)
+# define ssize_t int
+#endif
+
 #include "strlcpy.h"
 
 using namespace std;
