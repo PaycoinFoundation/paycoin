@@ -51,10 +51,6 @@ static const int64 CENT = 10000;
 #define ARRAYLEN(array)     (sizeof(array)/sizeof((array)[0]))
 #define printf              OutputDebugStringF
 
-#ifdef snprintf
-#undef snprintf
-#endif
-#define snprintf my_snprintf
 
 #ifndef PRI64d
 #if defined(_MSC_VER) || defined(__MSVCRT__)
@@ -70,6 +66,9 @@ static const int64 CENT = 10000;
 
 // This is needed because the foreach macro can't get over the comma in pair<t1, t2>
 #define PAIRTYPE(t1, t2)    std::pair<t1, t2>
+  #define PRId64	"I64d"
+  #define PRIx64	"I64x"
+  #define PRIu64  "I64u"
 
 // Align by increasing pointer, must have extra space at end of buffer
 template <size_t nBytes, typename T>

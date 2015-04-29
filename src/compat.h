@@ -26,7 +26,9 @@
 #endif
 
 #ifndef _WIN64
+#ifndef _MSC_VER
 typedef u_int SOCKET;
+#endif
 #endif
 #ifdef WIN32
 #define MSG_NOSIGNAL        0

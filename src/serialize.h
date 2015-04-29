@@ -22,6 +22,15 @@
 #include <boost/tuple/tuple_io.hpp>
 
 #include "allocators.h"
+#ifdef _MSC_VER
+# ifdef max
+#   undef max
+# endif
+# ifdef min
+#   undef min
+# endif
+#endif
+
 #include "version.h"
 
 typedef long long  int64;
@@ -70,6 +79,7 @@ enum
         assert(fGetSize||fWrite||fRead); /* suppress warning */ \
         s.nType = nType;                        \
         s.nVersion = nVersion;                  \
+        std::map<int, int> mapUnkIds;           \
         {statements}                            \
         return nSerSize;                        \
     }                                           \
@@ -82,6 +92,7 @@ enum
         const bool fRead = false;               \
         unsigned int nSerSize = 0;              \
         assert(fGetSize||fWrite||fRead); /* suppress warning */ \
+        std::map<int, int> mapUnkIds;           \
         {statements}                            \
     }                                           \
     template<typename Stream>                   \
@@ -93,6 +104,7 @@ enum
         const bool fRead = true;                \
         unsigned int nSerSize = 0;              \
         assert(fGetSize||fWrite||fRead); /* suppress warning */ \
+        std::map<int, int> mapUnkIds;           \
         {statements}                            \
     }
 
@@ -765,7 +777,7 @@ public:
         Init(nTypeIn, nVersionIn);
     }
 
-    CDataStream(const std::vector<unsigned char>& vchIn, int nTypeIn, int nVersionIn) : vch((char*)&vchIn.begin()[0], (char*)&vchIn.end()[0])
+    CDataStream(const std::vector<unsigned char>& vchIn, int nTypeIn, int nVersionIn) : vch(vchIn.begin(), vchIn.end())
     {
         Init(nTypeIn, nVersionIn);
     }
@@ -815,7 +827,8 @@ public:
     iterator insert(iterator it, const char& x=char()) { return vch.insert(it, x); }
     void insert(iterator it, size_type n, const char& x) { vch.insert(it, n, x); }
 
-    void insert(iterator it, std::vector<char>::const_iterator first, std::vector<char>::const_iterator last)
+    void insert(iterator it, std::vector<char>::const_iterator first,
+                std::vector<char>::const_iterator last)
     {
         if (it == vch.begin() + nReadPos && last - first <= nReadPos)
         {

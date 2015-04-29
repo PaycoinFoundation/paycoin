@@ -245,7 +245,7 @@ protected:
 public:
 
     IMPLEMENT_SERIALIZE
-    (({
+    ({
         // serialized format:
         // * version byte (currently 0)
         // * nKey
@@ -279,7 +279,6 @@ public:
             {
                 int nUBuckets = ADDRMAN_NEW_BUCKET_COUNT;
                 READWRITE(nUBuckets);
-                std::map<int, int> mapUnkIds;
                 int nIds = 0;
                 for (std::map<int, CAddrInfo>::iterator it = am->mapInfo.begin(); it != am->mapInfo.end(); it++)
                 {
@@ -376,7 +375,7 @@ public:
                 }
             }
         }
-    });)
+    };)
 
     CAddrMan() : vRandom(0), vvTried(ADDRMAN_TRIED_BUCKET_COUNT, std::vector<int>(0)), vvNew(ADDRMAN_NEW_BUCKET_COUNT, std::set<int>())
     {

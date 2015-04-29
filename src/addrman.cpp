@@ -392,8 +392,8 @@ CAddress CAddrMan::Select_(int nUnkBias)
     if (size() == 0)
         return CAddress();
 
-    double nCorTried = sqrt(nTried) * (100.0 - nUnkBias);
-    double nCorNew = sqrt(nNew) * nUnkBias;
+    double nCorTried = sqrt(static_cast<double>(nTried)) * (100.0 - nUnkBias);
+    double nCorNew = sqrt(static_cast<double>(nNew)) * nUnkBias;
     if ((nCorTried + nCorNew)*GetRandInt(1<<30)/(1<<30) < nCorTried)
     {
         // use a tried node
