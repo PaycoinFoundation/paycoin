@@ -21,7 +21,10 @@
 MintingView::MintingView(QWidget *parent) :
     QWidget(parent), model(0), mintingView(0)
 {
-    QHBoxLayout *hlayout = new QHBoxLayout();
+    QFrame* topFrame = new QFrame(this);
+    topFrame->setObjectName("frameTop");
+
+    QHBoxLayout *hlayout = new QHBoxLayout(topFrame);
     hlayout->setContentsMargins(0,0,0,0);
 
     QString legendBoxStyle = "background-color: rgb(%1,%2,%3); border: 1px solid black;";
@@ -75,7 +78,8 @@ MintingView::MintingView(QWidget *parent) :
     vlayout->setSpacing(0);
 
     QTableView *view = new QTableView(this);
-    vlayout->addLayout(hlayout);
+    view->setObjectName("viewMinting");
+    vlayout->addWidget(topFrame);
     vlayout->addWidget(view);
     vlayout->addLayout(legendLayout);
 

@@ -19,6 +19,7 @@
 #include <QDoubleValidator>
 #include <QRegExpValidator>
 #include <QDialogButtonBox>
+#include <QDir>
 
 /* First page of options */
 class MainOptionsPage : public QWidget
@@ -60,6 +61,8 @@ private:
     QValueComboBox *unit;
     QCheckBox *display_addresses;
     QCheckBox *coin_control_features;
+    QValueComboBox *lang;
+    void fillLanguages(QValueComboBox* lang);
 signals:
 
 public slots:
@@ -291,6 +294,16 @@ DisplayOptionsPage::DisplayOptionsPage(QWidget *parent):
     coin_control_features->setToolTip(tr("Whether to show coin control features or not"));
     layout->addWidget(coin_control_features);
 
+    QHBoxLayout *lang_hbox = new QHBoxLayout();
+    lang_hbox->addSpacing(18);
+    QLabel *lang_label = new QLabel(tr("User Interface &language: "));
+    lang_hbox->addWidget(lang_label);
+    lang = new QValueComboBox(this);
+    lang_label->setBuddy(lang);
+    lang_hbox->addWidget(lang);
+    layout->addLayout(lang_hbox);
+    fillLanguages(lang);
+
     layout->addStretch();
 
     setLayout(layout);
@@ -301,4 +314,37 @@ void DisplayOptionsPage::setMapper(MonitoredDataMapper *mapper)
     mapper->addMapping(unit, OptionsModel::DisplayUnit);
     mapper->addMapping(display_addresses, OptionsModel::DisplayAddresses);
     mapper->addMapping(coin_control_features, OptionsModel::CoinControlFeatures);
+    mapper->addMapping(lang, OptionsModel::DisplayLanguage);
+}
+
+
+void DisplayOptionsPage::fillLanguages(QValueComboBox* lang) {
+    QDir translations(":translations");
+    lang->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
+    foreach(const QString &langStr, translations.entryList())
+    {
+        QLocale locale(langStr);
+
+        /** check if the locale name consists of 2 parts (language_country) */
+        if(langStr.contains("_"))
+        {
+#if QT_VERSION >= 0x040800
+            /** display language strings as "native language - native country (locale name)", e.g. "Deutsch - Deutschland (de)" */
+            lang->addItem(locale.nativeLanguageName() + QString(" - ") + locale.nativeCountryName() + QString(" (") + langStr + QString(")"), QVariant(langStr));
+#else
+            /** display language strings as "language - country (locale name)", e.g. "German - Germany (de)" */
+            lang->addItem(QLocale::languageToString(locale.language()) + QString(" - ") + QLocale::countryToString(locale.country()) + QString(" (") + langStr + QString(")"), QVariant(langStr));
+#endif
+        }
+        else
+        {
+#if QT_VERSION >= 0x040800
+            /** display language strings as "native language (locale name)", e.g. "Deutsch (de)" */
+            lang->addItem(locale.nativeLanguageName() + QString(" (") + langStr + QString(")"), QVariant(langStr));
+#else
+            /** display language strings as "language (locale name)", e.g. "German (de)" */
+            lang->addItem(QLocale::languageToString(locale.language()) + QString(" (") + langStr + QString(")"), QVariant(langStr));
+#endif
+        }
+    }
 }

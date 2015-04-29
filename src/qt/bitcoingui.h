@@ -26,6 +26,9 @@ class QModelIndex;
 class QProgressBar;
 class QStackedWidget;
 class QUrl;
+class QToolBar;
+class QToolButton;
+class QFrame;
 QT_END_NAMESPACE
 
 /**
@@ -59,8 +62,6 @@ private:
     ClientModel *clientModel;
     WalletModel *walletModel;
 
-    QStackedWidget *centralWidget;
-
     OverviewPage *overviewPage;
     QWidget *transactionsPage;
     QWidget *mintingPage;
@@ -75,6 +76,7 @@ private:
     QLabel *labelBlocksIcon;
     QLabel *progressBarLabel;
     QProgressBar *progressBar;
+    QFrame* statusPanel;
 
     QMenuBar *appMenuBar;
     QAction *overviewAction;
@@ -102,8 +104,13 @@ private:
     TransactionView *transactionView;
     MintingView *mintingView;
     RPCConsole *rpcConsole;
+    QStackedWidget *pageWidget;
+    QLabel* labelLogo;
 
     QMovie *syncIconMovie;
+    QToolBar* toolbar;
+
+    QFrame* menuFrame;
 
     /** Create the main UI actions. */
     void createActions();
@@ -114,6 +121,9 @@ private:
     /** Create system tray (notification) icon */
     void createTrayIcon();
 
+    QToolButton*createToolBarButton(QAction* const action);
+    QWidget*createToolBarLine();
+    void createMenuFrame();
 public slots:
     /** Set number of connections shown in the UI */
     void setNumConnections(int count);
@@ -140,6 +150,7 @@ public slots:
 
     void gotoMessagePage();
     void gotoMultisigPage();
+    void setStyle();
 
 private slots:
     /** Switch to overview (home) page */

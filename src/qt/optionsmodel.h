@@ -28,7 +28,8 @@ public:
         DisplayAddresses, // bool
         DetachDatabases, // bool
         CoinControlFeatures, // bool
-        OptionIDRowCount,
+        DisplayLanguage,     // QString
+        OptionIDRowCount
     };
 
     void Init();
@@ -54,6 +55,7 @@ private:
     bool fMinimizeToTray;
     bool fMinimizeOnClose;
     bool fCoinControlFeatures;
+    QString sLanguage;
 
 signals:
     void displayUnitChanged(int unit);
