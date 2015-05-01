@@ -1,3 +1,9 @@
+paycoin (0.2.0.0) stable; urgency=low
+
+  * Bring package version number inline with application
+
+ -- wdl1908 <wdlbit@linux-lovers.be>  Sun, 1 May 2015 03:05:48 +0100
+
 paycoin (0.1.2.26) stable; urgency=low
 
   * Bring package version number inline with application
