@@ -1,8 +1,10 @@
-#define BOOST_TEST_MODULE Bitcoin Test Suite
+#define BOOST_TEST_MODULE Paycoin Test Suite
 #include <boost/test/unit_test.hpp>
 
 #include "main.h"
 #include "wallet.h"
+
+int MIN_PROTO_VERSION = 70002;
 
 CWallet* pwalletMain;
 

@@ -87,7 +87,7 @@ TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
 obj-test/%.o: test/%.cpp $(HEADERS)
 	${HOST}-g++ -c $(TESTDEFS) $(CFLAGS) -o $@ $<
 
-test_bitcoin.exe: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
+test_paycoin.exe: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
 	${HOST}-g++ $(CFLAGS) -o $@ $(LIBPATHS) $^ -lboost_unit_test_framework $(LIBS)
 
 
@@ -95,7 +95,7 @@ clean:
 	-rm -f obj/*.o
 	-rm -f paycoind.exe
 	-rm -f obj-test/*.o
-	-rm -f test_bitcoin.exe
+	-rm -f test_paycoin.exe
 	-rm -f src/build.h
 
 FORCE:
