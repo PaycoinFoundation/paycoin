@@ -21,8 +21,8 @@
     </message>
     <message>
         <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Paycoin Developers</source>
-        <translation>Copyright © 2011-2014 Paycoin Developers</translation>
+        <source>Copyright © 2011-2014 Peercoin Developers</source>
+        <translation>Copyright © 2011-2014 Peercoin Developers</translation>
     </message>
     <message>
         <location filename="../forms/aboutdialog.ui" line="133"/>
@@ -259,9 +259,9 @@ Dit product bevat code ontwikkeld door het OpenSSL project voor het gebruik in h
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="107"/>
-        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PEERCOINS&lt;/b&gt;!
+        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
-        <translation>WAARSCHUWING: Indien je de portemonnee versleutelt en je wachtwoordzin verliest, dan verlies je &lt;b&gt; AL JE PEERCOINS&lt;/b&gt;! 
+        <translation>WAARSCHUWING: Indien je de portemonnee versleutelt en je wachtwoordzin verliest, dan verlies je &lt;b&gt; AL JE PAYCOINS&lt;/b&gt;! 
 Weet je zeker dat je de portemonee wilt versleutelen?</translation>
     </message>
     <message>
@@ -1781,7 +1781,7 @@ Bedragen kleiner dan 0.546 keer de minimum vergoeding worden weergegeven als STO
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="457"/>
-        <source>Warning: Invalid Bitcoin address</source>
+        <source>Warning: Invalid Paycoin address</source>
         <translation>Waarschuwing: Ongeldig Paycoin adres</translation>
     </message>
     <message>

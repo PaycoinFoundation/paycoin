@@ -21,7 +21,7 @@
     </message>
     <message>
         <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Paycoin Developers</source>
+        <source>Copyright © 2011-2014 Peercoin Developers</source>
         <translation>Copyright © 2011-2014 Die PPcoin-Entwickler</translation>
     </message>
     <message>
@@ -259,9 +259,9 @@ Dieses Produkt enthält Software, die vom OpenSSL-Projekt zur Verwendung im Open
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="107"/>
-        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PEERCOINS&lt;/b&gt;!
+        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
-        <translation>WARNUNG: Wenn Sie Ihre Wallet verschlüsseln und Ihre Passphrase verlieren, werden Sie &lt;b&gt;ALLE IHRE PEERCOIN VERLIEREN&lt;/b&gt;!
+        <translation>WARNUNG: Wenn Sie Ihre Wallet verschlüsseln und Ihre Passphrase verlieren, werden Sie &lt;b&gt;ALLE IHRE PAYCOIN VERLIEREN&lt;/b&gt;!
 Sind Sie sich sicher, dass Sie Ihre Wallet verschlüsseln möchten?</translation>
     </message>
     <message>
@@ -1781,7 +1781,7 @@ Das bedeutet, dass eine Gebühr von mindestens %2 erforderlich ist.</translation
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="457"/>
-        <source>Warning: Invalid Bitcoin address</source>
+        <source>Warning: Invalid Paycoin address</source>
         <translation>Warnung: Ungültige Paycoin-Adresse</translation>
     </message>
     <message>
