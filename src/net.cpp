@@ -1159,6 +1159,8 @@ void MapPort(bool /* unused fMapPort */)
 // testnet dns seed begins with 't', all else are paycoin dns seeds.
 static const char *strDNSSeed[][2] = {
     {"dnsseed.paycoin.com", "dnsseed.paycoin.com"},
+    {"dnsseed.paycoinfoundation.org", "dnsseed.paycoinfoundation.org"},
+    {"dnsseed.xpydev.org", "dnsseed.xpydev.org"}
 };
 
 void ThreadDNSAddressSeed(void* parg)
