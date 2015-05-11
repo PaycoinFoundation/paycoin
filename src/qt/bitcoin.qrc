@@ -43,6 +43,7 @@
 		<file alias="qrcode">res/icons/qrcode.png</file>
     </qresource>
     <qresource prefix="/images">
+        <file alias="owl">res/images/owl.jpg</file>
         <file alias="about">res/images/about.png</file>
         <file alias="splash">res/images/paycoin_splash.png</file>
     </qresource>

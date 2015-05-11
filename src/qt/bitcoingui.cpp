@@ -75,6 +75,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 {
     resize(850, 550);
     setWindowTitle(tr("Paycoin Wallet"));
+    qApp->setStyleSheet("QMainWindow { background-image:url(:/images/owl) }");
 #ifndef Q_WS_MAC
     setWindowIcon(QIcon(":icons/paycoin_icon"));
 #else
