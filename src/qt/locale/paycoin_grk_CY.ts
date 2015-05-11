@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="hr-HR">
+<TS version="2.0" language="grk_CY">
 <defaultcodec>UTF-8</defaultcodec>
 <context>
     <name>AboutDialog</name>
@@ -41,7 +41,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location filename="../forms/addressbookpage.ui" line="14"/>
         <source>Address Book</source>
-        <translation type="unfinished"></translation>
+        <translation>Βιβλίο Διευθύνσεων</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="20"/>
@@ -51,92 +51,92 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location filename="../forms/addressbookpage.ui" line="33"/>
         <source>Double-click to edit address or label</source>
-        <translation type="unfinished"></translation>
+        <translation>Κάντε διπλό κλίκ για να παραμετροποιήσετε την διεύθυνση ή το Label</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="57"/>
         <source>Create a new address</source>
-        <translation type="unfinished"></translation>
+        <translation>Δημιουργία νέας διεύθυνσης</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="60"/>
         <source>&amp;New Address...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Νέα Διεύθυνση...</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="71"/>
         <source>Copy the currently selected address to the system clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντιγραφή της επιλεγμένης διεύθυνσης στο πρόχειρο</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="74"/>
         <source>&amp;Copy to Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Αντιγραφή στο πρόχειρο</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="85"/>
         <source>Show &amp;QR Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Εμφάνιση του &amp;QR Code</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="96"/>
         <source>Sign a message to prove you own this address</source>
-        <translation type="unfinished"></translation>
+        <translation>Υπογράψτε ένα μήνυμα για ν&apos; αποδείξετε πως σας ανήκει μια συγκεκριμένη διεύθυνση Paycoin</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="99"/>
         <source>&amp;Sign Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Υπογραφη μήνυματος</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="110"/>
         <source>Delete the currently selected address from the list. Only sending addresses can be deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Διαγραφή της επιλεγμένης διεύθυνσης από την λίστα. Μόνο η επιλεγμένη διεύθυνση θα διαγραφεί</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="113"/>
         <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Διαγραφή</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="65"/>
         <source>Copy address</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντιγραφή Διεύθυνσης</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="66"/>
         <source>Copy label</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντιγραφή επιγραφής</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="67"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Επεξεργασία</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="68"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Διαγραφή</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="273"/>
         <source>Export Address Book Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Εξαγωγή Βιβλίου Διευθύνσεων</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="274"/>
         <source>Comma separated file (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>Αρχείο οριοθετημένο με κόμματα (*.csv)</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="287"/>
         <source>Error exporting</source>
-        <translation type="unfinished"></translation>
+        <translation>Λάθος κατά την εξαγωγή</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="287"/>
         <source>Could not write to file %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Αδυναμία εγγραφής στο αρχείο %1.</translation>
     </message>
 </context>
 <context>
@@ -536,8 +536,6 @@ Are you sure you wish to encrypt your wallet?</source>
         <source>%n active connection(s) to Paycoin network</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -550,8 +548,6 @@ Are you sure you wish to encrypt your wallet?</source>
         <source>~%n block(s) remaining</source>
         <translation type="unfinished">
             <numerusform>~%n block remaining</numerusform>
-            <numerusform>~%n blocks remaining</numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -569,8 +565,6 @@ Are you sure you wish to encrypt your wallet?</source>
         <source>%n second(s) ago</source>
         <translation type="unfinished">
             <numerusform>%n second ago</numerusform>
-            <numerusform>%n seconds ago</numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -578,8 +572,6 @@ Are you sure you wish to encrypt your wallet?</source>
         <source>%n minute(s) ago</source>
         <translation type="unfinished">
             <numerusform>%n minute ago</numerusform>
-            <numerusform>%n minutes ago</numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -587,8 +579,6 @@ Are you sure you wish to encrypt your wallet?</source>
         <source>%n hour(s) ago</source>
         <translation type="unfinished">
             <numerusform>%n hour ago</numerusform>
-            <numerusform>%n hours ago</numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -596,8 +586,6 @@ Are you sure you wish to encrypt your wallet?</source>
         <source>%n day(s) ago</source>
         <translation type="unfinished">
             <numerusform>%n day ago</numerusform>
-            <numerusform>%n days ago</numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -765,7 +753,7 @@ Address: %4
     <message>
         <location filename="../forms/coincontroldialog.ui" line="469"/>
         <source>Amount</source>
-        <translation>Suma</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../forms/coincontroldialog.ui" line="479"/>
@@ -775,7 +763,7 @@ Address: %4
     <message>
         <location filename="../forms/coincontroldialog.ui" line="484"/>
         <source>Date</source>
-        <translation>Datum</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../forms/coincontroldialog.ui" line="489"/>
@@ -800,18 +788,18 @@ Address: %4
     <message>
         <location filename="../coincontroldialog.cpp" line="36"/>
         <source>Copy address</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντιγραφή Διεύθυνσης</translation>
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="37"/>
         <source>Copy label</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντιγραφή επιγραφής</translation>
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="38"/>
         <location filename="../coincontroldialog.cpp" line="64"/>
         <source>Copy amount</source>
-        <translation>Kopiraj sumu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="39"/>
@@ -1276,7 +1264,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../mintingview.cpp" line="163"/>
         <source>Comma separated file (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>Αρχείο οριοθετημένο με κόμματα (*.csv)</translation>
     </message>
     <message>
         <location filename="../mintingview.cpp" line="171"/>
@@ -1311,12 +1299,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../mintingview.cpp" line="180"/>
         <source>Error exporting</source>
-        <translation type="unfinished"></translation>
+        <translation>Λάθος κατά την εξαγωγή</translation>
     </message>
     <message>
         <location filename="../mintingview.cpp" line="180"/>
         <source>Could not write to file %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Αδυναμία εγγραφής στο αρχείο %1.</translation>
     </message>
 </context>
 <context>
@@ -1455,7 +1443,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../qrcodedialog.cpp" line="121"/>
         <source>Save Image...</source>
-        <translation>Snimi sliku</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qrcodedialog.cpp" line="121"/>
@@ -1510,7 +1498,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../forms/rpcconsole.ui" line="99"/>
         <source>Number of connections</source>
-        <translation>Broj veza/konekcija</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../forms/rpcconsole.ui" line="119"/>
@@ -1714,7 +1702,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../sendcoinsdialog.cpp" line="52"/>
         <source>Copy amount</source>
-        <translation>Kopiraj sumu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="53"/>
@@ -1896,7 +1884,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../forms/signverifymessagedialog.ui" line="24"/>
         <source>&amp;Sign Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Υπογραφη μήνυματος</translation>
     </message>
     <message>
         <location filename="../forms/signverifymessagedialog.ui" line="30"/>
@@ -2248,7 +2236,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactiontablemodel.cpp" line="214"/>
         <source>Date</source>
-        <translation>Datum</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../transactiontablemodel.cpp" line="214"/>
@@ -2263,15 +2251,13 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactiontablemodel.cpp" line="214"/>
         <source>Amount</source>
-        <translation>Suma</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
         <location filename="../transactiontablemodel.cpp" line="281"/>
         <source>Open for %n block(s)</source>
         <translation>
             <numerusform>Open for %n block</numerusform>
-            <numerusform>Open for %n blocks</numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2299,8 +2285,6 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <source>Mined balance will be available in %n more blocks</source>
         <translation>
             <numerusform>Mined balance will be available in %n more block</numerusform>
-            <numerusform>Mined balance will be available in %n more blocks</numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2455,17 +2439,17 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactionview.cpp" line="125"/>
         <source>Copy address</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντιγραφή Διεύθυνσης</translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="126"/>
         <source>Copy label</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντιγραφή επιγραφής</translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="127"/>
         <source>Copy amount</source>
-        <translation>Kopiraj sumu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="128"/>
@@ -2490,7 +2474,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactionview.cpp" line="274"/>
         <source>Comma separated file (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>Αρχείο οριοθετημένο με κόμματα (*.csv)</translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="282"/>
@@ -2500,7 +2484,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactionview.cpp" line="283"/>
         <source>Date</source>
-        <translation>Datum</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="284"/>
@@ -2520,7 +2504,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactionview.cpp" line="287"/>
         <source>Amount</source>
-        <translation>Suma</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="288"/>
@@ -2530,12 +2514,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactionview.cpp" line="292"/>
         <source>Error exporting</source>
-        <translation type="unfinished"></translation>
+        <translation>Λάθος κατά την εξαγωγή</translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="292"/>
         <source>Could not write to file %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Αδυναμία εγγραφής στο αρχείο %1.</translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="400"/>
@@ -2611,7 +2595,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../bitcoinstrings.cpp" line="20"/>
         <source>Generate coins</source>
-        <translation>Generiraj novcic (coins)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="21"/>
