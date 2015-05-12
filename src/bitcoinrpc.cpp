@@ -3382,6 +3382,18 @@ Value getrawmempool(const Array& params, bool fHelp)
     return a;
 }
 
+Value clearorphans(const Array& params, bool fHelp)
+{
+    if (fHelp || params.size() !=0)
+        throw runtime_error(
+            "clearorphans\n"
+            "Clears orphaned transactions from the wallet file.");
+
+    pwalletMain->ClearOrphans();
+
+    return true;
+}
+
 //
 // Call Table
 //
@@ -3456,6 +3468,7 @@ static const CRPCCommand vRPCCommands[] =
     { "sendrawtransaction",     &sendrawtransaction,     false},
     { "gettxout",               &gettxout,               true },
     { "getrawmempool",          &getrawmempool,          true },
+    { "clearorphans",           &clearorphans,           true },
 };
 
 CRPCTable::CRPCTable()
