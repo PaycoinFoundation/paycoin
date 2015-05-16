@@ -61,9 +61,9 @@ the developers and supporters of the following projects:
 	(http://www.opensource.org/licenses/mit-license.php)
 
 	Peercoin is a free open source project with the goal of providing a 
-	long-term energy-efficient crypto-currency. Built on the foundation 
+	long-term energy-efficient cryptocurrency. Built on the foundation 
 	of Bitcoin, innovations such as proof-of-stake help further advance 
-	the field of crypto-currency.
+	the field of cryptocurrency.
 
 	https://github.com/ppcoin/ppcoin
 
