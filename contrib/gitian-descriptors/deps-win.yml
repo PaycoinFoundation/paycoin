@@ -78,7 +78,7 @@ script: |
    
   -miniupnpcstrings.h: miniupnpcstrings.h.in wingenminiupnpcstrings
   -	wingenminiupnpcstrings \$< \$@
-  +miniupnpcstrings.h: miniupnpcstrings.h.in 
+  +miniupnpcstrings.h: miniupnpcstrings.h.in
   +	sed -e 's|OS/version|MSWindows/5.1.2600|' -e 's|MINIUPNPC_VERSION_STRING \"version\"|MINIUPNPC_VERSION_STRING \"VERSIONHERE\"|' \$< > \$@
    
    minixml.o:	minixml.c minixml.h miniupnpcstrings.h

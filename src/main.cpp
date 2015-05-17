@@ -946,7 +946,7 @@ int64 GetProofOfWorkReward(int nHeight, unsigned int nTime)
     }else if(nTime < POW_END_TIME - 86400){ // reward is 0 before ending PoW 1 day
         nSubsidy = 49 * COIN;
     }
-    
+
     if(nHeight > 277 && nHeight < 400){
         nSubsidy = 0 * COIN;
     }
@@ -1365,7 +1365,7 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
             if (!vout[0].IsEmpty()){
                 std::vector<string> pubKeyList;
                 int primeNodeRate = 0;
-                
+
                 getPrimePubKeyList(vout[0].scriptPubKey[0], pubKeyList, primeNodeRate);
 
                 if (primeNodeRate) {
@@ -1843,7 +1843,7 @@ bool CBlock::SetBestChain(CTxDB& txdb, CBlockIndex* pindexNew)
 // paycoin: total coin age spent in transaction, in the unit of coin-days.
 // Only those coins meeting minimum age requirement counts. As those
 // transactions not in main chain are not currently indexed so we
-// might not find out about their coin age. Older transactions are 
+// might not find out about their coin age. Older transactions are
 // guaranteed to be in main chain by sync-checkpoint. This rule is
 // introduced to help nodes establish a consistent view of the coin
 // age (trust score) of competing branches.
@@ -2629,7 +2629,7 @@ void PrintBlockTree()
 map<uint256, CAlert> mapAlerts;
 CCriticalSection cs_mapAlerts;
 
-static string strMintMessage = _("Info: Minting suspended due to locked wallet."); 
+static string strMintMessage = _("Info: Minting suspended due to locked wallet.");
 static string strMintWarning;
 
 string GetWarnings(string strFor)
@@ -3094,7 +3094,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
                         // and we want it right after the last block so they don't
                         // wait for other stuff first.
                         // paycoin: send latest proof-of-work block to allow the
-                        // download node to accept as orphan (proof-of-stake 
+                        // download node to accept as orphan (proof-of-stake
                         // block might be rejected by stake connection check)
                         vector<CInv> vInv;
                         vInv.push_back(CInv(MSG_BLOCK, GetLastBlockIndex(pindexBest, false)->GetBlockHash()));
@@ -4209,7 +4209,7 @@ void BitcoinMiner(CWallet *pwallet, bool fProofOfStake)
                     continue;
                 }
                 SetMintWarning("");
-                printf("CPUMiner : proof-of-stake block found %s\n", pblock->GetHash().ToString().c_str()); 
+                printf("CPUMiner : proof-of-stake block found %s\n", pblock->GetHash().ToString().c_str());
                 SetThreadPriority(THREAD_PRIORITY_NORMAL);
                 CheckWork(pblock.get(), *pwalletMain, reservekey);
                 SetThreadPriority(THREAD_PRIORITY_LOWEST);

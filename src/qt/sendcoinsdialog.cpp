@@ -10,7 +10,7 @@
 #include "guiutil.h"
 #include "askpassphrasedialog.h"
 #include "coincontrol.h"
-#include "coincontroldialog.h" 
+#include "coincontroldialog.h"
 
 #include <QMessageBox>
 #include <QLocale>
@@ -99,7 +99,7 @@ void SendCoinsDialog::setModel(WalletModel *model)
         connect(model->getOptionsModel(), SIGNAL(coinControlFeaturesChanged(bool)), this, SLOT(coinControlFeatureChanged(bool)));
         connect(model->getOptionsModel(), SIGNAL(transactionFeeChanged(qint64)), this, SLOT(coinControlUpdateLabels()));
         ui->frameCoinControl->setVisible(model->getOptionsModel()->getCoinControlFeatures());
-        coinControlUpdateLabels(); 
+        coinControlUpdateLabels();
     }
 }
 
@@ -169,7 +169,7 @@ void SendCoinsDialog::on_sendButton_clicked()
     if (!model->getOptionsModel() || !model->getOptionsModel()->getCoinControlFeatures())
         sendstatus = model->sendCoins(recipients);
     else
-        sendstatus = model->sendCoins(recipients, CoinControlDialog::coinControl); 
+        sendstatus = model->sendCoins(recipients, CoinControlDialog::coinControl);
     switch(sendstatus.status)
     {
     case WalletModel::InvalidAddress:
@@ -213,7 +213,7 @@ void SendCoinsDialog::on_sendButton_clicked()
     case WalletModel::OK:
         accept();
         CoinControlDialog::coinControl->UnSelectAll();
-        coinControlUpdateLabels(); 
+        coinControlUpdateLabels();
         break;
     }
     fNewRecipientAllowed = true;
@@ -408,7 +408,7 @@ void SendCoinsDialog::coinControlClipboardChange()
 void SendCoinsDialog::coinControlFeatureChanged(bool checked)
 {
     ui->frameCoinControl->setVisible(checked);
-    
+
     if (!checked && model) // coin control features disabled
         CoinControlDialog::coinControl->SetNull();
 }
@@ -432,7 +432,7 @@ void SendCoinsDialog::coinControlChangeChecked(int state)
         else
             CoinControlDialog::coinControl->destChange = CNoDestination();
     }
-    
+
     ui->lineEditCoinControlChange->setEnabled((state == Qt::Checked));
     ui->labelCoinControlChangeLabel->setEnabled((state == Qt::Checked));
 }
@@ -488,7 +488,7 @@ void SendCoinsDialog::coinControlUpdateLabels()
 {
     if (!model || !model->getOptionsModel() || !model->getOptionsModel()->getCoinControlFeatures())
         return;
-    
+
     // set pay amounts
     CoinControlDialog::payAddresses.clear();
     for(int i = 0; i < ui->entries->count(); ++i)
@@ -497,12 +497,12 @@ void SendCoinsDialog::coinControlUpdateLabels()
         if(entry)
             CoinControlDialog::payAddresses.append(std::make_pair(entry->getValue().address, entry->getValue().amount));
     }
-        
+
     if (CoinControlDialog::coinControl->HasSelected())
     {
         // actual coin control calculation
         CoinControlDialog::updateLabels(model, this);
-        
+
         // show coin control stats
         ui->labelCoinControlAutomaticallySelected->hide();
         ui->widgetCoinControl->show();

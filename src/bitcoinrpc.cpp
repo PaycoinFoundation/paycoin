@@ -26,7 +26,7 @@
 #include <boost/iostreams/stream.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/asio/ssl.hpp> 
+#include <boost/asio/ssl.hpp>
 #include <boost/filesystem/fstream.hpp>
 typedef boost::asio::ssl::stream<boost::asio::ip::tcp::socket> SSLStream;
 
@@ -224,11 +224,11 @@ void TxToJSON(const CTransaction& tx, Object& txdata)
     {
         Object vin;
 
-        if (txin.prevout.IsNull()) 
+        if (txin.prevout.IsNull())
         {
             vin.push_back(Pair("coinbase", HexStr(txin.scriptSig).c_str()));
         }
-        else 
+        else
         {
             vin.push_back(Pair("txid", txin.prevout.hash.ToString().c_str()));
             vin.push_back(Pair("vout", (int)txin.prevout.n));
@@ -276,8 +276,8 @@ void TxToJSON(const CTransaction& tx, Object& txdata)
 
         vout.push_back(Pair("scriptPubKey",scriptpubkey));
 
-        vouts.push_back(vout);   
-        n++;             
+        vouts.push_back(vout);
+        n++;
     }
     txdata.push_back(Pair("vout", vouts));
 }
@@ -316,7 +316,7 @@ Object blockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool fTxI
             BOOST_FOREACH(const CTxOut& txout, tx.vout)
                 txinfo.push_back(txout.ToStringShort());
         }
-        else if (fTxDetails) 
+        else if (fTxDetails)
         {
             Object txdata;
             TxToJSON(tx, txdata);
@@ -475,7 +475,7 @@ Value getpeerinfo(const Array& params, bool fHelp)
 
         ret.push_back(obj);
     }
-    
+
     return ret;
 }
 
@@ -573,7 +573,7 @@ Value getnetworkghps(const Array& params, bool fHelp)
         }
         pindex = pindex->pnext;
     }
-    double dNetworkGhps = GetDifficulty() * 4.294967296 / nTargetSpacingWork; 
+    double dNetworkGhps = GetDifficulty() * 4.294967296 / nTargetSpacingWork;
     return dNetworkGhps;
 }
 
@@ -1340,7 +1340,7 @@ Value sendmany(const Array& params, bool fHelp)
 
         CScript scriptPubKey;
         scriptPubKey.SetDestination(address.Get());
-        int64 nAmount = AmountFromValue(s.value_); 
+        int64 nAmount = AmountFromValue(s.value_);
         if (nAmount < MIN_TXOUT_AMOUNT)
             throw JSONRPCError(-101, "Send amount too small");
         totalAmount += nAmount;
@@ -1665,7 +1665,7 @@ Value listtransactions(const Array& params, bool fHelp)
         if (ret.size() >= (nCount+nFrom)) break;
     }
     // ret is newest to oldest
-    
+
     if (nFrom > (int)ret.size())
         nFrom = ret.size();
     if ((nFrom + nCount) > (int)ret.size())
@@ -2501,9 +2501,9 @@ Value getcheckpoint(const Array& params, bool fHelp)
 
     Object result;
     CBlockIndex* pindexCheckpoint;
-    
+
     result.push_back(Pair("synccheckpoint", Checkpoints::hashSyncCheckpoint.ToString().c_str()));
-    pindexCheckpoint = mapBlockIndex[Checkpoints::hashSyncCheckpoint];        
+    pindexCheckpoint = mapBlockIndex[Checkpoints::hashSyncCheckpoint];
     result.push_back(Pair("height", pindexCheckpoint->nHeight));
     result.push_back(Pair("timestamp", DateTimeStrFormat(pindexCheckpoint->GetBlockTime()).c_str()));
     if (mapArgs.count("-checkpointkey"))
@@ -2612,7 +2612,7 @@ Value makekeypair(const Array& params, bool fHelp)
     string strPrefix = "";
     if (params.size() > 0)
         strPrefix = params[0].get_str();
- 
+
     CKey key;
     int nCount = 0;
     do
@@ -2669,13 +2669,13 @@ Value sendalert(const Array& params, bool fHelp)
     CDataStream sMsg(SER_NETWORK, PROTOCOL_VERSION);
     sMsg << (CUnsignedAlert)alert;
     alert.vchMsg = vector<unsigned char>(sMsg.begin(), sMsg.end());
-    
+
     vector<unsigned char> vchPrivKey = ParseHex(params[1].get_str());
     key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end())); // if key is not correct openssl may crash
     if (!key.Sign(Hash(alert.vchMsg.begin(), alert.vchMsg.end()), alert.vchSig))
         throw runtime_error(
-            "Unable to sign alert, check private key?\n");  
-    if(!alert.ProcessAlert()) 
+            "Unable to sign alert, check private key?\n");
+    if(!alert.ProcessAlert())
         throw runtime_error(
             "Failed to process alert.\n");
     // Relay alert

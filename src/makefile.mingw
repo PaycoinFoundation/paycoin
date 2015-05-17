@@ -25,7 +25,7 @@
 #   Edit db.h@113 in build_unix
 #   from
 #     typedef pthread_t db_threadid_t;
-#   to 
+#   to
 #     typedef u_int32_t db_threadid_t;
 #   Then
 #     make
