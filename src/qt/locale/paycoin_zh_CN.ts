@@ -33,7 +33,7 @@ This is experimental software.
 Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation type="unfinished">版权归比特币开发者所有  © 2009-2013 Paycoin Developers
+        <translation>版权归比特币开发者所有  © 2009-2013 Paycoin Developers
 
 这是一个实验性软件。
 
@@ -52,7 +52,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location filename="../forms/addressbookpage.ui" line="20"/>
         <source>These are your Paycoin addresses for receiving payments.  You may want to give a different one to each sender so you can keep track of who is paying you.</source>
-        <translation type="unfinished"></translation>
+        <translation>这些是你接受支付的Paycoin地址。当支付时你可以给出不同的地址，以便追踪不同的支付者。</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="33"/>
@@ -92,7 +92,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location filename="../forms/addressbookpage.ui" line="99"/>
         <source>&amp;Sign Message</source>
-        <translation>&amp;发送签名消息</translation>
+        <translation>签名消息(&amp;S)</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="110"/>
@@ -132,7 +132,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location filename="../addressbookpage.cpp" line="274"/>
         <source>Comma separated file (*.csv)</source>
-        <translation>逗号分隔文件 (*.csv)</translation>
+        <translation>逗号分隔文件(*.csv)</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="287"/>
@@ -264,12 +264,13 @@ This product includes software developed by the OpenSSL Project for use in the O
         <location filename="../askpassphrasedialog.cpp" line="107"/>
         <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
-        <translation type="unfinished"></translation>
+        <translation>警告：如果您加密了您的钱包之后忘记了口令，您将会&lt;b&gt;失去所有的Paycoin&lt;/b&gt;！
+确定要加密钱包吗？</translation>
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="117"/>
         <source>Paycoin will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Paycoins from being stolen by malware infecting your computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Paycoin将关闭软件以完成加密过程。 请谨记：钱包加密并不是万能的，电脑中毒，您的Paycoin还是有可能丢失。</translation>
     </message>
     <message>
         <location filename="../askpassphrasedialog.cpp" line="123"/>
@@ -385,7 +386,7 @@ Are you sure you wish to encrypt your wallet?</source>
     <message>
         <location filename="../bitcoingui.cpp" line="254"/>
         <source>Show information about Paycoin</source>
-        <translation type="unfinished"></translation>
+        <translation>显示Paycoin的相关信息</translation>
     </message>
     <message>
         <location filename="../bitcoingui.cpp" line="256"/>
@@ -540,8 +541,8 @@ Are you sure you wish to encrypt your wallet?</source>
     <message numerus="yes">
         <location filename="../bitcoingui.cpp" line="507"/>
         <source>%n active connection(s) to Paycoin network</source>
-        <translation>
-            <numerusform>%n条到Paycoin网络的活动连接</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -552,7 +553,7 @@ Are you sure you wish to encrypt your wallet?</source>
     <message numerus="yes">
         <location filename="../bitcoingui.cpp" line="533"/>
         <source>~%n block(s) remaining</source>
-        <translation>
+        <translation type="unfinished">
             <numerusform>剩余 ~%n 块</numerusform>
         </translation>
     </message>
@@ -569,28 +570,28 @@ Are you sure you wish to encrypt your wallet?</source>
     <message numerus="yes">
         <location filename="../bitcoingui.cpp" line="571"/>
         <source>%n second(s) ago</source>
-        <translation>
+        <translation type="unfinished">
             <numerusform>%n 秒前</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../bitcoingui.cpp" line="575"/>
         <source>%n minute(s) ago</source>
-        <translation>
+        <translation type="unfinished">
             <numerusform>%n 分种前</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../bitcoingui.cpp" line="579"/>
         <source>%n hour(s) ago</source>
-        <translation>
+        <translation type="unfinished">
             <numerusform>%n 小时前</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../bitcoingui.cpp" line="583"/>
         <source>%n day(s) ago</source>
-        <translation>
+        <translation type="unfinished">
             <numerusform>%n 天前</numerusform>
         </translation>
     </message>
@@ -722,7 +723,7 @@ Address: %4
     <message>
         <location filename="../forms/coincontroldialog.ui" line="205"/>
         <source>Fee:</source>
-        <translation>费用：</translation>
+        <translation>交易费：</translation>
     </message>
     <message>
         <location filename="../forms/coincontroldialog.ui" line="240"/>
@@ -849,7 +850,7 @@ Address: %4
     <message>
         <location filename="../coincontroldialog.cpp" line="70"/>
         <source>Copy change</source>
-        <translation>复制金额</translation>
+        <translation>复制找零</translation>
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="388"/>
@@ -1004,7 +1005,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../forms/editaddressdialog.ui" line="25"/>
         <source>&amp;Label</source>
-        <translation>&amp;标签</translation>
+        <translation>标签（&amp;L）</translation>
     </message>
     <message>
         <location filename="../forms/editaddressdialog.ui" line="35"/>
@@ -1049,7 +1050,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../editaddressdialog.cpp" line="96"/>
         <source>The entered address &quot;%1&quot; is not a valid Paycoin address.</source>
-        <translation type="unfinished"></translation>
+        <translation>您输入的“%1”不是有效的Paycoin地址。</translation>
     </message>
     <message>
         <location filename="../editaddressdialog.cpp" line="101"/>
@@ -1127,12 +1128,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../optionsdialog.cpp" line="217"/>
         <source>Mandatory network transaction fee per kB transferred. Most transactions are 1 kB and incur a 0.01 PPC fee. Note: transfer size may increase depending on the number of input transactions required to be added together to fund the payment.</source>
-        <translation type="unfinished"></translation>
+        <translation>传输每千字节必须缴纳的网络交易费。大多数交易为 1 kB 交0.01 PPC交易费。注：输入数目增加可能会导致更高的交易费。</translation>
     </message>
     <message>
         <location filename="../optionsdialog.cpp" line="223"/>
         <source>Additional network &amp;fee:</source>
-        <translation type="unfinished"></translation>
+        <translation>附加网络交易费（&amp;f）:</translation>
     </message>
     <message>
         <location filename="../optionsdialog.cpp" line="234"/>
@@ -1165,7 +1166,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../mintingtablemodel.cpp" line="203"/>
         <source>Address</source>
-        <translation type="unfinished">地址</translation>
+        <translation>地址</translation>
     </message>
     <message>
         <location filename="../mintingtablemodel.cpp" line="203"/>
@@ -1288,12 +1289,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../mintingview.cpp" line="163"/>
         <source>Comma separated file (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>逗号分隔文件(*.csv)</translation>
     </message>
     <message>
         <location filename="../mintingview.cpp" line="171"/>
         <source>Address</source>
-        <translation type="unfinished">地址</translation>
+        <translation>地址</translation>
     </message>
     <message>
         <location filename="../mintingview.cpp" line="172"/>
@@ -1323,12 +1324,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../mintingview.cpp" line="180"/>
         <source>Error exporting</source>
-        <translation type="unfinished">导出错误</translation>
+        <translation>导出错误</translation>
     </message>
     <message>
         <location filename="../mintingview.cpp" line="180"/>
         <source>Could not write to file %1.</source>
-        <translation type="unfinished">无法写入文件 %1。</translation>
+        <translation>无法写入文件 %1。</translation>
     </message>
 </context>
 <context>
@@ -1686,7 +1687,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="668"/>
         <source>&amp;Add recipient...</source>
-        <translation>&amp;添加接收者...</translation>
+        <translation>添加接收者...（&amp;A）</translation>
     </message>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="685"/>
@@ -1701,7 +1702,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="707"/>
         <source>Balance:</source>
-        <translation>余额:</translation>
+        <translation>余额：</translation>
     </message>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="714"/>
@@ -1716,7 +1717,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="748"/>
         <source>&amp;Send</source>
-        <translation>&amp;发送</translation>
+        <translation>发送（&amp;S）</translation>
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="51"/>
@@ -1756,7 +1757,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../sendcoinsdialog.cpp" line="58"/>
         <source>Copy change</source>
-        <translation>复制金额</translation>
+        <translation>复制找零</translation>
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="144"/>
@@ -1806,7 +1807,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../sendcoinsdialog.cpp" line="36"/>
         <source>Enter a Paycoin address</source>
-        <translation type="unfinished"></translation>
+        <translation>输入一个Paycoin地址</translation>
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="177"/>
@@ -1831,7 +1832,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../sendcoinsdialog.cpp" line="208"/>
         <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>错误：交易被拒绝。这种情况通常发生在您钱包中的一些货币已经被消费之后，比如您使用了一个wallet.dat的副本，而货币在那个副本中已经被消费，但在当前钱包中未被标记为已消费。</translation>
+        <translation>错误：交易被拒绝。这种情况通常发生在您钱包中的一些币已经被用之后，比如您使用了一个wallet.dat的副本，而货币在那个副本中已经被消费，但在当前钱包中未被标记为已用掉。</translation>
     </message>
 </context>
 <context>
@@ -1895,7 +1896,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../sendcoinsentry.cpp" line="25"/>
         <source>Enter a Paycoin address</source>
-        <translation>输入Paycoin地址</translation>
+        <translation>输入一个Paycoin地址</translation>
     </message>
 </context>
 <context>
@@ -2131,7 +2132,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactiondesc.cpp" line="58"/>
         <source>, broadcast through %1 node</source>
-        <translation>，同过 %1 节点广播</translation>
+        <translation>，广播通过 %1 节点</translation>
     </message>
     <message>
         <location filename="../transactiondesc.cpp" line="60"/>
@@ -2214,7 +2215,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactiondesc.cpp" line="220"/>
         <source>&lt;b&gt;Retained amount:&lt;/b&gt; %1 until %2 more blocks&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;冻结金额&lt;/b&gt; %1 再增加 %2 块之后解冻&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../transactiondesc.cpp" line="227"/>
@@ -2265,7 +2266,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactiontablemodel.cpp" line="214"/>
         <source>Type</source>
-        <translation>类型</translation>
+        <translation>类别</translation>
     </message>
     <message>
         <location filename="../transactiontablemodel.cpp" line="214"/>
@@ -2275,7 +2276,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactiontablemodel.cpp" line="214"/>
         <source>Amount</source>
-        <translation>数量</translation>
+        <translation>金额</translation>
     </message>
     <message numerus="yes">
         <location filename="../transactiontablemodel.cpp" line="281"/>
@@ -2766,7 +2767,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../bitcoinstrings.cpp" line="50"/>
         <source>Output extra debugging information</source>
-        <translation>输出调试信息</translation>
+        <translation>输出更多调试信息</translation>
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="51"/>
@@ -2996,7 +2997,7 @@ If the file does not exist, create it with owner-readable-only file permissions.
     <message>
         <location filename="../bitcoinstrings.cpp" line="101"/>
         <source>Error: CreateThread(StartNode) failed</source>
-        <translation>错误：线程创建(StartNode)失败</translation>
+        <translation>错误：CreateThread(StartNode)失败</translation>
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="102"/>
@@ -3018,12 +3019,9 @@ If the file does not exist, create it with owner-readable-only file permissions.
         <source>You must set rpcpassword=&lt;password&gt; in the configuration file:
 %s
 If the file does not exist, create it with owner-readable-only file permissions.</source>
-        <translatorcomment>您必须在配置文件设置rpcpassword=&lt;password&gt;:
+        <translation>您必须在配置文件：
 %s
-如果配置文件不存在，请自行建立一个只有所有者拥有只读权限的文件。</translatorcomment>
-        <translation>You must set rpcpassword=&lt;password&gt; in the configuration file:
-%s
-If the file does not exist, create it with owner-readable-only file permissions.</translation>
+设置rpcpassword=&lt;password&gt;。如果配置文件不存在，请自行建立一个只有所有者拥有只读权限的文件。</translation>
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="122"/>
@@ -3038,7 +3036,7 @@ If the file does not exist, create it with owner-readable-only file permissions.
     <message>
         <location filename="../bitcoinstrings.cpp" line="126"/>
         <source>Error: Transaction creation failed  </source>
-        <translation>错误：交易创建失败</translation>
+        <translation>错误：交易创建失败 </translation>
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="127"/>

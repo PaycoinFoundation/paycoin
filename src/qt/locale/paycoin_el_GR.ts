@@ -794,12 +794,12 @@ Address: %4
     <message>
         <location filename="../coincontroldialog.cpp" line="36"/>
         <source>Copy address</source>
-        <translation type="unfinished">Αντιγραφή Διεύθυνσης</translation>
+        <translation>Αντιγραφή Διεύθυνσης</translation>
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="37"/>
         <source>Copy label</source>
-        <translation type="unfinished">Αντιγραφή επιγραφής</translation>
+        <translation>Αντιγραφή επιγραφής</translation>
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="38"/>
@@ -1270,7 +1270,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../mintingview.cpp" line="163"/>
         <source>Comma separated file (*.csv)</source>
-        <translation type="unfinished">Αρχείο οριοθετημένο με κόμματα (*.csv)</translation>
+        <translation>Αρχείο οριοθετημένο με κόμματα (*.csv)</translation>
     </message>
     <message>
         <location filename="../mintingview.cpp" line="171"/>
@@ -1305,12 +1305,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../mintingview.cpp" line="180"/>
         <source>Error exporting</source>
-        <translation type="unfinished">Λάθος κατά την εξαγωγή</translation>
+        <translation>Λάθος κατά την εξαγωγή</translation>
     </message>
     <message>
         <location filename="../mintingview.cpp" line="180"/>
         <source>Could not write to file %1.</source>
-        <translation type="unfinished">Αδυναμία εγγραφής στο αρχείο %1.</translation>
+        <translation>Αδυναμία εγγραφής στο αρχείο %1.</translation>
     </message>
 </context>
 <context>
@@ -1890,7 +1890,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../forms/signverifymessagedialog.ui" line="24"/>
         <source>&amp;Sign Message</source>
-        <translation type="unfinished">Υπογραφη μήνυματος</translation>
+        <translation>Υπογραφη μήνυματος</translation>
     </message>
     <message>
         <location filename="../forms/signverifymessagedialog.ui" line="30"/>
@@ -2447,12 +2447,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactionview.cpp" line="125"/>
         <source>Copy address</source>
-        <translation type="unfinished">Αντιγραφή Διεύθυνσης</translation>
+        <translation>Αντιγραφή Διεύθυνσης</translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="126"/>
         <source>Copy label</source>
-        <translation type="unfinished">Αντιγραφή επιγραφής</translation>
+        <translation>Αντιγραφή επιγραφής</translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="127"/>
@@ -2482,7 +2482,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactionview.cpp" line="274"/>
         <source>Comma separated file (*.csv)</source>
-        <translation type="unfinished">Αρχείο οριοθετημένο με κόμματα (*.csv)</translation>
+        <translation>Αρχείο οριοθετημένο με κόμματα (*.csv)</translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="282"/>
@@ -2522,12 +2522,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../transactionview.cpp" line="292"/>
         <source>Error exporting</source>
-        <translation type="unfinished">Λάθος κατά την εξαγωγή</translation>
+        <translation>Λάθος κατά την εξαγωγή</translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="292"/>
         <source>Could not write to file %1.</source>
-        <translation type="unfinished">Αδυναμία εγγραφής στο αρχείο %1.</translation>
+        <translation>Αδυναμία εγγραφής στο αρχείο %1.</translation>
     </message>
     <message>
         <location filename="../transactionview.cpp" line="400"/>
