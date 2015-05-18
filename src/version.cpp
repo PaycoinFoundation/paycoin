@@ -12,7 +12,7 @@
 // target servers or GUI users specifically.
 
 // For the current run of Paycoin releases, the client name should be selected from
-// the list of ancient coinage, from oldest known to more recent. 
+// the list of ancient coinage, from oldest known to more recent.
 // You can find ideas for future client names, here: https://en.wikipedia.org/wiki/List_of_historical_currencies
 
 const std::string CLIENT_NAME("Satoshi");
@@ -40,7 +40,7 @@ const std::string CLIENT_NAME("Satoshi");
 #    include "build.h"
 #endif
 
-// git will put "#define GIT_ARCHIVE 1" on the next line inside archives. 
+// git will put "#define GIT_ARCHIVE 1" on the next line inside archives.
 #define GIT_ARCHIVE 1
 #ifdef GIT_ARCHIVE
 #    define GIT_COMMIT_ID "e3c013c"

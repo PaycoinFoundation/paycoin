@@ -405,7 +405,7 @@ class CBitcoinSecret : public CBase58Data
 {
 public:
     void SetSecret(const CSecret& vchSecret, bool fCompressed)
-    { 
+    {
         assert(vchSecret.size() == 32);
         SetData(128 + (fTestNet ? CBitcoinAddress::PUBKEY_ADDRESS_TEST : CBitcoinAddress::PUBKEY_ADDRESS), &vchSecret[0], vchSecret.size());
         if (fCompressed)

@@ -27,7 +27,7 @@ public:
     };
 
     explicit EditAddressDialog(Mode mode, QWidget *parent = 0);
-    ~EditAddressDialog();    
+    ~EditAddressDialog();
 
     void setModel(AddressTableModel *model);
     void loadRow(int row);

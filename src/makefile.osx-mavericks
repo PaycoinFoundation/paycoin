@@ -19,7 +19,7 @@ INCLUDEPATHS= \
 LIBPATHS= \
  -L"$(DEPSDIR)/lib" \
  -L"$(BREWDIR)/opt/berkeley-db4/lib" \
- -L"$(BREWDIR)/opt/boost/lib" 
+ -L"$(BREWDIR)/opt/boost/lib"
 
 USE_UPNP:=1
 
