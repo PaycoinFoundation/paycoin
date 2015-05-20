@@ -16,7 +16,7 @@ To Build
 cd src/
 make -f makefile.unix            # Headless bitcoin
 
-See readme-qt.rst for instructions on building Bitcoin QT,
+See readme-qt.md for instructions on building Bitcoin QT,
 the graphical bitcoin.
 
 Dependencies

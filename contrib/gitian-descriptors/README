@@ -27,7 +27,7 @@ To build the software:
 If you don't have the dependencies yet, get them and copy them to the inputs directory:
     wget 'http://miniupnp.tuxfamily.org/files/download.php?file=miniupnpc-1.9.tar.gz' -O gitian-builder/inputs/miniupnpc-1.9.tar.gz
     ...
-See doc/release-process.txt for the complete list of dependencies.
+See doc/release-process.md for the complete list of dependencies.
 
     cd paycoin
     git pull
