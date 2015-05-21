@@ -57,6 +57,10 @@ endif
 
 DEFS=-DMAC_OSX -DMSG_NOSIGNAL=0 -DBOOST_SPIRIT_THREADSAFE -DUSE_IPV6
 
+ifdef STATIC
+DEFS += -DSTATICLIB
+endif
+
 ifdef RELEASE
 CFLAGS = -mmacosx-version-min=10.9 -O3
 # Compile for maximum compatibility and smallest size.
