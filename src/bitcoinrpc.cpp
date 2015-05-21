@@ -446,6 +446,35 @@ static void CopyNodeStats(std::vector<CNodeStats>& vstats)
     }
 }
 
+Value listaddressbook(const Array& params, bool fHelp)
+{
+    if (fHelp || params.size() > 1)
+        throw runtime_error(
+            "listaddressbook [all=false]\n"
+            "Returns the address book. "
+            "By default, only returns the wallet addresses.\n"
+            "Set all=true to return entire address book."
+        );
+    Array ret;
+    bool all = false;
+    if (params.size() == 1) {
+        all = params[0].get_bool();
+    }
+    BOOST_FOREACH(const PAIRTYPE(CTxDestination, std::string)& item, pwalletMain->mapAddressBook)
+    {
+        const CBitcoinAddress& address = item.first;
+        const std::string& strName = item.second;
+        bool fMine = IsMine(*pwalletMain, address.Get());
+        if (!fMine && !all) continue;
+        Object obj;
+        obj.push_back(Pair("account", strName));
+        obj.push_back(Pair("address", address.ToString()));
+        ret.push_back(obj);
+    }
+
+    return ret;
+}
+
 Value getpeerinfo(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 0)
@@ -3394,6 +3423,7 @@ static const CRPCCommand vRPCCommands[] =
     { "stop",                   &stop,                   true },
     { "getblockcount",          &getblockcount,          true },
     { "getblocknumber",         &getblocknumber,         true },
+    { "listaddressbook",        &listaddressbook,        false },
     { "getconnectioncount",     &getconnectioncount,     true },
     { "getpeerinfo",            &getpeerinfo,            true },
     { "getdifficulty",          &getdifficulty,          true },
@@ -4097,6 +4127,7 @@ Array RPCConvertValues(const std::string &strMethod, const std::vector<std::stri
     if (strMethod == "listreceivedbyaddress"  && n > 1) ConvertTo<bool>(params[1]);
     if (strMethod == "listreceivedbyaccount"  && n > 0) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "listreceivedbyaccount"  && n > 1) ConvertTo<bool>(params[1]);
+    if (strMethod == "listaddressbook"        && n > 0) ConvertTo<bool>(params[0]);
     if (strMethod == "getbalance"             && n > 1) ConvertTo<boost::int64_t>(params[1]);
     if (strMethod == "getblockhash"           && n > 0) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "getblock"               && n > 1) ConvertTo<bool>(params[1]);
