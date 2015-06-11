@@ -1366,6 +1366,9 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                 std::vector<string> pubKeyList;
                 int primeNodeRate = 0;
 
+                if (nTime >= END_PRIME_PHASE_ONE && vout[0].scriptPubKey[0] != OP_PRIMENODEP2)
+                    return DoS(100, error("ConnectInputs() : prime node staking has ended for the given keypair"));
+
                 getPrimePubKeyList(vout[0].scriptPubKey[0], pubKeyList, primeNodeRate);
 
                 if (primeNodeRate) {
@@ -1390,7 +1393,10 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                         return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
                     /* Use time instead of block number because we can better
                      * control when a manditory wallet update is required. */
-                    if (nTime >= RESET_PRIMERATES) {
+                    if (nTime >= END_PRIME_PHASE_ONE) {
+                        if (nStakeReward > GetProofOfStakeReward(nCoinAge, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
+                            return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                    } else if (nTime >= RESET_PRIMERATES) {
                         if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
                             return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
                     } else {

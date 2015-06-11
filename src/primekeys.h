@@ -9,5 +9,6 @@
 
 void getPrimePubKeyList(unsigned char, std::vector<std::string>&, int&);
 void initPrimePubKeyLists();
+void initPrimeP2PubKeyLists();
 
 #endif // PRIMEKEYS_H

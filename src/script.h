@@ -196,6 +196,7 @@ enum opcodetype
     OP_PRIMENODE100 = 0xc2,
     OP_PRIMENODE20 = 0xc3,
     OP_PRIMENODE10 = 0xc4,
+    OP_PRIMENODEP2 = 0xc5,
 
 
     // template matching params
