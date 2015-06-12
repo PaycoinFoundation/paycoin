@@ -65,7 +65,7 @@ static const int64 MINIMUM_FOR_PRIMENODE = 125000 * COIN;
 static const int MAX_TIME_SINCE_BEST_BLOCK = 10; // how many seconds to wait before sending next PushGetBlocks()
 // Reset all primenode stakerates to 100% after the given date
 static const unsigned int RESET_PRIMERATES = 1429531200; // Mon, 20 Apr 2015 12:00:00 GMT
-static const unsigned int END_PRIME_PHASE_ONE = 1600000000; // Sun Sep 13 07:26:40 CDT 2020 (just confirm the build)
+static const unsigned int END_PRIME_PHASE_ONE = 1435752000; // Wed, 01 Jul 2015 12:00:00 GMT
 
 #ifdef USE_UPNP
 static const int fHaveUPnP = true;
