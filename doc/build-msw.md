@@ -7,7 +7,7 @@ cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP
 software written by Thomas Bernard.
 
 
-See readme-qt.rst for instructions on building Bitcoin QT, the
+See readme-qt.md for instructions on building Bitcoin QT, the
 graphical user interface.
 
 WINDOWS BUILD NOTES

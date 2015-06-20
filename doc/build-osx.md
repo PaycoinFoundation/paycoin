@@ -9,6 +9,7 @@ Thomas Bernard.
 
 
 Mac OS X bitcoind build instructions
+====================================
 Laszlo Hanyecz <solar@heliacal.net>
 Douglas Huff <dhuff@jrbobdobbs.org>
 
@@ -16,7 +17,7 @@ Modified for Paycoin by Jeff Larkin <jefflarkin@gmail.com>
 Modified for Paycoin by Ben Rossi <ben@rossinet.com>
 
 
-See readme-qt.rst for instructions on building the Paycoin community version of Paycoin QT, the
+See readme-qt.md for instructions on building the Paycoin community version of Paycoin QT, the
 graphical user interface.
 
 Tested on 10.5 and 10.6 intel.  PPC is not supported because it's big-endian.
@@ -31,30 +32,38 @@ but you can get the current version from https://developer.apple.com
 
 1.  Clone the github tree to get the source code:
 
-git clone git@github.com/PaycoinFoundation/paycoin.git paycoin
+		git clone git@github.com/PaycoinFoundation/paycoin.git paycoin
 
 2.  Download and install MacPorts from http://www.macports.org/
 
-2a. (for maximum compatibility with 32-bit installs)
-    Edit /opt/local/etc/macports/macports.conf and uncomment "build_arch i386"
+	2a. (for maximum compatibility with 32-bit installs)
+	
+		Edit /opt/local/etc/macports/macports.conf and uncomment "build_arch i386"
 
 3.  Install dependencies from MacPorts
 
-sudo port install boost db48 openssl miniupnpc
+		sudo port install boost db48 openssl miniupnpc
 
-Optionally install qrencode (and set USE_QRCODE=1):
-sudo port install qrencode
+		Optionally install qrencode (and set USE_QRCODE=1):
+		sudo port install qrencode
 
 4.  Now you should be able to build bitcoind:
 
-cd paycoin/src
-make -f makefile.osx
-# To build 64-bit binaies:
-make -f makefile.osx RELEASE=true 64BIT=true
+		cd paycoin/src
+		make -f makefile.osx
+
+
+To build 64-bit binaries:
+=========================
+
+	make -f makefile.osx RELEASE=true 64BIT=true
 
 Run:
-  ./paycoind --help  # for a list of command-line options.
-Run
-  ./paycoind -daemon # to start the bitcoin daemon.
-Run
-  ./paycoind help # When the daemon is running, to get a list of RPC commands
+
+	./paycoind --help  # for a list of command-line options.
+Run:
+
+	./paycoind -daemon # to start the bitcoin daemon.
+Run:
+
+	./paycoind help # When the daemon is running, to get a list of RPC commands
