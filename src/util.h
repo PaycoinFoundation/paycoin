@@ -734,11 +734,11 @@ public:
 #ifdef WIN32
 typedef HANDLE bitcoin_pthread_t;
 
-inline bitcoin_pthread_t CreateThread(void(*pfn)(void*), void* parg, bool fWantHandle=false)
+inline bitcoin_pthread_t NewThread(void(*pfn)(void*), void* parg, bool fWantHandle=false)
 {
     DWORD nUnused = 0;
     HANDLE hthread =
-        CreateThread(
+        NewThread(
             NULL,                        // default security
             0,                           // inherit stack size from parent
             (LPTHREAD_START_ROUTINE)pfn, // function pointer
@@ -747,7 +747,7 @@ inline bitcoin_pthread_t CreateThread(void(*pfn)(void*), void* parg, bool fWantH
             &nUnused);                   // thread identifier
     if (hthread == NULL)
     {
-        printf("Error: CreateThread() returned %d\n", GetLastError());
+        printf("Error: NewThread() returned %d\n", GetLastError());
         return (bitcoin_pthread_t)0;
     }
     if (!fWantHandle)
@@ -763,7 +763,7 @@ inline void SetThreadPriority(int nPriority)
     SetThreadPriority(GetCurrentThread(), nPriority);
 }
 #else
-inline pthread_t CreateThread(void(*pfn)(void*), void* parg, bool fWantHandle=false)
+inline pthread_t NewThread(void(*pfn)(void*), void* parg, bool fWantHandle=false)
 {
     pthread_t hthread = 0;
     int ret = pthread_create(&hthread, NULL, (void*(*)(void*))pfn, parg);
@@ -813,4 +813,3 @@ inline uint32_t ByteReverse(uint32_t value)
 }
 
 #endif
-
