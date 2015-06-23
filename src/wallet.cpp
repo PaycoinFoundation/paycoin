@@ -1349,6 +1349,12 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     int64 nReserveBalance = 0;
     if (mapArgs.count("-reservebalance") && !ParseMoney(mapArgs["-reservebalance"], nReserveBalance))
         return error("CreateCoinStake : invalid reserve balance amount");
+
+    // Force reserve on amounts over primenode minimum to block compound staking
+    if(nBalance > MINIMUM_FOR_PRIMENODE && primeNodeRate > 0) {
+        nReserveBalance = nBalance - MINIMUM_FOR_PRIMENODE;
+    }
+
     printf("Your balance is %lld and reservebalance is %lld\n", nBalance, nReserveBalance);
     if (nBalance <= nReserveBalance)
         return false;
