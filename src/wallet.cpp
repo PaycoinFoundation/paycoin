@@ -1343,7 +1343,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
             if (txNew.nTime >= END_PRIME_PHASE_ONE) {
                 scriptPrimeNode << OP_PRIMENODEP2 << vchSig;
-                primeNodeRate = 10;
+                primeNodeRate = 25;
                 nCombineThreshold = MINIMUM_FOR_PRIMENODE;
             }
 

@@ -47,7 +47,7 @@ void getPrimePubKeyList(unsigned char primeType, std::vector<std::string> &pubKe
         break;
 
     case OP_PRIMENODEP2:
-        primeNodeRate = 10;
+        primeNodeRate = 25;
         pubKeyList = pubKeyListP2;
         break;
     }
