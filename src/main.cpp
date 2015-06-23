@@ -973,7 +973,7 @@ int64 GetProofOfWorkReward(int nHeight, unsigned int nTime)
 
 
 // paycoin: miner's coin stake is rewarded based on coin age spent (coin-days)
-int64 GetProofOfStakeReward(int64 nCoinAge, int primeNodeRate)
+int64 GetProofOfStakeReward(int64 nCoinAge, unsigned int nTime, int primeNodeRate)
 {
 
     int64 nSubsidy = 0;
@@ -985,6 +985,8 @@ int64 GetProofOfStakeReward(int64 nCoinAge, int primeNodeRate)
         nRewardCoinYear = 10 * CENT;
     else if (primeNodeRate == 20)
         nRewardCoinYear = 20 * CENT;
+    else if (primeNodeRate == 25)
+        nRewardCoinYear = 25 * CENT;
     else if (primeNodeRate == 100)
         nRewardCoinYear = 100 * CENT;
     else if (primeNodeRate == 350)
@@ -1384,6 +1386,9 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                 std::vector<string> pubKeyList;
                 int primeNodeRate = 0;
 
+                if (nTime >= END_PRIME_PHASE_ONE && vout[0].scriptPubKey[0] != OP_PRIMENODEP2)
+                    return DoS(100, error("ConnectInputs() : prime node staking has ended for the given keypair"));
+
                 getPrimePubKeyList(vout[0].scriptPubKey[0], pubKeyList, primeNodeRate);
 
                 if (primeNodeRate) {
@@ -1408,11 +1413,11 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                         return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
                     /* Use time instead of block number because we can better
                      * control when a manditory wallet update is required. */
-                    if (nTime >= RESET_PRIMERATES) {
-                        if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
+                    if (nTime >= RESET_PRIMERATES && nTime < END_PRIME_PHASE_ONE) {
+                        if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, 100) - GetMinFee() + MIN_TX_FEE)
                             return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
                     } else {
-                        if (nStakeReward > GetProofOfStakeReward(nCoinAge, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
+                        if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
                             return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
                     }
                 }
@@ -1422,7 +1427,7 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                 if(GetValueOut() <= MINIMUM_FOR_ORION){
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for orion controller = %lld while you only have %lld", MINIMUM_FOR_ORION, GetValueOut()));
                 }
-                if(nStakeReward > GetProofOfStakeReward(nCoinAge, 0) - GetMinFee() + MIN_TX_FEE){
+                if(nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, 0) - GetMinFee() + MIN_TX_FEE){
                     return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
                 }
             }

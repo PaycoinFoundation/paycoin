@@ -1292,7 +1292,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     // Make variable interested rate
     unsigned int primeNodeRate = 0;
 
-    if (mapArgs.count("-primenodekey") && mapArgs.count("-primenoderate")) // paycoin: primenode priv key
+    if (mapArgs.count("-primenodekey")) // paycoin: primenode priv key
     {
             std::string strPrivKey = GetArg("-primenodekey", "");
             std::vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
@@ -1310,29 +1310,41 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             }
 
             CScript scriptPrimeNode;
-            std::string primeNodeRateArg = GetArg("-primenoderate", "");
-            if (primeNodeRateArg.compare("350") == 0){
-                scriptPrimeNode << OP_PRIMENODE350 << vchSig;
-                primeNodeRate = 350;
-                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-            }else if (primeNodeRateArg.compare("100") == 0){
-                scriptPrimeNode << OP_PRIMENODE100 << vchSig;
-                primeNodeRate = 100;
-                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-            }else if (primeNodeRateArg.compare("20") == 0){
-                scriptPrimeNode << OP_PRIMENODE20 << vchSig;
-                primeNodeRate = 20;
-                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-            }else if (primeNodeRateArg.compare("10") == 0){
-                scriptPrimeNode << OP_PRIMENODE10 << vchSig;
-                primeNodeRate = 10;
-                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-            }else{
-                return error("CreateCoinStake : Primenode rate configuration is wrong or missing");
+
+            /* Primenode rates will not be in the configuration after
+             * the end of Phase One. */
+            if (txNew.nTime < END_PRIME_PHASE_ONE) {
+                mapArgs.count("-primenoderate");
+                std::string primeNodeRateArg = GetArg("-primenoderate", "");
+                if (primeNodeRateArg.compare("350") == 0){
+                    scriptPrimeNode << OP_PRIMENODE350 << vchSig;
+                    primeNodeRate = 350;
+                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+                }else if (primeNodeRateArg.compare("100") == 0){
+                    scriptPrimeNode << OP_PRIMENODE100 << vchSig;
+                    primeNodeRate = 100;
+                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+                }else if (primeNodeRateArg.compare("20") == 0){
+                    scriptPrimeNode << OP_PRIMENODE20 << vchSig;
+                    primeNodeRate = 20;
+                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+                }else if (primeNodeRateArg.compare("10") == 0){
+                    scriptPrimeNode << OP_PRIMENODE10 << vchSig;
+                    primeNodeRate = 10;
+                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+                }else{
+                    return error("CreateCoinStake : Primenode rate configuration is wrong or missing");
+                }
+
+                if (txNew.nTime >= RESET_PRIMERATES) {
+                    primeNodeRate = 100;
+                }
             }
 
-            if (txNew.nTime >= RESET_PRIMERATES) {
-                primeNodeRate = 100;
+            if (txNew.nTime >= END_PRIME_PHASE_ONE) {
+                scriptPrimeNode << OP_PRIMENODEP2 << vchSig;
+                primeNodeRate = 25;
+                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
             }
 
             printf("Primenode rate for staking is %d\n", primeNodeRate);

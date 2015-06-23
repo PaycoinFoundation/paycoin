@@ -27,7 +27,7 @@ using namespace std;
 using namespace boost;
 
 CWallet* pwalletMain;
-int MIN_PROTO_VERSION = 70001;
+int MIN_PROTO_VERSION = 70002;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -376,8 +376,8 @@ bool AppInit2(int argc, char* argv[])
      * as resetting the primenode stake rates; do this here to insure that it's
      * done before attempting to load the blockchain, etc (this is also why we
      * use a time instead of a block number). */
-    if(time(NULL) >= RESET_PRIMERATES)
-        MIN_PROTO_VERSION = 70002;
+    if (time(NULL) >= END_PRIME_PHASE_ONE)
+        MIN_PROTO_VERSION = 70003;
 
     std::ostringstream strErrors;
     //

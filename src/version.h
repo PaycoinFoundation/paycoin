@@ -61,11 +61,13 @@ extern const std::string CLIENT_DATE;
 // network protocol versioning
 //
 
-static const int PROTOCOL_VERSION = 70002;
+static const int PROTOCOL_VERSION = 70003;
 
-// earlier versions not supported as of Feb 2012, and are disconnected
-// NOTE: as of bitcoin v0.6 message serialization (vSend, vRecv) still
-// uses MIN_PROTO_VERSION(209), where message format uses PROTOCOL_VERSION
+/* As of Paycoin protocol 70002 the MIN_PROTO_VERSION is initialized
+ * and determined in init to allow for a pseudo dynamic change of minimum
+ * protocol. This is also updated at runtime: net.cpp/ThreadSocketHandler2
+ * Old nodes are dropped upon minimum protocol change instead of simply
+ * being denied on reconnect. */
 extern int MIN_PROTO_VERSION;
 
 // nTime field added to CAddress, starting with this version;
