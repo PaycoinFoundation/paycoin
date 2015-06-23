@@ -49,7 +49,7 @@ void StartShutdown()
     QueueShutdown();
 #else
     // Without UI, Shutdown() can simply be started in a new thread
-    CreateThread(Shutdown, NULL);
+    NewThread(Shutdown, NULL);
 #endif
 }
 
@@ -77,7 +77,7 @@ void Shutdown(void* parg)
         boost::filesystem::remove(GetPidFile());
         UnregisterWallet(pwalletMain);
         delete pwalletMain;
-        CreateThread(ExitTimeout, NULL);
+        NewThread(ExitTimeout, NULL);
         Sleep(50);
         printf("Paycoin exiting\n\n");
         fExit = true;
@@ -686,11 +686,11 @@ bool AppInit2(int argc, char* argv[])
 
     RandAddSeedPerfmon();
 
-    if (!CreateThread(StartNode, NULL))
-        ThreadSafeMessageBox(_("Error: CreateThread(StartNode) failed"), _("Paycoin"), wxOK | wxMODAL);
+    if (!NewThread(StartNode, NULL))
+        ThreadSafeMessageBox(_("Error: NewThread(StartNode) failed"), _("Paycoin"), wxOK | wxMODAL);
 
     if (fServer)
-        CreateThread(ThreadRPCServer, NULL);
+        NewThread(ThreadRPCServer, NULL);
 
 #ifdef QT_GUI
     if (GetStartOnSystemStartup())

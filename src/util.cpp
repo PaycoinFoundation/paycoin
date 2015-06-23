@@ -1380,4 +1380,3 @@ void runCommand(std::string strCommand)
     if (nErr)
         printf("runCommand error: system(%s) returned %d\n", strCommand.c_str(), nErr);
 }
-
