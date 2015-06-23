@@ -96,6 +96,7 @@ OBJS= \
     obj/kernelrecord.o \
     obj/bitcoinrpc.o \
     obj/rpcdump.o \
+    obj/rpcnet.o \
     obj/script.o \
     obj/util.o \
     obj/wallet.o \
