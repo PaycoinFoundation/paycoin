@@ -41,7 +41,7 @@ script: |
   #
   cd $HOME/build/paycoin
   git archive --format=tar -o paycoin.tar HEAD
-  cp doc/README $OUTDIR
+  cp doc/README.md $OUTDIR
   cp COPYING $OUTDIR
   DISTNAME=paycoin.tar
   #
