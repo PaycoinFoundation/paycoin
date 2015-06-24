@@ -1,4 +1,4 @@
-Paycoin 0.2.0.0
+Paycoin 0.3.0.0
 Copyright (c) 2014 Paycoin developers
 
 Distributed under the MIT software license, see the accompanying
@@ -14,14 +14,14 @@ Paycoin is a Paycoin network-compatible, community-developed wallet client.
 
 The project has been designed to provide people with a
 stable, secure, and feature-rich alternative to the Paycoin reference
-wallet (https://github.com/paycoin/paycoin). 
+wallet (https://github.com/paycoin/paycoin).
 
-To help faciliate broad community cooperation, a number of trusted 
-Paycoin/Peershares community leaders have write permissions to the project's 
-codebase, allowing for decentralization and continuity. Community members, 
-old and new, are encouraged to find ways to contribute to the success of 
-the project. If you have experience with programming, product design, 
-QA engineering, translation, or have a different set of skills that you want to 
+To help faciliate broad community cooperation, a number of trusted
+Paycoin/Peershares community leaders have write permissions to the project's
+codebase, allowing for decentralization and continuity. Community members,
+old and new, are encouraged to find ways to contribute to the success of
+the project. If you have experience with programming, product design,
+QA engineering, translation, or have a different set of skills that you want to
 bring to the project, your involvement is appreciated!
 
 
@@ -36,14 +36,14 @@ Resources
 ---------
 Paycoin source code: https://github.com/Paycoin/Paycoin
 
-For the most current instructions covering how to compile Paycoin from 
+For the most current instructions covering how to compile Paycoin from
 source on a variety of operating systems, please visit:
 https://github.com/Paycoin/Paycoin/tree/master/doc
 
 Open software issues can be viewed, and new issues can be reported at:
 https://github.com/Paycoin/Paycoin/issues?state=open
 
-Paycoin discussion forums (hosted by PaycoinTalk.org): 
+Paycoin discussion forums (hosted by PaycoinTalk.org):
 http://www.paycointalk.org/index.php?board=64.0
 
 
@@ -60,9 +60,9 @@ Copyright (c) 2011-2014 Peercoin Developers
 Distributed under the MIT software license
 (http://www.opensource.org/licenses/mit-license.php)
 
-Peercoin is a free open source project with the goal of providing a 
-long-term energy-efficient cryptocurrency. Built on the foundation 
-of Bitcoin, innovations such as proof-of-stake help further advance 
+Peercoin is a free open source project with the goal of providing a
+long-term energy-efficient cryptocurrency. Built on the foundation
+of Bitcoin, innovations such as proof-of-stake help further advance
 the field of cryptocurrency.
 
 https://github.com/ppcoin/ppcoin
