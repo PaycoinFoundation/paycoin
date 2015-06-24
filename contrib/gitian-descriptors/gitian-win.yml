@@ -51,7 +51,7 @@ script: |
       # Make source code archive which is architecture independent so it only needs to be done once
       cd $HOME/build/paycoin
       git archive --format=tar -o paycoin.tar HEAD
-      cp doc/README_windows.txt $OUTDIR/readme.txt
+      cp doc/README_windows.md $OUTDIR/readme.md
       cp COPYING $OUTDIR/COPYING.txt
       DISTNAME=paycoin.tar
       NEEDDIST=0
