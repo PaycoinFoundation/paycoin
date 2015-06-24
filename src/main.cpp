@@ -4400,8 +4400,8 @@ void GenerateBitcoins(bool fGenerate, CWallet* pwallet)
         printf("Starting %d BitcoinMiner threads\n", nAddThreads);
         for (int i = 0; i < nAddThreads; i++)
         {
-            if (!NewThread(ThreadBitcoinMiner, pwallet))
-                printf("Error: NewThread(ThreadBitcoinMiner) failed\n");
+            if (!CreateThread(ThreadBitcoinMiner, pwallet))
+                printf("Error: CreateThread(ThreadBitcoinMiner) failed\n");
             Sleep(10);
         }
     }

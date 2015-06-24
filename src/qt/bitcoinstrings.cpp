@@ -98,7 +98,7 @@ QT_TRANSLATE_NOOP("bitcoin-core", "Invalid amount for -paytxfee=<amount>"),
 QT_TRANSLATE_NOOP("bitcoin-core", ""
 "Warning: -paytxfee is set very high.  This is the transaction fee you will "
 "pay if you send a transaction."),
-QT_TRANSLATE_NOOP("bitcoin-core", "Error: NewThread(StartNode) failed"),
+QT_TRANSLATE_NOOP("bitcoin-core", "Error: CreateThread(StartNode) failed"),
 QT_TRANSLATE_NOOP("bitcoin-core", "To use the %s option"),
 QT_TRANSLATE_NOOP("bitcoin-core", ""
 "%s, you must set a rpcpassword in the configuration file:\n"

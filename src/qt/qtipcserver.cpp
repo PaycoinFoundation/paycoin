@@ -83,7 +83,7 @@ void ipcInit()
     catch (interprocess_exception &ex) {
         return;
     }
-    if (!NewThread(ipcThread, mq))
+    if (!CreateThread(ipcThread, mq))
     {
         delete mq;
     }
