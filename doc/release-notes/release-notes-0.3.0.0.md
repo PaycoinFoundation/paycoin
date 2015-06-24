@@ -89,6 +89,7 @@ RPC:
 
 Build system:
 - `8b75dcc` Fix makefile for OS X when compiling a static binary
+- `4fb34b4` Update paths for gitian
 
 GUI:
 - `f3ce3c5` simplified qrcode icon that scales gracefully to 16x16
@@ -122,6 +123,8 @@ Miscellaneous:
 - `e41cfd2` Fix some cosmetic flaws in the codebase
 - `236c9f2` Rename CreateThread to NewThread
 - `c1ab418` Update checkpoints; 100000, 150000, 200000, 210000
+- `8835d2b` Update release version and add release notes for 0.3.0.0
+- `f6e1cd9` Revert "Rename CreateThread to NewThread"
 
 Network:
 - `08dee25` Try more than the first address for a DNS -addnode.
