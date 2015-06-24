@@ -1134,7 +1134,7 @@ void MapPort(bool fMapPort)
     }
     if (fUseUPnP && vnThreadsRunning[THREAD_UPNP] < 1)
     {
-        if (!NewThread(ThreadMapPort, NULL))
+        if (!CreateThread(ThreadMapPort, NULL))
             printf("Error: ThreadMapPort(ThreadMapPort) failed\n");
     }
 }
@@ -1835,7 +1835,7 @@ void static Discover()
 
     if (!fUseProxy && !mapArgs.count("-connect") && !fNoListen)
     {
-        NewThread(ThreadGetMyExternalIP, NULL);
+        CreateThread(ThreadGetMyExternalIP, NULL);
     }
 }
 
@@ -1867,39 +1867,39 @@ void StartNode(void* parg)
     if (!GetBoolArg("-dnsseed", true))
         printf("DNS seeding disabled\n");
     else
-        if (!NewThread(ThreadDNSAddressSeed, NULL))
-            printf("Error: NewThread(ThreadDNSAddressSeed) failed\n");
+        if (!CreateThread(ThreadDNSAddressSeed, NULL))
+            printf("Error: CreateThread(ThreadDNSAddressSeed) failed\n");
 
     // Map ports with UPnP
     if (fHaveUPnP)
         MapPort(fUseUPnP);
 
     // Send and receive from sockets, accept connections
-    if (!NewThread(ThreadSocketHandler, NULL))
-        printf("Error: NewThread(ThreadSocketHandler) failed\n");
+    if (!CreateThread(ThreadSocketHandler, NULL))
+        printf("Error: CreateThread(ThreadSocketHandler) failed\n");
 
     // Initiate outbound connections from -addnode
-    if (!NewThread(ThreadOpenAddedConnections, NULL))
-        printf("Error: NewThread(ThreadOpenAddedConnections) failed\n");
+    if (!CreateThread(ThreadOpenAddedConnections, NULL))
+        printf("Error: CreateThread(ThreadOpenAddedConnections) failed\n");
 
     // Initiate outbound connections
-    if (!NewThread(ThreadOpenConnections, NULL))
-        printf("Error: NewThread(ThreadOpenConnections) failed\n");
+    if (!CreateThread(ThreadOpenConnections, NULL))
+        printf("Error: CreateThread(ThreadOpenConnections) failed\n");
 
     // Process messages
-    if (!NewThread(ThreadMessageHandler, NULL))
-        printf("Error: NewThread(ThreadMessageHandler) failed\n");
+    if (!CreateThread(ThreadMessageHandler, NULL))
+        printf("Error: CreateThread(ThreadMessageHandler) failed\n");
 
     // Dump network addresses
-    if (!NewThread(ThreadDumpAddress, NULL))
-        printf("Error; NewThread(ThreadDumpAddress) failed\n");
+    if (!CreateThread(ThreadDumpAddress, NULL))
+        printf("Error; CreateThread(ThreadDumpAddress) failed\n");
 
     // Generate coins in the background
     GenerateBitcoins(GetBoolArg("-gen", false), pwalletMain);
 
     // paycoin: mint proof-of-stake blocks in the background
-    if (!NewThread(ThreadStakeMinter, pwalletMain))
-        printf("Error: NewThread(ThreadStakeMinter) failed\n");
+    if (!CreateThread(ThreadStakeMinter, pwalletMain))
+        printf("Error: CreateThread(ThreadStakeMinter) failed\n");
 }
 
 bool StopNode()

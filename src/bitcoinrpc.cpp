@@ -1997,9 +1997,9 @@ Value walletpassphrase(const Array& params, bool fHelp)
             "walletpassphrase <passphrase> <timeout>\n"
             "Stores the wallet decryption key in memory for <timeout> seconds.");
 
-    NewThread(ThreadTopUpKeyPool, NULL);
+    CreateThread(ThreadTopUpKeyPool, NULL);
     int64* pnSleepTime = new int64(params[1].get_int64());
-    NewThread(ThreadCleanWalletPassphrase, pnSleepTime);
+    CreateThread(ThreadCleanWalletPassphrase, pnSleepTime);
 
     // paycoin: if user OS account compromised prevent trivial sendmoney commands
     if (params.size() > 2)

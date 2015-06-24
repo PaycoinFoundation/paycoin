@@ -39,5 +39,6 @@ std::string _(const char* psz)
 void QueueShutdown()
 {
     // Without UI, Shutdown can simply be started in a new thread
-    NewThread(Shutdown, NULL);
+    CreateThread(Shutdown, NULL);
 }
+
