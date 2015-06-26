@@ -1520,7 +1520,7 @@ bool CBlock::DisconnectBlock(CTxDB& txdb, CBlockIndex* pindex)
             return error("DisconnectBlock() : WriteBlockIndex failed");
     }
 
-    // paycoin: clean up wallet after disconnecting coinstake
+    // paycoin: cleanup wallet after disconnecting coinstake
     BOOST_FOREACH(CTransaction& tx, vtx)
         SyncWithWallets(tx, this, false, false);
 
@@ -3432,7 +3432,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
     }
 
 
-    // Update the last seen time for this node's address
+    // Update the last seen time for this nodes address
     if (pfrom->fNetworkNode)
         if (strCommand == "version" || strCommand == "addr" || strCommand == "inv" || strCommand == "getdata" || strCommand == "ping")
             AddressCurrentlyConnected(pfrom->addr);
@@ -3542,7 +3542,7 @@ bool ProcessMessages(CNode* pfrom)
         {
             if (strstr(e.what(), "end of data"))
             {
-                // Allow exceptions from underlength message on vRecv
+                // Allow exceptions from under-length message on vRecv
                 printf("ProcessMessages(%s, %u bytes) : Exception '%s' caught, normally caused by a message being shorter than its stated length\n", strCommand.c_str(), nMessageSize, e.what());
             }
             else if (strstr(e.what(), "size too large"))
@@ -3795,7 +3795,7 @@ unsigned int static ScanHash_CryptoPP(char* pmidstate, char* pdata, char* phash1
     unsigned int& nNonce = *(unsigned int*)(pdata + 12);
     for (;;)
     {
-        // Crypto++ SHA-256
+        // Crypto++ SHA256
         // Hash pdata using pmidstate as the starting state into
         // preformatted buffer phash1, then hash phash1 into phash
         nNonce++;
@@ -4272,7 +4272,7 @@ void BitcoinMiner(CWallet *pwallet, bool fProofOfStake)
             unsigned int nHashesDone = 0;
             unsigned int nNonceFound;
 
-            // Crypto++ SHA-256
+            // Crypto++ SHA256
             nNonceFound = ScanHash_CryptoPP(pmidstate, pdata + 64, phash1,
                                             (char*)&hash, nHashesDone);
 

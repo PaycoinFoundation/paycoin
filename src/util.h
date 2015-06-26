@@ -15,7 +15,7 @@
 #include <sys/resource.h>
 #else
 #ifndef _WIN64
-typedef int pid_t; /* define for windows compatiblity */
+typedef int pid_t; /* define for windows compatibility */
 #endif
 #endif
 #include <map>
