@@ -1506,7 +1506,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             return error("CreateCoinStake : credit doesn't meet requirement for orion controller; credit = %lld; requirement = %lld nCombineThreshold = %lld\n", nCredit, MINIMUM_FOR_ORION, nCombineThreshold);
         }
 
-        int64 nReward = GetProofOfStakeReward(nCoinAge, primeNodeRate);
+        int64 nTime = GetTime();
+        int64 nReward = GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate);
 
         // Refuse to create mint that has zero or negative reward
         if(nReward <= 0) {
@@ -2263,4 +2264,3 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nMinWeight, uint
 
     return true;
 }
-
