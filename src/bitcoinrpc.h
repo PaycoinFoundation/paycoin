@@ -11,6 +11,7 @@
 
 class CReserveKey;
 
+#define BOOST_SPIRIT_THREADSAFE
 #include "json/json_spirit_reader_template.h"
 #include "json/json_spirit_writer_template.h"
 #include "json/json_spirit_utils.h"
