@@ -51,7 +51,7 @@ enum
     LOCAL_IF,     // address a local interface listens on
     LOCAL_BIND,   // address explicit bound to
     LOCAL_UPNP,   // address reported by UPnP
-    LOCAL_HTTP,   // address reported by whatismyip.com and similars
+    LOCAL_HTTP,   // address reported by whatismyip.com and similar
     LOCAL_MANUAL, // address explicitly specified (-externalip=)
 
     LOCAL_MAX
@@ -182,7 +182,7 @@ protected:
     int nRefCount;
 
     // Denial-of-service detection/prevention
-    // Key is ip address, value is banned-until-time
+    // Key is IP address, value is banned-until-time
     static std::map<CNetAddr, int64> setBanned;
     static CCriticalSection cs_setBanned;
     int nMisbehavior;
@@ -629,7 +629,7 @@ public:
     // way.
     // IMPORTANT:  There should be nothing I can give a
     // node that it will forward on that will make that
-    // node's peers drop it. If there is, an attacker
+    // nodes peers drop it. If there is, an attacker
     // can isolate a node and/or try to split the network.
     // Dropping a node for sending stuff that is invalid
     // now but might be valid in a later version is also
