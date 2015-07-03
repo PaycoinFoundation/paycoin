@@ -961,7 +961,7 @@ int64 GetProofOfWorkReward(int nHeight, unsigned int nTime)
         nSubsidy = 12000000 * COIN;
     }else if(nTime <= POW_START_TIME){
         nSubsidy = 0 * COIN;
-    }else if(nTime < POW_END_TIME - 86400){ // reward is 0 before ending PoW 1 day
+    }else if((!fTestNet && nTime < POW_END_TIME - 86400) || fTestNet){ // reward is 0 before ending PoW 1 day
         nSubsidy = 49 * COIN;
     }
 
@@ -2134,7 +2134,7 @@ bool CBlock::AcceptBlock()
     if (GetBlockTime() <= pindexPrev->GetMedianTimePast() || GetBlockTime() + nMaxClockDrift < pindexPrev->GetBlockTime())
         return error("AcceptBlock() : block's timestamp is too early");
 
-    if (IsProofOfWork() && nTimePoW > POW_END_TIME)
+    if (IsProofOfWork() && nTimePoW > POW_END_TIME && !fTestNet)
         return DoS(100, error("AcceptBlock() : reject proof-of-work at height %d", nHeight));
 
     // Check that all transactions are finalized
@@ -2439,7 +2439,7 @@ bool LoadBlockIndex(bool fAllowNew)
     {
         hashGenesisBlock = hashGenesisBlockTestNet;
         bnProofOfWorkLimit = CBigNum(~uint256(0) >> 28);
-        nStakeMinAge = 60 * 60 * 24; // test net min age is 1 day
+        nStakeMinAge = 60 * 30; // test net min age is 30 minutes
         nCoinbaseMaturity = 60;
         bnInitialHashTarget = CBigNum(~uint256(0) >> 29);
         nModifierInterval = 60 * 20; // test net modifier interval is 20 minutes
