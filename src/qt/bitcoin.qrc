@@ -40,7 +40,8 @@
         <file>res/icons/paycoin_testnet.png</file>
         <file alias="paycoin_tooltip">res/icons/paycoin.png</file>
         <file>res/icons/paycoin.ico</file>
-		<file alias="qrcode">res/icons/qrcode.png</file>
+        <file alias="qrcode">res/icons/qrcode.png</file>
+        <file alias="debugwindow">res/icons/debugwindow.png</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="about">res/images/about.png</file>
