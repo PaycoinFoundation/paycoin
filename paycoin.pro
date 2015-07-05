@@ -168,6 +168,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/allocators.h \
     src/ui_interface.h \
     src/qt/rpcconsole.h \
+    src/version.h \
+    src/netbase.h \
     src/kernel.h \
     src/qt/mintingview.h \
     src/qt/mintingtablemodel.h \
