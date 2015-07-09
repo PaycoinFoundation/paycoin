@@ -1,7 +1,7 @@
 // Copyright (c) 2012 The Bitcoin developers
 // Copyright (c) 2012-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef BITCOIN_VERSION_H
 #define BITCOIN_VERSION_H
@@ -16,9 +16,9 @@
 
 // paycoin version - intended for display purpose only
 #define PEERUNITY_VERSION_MAJOR       0
-#define PEERUNITY_VERSION_MINOR       1
-#define PEERUNITY_VERSION_REVISION    2
-#define PEERUNITY_VERSION_BUILD       26
+#define PEERUNITY_VERSION_MINOR       3
+#define PEERUNITY_VERSION_REVISION    0
+#define PEERUNITY_VERSION_BUILD       2
 
 static const int PEERUNITY_VERSION =
                            1000000 * PEERUNITY_VERSION_MAJOR
@@ -46,7 +46,7 @@ static const int PPCOIN_VERSION =
 
 static const int BITCOIN_VERSION =
                            1000000 * BITCOIN_VERSION_MAJOR
-                         +   10000 * BITCOIN_VERSION_MINOR 
+                         +   10000 * BITCOIN_VERSION_MINOR
                          +     100 * BITCOIN_VERSION_REVISION
                          +       1 * BITCOIN_VERSION_BUILD;
 
@@ -61,12 +61,14 @@ extern const std::string CLIENT_DATE;
 // network protocol versioning
 //
 
-static const int PROTOCOL_VERSION = 70001;
+static const int PROTOCOL_VERSION = 70003;
 
-// earlier versions not supported as of Feb 2012, and are disconnected
-// NOTE: as of bitcoin v0.6 message serialization (vSend, vRecv) still
-// uses MIN_PROTO_VERSION(209), where message format uses PROTOCOL_VERSION
-static const int MIN_PROTO_VERSION = 70001;
+/* As of Paycoin protocol 70002 the MIN_PROTO_VERSION is initialized
+ * and determined in init to allow for a pseudo dynamic change of minimum
+ * protocol. This is also updated at runtime: net.cpp/ThreadSocketHandler2
+ * Old nodes are dropped upon minimum protocol change instead of simply
+ * being denied on reconnect. */
+extern int MIN_PROTO_VERSION;
 
 // nTime field added to CAddress, starting with this version;
 // if possible, avoid requesting addresses nodes older than this

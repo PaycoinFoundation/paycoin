@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2012-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef BITCOIN_NET_H
 #define BITCOIN_NET_H
@@ -51,8 +51,7 @@ enum
     LOCAL_IF,     // address a local interface listens on
     LOCAL_BIND,   // address explicit bound to
     LOCAL_UPNP,   // address reported by UPnP
-    LOCAL_IRC,    // address reported by IRC (deprecated)
-    LOCAL_HTTP,   // address reported by whatismyip.com and similars
+    LOCAL_HTTP,   // address reported by whatismyip.com and similar
     LOCAL_MANUAL, // address explicitly specified (-externalip=)
 
     LOCAL_MAX
@@ -126,7 +125,8 @@ extern std::deque<std::pair<int64, CInv> > vRelayExpiration;
 extern CCriticalSection cs_mapRelay;
 extern std::map<CInv, int64> mapAlreadyAskedFor;
 
-
+extern std::vector<std::string> vAddedNodes;
+extern CCriticalSection cs_vAddedNodes;
 
 
 class CNodeStats
@@ -182,7 +182,7 @@ protected:
     int nRefCount;
 
     // Denial-of-service detection/prevention
-    // Key is ip address, value is banned-until-time
+    // Key is IP address, value is banned-until-time
     static std::map<CNetAddr, int64> setBanned;
     static CCriticalSection cs_setBanned;
     int nMisbehavior;
@@ -629,7 +629,7 @@ public:
     // way.
     // IMPORTANT:  There should be nothing I can give a
     // node that it will forward on that will make that
-    // node's peers drop it. If there is, an attacker
+    // nodes peers drop it. If there is, an attacker
     // can isolate a node and/or try to split the network.
     // Dropping a node for sending stuff that is invalid
     // now but might be valid in a later version is also

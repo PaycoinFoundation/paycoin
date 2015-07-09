@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2011-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "db.h"
@@ -220,7 +220,7 @@ bool CDB::Rewrite(const string& strFile, const char* pszSkip)
                 { // surround usage of db with extra {}
                     CDB db(strFile.c_str(), "r");
                     Db* pdbCopy = new Db(&dbenv, 0);
-    
+
                     int ret = pdbCopy->open(NULL,                 // Txn pointer
                                             strFileRes.c_str(),   // Filename
                                             "main",    // Logical db name
@@ -232,7 +232,7 @@ bool CDB::Rewrite(const string& strFile, const char* pszSkip)
                         printf("Cannot create database file %s\n", strFileRes.c_str());
                         fSuccess = false;
                     }
-    
+
                     Dbc* pcursor = db.GetCursor();
                     if (pcursor)
                         while (fSuccess)
@@ -395,7 +395,7 @@ bool CTxDB::ReadOwnerTxes(uint160 hash160, int nMinHeight, vector<CTransaction>&
         return false;
 
     unsigned int fFlags = DB_SET_RANGE;
-    loop
+    for (;;)
     {
         // Read next record
         CDataStream ssKey(SER_DISK, CLIENT_VERSION);
@@ -559,7 +559,7 @@ bool CTxDB::LoadBlockIndex()
 
     // Load mapBlockIndex
     unsigned int fFlags = DB_SET_RANGE;
-    loop
+    for (;;)
     {
         // Read next record
         CDataStream ssKey(SER_DISK, CLIENT_VERSION);
@@ -818,7 +818,7 @@ bool CAddrDB::LoadAddresses()
         printf("Loaded %i addresses\n", addrman.size());
         return true;
     }
-    
+
     // Read pre-0.6 addr records
 
     vector<CAddress> vAddr;
@@ -829,7 +829,7 @@ bool CAddrDB::LoadAddresses()
     if (!pcursor)
         return false;
 
-    loop
+    for (;;)
     {
         // Read next record
         CDataStream ssKey(SER_DISK, CLIENT_VERSION);

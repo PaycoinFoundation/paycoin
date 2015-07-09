@@ -10,7 +10,7 @@
 #include "guiutil.h"
 #include "askpassphrasedialog.h"
 #include "coincontrol.h"
-#include "coincontroldialog.h" 
+#include "coincontroldialog.h"
 
 #include <QMessageBox>
 #include <QLocale>
@@ -99,7 +99,7 @@ void SendCoinsDialog::setModel(WalletModel *model)
         connect(model->getOptionsModel(), SIGNAL(coinControlFeaturesChanged(bool)), this, SLOT(coinControlFeatureChanged(bool)));
         connect(model->getOptionsModel(), SIGNAL(transactionFeeChanged(qint64)), this, SLOT(coinControlUpdateLabels()));
         ui->frameCoinControl->setVisible(model->getOptionsModel()->getCoinControlFeatures());
-        coinControlUpdateLabels(); 
+        coinControlUpdateLabels();
     }
 }
 
@@ -169,12 +169,12 @@ void SendCoinsDialog::on_sendButton_clicked()
     if (!model->getOptionsModel() || !model->getOptionsModel()->getCoinControlFeatures())
         sendstatus = model->sendCoins(recipients);
     else
-        sendstatus = model->sendCoins(recipients, CoinControlDialog::coinControl); 
+        sendstatus = model->sendCoins(recipients, CoinControlDialog::coinControl);
     switch(sendstatus.status)
     {
     case WalletModel::InvalidAddress:
         QMessageBox::warning(this, tr("Send Coins"),
-            tr("The recipient address is not valid, please recheck."),
+            tr("The recipient address is not valid. Please recheck."),
             QMessageBox::Ok, QMessageBox::Ok);
         break;
     case WalletModel::InvalidAmount:
@@ -189,13 +189,13 @@ void SendCoinsDialog::on_sendButton_clicked()
         break;
     case WalletModel::AmountWithFeeExceedsBalance:
         QMessageBox::warning(this, tr("Send Coins"),
-            tr("Total exceeds your balance when the %1 transaction fee is included").
+            tr("Total exceeds your balance when the %1 transaction fee is included.").
             arg(BitcoinUnits::formatWithUnit(BitcoinUnits::BTC, sendstatus.fee)),
             QMessageBox::Ok, QMessageBox::Ok);
         break;
     case WalletModel::DuplicateAddress:
         QMessageBox::warning(this, tr("Send Coins"),
-            tr("Duplicate address found, can only send to each address once in one send operation"),
+            tr("Duplicate address found: can only send to each address once per send operation."),
             QMessageBox::Ok, QMessageBox::Ok);
         break;
     case WalletModel::TransactionCreationFailed:
@@ -213,7 +213,7 @@ void SendCoinsDialog::on_sendButton_clicked()
     case WalletModel::OK:
         accept();
         CoinControlDialog::coinControl->UnSelectAll();
-        coinControlUpdateLabels(); 
+        coinControlUpdateLabels();
         break;
     }
     fNewRecipientAllowed = true;
@@ -408,7 +408,7 @@ void SendCoinsDialog::coinControlClipboardChange()
 void SendCoinsDialog::coinControlFeatureChanged(bool checked)
 {
     ui->frameCoinControl->setVisible(checked);
-    
+
     if (!checked && model) // coin control features disabled
         CoinControlDialog::coinControl->SetNull();
 }
@@ -432,7 +432,7 @@ void SendCoinsDialog::coinControlChangeChecked(int state)
         else
             CoinControlDialog::coinControl->destChange = CNoDestination();
     }
-    
+
     ui->lineEditCoinControlChange->setEnabled((state == Qt::Checked));
     ui->labelCoinControlChangeLabel->setEnabled((state == Qt::Checked));
 }
@@ -454,7 +454,7 @@ void SendCoinsDialog::coinControlChangeEdited(const QString& text)
         }
         else if (!addr.IsValid()) // Invalid address
         {
-            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid Bitcoin address"));
+            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid Paycoin address"));
         }
         else // Valid address
         {
@@ -488,7 +488,7 @@ void SendCoinsDialog::coinControlUpdateLabels()
 {
     if (!model || !model->getOptionsModel() || !model->getOptionsModel()->getCoinControlFeatures())
         return;
-    
+
     // set pay amounts
     CoinControlDialog::payAddresses.clear();
     for(int i = 0; i < ui->entries->count(); ++i)
@@ -497,12 +497,12 @@ void SendCoinsDialog::coinControlUpdateLabels()
         if(entry)
             CoinControlDialog::payAddresses.append(std::make_pair(entry->getValue().address, entry->getValue().amount));
     }
-        
+
     if (CoinControlDialog::coinControl->HasSelected())
     {
         // actual coin control calculation
         CoinControlDialog::updateLabels(model, this);
-        
+
         // show coin control stats
         ui->labelCoinControlAutomaticallySelected->hide();
         ui->widgetCoinControl->show();

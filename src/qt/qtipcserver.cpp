@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file license.txt or http://www.opensource.org/licenses/mit-license.php.
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <boost/algorithm/string.hpp>
 #include <boost/interprocess/ipc/message_queue.hpp>
@@ -27,7 +27,7 @@ void ipcThread(void* parg)
     char strBuf[257];
     size_t nSize;
     unsigned int nPriority;
-    loop
+    for (;;)
     {
         ptime d = boost::posix_time::microsec_clock::universal_time() + millisec(100);
         if(mq->timed_receive(&strBuf, sizeof(strBuf), nSize, nPriority, d))

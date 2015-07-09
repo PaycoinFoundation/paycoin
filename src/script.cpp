@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2012-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include <boost/foreach.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -229,6 +229,7 @@ const char* GetOpName(opcodetype opcode)
     case OP_PRIMENODE100           : return "OP_PRIMENODE100";
     case OP_PRIMENODE20            : return "OP_PRIMENODE20";
     case OP_PRIMENODE10            : return "OP_PRIMENODE10";
+    case OP_PRIMENODEP2            : return "OP_PRIMENODEP2";
 
 
 
@@ -1076,7 +1077,7 @@ uint256 SignatureHash(CScript scriptCode, const CTransaction& txTo, unsigned int
     }
     else if ((nHashType & 0x1f) == SIGHASH_SINGLE)
     {
-        // Only lockin the txout payee at same index as txin
+        // Only lock-in the txout payee at same index as txin
         unsigned int nOut = nIn;
         if (nOut >= txTmp.vout.size())
         {
@@ -1245,7 +1246,7 @@ bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, vector<vector<unsi
         // Compare
         CScript::const_iterator pc1 = script1.begin();
         CScript::const_iterator pc2 = script2.begin();
-        loop
+        for (;;)
         {
             if (pc1 == script1.end() && pc2 == script2.end())
             {
@@ -1278,7 +1279,7 @@ bool Solver(const CScript& scriptPubKey, txnouttype& typeRet, vector<vector<unsi
                 if (!script2.GetOp(pc2, opcode2, vch2))
                     break;
                 // Normal situation is to fall through
-                // to other if/else statments
+                // to other if/else statements
             }
 
             if (opcode2 == OP_PUBKEY)
@@ -1354,7 +1355,7 @@ bool SignN(const vector<valtype>& multisigdata, const CKeyStore& keystore, uint2
 // Sign scriptPubKey with private keys stored in keystore, given transaction hash and hash type.
 // Signatures are returned in scriptSigRet (or returns false if scriptPubKey can't be signed),
 // unless whichTypeRet is TX_SCRIPTHASH, in which case scriptSigRet is the redemption script.
-// Returns false if scriptPubKey could not be completely satisified.
+// Returns false if scriptPubKey could not be completely satisfied.
 //
 bool Solver(const CKeyStore& keystore, const CScript& scriptPubKey, uint256 hash, int nHashType,
                   CScript& scriptSigRet, txnouttype& whichTypeRet)

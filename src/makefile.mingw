@@ -1,7 +1,8 @@
 # Copyright (c) 2009-2010 Satoshi Nakamoto
-# Copyright (c) 2012 The Paycoin developers
-# Distributed under the MIT/X11 software license, see the accompanying
-# file license.txt or http://www.opensource.org/licenses/mit-license.php.
+# Copyright (c) 2012 The Peercoin developers
+# Copyright (c) 2015 The Paycoin developers
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 # Windows commandline build procedure:
 # - Install MinGW following http://www.mingw.org/wiki/Getting_Started.
@@ -10,14 +11,14 @@
 # - Add/edit 'MAKE' environment variable with value '/c/MinGW32/bin/mingw32-make.exe'
 #
 # - Build openssl library version: 1.0.1g
-#   download from  http://www.openssl.org/source/
+#   download from  https://www.openssl.org/source/
 #   Extract to c:\openssl-1.0.1g-mgw
 #   In MinGW MSYS:
 #     ./config
 #     make
 #
 # - Build Berkeley DB library version: 4.8.30.NC
-#   download from  http://www.oracle.com/technology/software/products/berkeley-db/index.html
+#   download from  https://www.oracle.com/technology/software/products/berkeley-db/index.html
 #   Extract to c:\db-4.8.30.NC-mgw
 #   In MinGW MSYS:
 #     cd build_unix
@@ -25,7 +26,7 @@
 #   Edit db.h@113 in build_unix
 #   from
 #     typedef pthread_t db_threadid_t;
-#   to 
+#   to
 #     typedef u_int32_t db_threadid_t;
 #   Then
 #     make
@@ -106,7 +107,6 @@ OBJS= \
     obj/key.o \
     obj/db.o \
     obj/init.o \
-    obj/irc.o \
     obj/keystore.o \
     obj/main.o \
     obj/net.o \
@@ -114,12 +114,14 @@ OBJS= \
     obj/kernelrecord.o \
     obj/bitcoinrpc.o \
     obj/rpcdump.o \
+    obj/rpcnet.o \
     obj/script.o \
     obj/util.o \
     obj/wallet.o \
     obj/walletdb.o \
     obj/noui.o \
-    obj/kernel.o
+    obj/kernel.o \
+    obj/primekeys.o
 
 
 all: paycoind.exe

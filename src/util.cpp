@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2011-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "util.h"
@@ -310,7 +310,7 @@ string real_strprintf(const std::string &format, int dummy, ...)
     char* p = buffer;
     int limit = sizeof(buffer);
     int ret;
-    loop
+    for (;;)
     {
         va_list arg_ptr;
         va_start(arg_ptr, dummy);
@@ -354,7 +354,7 @@ void ParseString(const string& str, char c, vector<string>& v)
         return;
     string::size_type i1 = 0;
     string::size_type i2;
-    loop
+    for (;;)
     {
         i2 = str.find(c, i1);
         if (i2 == str.npos)
@@ -470,7 +470,7 @@ vector<unsigned char> ParseHex(const char* psz)
 {
     // convert hex dump to vector
     vector<unsigned char> vch;
-    loop
+    for (;;)
     {
         while (isspace(*psz))
             psz++;
@@ -737,7 +737,7 @@ string DecodeBase64(const string& str)
 
 bool WildcardMatch(const char* psz, const char* mask)
 {
-    loop
+    for (;;)
     {
         switch (*mask)
         {
@@ -1252,7 +1252,7 @@ bool SetStartOnSystemStartup(bool fAutoStart)
 #else
 
 // TODO: OSX startup stuff; see:
-// http://developer.apple.com/mac/library/documentation/MacOSX/Conceptual/BPSystemStartup/Articles/CustomLogin.html
+// https://developer.apple.com/mac/library/documentation/MacOSX/Conceptual/BPSystemStartup/Articles/CustomLogin.html
 
 bool GetStartOnSystemStartup() { return false; }
 bool SetStartOnSystemStartup(bool fAutoStart) { return false; }
@@ -1270,7 +1270,7 @@ bool SetStartOnSystemStartup(bool fAutoStart) { return false; }
 //     --> may result in deadlock between the two threads, depending on when they run.
 // Solution implemented here:
 // Keep track of pairs of locks: (A before B), (A before C), etc.
-// Complain if any thread trys to lock in a different order.
+// Complain if any thread tries to lock in a different order.
 //
 
 struct CLockLocation
@@ -1351,7 +1351,7 @@ static void push_lock(void* c, const CLockLocation& locklocation, bool fTry)
 
 static void pop_lock()
 {
-    if (fDebug) 
+    if (fDebug)
     {
         const CLockLocation& locklocation = (*lockstack).rbegin()->second;
         printf("Unlocked: %s\n", locklocation.ToString().c_str());

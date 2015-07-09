@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin Developers
 // Copyright (c) 2011-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 
@@ -12,7 +12,7 @@
 //      could be used to create visually identical looking account numbers.
 // - A string with non-alphanumeric characters is not as easily accepted as an account number.
 // - E-mail usually won't line-break if there's no punctuation to break at.
-// - Doubleclicking selects the whole number as one word if it's all alphanumeric.
+// - Double-clicking selects the whole number as one word if it's all alphanumeric.
 //
 #ifndef BITCOIN_BASE58_H
 #define BITCOIN_BASE58_H
@@ -73,7 +73,7 @@ inline std::string EncodeBase58(const std::vector<unsigned char>& vch)
 }
 
 // Decode a base58-encoded string psz into byte vector vchRet
-// returns true if decoding is succesful
+// returns true if decoding is successful
 inline bool DecodeBase58(const char* psz, std::vector<unsigned char>& vchRet)
 {
     CAutoBN_CTX pctx;
@@ -121,7 +121,7 @@ inline bool DecodeBase58(const char* psz, std::vector<unsigned char>& vchRet)
 }
 
 // Decode a base58-encoded string str into byte vector vchRet
-// returns true if decoding is succesful
+// returns true if decoding is successful
 inline bool DecodeBase58(const std::string& str, std::vector<unsigned char>& vchRet)
 {
     return DecodeBase58(str.c_str(), vchRet);
@@ -141,7 +141,7 @@ inline std::string EncodeBase58Check(const std::vector<unsigned char>& vchIn)
 }
 
 // Decode a base58-encoded string psz that includes a checksum, into byte vector vchRet
-// returns true if decoding is succesful
+// returns true if decoding is successful
 inline bool DecodeBase58Check(const char* psz, std::vector<unsigned char>& vchRet)
 {
     if (!DecodeBase58(psz, vchRet))
@@ -162,7 +162,7 @@ inline bool DecodeBase58Check(const char* psz, std::vector<unsigned char>& vchRe
 }
 
 // Decode a base58-encoded string str that includes a checksum, into byte vector vchRet
-// returns true if decoding is succesful
+// returns true if decoding is successful
 inline bool DecodeBase58Check(const std::string& str, std::vector<unsigned char>& vchRet)
 {
     return DecodeBase58Check(str.c_str(), vchRet);
@@ -405,7 +405,7 @@ class CBitcoinSecret : public CBase58Data
 {
 public:
     void SetSecret(const CSecret& vchSecret, bool fCompressed)
-    { 
+    {
         assert(vchSecret.size() == 32);
         SetData(128 + (fTestNet ? CBitcoinAddress::PUBKEY_ADDRESS_TEST : CBitcoinAddress::PUBKEY_ADDRESS), &vchSecret[0], vchSecret.size());
         if (fCompressed)

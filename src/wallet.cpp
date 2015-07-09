@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2011-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "wallet.h"
@@ -10,7 +10,7 @@
 #include "crypter.h"
 #include "ui_interface.h"
 #include "base58.h"
-#include "coincontrol.h" 
+#include "coincontrol.h"
 #include "kernel.h"
 #include <boost/algorithm/string/replace.hpp>
 
@@ -586,7 +586,7 @@ void CWalletTx::GetAmounts(int64& nGeneratedImmature, int64& nGeneratedMature, l
 
 }
 
-void CWalletTx::GetAccountAmounts(const string& strAccount, int64& nGenerated, int64& nReceived, 
+void CWalletTx::GetAccountAmounts(const string& strAccount, int64& nGenerated, int64& nReceived,
                                   int64& nSent, int64& nFee) const
 {
     nGenerated = nReceived = nSent = nFee = 0;
@@ -1148,7 +1148,7 @@ bool CWallet::CreateTransaction(const vector<pair<CScript, int64> >& vecSend, CW
         CTxDB txdb("r");
         {
             nFeeRet = nTransactionFee;
-            loop
+            for (;;)
             {
                 wtxNew.vin.clear();
                 wtxNew.vout.clear();
@@ -1202,7 +1202,7 @@ bool CWallet::CreateTransaction(const vector<pair<CScript, int64> >& vecSend, CW
                         // coin control: send change to custom address
                         if (coinControl && !boost::get<CNoDestination>(&coinControl->destChange))
                             scriptChange.SetDestination(coinControl->destChange);
-                        
+
                         // no coin control: send change to newly generated address
                         else
                         {
@@ -1292,7 +1292,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     // Make variable interested rate
     unsigned int primeNodeRate = 0;
 
-    if (mapArgs.count("-primenodekey") && mapArgs.count("-primenoderate")) // paycoin: primenode priv key
+    if (mapArgs.count("-primenodekey")) // paycoin: primenode priv key
     {
             std::string strPrivKey = GetArg("-primenodekey", "");
             std::vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
@@ -1310,26 +1310,43 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             }
 
             CScript scriptPrimeNode;
-            std::string primeNodeRateArg = GetArg("-primenoderate", "");
-            if (primeNodeRateArg.compare("350") == 0){
-                scriptPrimeNode << OP_PRIMENODE350 << vchSig;
-                primeNodeRate = 350;
-                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-            }else if (primeNodeRateArg.compare("100") == 0){
-                scriptPrimeNode << OP_PRIMENODE100 << vchSig;
-                primeNodeRate = 100;
-                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-            }else if (primeNodeRateArg.compare("20") == 0){
-                scriptPrimeNode << OP_PRIMENODE20 << vchSig;
-                primeNodeRate = 20;
-                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-            }else if (primeNodeRateArg.compare("10") == 0){
-                scriptPrimeNode << OP_PRIMENODE10 << vchSig;
-                primeNodeRate = 10;
-                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-            }else{
-                return error("CreateCoinStake : Primenode rate configuration is wrong or missing");
+
+            /* Primenode rates will not be in the configuration after
+             * the end of Phase One. */
+            if (txNew.nTime < END_PRIME_PHASE_ONE) {
+                mapArgs.count("-primenoderate");
+                std::string primeNodeRateArg = GetArg("-primenoderate", "");
+                if (primeNodeRateArg.compare("350") == 0){
+                    scriptPrimeNode << OP_PRIMENODE350 << vchSig;
+                    primeNodeRate = 350;
+                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+                }else if (primeNodeRateArg.compare("100") == 0){
+                    scriptPrimeNode << OP_PRIMENODE100 << vchSig;
+                    primeNodeRate = 100;
+                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+                }else if (primeNodeRateArg.compare("20") == 0){
+                    scriptPrimeNode << OP_PRIMENODE20 << vchSig;
+                    primeNodeRate = 20;
+                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+                }else if (primeNodeRateArg.compare("10") == 0){
+                    scriptPrimeNode << OP_PRIMENODE10 << vchSig;
+                    primeNodeRate = 10;
+                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+                }else{
+                    return error("CreateCoinStake : Primenode rate configuration is wrong or missing");
+                }
+
+                if (txNew.nTime >= RESET_PRIMERATES) {
+                    primeNodeRate = 100;
+                }
             }
+
+            if (txNew.nTime >= END_PRIME_PHASE_ONE) {
+                scriptPrimeNode << OP_PRIMENODEP2 << vchSig;
+                primeNodeRate = 25;
+                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+            }
+
             printf("Primenode rate for staking is %d\n", primeNodeRate);
             txNew.vout.push_back(CTxOut(0, scriptPrimeNode));
      }else{
@@ -1374,7 +1391,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         bool fKernelFound = false;
         for (unsigned int n=0; n<min(nSearchInterval,(int64)nMaxStakeSearchInterval) && !fKernelFound && !fShutdown; n++)
         {
-            // Search backward in time from the given txNew timestamp 
+            // Search backward in time from the given txNew timestamp
             // Search nSearchInterval seconds back up to nMaxStakeSearchInterval
             uint256 hashProofOfStake = 0;
             COutPoint prevoutStake = COutPoint(pcoin.first->GetHash(), pcoin.second);
@@ -1416,7 +1433,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 else
                     scriptPubKeyOut = scriptPubKeyKernel;
 
-                txNew.nTime -= n; 
+                txNew.nTime -= n;
                 txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
                 nCredit += pcoin.first->vout[pcoin.second].nValue;
                 vwtxPrev.push_back(pcoin.first);
@@ -1483,7 +1500,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             return error("CreateCoinStake : credit doesn't meet requirement for orion controller; credit = %lld; requirement = %lld nCombineThreshold = %lld\n", nCredit, MINIMUM_FOR_ORION, nCombineThreshold);
         }
 
-        int64 nReward = GetProofOfStakeReward(nCoinAge, primeNodeRate);
+        int64 nTime = GetTime();
+        int64 nReward = GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate);
 
         // Refuse to create mint that has zero or negative reward
         if(nReward <= 0) {
@@ -1493,7 +1511,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
 
     int64 nMinFee = 0;
-    loop
+    for (;;)
     {
         // Set output amount
         if (txNew.vout.size() == 3)
@@ -1896,6 +1914,139 @@ int64 CWallet::GetOldestKeyPoolTime()
     return keypool.nTime;
 }
 
+// Treefunder Additions
+std::map<CTxDestination, int64> CWallet::GetAddressBalances()
+{
+    map<CTxDestination, int64> balances;
+
+    {
+        LOCK(cs_wallet);
+        BOOST_FOREACH(PAIRTYPE(uint256, CWalletTx) walletEntry, mapWallet)
+        {
+            CWalletTx *pcoin = &walletEntry.second;
+
+            if (!pcoin->IsFinal() || !pcoin->IsConfirmed())
+                continue;
+
+            if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0)
+                continue;
+
+            int nDepth = pcoin->GetDepthInMainChain();
+            if (nDepth < (pcoin->IsFromMe() ? 0 : 1))
+                continue;
+
+            for (unsigned int i = 0; i < pcoin->vout.size(); i++)
+            {
+                CTxDestination addr;
+                if (!IsMine(pcoin->vout[i]))
+                    continue;
+                if(!ExtractDestination(pcoin->vout[i].scriptPubKey, addr))
+                    continue;
+
+                int64 n = pcoin->IsSpent(i) ? 0 : pcoin->vout[i].nValue;
+
+                if (!balances.count(addr))
+                    balances[addr] = 0;
+                balances[addr] += n;
+            }
+        }
+    }
+
+    return balances;
+}
+
+set< set<CTxDestination> > CWallet::GetAddressGroupings()
+{
+    set< set<CTxDestination> > groupings;
+    set<CTxDestination> grouping;
+
+    BOOST_FOREACH(PAIRTYPE(uint256, CWalletTx) walletEntry, mapWallet)
+    {
+        CWalletTx *pcoin = &walletEntry.second;
+
+        if (pcoin->vin.size() > 0)
+        {
+            bool any_mine = false;
+            // group all input addresses with each other
+            BOOST_FOREACH(CTxIn txin, pcoin->vin)
+            {
+                CTxDestination address;
+                if(!IsMine(txin)) /* If this input isn't mine, ignore it */
+                    continue;
+                if(!ExtractDestination(mapWallet[txin.prevout.hash].vout[txin.prevout.n].scriptPubKey, address))
+                    continue;
+                grouping.insert(address);
+                any_mine = true;
+            }
+
+            // group change with input addresses
+            if (any_mine)
+            {
+               BOOST_FOREACH(CTxOut txout, pcoin->vout)
+                   if (IsChange(txout))
+                   {
+                       CTxDestination txoutAddr;
+                       if(!ExtractDestination(txout.scriptPubKey, txoutAddr))
+                           continue;
+                       grouping.insert(txoutAddr);
+                   }
+            }
+            if (grouping.size() > 0)
+            {
+                groupings.insert(grouping);
+                grouping.clear();
+            }
+        }
+
+        // group lone addrs by themselves
+        for (unsigned int i = 0; i < pcoin->vout.size(); i++)
+            if (IsMine(pcoin->vout[i]))
+            {
+                CTxDestination address;
+                if(!ExtractDestination(pcoin->vout[i].scriptPubKey, address))
+                    continue;
+                grouping.insert(address);
+                groupings.insert(grouping);
+                grouping.clear();
+            }
+    }
+
+    set< set<CTxDestination>* > uniqueGroupings; // a set of pointers to groups of addresses
+    map< CTxDestination, set<CTxDestination>* > setmap;  // map addresses to the unique group containing it
+    BOOST_FOREACH(set<CTxDestination> grouping, groupings)
+    {
+        // make a set of all the groups hit by this new group
+        set< set<CTxDestination>* > hits;
+        map< CTxDestination, set<CTxDestination>* >::iterator it;
+        BOOST_FOREACH(CTxDestination address, grouping)
+            if ((it = setmap.find(address)) != setmap.end())
+                hits.insert((*it).second);
+
+        // merge all hit groups into a new single group and delete old groups
+        set<CTxDestination>* merged = new set<CTxDestination>(grouping);
+        BOOST_FOREACH(set<CTxDestination>* hit, hits)
+        {
+            merged->insert(hit->begin(), hit->end());
+            uniqueGroupings.erase(hit);
+            delete hit;
+        }
+        uniqueGroupings.insert(merged);
+
+        // update setmap
+        BOOST_FOREACH(CTxDestination element, *merged)
+            setmap[element] = merged;
+    }
+
+    set< set<CTxDestination> > ret;
+    BOOST_FOREACH(set<CTxDestination>* uniqueGrouping, uniqueGroupings)
+    {
+        ret.insert(*uniqueGrouping);
+        delete uniqueGrouping;
+    }
+
+    return ret;
+}
+
 // paycoin: check 'spent' consistency between wallet and txindex
 // paycoin: fix wallet spent state according to txindex
 void CWallet::FixSpentCoins(int& nMismatchFound, int64& nBalanceInQuestion, bool fCheckOnly)
@@ -2107,4 +2258,3 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nMinWeight, uint
 
     return true;
 }
-

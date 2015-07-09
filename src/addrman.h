@@ -1,5 +1,5 @@
 // Copyright (c) 2012 Pieter Wuille
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef _BITCOIN_ADDRMAN
 #define _BITCOIN_ADDRMAN 1
@@ -22,13 +22,13 @@ private:
     // where knowledge about this address first came from
     CNetAddr source;
 
-    // last succesfull connection by us
+    // last successfull connection by us
     int64 nLastSuccess;
 
     // last try whatsoever by us:
     // int64 CAddress::nLastTry
 
-    // connection attempts since last succesful attempt
+    // connection attempts since last successful attempt
     int nAttempts;
 
     // reference count in new sets (memory only)
@@ -103,7 +103,7 @@ public:
 //  * Addresses are organized into buckets.
 //    * Address that have not yet been tried go into 256 "new" buckets.
 //      * Based on the address range (/16 for IPv4) of source of the information, 32 buckets are selected at random
-//      * The actual bucket is chosen from one of these, based on the range the address itself is located.
+//      * The actual bucket is chosen from one of these, based on the range in which the address itself is located.
 //      * One single address can occur in up to 4 different buckets, to increase selection chances for addresses that
 //        are seen frequently. The chance for increasing this multiplicity decreases exponentially.
 //      * When adding a new address to a full bucket, a randomly chosen entry (with a bias favoring less recently seen
@@ -116,7 +116,7 @@ public:
 //    * Bucket selection is based on cryptographic hashing, using a randomly-generated 256-bit key, which should not
 //      be observable by adversaries.
 //    * Several indexes are kept for high performance. Defining DEBUG_ADDRMAN will introduce frequent (and expensive)
-//      consistency checks for the entire datastructure.
+//      consistency checks for the entire data structure.
 
 // total number of buckets for tried addresses
 #define ADDRMAN_TRIED_BUCKET_COUNT 64
@@ -213,7 +213,7 @@ protected:
     // This is the only place where actual deletes occur.
     // They are never deleted while in the "tried" table, only possibly evicted back to the "new" table.
     int ShrinkNew(int nUBucket);
- 
+
     // Move an entry from the "new" table(s) to the "tried" table
     // @pre vvUnkown[nOrigin].count(nId) != 0
     void MakeTried(CAddrInfo& info, int nId, int nOrigin);

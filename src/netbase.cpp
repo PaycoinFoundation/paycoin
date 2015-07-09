@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file license.txt or http://www.opensource.org/licenses/mit-license.php.
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "netbase.h"
 #include "util.h"
@@ -562,8 +562,8 @@ bool CNetAddr::IsIPv6() const
 bool CNetAddr::IsRFC1918() const
 {
     return IsIPv4() && (
-        GetByte(3) == 10 || 
-        (GetByte(3) == 192 && GetByte(2) == 168) || 
+        GetByte(3) == 10 ||
+        (GetByte(3) == 192 && GetByte(2) == 168) ||
         (GetByte(3) == 172 && (GetByte(2) >= 16 && GetByte(2) <= 31)));
 }
 
@@ -649,7 +649,7 @@ bool CNetAddr::IsMulticast() const
 
 bool CNetAddr::IsValid() const
 {
-    // Clean up 3-byte shifted addresses caused by garbage in size field
+    // Cleanup 3-byte shifted addresses caused by garbage in size field
     // of addr messages from versions before 0.2.9 checksum.
     // Two consecutive addr messages look like this:
     // header20 vectorlen3 addr26 addr26 addr26 header20 vectorlen3 addr26 addr26 addr26...
@@ -782,13 +782,13 @@ std::vector<unsigned char> CNetAddr::GetGroup() const
         nClass = NET_IPV4;
         nStartByte = 12;
     }
-    // for 6to4 tunneled addresses, use the encapsulated IPv4 address
+    // for 6to4 tunnelled addresses, use the encapsulated IPv4 address
     else if (IsRFC3964())
     {
         nClass = NET_IPV4;
         nStartByte = 2;
     }
-    // for Teredo-tunneled IPv6 addresses, use the encapsulated IPv4 address
+    // for Teredo-tunnelled IPv6 addresses, use the encapsulated IPv4 address
     else if (IsRFC4380())
     {
         vchRet.push_back(NET_IPV4);
@@ -832,7 +832,7 @@ void CNetAddr::print() const
 // for IPv6 partners:        for unknown/Teredo partners:      for IPv4 partners:
 // 0 - unroutable            // 0 - unroutable                 // 0 - unroutable
 // 1 - teredo                // 1 - teredo                     // 1 - ipv4
-// 2 - tunneled ipv6         // 2 - tunneled ipv6
+// 2 - tunnelled ipv6         // 2 - tunnelled ipv6
 // 3 - ipv4                  // 3 - ipv6
 // 4 - ipv6                  // 4 - ipv4
 int CNetAddr::GetReachabilityFrom(const CNetAddr *paddrPartner) const

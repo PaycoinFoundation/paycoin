@@ -222,7 +222,7 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             settings.setValue("fCoinControlFeatures", fCoinControlFeatures);
             emit coinControlFeaturesChanged(fCoinControlFeatures);
             }
-            break; 
+            break;
         default:
             break;
         }
@@ -240,7 +240,7 @@ qint64 OptionsModel::getTransactionFee()
 bool OptionsModel::getCoinControlFeatures()
 {
     return fCoinControlFeatures;
-} 
+}
 
 bool OptionsModel::getMinimizeToTray()
 {

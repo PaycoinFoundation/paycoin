@@ -1,8 +1,9 @@
 # -*- mode: Makefile; -*-
 # Copyright (c) 2009-2010 Satoshi Nakamoto
-# Copyright (c) 2011-2012 The Paycoin developers
-# Distributed under the MIT/X11 software license, see the accompanying
-# file license.txt or http://www.opensource.org/licenses/mit-license.php.
+# Copyright (c) 2011-2012 The Peercoin developers
+# Copyright (c) 2015 The Paycoin developers
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 # Mac OS X makefile for paycoin
 # Originally by Laszlo Hanyecz (solar@heliacal.net)
@@ -56,6 +57,10 @@ endif
 
 DEFS=-DMAC_OSX -DMSG_NOSIGNAL=0 -DBOOST_SPIRIT_THREADSAFE -DUSE_IPV6
 
+ifdef STATIC
+DEFS += -DSTATICLIB
+endif
+
 ifdef RELEASE
 CFLAGS = -mmacosx-version-min=10.5 -O3
 # Compile for maximum compatibility and smallest size.
@@ -83,7 +88,6 @@ OBJS= \
     obj/key.o \
     obj/db.o \
     obj/init.o \
-    obj/irc.o \
     obj/keystore.o \
     obj/main.o \
     obj/net.o \
@@ -91,12 +95,14 @@ OBJS= \
     obj/kernelrecord.o \
     obj/bitcoinrpc.o \
     obj/rpcdump.o \
+    obj/rpcnet.o \
     obj/script.o \
     obj/util.o \
     obj/wallet.o \
     obj/walletdb.o \
     obj/noui.o \
-    obj/kernel.o
+    obj/kernel.o \
+    obj/primekeys.o
 
 ifdef USE_UPNP
 	DEFS += -DUSE_UPNP=$(USE_UPNP)

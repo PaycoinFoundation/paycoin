@@ -9,7 +9,7 @@ Q_OBJECT
 
 public:
     explicit CoinControlTreeWidget(QWidget *parent = 0);
-    
+
 protected:
   virtual void  keyPressEvent(QKeyEvent *event);
 };

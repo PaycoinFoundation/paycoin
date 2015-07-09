@@ -2,10 +2,9 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2011-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "irc.h"
 #include "db.h"
 #include "net.h"
 #include "init.h"
@@ -75,6 +74,9 @@ CCriticalSection cs_vOneShots;
 set<CNetAddr> setservAddNodeAddresses;
 CCriticalSection cs_setservAddNodeAddresses;
 
+vector<std::string> vAddedNodes;
+CCriticalSection cs_vAddedNodes;
+
 static CSemaphore *semOutbound = NULL;
 
 void AddOneShot(string strDest)
@@ -141,7 +143,7 @@ CAddress GetLocalAddress(const CNetAddr *paddrPeer)
 bool RecvLine(SOCKET hSocket, string& strLine)
 {
     strLine = "";
-    loop
+    for (;;)
     {
         char c;
         int nBytes = recv(hSocket, &c, 1, 0);
@@ -305,7 +307,7 @@ bool GetMyExternalIP2(const CService& addrConnect, const char* pszGet, const cha
     {
         if (strLine.empty()) // HTTP response is separated from headers by blank line
         {
-            loop
+            for (;;)
             {
                 if (!RecvLine(hSocket, strLine))
                 {
@@ -338,7 +340,6 @@ bool GetMyExternalIP2(const CService& addrConnect, const char* pszGet, const cha
     return error("GetMyExternalIP() : connection closed");
 }
 
-// We now get our external IP from the IRC server first and only use this as a backup
 bool GetMyExternalIP(CNetAddr& ipRet)
 {
     CService addrConnect;
@@ -353,7 +354,7 @@ bool GetMyExternalIP(CNetAddr& ipRet)
     {
         // We should be phasing out our use of sites like these.  If we need
         // replacements, we should ask for volunteers to put this simple
-        // php file on their webserver that prints the client IP:
+        // php file on their web server that prints the client IP:
         //  <?php echo $_SERVER["REMOTE_ADDR"]; ?>
         if (nHost == 1)
         {
@@ -490,14 +491,14 @@ CNode* ConnectNode(CAddress addrConnect, const char *pszDest, int64 nTimeout)
         /// debug print
         printf("connected %s\n", pszDest ? pszDest : addrConnect.ToString().c_str());
 
-        // Set to nonblocking
+        // Set to non-blocking
 #ifdef WIN32
         u_long nOne = 1;
         if (ioctlsocket(hSocket, FIONBIO, &nOne) == SOCKET_ERROR)
-            printf("ConnectSocket() : ioctlsocket nonblocking setting failed, error %d\n", WSAGetLastError());
+            printf("ConnectSocket() : ioctlsocket non-blocking setting failed, error %d\n", WSAGetLastError());
 #else
         if (fcntl(hSocket, F_SETFL, O_NONBLOCK) == SOCKET_ERROR)
-            printf("ConnectSocket() : fcntl nonblocking setting failed, error %d\n", errno);
+            printf("ConnectSocket() : fcntl non-blocking setting failed, error %d\n", errno);
 #endif
 
         // Add node
@@ -654,9 +655,17 @@ void ThreadSocketHandler2(void* parg)
     printf("ThreadSocketHandler started\n");
     list<CNode*> vNodesDisconnected;
     unsigned int nPrevNodeCount = 0;
+    bool droppedPostVersionChange = false;
+    bool droppingPostVersionChange = false;
 
-    loop
+    for (;;)
     {
+        if (MIN_PROTO_VERSION != 70003 && !droppedPostVersionChange && time(NULL) >= END_PRIME_PHASE_ONE)
+        {
+            droppedPostVersionChange = true;
+            droppingPostVersionChange = true;
+            MIN_PROTO_VERSION = 70003;
+        }
         //
         // Disconnect nodes
         //
@@ -666,6 +675,9 @@ void ThreadSocketHandler2(void* parg)
             vector<CNode*> vNodesCopy = vNodes;
             BOOST_FOREACH(CNode* pnode, vNodesCopy)
             {
+                if (droppingPostVersionChange)
+                    pnode->fDisconnect = true;
+
                 if (pnode->fDisconnect ||
                     (pnode->GetRefCount() <= 0 && pnode->vRecv.empty() && pnode->vSend.empty()))
                 {
@@ -686,6 +698,9 @@ void ThreadSocketHandler2(void* parg)
                     vNodesDisconnected.push_back(pnode);
                 }
             }
+
+            if (droppingPostVersionChange)
+                droppingPostVersionChange = false;
 
             // Delete disconnected nodes
             list<CNode*> vNodesDisconnectedCopy = vNodesDisconnected;
@@ -1068,7 +1083,7 @@ void ThreadMapPort2(void* parg)
         else
             printf("UPnP Port Mapping successful.\n");
         int i = 1;
-        loop {
+        for (;;) {
             if (fShutdown || !fUseUPnP)
             {
                 r = UPNP_DeletePortMapping(urls.controlURL, data.first.servicetype, port, "TCP", 0);
@@ -1103,7 +1118,7 @@ void ThreadMapPort2(void* parg)
         freeUPNPDevlist(devlist); devlist = 0;
         if (r != 0)
             FreeUPNPUrls(&urls);
-        loop {
+        for (;;) {
             if (fShutdown || !fUseUPnP)
                 return;
             Sleep(2000);
@@ -1145,6 +1160,8 @@ void MapPort(bool /* unused fMapPort */)
 // testnet dns seed begins with 't', all else are paycoin dns seeds.
 static const char *strDNSSeed[][2] = {
     {"dnsseed.paycoin.com", "dnsseed.paycoin.com"},
+    {"dnsseed.paycoinfoundation.org", "dnsseed.paycoinfoundation.org"},
+    {"dnsseed.xpydev.org", "dnsseed.xpydev.org"}
 };
 
 void ThreadDNSAddressSeed(void* parg)
@@ -1316,7 +1333,7 @@ void ThreadOpenConnections2(void* parg)
 
     // Initiate network connections
     int64 nStart = GetTime();
-    loop
+    for (;;)
     {
         ProcessOneShot();
 
@@ -1375,7 +1392,7 @@ void ThreadOpenConnections2(void* parg)
         int64 nANow = GetAdjustedTime();
 
         int nTries = 0;
-        loop
+        for (;;)
         {
             // use an nUnkBias between 10 (no outgoing connections) and 90 (8 outgoing connections)
             CAddress addr = addrman.Select(10 + min(nOutbound,8)*10);
@@ -1434,12 +1451,20 @@ void ThreadOpenAddedConnections2(void* parg)
 {
     printf("ThreadOpenAddedConnections started\n");
 
-    if (mapArgs.count("-addnode") == 0)
-        return;
+    {
+        LOCK(cs_vAddedNodes);
+        vAddedNodes = mapMultiArgs["-addnode"];
+    }
 
     if (fProxyNameLookup) {
         while(!fShutdown) {
-            BOOST_FOREACH(string& strAddNode, mapMultiArgs["-addnode"]) {
+            list<string> lAddresses(0);
+            {
+                LOCK(cs_vAddedNodes);
+                BOOST_FOREACH(string& strAddNode, vAddedNodes)
+                    lAddresses.push_back(strAddNode);
+            }
+            BOOST_FOREACH(string& strAddNode, lAddresses) {
                 CAddress addr;
                 CSemaphoreGrant grant(*semOutbound);
                 OpenNetworkConnection(addr, &grant, strAddNode.c_str());
@@ -1452,41 +1477,48 @@ void ThreadOpenAddedConnections2(void* parg)
         return;
     }
 
-    vector<vector<CService> > vservAddressesToAdd(0);
-    BOOST_FOREACH(string& strAddNode, mapMultiArgs["-addnode"])
+    for (unsigned int i = 0; true; i++)
     {
-        vector<CService> vservNode(0);
-        if(Lookup(strAddNode.c_str(), vservNode, GetDefaultPort(), fNameLookup, 0))
+        list<string> lAddresses(0);
         {
-            vservAddressesToAdd.push_back(vservNode);
+            LOCK(cs_vAddedNodes);
+            BOOST_FOREACH(string& strAddNode, vAddedNodes)
+                lAddresses.push_back(strAddNode);
+        }
+
+        list<vector<CService> > lservAddressesToAdd(0);
+        BOOST_FOREACH(string& strAddNode, lAddresses)
+        {
+            vector<CService> vservNode(0);
+            if(Lookup(strAddNode.c_str(), vservNode, GetDefaultPort(), fNameLookup, 0))
             {
-                LOCK(cs_setservAddNodeAddresses);
-                BOOST_FOREACH(CService& serv, vservNode)
-                    setservAddNodeAddresses.insert(serv);
+                lservAddressesToAdd.push_back(vservNode);
+                {
+                    LOCK(cs_setservAddNodeAddresses);
+                    BOOST_FOREACH(CService& serv, vservNode)
+                        setservAddNodeAddresses.insert(serv);
+                }
             }
         }
-    }
-    loop
-    {
-        vector<vector<CService> > vservConnectAddresses = vservAddressesToAdd;
+
         // Attempt to connect to each IP for each addnode entry until at least one is successful per addnode entry
         // (keeping in mind that addnode entries can have many IPs if fNameLookup)
         {
             LOCK(cs_vNodes);
             BOOST_FOREACH(CNode* pnode, vNodes)
-                for (vector<vector<CService> >::iterator it = vservConnectAddresses.begin(); it != vservConnectAddresses.end(); it++)
+                for (list<vector<CService> >::iterator it = lservAddressesToAdd.begin(); it != lservAddressesToAdd.end(); it++)
                     BOOST_FOREACH(CService& addrNode, *(it))
                         if (pnode->addr == addrNode)
                         {
-                            it = vservConnectAddresses.erase(it);
+                            it = lservAddressesToAdd.erase(it);
                             it--;
                             break;
                         }
         }
-        BOOST_FOREACH(vector<CService>& vserv, vservConnectAddresses)
+        BOOST_FOREACH(vector<CService>& vserv, lservAddressesToAdd)
         {
             CSemaphoreGrant grant(*semOutbound);
-            OpenNetworkConnection(CAddress(*(vserv.begin())), &grant);
+            OpenNetworkConnection(CAddress(vserv[i % vserv.size()]), &grant);
             Sleep(500);
             if (fShutdown)
                 return;
@@ -1501,7 +1533,7 @@ void ThreadOpenAddedConnections2(void* parg)
     }
 }
 
-// if succesful, this moves the passed grant to the constructed node
+// if successful, this moves the passed grant to the constructed node
 bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOutbound, const char *strDest, bool fOneShot)
 {
     //
@@ -1695,7 +1727,7 @@ bool BindListenPort(const CService &addrBind, string& strError)
 
 
 #ifdef WIN32
-    // Set to nonblocking, incoming connections will also inherit this
+    // Set to non-blocking, incoming connections will also inherit this
     if (ioctlsocket(hListenSocket, FIONBIO, (u_long*)&nOne) == SOCKET_ERROR)
 #else
     if (fcntl(hListenSocket, F_SETFL, O_NONBLOCK) == SOCKET_ERROR)
@@ -1756,7 +1788,7 @@ void static Discover()
         return;
 
 #ifdef WIN32
-    // Get local host ip
+    // Get local host IP
     char pszHostName[1000] = "";
     if (gethostname(pszHostName, sizeof(pszHostName)) != SOCKET_ERROR)
     {
@@ -1770,7 +1802,7 @@ void static Discover()
         }
     }
 #else
-    // Get local host ip
+    // Get local host IP
     struct ifaddrs* myaddrs;
     if (getifaddrs(&myaddrs) == 0)
     {
@@ -1841,12 +1873,6 @@ void StartNode(void* parg)
     // Map ports with UPnP
     if (fHaveUPnP)
         MapPort(fUseUPnP);
-
-    // Get addresses from IRC and advertise ours
-    // if (!CreateThread(ThreadIRCSeed, NULL))
-    //     printf("Error: CreateThread(ThreadIRCSeed) failed\n");
-    // IRC disabled with paycoin
-    printf("IRC seeding/communication disabled\n");
 
     // Send and receive from sockets, accept connections
     if (!CreateThread(ThreadSocketHandler, NULL))

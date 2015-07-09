@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2012-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef H_BITCOIN_SCRIPT
 #define H_BITCOIN_SCRIPT
@@ -196,6 +196,7 @@ enum opcodetype
     OP_PRIMENODE100 = 0xc2,
     OP_PRIMENODE20 = 0xc3,
     OP_PRIMENODE10 = 0xc4,
+    OP_PRIMENODEP2 = 0xc5,
 
 
     // template matching params

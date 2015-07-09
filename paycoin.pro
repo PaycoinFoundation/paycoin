@@ -1,18 +1,18 @@
 TEMPLATE = app
 TARGET = paycoin-qt
-VERSION = 0.1.2.26
+VERSION = 0.3.0.2
 INCLUDEPATH += src src/json src/qt
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE USE_IPV6
 CONFIG += no_include_pwd
 
 
-# for boost 1.37, add -mt to the boost libraries 
+# for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
 # for boost thread win32 with _win32 sufix
 # use: BOOST_THREAD_LIB_SUFFIX=_win32-...
 # or when linking against a specific BerkelyDB version: BDB_LIB_SUFFIX=-4.8
 
-# Dependency library locations can be customized with BOOST_INCLUDE_PATH, 
+# Dependency library locations can be customized with BOOST_INCLUDE_PATH,
 #    BOOST_LIB_PATH, BDB_INCLUDE_PATH, BDB_LIB_PATH
 #    OPENSSL_INCLUDE_PATH and OPENSSL_LIB_PATH respectively
 
@@ -128,8 +128,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/walletdb.h \
     src/script.h \
     src/init.h \
-    src/irc.h \
     src/mruset.h \
+    src/primekeys.h \
     src/json/json_spirit_writer_template.h \
     src/json/json_spirit_writer.h \
     src/json/json_spirit_value.h \
@@ -198,11 +198,11 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/main.cpp \
     src/init.cpp \
     src/net.cpp \
-    src/irc.cpp \
     src/checkpoints.cpp \
     src/addrman.cpp \
     src/db.cpp \
     src/walletdb.cpp \
+    src/primekeys.cpp \
     src/json/json_spirit_writer.cpp \
     src/json/json_spirit_value.cpp \
     src/json/json_spirit_reader.cpp \
@@ -222,6 +222,7 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/walletmodel.cpp \
     src/bitcoinrpc.cpp \
     src/rpcdump.cpp \
+    src/rpcnet.cpp \
     src/qt/overviewpage.cpp \
     src/qt/csvmodelwriter.cpp \
     src/crypter.cpp \
@@ -283,7 +284,7 @@ CODECFORTR = UTF-8
 
 # for lrelease/lupdate
 # also add new translations to src/qt/bitcoin.qrc under translations/
-TRANSLATIONS = $$files(src/qt/locale/bitcoin_*.ts)
+TRANSLATIONS = $$files(src/qt/locale/paycoin_*.ts)
 
 isEmpty(QMAKE_LRELEASE) {
     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
@@ -300,8 +301,9 @@ QMAKE_EXTRA_COMPILERS += TSQM
 PRE_TARGETDEPS += compiler_TSQM_make_all
 
 # "Other files" to show in Qt Creator
-OTHER_FILES += \
-    doc/*.rst doc/*.txt doc/README README.md res/bitcoin-qt.rc
+OTHER_FILES += README.md \
+	doc/*.md \
+	res/bitcoin-qt.rc
 
 # platform specific defaults, if not overridden on command line
 isEmpty(BOOST_LIB_SUFFIX) {

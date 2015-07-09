@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2012 Bitcoin Developers
 // Copyright (c) 2012-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "init.h" // for pwalletMain
@@ -59,7 +59,7 @@ Value importprivkey(const Array& params, bool fHelp)
     if (pwalletMain->IsLocked())
         throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
     if (fWalletUnlockMintOnly) // paycoin: no importprivkey in mint-only mode
-        throw JSONRPCError(-102, "Wallet is unlocked for minting only.");
+        throw JSONRPCError(-102, "Wallet is unlocked for minting only (unlock with walletpassphrase).");
 
     CKey key;
     bool fCompressed;
@@ -98,7 +98,7 @@ Value dumpprivkey(const Array& params, bool fHelp)
     if (pwalletMain->IsLocked())
         throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
     if (fWalletUnlockMintOnly) // paycoin: no dumpprivkey in mint-only mode
-        throw JSONRPCError(-102, "Wallet is unlocked for minting only.");
+        throw JSONRPCError(-102, "Wallet is unlocked for minting only (unlock with walletpassphrase).");
     CKeyID keyID;
     if (!address.GetKeyID(keyID))
         throw JSONRPCError(-3, "Address does not refer to a key");

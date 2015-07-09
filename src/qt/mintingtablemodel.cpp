@@ -152,7 +152,7 @@ public:
                     parent->endRemoveRows();
                 }
                 else if(inWallet && inModel)
-                {               
+                {
                     // Updated -- nothing to do, status update will take care of this
                 }
             }

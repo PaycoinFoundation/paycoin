@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2011-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "checkpoints.h"
@@ -11,6 +11,7 @@
 #include "init.h"
 #include "ui_interface.h"
 #include "kernel.h"
+#include "primekeys.h"
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -904,6 +905,24 @@ bool GetTransaction(const uint256 &hash, CTransaction &tx, uint256 &hashBlock)
 // CBlock and CBlockIndex
 //
 
+static CBlockIndex* pblockindexFBBHLast;
+CBlockIndex* FindBlockByHeight(int nHeight)
+{
+	CBlockIndex *pblockindex;
+	if (nHeight < nBestHeight / 2)
+		pblockindex = pindexGenesisBlock;
+	else
+		pblockindex = pindexBest;
+	if (pblockindexFBBHLast && abs(nHeight - pblockindex->nHeight) > abs(nHeight - pblockindexFBBHLast->nHeight))
+		pblockindex = pblockindexFBBHLast;
+	while (pblockindex->nHeight > nHeight)
+		pblockindex = pblockindex->pprev;
+	while (pblockindex->nHeight < nHeight)
+		pblockindex = pblockindex->pnext;
+	pblockindexFBBHLast = pblockindex;
+	return pblockindex;
+}
+
 bool CBlock::ReadFromDisk(const CBlockIndex* pindex, bool fReadTransactions)
 {
     if (!fReadTransactions)
@@ -945,7 +964,7 @@ int64 GetProofOfWorkReward(int nHeight, unsigned int nTime)
     }else if(nTime < POW_END_TIME - 86400){ // reward is 0 before ending PoW 1 day
         nSubsidy = 49 * COIN;
     }
-    
+
     if(nHeight > 277 && nHeight < 400){
         nSubsidy = 0 * COIN;
     }
@@ -954,7 +973,7 @@ int64 GetProofOfWorkReward(int nHeight, unsigned int nTime)
 
 
 // paycoin: miner's coin stake is rewarded based on coin age spent (coin-days)
-int64 GetProofOfStakeReward(int64 nCoinAge, int primeNodeRate)
+int64 GetProofOfStakeReward(int64 nCoinAge, unsigned int nTime, int primeNodeRate)
 {
 
     int64 nSubsidy = 0;
@@ -966,6 +985,8 @@ int64 GetProofOfStakeReward(int64 nCoinAge, int primeNodeRate)
         nRewardCoinYear = 10 * CENT;
     else if (primeNodeRate == 20)
         nRewardCoinYear = 20 * CENT;
+    else if (primeNodeRate == 25)
+        nRewardCoinYear = 25 * CENT;
     else if (primeNodeRate == 100)
         nRewardCoinYear = 100 * CENT;
     else if (primeNodeRate == 350)
@@ -1361,162 +1382,52 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                 return error("ConnectInputs() : %s unable to get coin age for coinstake", GetHash().ToString().substr(0,10).c_str());
             int64 nStakeReward = GetValueOut() - nValueIn;
             // todo : using accumulator in later version; make it short please
-            if (!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODE350){
+            if (!vout[0].IsEmpty()){
                 std::vector<string> pubKeyList;
-                pubKeyList.push_back("0427096f2e3123970010d97a1f0e210499435482927b12b1d6a209f0c383e03b444a244e372cad494c144b47ac3686fc4feea2aec2df3ba77f41cc27dbf8f3c4ff");
-                pubKeyList.push_back("04d96b945eca3ea23e1dfd414d2a4772c66e6c7297d0d4f88b7a3b7c285931c36f16ef26299704d49bda770621d9145d96365e02380b4329aceafe7b81012bef48");
-                pubKeyList.push_back("040057901e3de5e6429912047c2b5175dde2586b981397a0e434d43accf2e49c108fb3361b3957fcbbfa39930d50aeff56c690e91ffb2d953eefa46aa50fcb6917");
-                pubKeyList.push_back("0486022d6dd5c8d17c411cf28add879e5c738b64090e83a43cca1699ececdb8f3524379aa71bb76a2af2d7e8294c9d7b8179d98215afe589c921e4507f63c5c802");
-                pubKeyList.push_back("0436639ad108f7630881fb3af5f540ded3bb4653dab695f1716e71ea5838bcee7c238fa624bc2f1bfe0990cea4c3ee3e9f949bbc61e347b5887815eb51468b5c88");
-                pubKeyList.push_back("04d04183c8caad2f41edffbabd5b6a266e886457ef0621283b3418979d841bc2425e6b273ce0ea2b461b9797a7d3edd74a4407af9995a9702018cf69df8eee6aba");
-                pubKeyList.push_back("04a8b4a8c55361f37cad732da49b2bccadb9be522dd84f9c2329a7dbfaac8c5dd093b803d791719c413196694c97fcb360b7935034dcc4b1b3c2e45a39e67b8dd6");
-                pubKeyList.push_back("04b7930cd8bda83097841cfa0a2b5317ecc029a512bbf056a130421ee500773f16850f74e2cbffa4e8aa2a0b0a25009ea619e49839e8608db4469de285d6ee781d");
-                pubKeyList.push_back("04d0e3e0e688659d07d4510e25a9884c12931e581b8a2bcdd8ad6c4362ae219b08089761e88e17109aa6618dfca152f854e880ca66414d7f8e5d1d95e70dc95dee");
-                pubKeyList.push_back("04025f944a31226086da4f0f49188bfe12d29a304986d909b00560a5f8c84c09ab0f6d0e16926d42a07eaa522dad74404ef25ca863fbd78d45ecdb6da282caf9da");
-                pubKeyList.push_back("04983ebed643535907ebbea93387ca38c262778d21dab385f0d0c5dc49b66ebe54c27d9e318ea2798800a067dc3ad8e414684d477e7633f261b08522a0f81b3c5e");
-                pubKeyList.push_back("04512b7f555a89e73cd1f9d5138d8e46b81c49a184e0cb7b538167e046dea93689101f076c59874c085642b33b2ad58ff1dee34ffa1d03880c0272686291bd64b5");
-                pubKeyList.push_back("045f46a60dd9c3c3e68a127aee68a4ad59d303f9cfe91e2015156fe25a42687855a6de4ccb53756f06e7c3cf66e295fd84d8c3c0fd73c7cee44966aaae3d033652");
-                pubKeyList.push_back("049a0e427b86663cc928d6475d0e591fd6dbaf686e2b6a140e79e646fbaa0c88481984f61de390c9fc73c9f58d2c26bd8bdadbdd400a8cc96b4d7a6f52fbe1209d");
-                pubKeyList.push_back("040da5d570e39531f25ae747a1698d67470c0d7fb4941f104d081235f7425cefb95b5eca24daf80a732cb267bd13d47b62ce4102394c180b2a792216f4a087d320");
-                pubKeyList.push_back("04672dbddcb26bc82028652a5ff042f98c5c5f58f7330d49ad4a22268f9a93e2cca8ce2ed7a93012b83903f4ddcef5f1a0ea5fb90df3ae38528489d9b69cd0dd39");
-                pubKeyList.push_back("04fb8a251640f766ec63aee35f74f49e46b5ae7f61f7bcabe6103d13ab56086c884c525b96e10741704a3c44982aa9c6577184f0259a36f18e4ca8325ff2cd8330");
-                pubKeyList.push_back("04f9644ebc672e382eb45a82e221f2ab9d5124fea1de7de2d417c863ddd760c5c778f8fe39e09e7937ac99172a3a9d0b013020c1256b935da171b66864a1e16b9c");
-                pubKeyList.push_back("048a58fe8de7c123f6f816667fb1bfe6d99b9f0ac415bde1fdf4e9725fc80d2699c30b362faf992cd00edb586df9f459081c3f586becbabdd33bdd8becf31f85c2");
-                pubKeyList.push_back("0475a43388b6023722d93c03128541b3877153736a9ac7f48bf1d1a37e46aa1381a450aa0a6c40e2f4e317a4212c37c18bd1cf99ea3f70ecec83c30f4ceca65201");
-                pubKeyList.push_back("04bf85a4920b6fb89868fac40c4917af40546867221f2da2de84b9a9f26c569cee689c2eafe0c911c31ac88d9005badb8f32fb0650ffe2e272194ef5df162b35ac");
-                pubKeyList.push_back("04e75eda3a94f74d684a7239b8c6cc056e75fba2690888855f81810c439270265f4c3c46c3aedfaff81da2dfb236e091cc36b5759e6a0513898ad443cf91ff6631");
-                pubKeyList.push_back("04c62eb46a011e45f0069d8881894ac22889988b384ba7234c5caeed42d4f11d16e2ba0b55198cec0a0a710714d0602e1ccaada5284ae07fa0ae43b0cb1e7d59b1");
-                pubKeyList.push_back("043d60413953d4a9e144d86390c8ddb51b674df65ce1a05a26e400b3bc27cbc55c6c6b05d5030e60dfe59101dc9614e4298c33716be751feb0d494a788e00ad627");
-                pubKeyList.push_back("041c10a07fa1799e8d43d4a0b74b89614722fabcfd90dac380d170ebfddd0b5f0462e67c0704172cbe925c77c1890af68000d44fed56d628cceea6101fcaf74d38");
-                pubKeyList.push_back("04640a129ecf82ed28875881c28f59bf46b82aba8e8be77ad39bb1dd0ffd7944f49da4dc3de9cac50d88763167583b030d7df0e234e8a6e9de725aa337fcb1f0ed");
-                pubKeyList.push_back("04e5cba6da1d31076d42db494613e6c8587ba4252693c8d8dbcdae033479e8cab10921c147b91127ef4b36d0209a8de917f3c51fd231b07acdcce47d0ac3a14de8");
-                pubKeyList.push_back("0479502526431508d1edcb054bfb49dfed971e144ff1d3d89384f1af8c95a2ee3d6f296cade67c2dfb8c43b324ed6cc079395a5ec4118f0b8c5737fe8988d4ecfc");
-                pubKeyList.push_back("04048059da03e2ecca976fb0c8e8ea408ea3a8e2b45c55c9ee095011077ded701f9b8639b265e1dc1eb0ac08f990f67b99da03f4bb5c68bef182488d49f5e27762");
-                pubKeyList.push_back("04f3b1f9c8b07034eb3f7f609d150561ee4ae05a1051816060974221f5c36a1e3db4b79b46146da9bae303648dbf94bf740ad41d6e3297eeae6829bd2d9f3e3a5e");
-                pubKeyList.push_back("048f400e748d54d8fdf148a270adcb7aa4b73c9d49f3c8bbdf57df6a8a349c54abaae8e223bab43cb1770e8a80c00cb11904e301f32ea0aeec5d59ce8a9b9dc5c1");
-                pubKeyList.push_back("04cf206b074a8da673f6b06cdbd28b82253ef4b4aeb6689745bf9e42a5d9007269b18a3ba5becfabb3a2d5f7b4e84ad9f6d6283856fc315ddf4fd8e5797a4d8be7");
-                pubKeyList.push_back("04ae324ce3d313a42a76ec17f09625185c53bfa99c5f06920105291bea676220203d3f1b7c0de605c2bbcaa760a632f5b9a55dd86d8f36b6b985932d61a9a88946");
-                pubKeyList.push_back("040ba9aeeff11561fa33827d17957fc40ed5b1b8d260140535e0350ba431609abf3a31166a9e014d26553520f59de730dbcf5944fb433d1abfadb3f4f30668ab48");
-                pubKeyList.push_back("0416683a0796c3dfda8065c6011a61747488345bf0a0f559836104b4e9074e6c40b206797850603862baac60ba61bea930db1f2b4362c117d54472dc2a8b93bbd4");
+                int primeNodeRate = 0;
 
-                bool isVerify = false;
-                BOOST_FOREACH(std::string strPubKey, pubKeyList){
-                    std::vector<unsigned char> vchPubKey = ParseHex(strPubKey);
-                    CKey key;
-                    key.SetPubKey(vchPubKey);
-                    CScript scriptTime;
-                    scriptTime << nTime;
-                    uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
-                    std::vector<unsigned char> vchSig;
-                    vchSig.insert(vchSig.end(), vout[0].scriptPubKey.begin() + 2, vout[0].scriptPubKey.end());
-                    if(key.Verify(hashScriptTime, vchSig)){
-                        isVerify = true;
-                        break;
+                if (nTime >= END_PRIME_PHASE_ONE && vout[0].scriptPubKey[0] != OP_PRIMENODEP2)
+                    return DoS(100, error("ConnectInputs() : prime node staking has ended for the given keypair"));
+
+                getPrimePubKeyList(vout[0].scriptPubKey[0], pubKeyList, primeNodeRate);
+
+                if (primeNodeRate) {
+                    bool isVerify = false;
+                    BOOST_FOREACH(std::string strPubKey, pubKeyList){
+                        std::vector<unsigned char> vchPubKey = ParseHex(strPubKey);
+                        CKey key;
+                        key.SetPubKey(vchPubKey);
+                        CScript scriptTime;
+                        scriptTime << nTime;
+                        uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
+                        std::vector<unsigned char> vchSig;
+                        vchSig.insert(vchSig.end(), vout[0].scriptPubKey.begin() + 2, vout[0].scriptPubKey.end());
+                        if(key.Verify(hashScriptTime, vchSig)){
+                            isVerify = true;
+                            break;
+                        }
+                    }
+                    if(!isVerify)
+                        return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
+                    if (GetValueOut() < MINIMUM_FOR_PRIMENODE)
+                        return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
+                    /* Use time instead of block number because we can better
+                     * control when a manditory wallet update is required. */
+                    if (nTime >= RESET_PRIMERATES && nTime < END_PRIME_PHASE_ONE) {
+                        if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, 100) - GetMinFee() + MIN_TX_FEE)
+                            return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+                    } else {
+                        if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
+                            return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
                     }
                 }
-                if(!isVerify)
-                    return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
-                if (GetValueOut() < MINIMUM_FOR_PRIMENODE)
-                    return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-                if (nStakeReward > GetProofOfStakeReward(nCoinAge, 350) - GetMinFee() + MIN_TX_FEE)
-                    return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
-
-            }else if (!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODE100){
-                std::vector<string> pubKeyList;
-                pubKeyList.push_back("046ebc739ff7d6a0dbb3ae9bb9260a17b9d2fc40ca77d9c018784834ef863414c17b4fd3a580d9721ec0ee12c823f1eb48821b8135cd32aee26ba3be9cb22f7a31");
-                pubKeyList.push_back("04ffcd9e3acffbd40d6472f354e76f03a5c806623a5fbe341796b92e71ad59f5c4a4ad5f04c4fe7d6e50f6546d361a06020f8670eae020e8a7a1d036155e75d10a");
-                pubKeyList.push_back("04a61c5b67927c4a0389baa1089a87a93d60fbf15cc345823097245d0c331525d273a03544720f3a4e8f9afb443793f3ea595d5f0af7e17d764385750a9eb54d19");
-                pubKeyList.push_back("04f9f78f1dcdb6f76ba0a962aba3058a605691e2ecd63e16b5e0e39d19c5821f8eda421d06b4bf1159bcee989f01b273a4337ba0bc9fc749ef35c32e6e4a7bc1e9");
-                pubKeyList.push_back("0444b7d2aa1b9c74710325735df89692d1fa686a3a67d95462cbf4cb0d8f47eb9ac18da92bcce99b58e1be020c36736d9a1f85fa191c2ddcc779c53c4ede7c73b9");
-                pubKeyList.push_back("0426bbbd25a4dc0a295b64d4f1d3787d39cba04534109cd145c5229a8cc3285d097462131dd6fa1968eb510d53fee8a012250390ef6149c2003784f5585fef97a2");
-                pubKeyList.push_back("04ab438d669c7ed7db2e0eef61bd7ae4937ac32347d39adfb204f4d6e4e2a5adfa4548f69dc4cdc2ff3da0506e9382f69175138163328d445f110081dfa5d5d416");
-                pubKeyList.push_back("04406932519cd5e47333a049922eb8bcddc6b722c31440f36ca2851e119314b375914b08c635837e47c7cbf6ace95acbadee62acb054551bc4255c81d03c485e95");
-                pubKeyList.push_back("0454d677fbe06d5f56920db9bd124015edfd1fb32786c88a1a15cf0a84204d4386bd48fb31239eb3e594b13ca952b3c5f25aca9f3f702ad5b0120160dc355a6fbd");
-                pubKeyList.push_back("0452f030183dffd2b53d639b16488bd451ba2dc9d1791464300f28abf5414036530735b6a8de119443e3875f2e67514b6b2678ed3966629d354e6aabdb8251ed19");
-
-                bool isVerify = false;
-                BOOST_FOREACH(std::string strPubKey, pubKeyList){
-                    std::vector<unsigned char> vchPubKey = ParseHex(strPubKey);
-                    CKey key;
-                    key.SetPubKey(vchPubKey);
-                    CScript scriptTime;
-                    scriptTime << nTime;
-                    uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
-                    std::vector<unsigned char> vchSig;
-                    vchSig.insert(vchSig.end(), vout[0].scriptPubKey.begin() + 2, vout[0].scriptPubKey.end());
-                    if(key.Verify(hashScriptTime, vchSig)){
-                        isVerify = true;
-                        break;
-                    }
-                }
-                if(!isVerify)
-                    return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
-                if (GetValueOut() < MINIMUM_FOR_PRIMENODE)
-                    return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-               if (nStakeReward > GetProofOfStakeReward(nCoinAge, 100) - GetMinFee() + MIN_TX_FEE)
-                    return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
-
-            }else if (!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODE20){
-                std::vector<string> pubKeyList;
-                pubKeyList.push_back("04ce27308191e2e0274459bb191ba2cb93ef4dc8a838e8e8310083fcf7e2be9c7c20b3b15e2dc2a1482275ee55138c2350771231b00d7740e1e495269987faa24b");
-                pubKeyList.push_back("04311cc5333eeadbb3b18f6c70832df159796b1872bfa66bf214030ced65f8a33c4c6b4da48ffebb111a09129b337c9ed5129256995a4fa315fab3b81666cf2bad");
-
-                bool isVerify = false;
-                BOOST_FOREACH(std::string strPubKey, pubKeyList){
-                    std::vector<unsigned char> vchPubKey = ParseHex(strPubKey);
-                    CKey key;
-                    key.SetPubKey(vchPubKey);
-                    CScript scriptTime;
-                    scriptTime << nTime;
-                    uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
-                    std::vector<unsigned char> vchSig;
-                    vchSig.insert(vchSig.end(), vout[0].scriptPubKey.begin() + 2, vout[0].scriptPubKey.end());
-                    printf("CTransaction::ConnectInputs() hashScriptTime.GetHex().c_str() = %s\n", hashScriptTime.GetHex().c_str());
-                    if(key.Verify(hashScriptTime, vchSig)){
-                        isVerify = true;
-                        break;
-                    }
-                }
-                if(!isVerify)
-                    return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
-                if (GetValueOut() < MINIMUM_FOR_PRIMENODE)
-                    return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-                if (nStakeReward > GetProofOfStakeReward(nCoinAge, 20) - GetMinFee() + MIN_TX_FEE)
-                    return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
-
-            }else if (!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODE10){
-                std::vector<string> pubKeyList;
-                pubKeyList.push_back("0428588850c9361e7f5848807ef40ac839d5cd664db6183cbc53f63b0e8682a5b4b6caa6782db2b314e3cab43503f05df280b9e98e82b2235a00e4dd24997b49a0");
-                pubKeyList.push_back("04bf2832da17137215912a1173b3ad2675e1b03c4df22bb93f2f2fdb92bdd0097e0a267d8813799fe335d1b80ff23fa48809dea4517211b48eacadc85147d5c643");
-                pubKeyList.push_back("04c8ad33bb094d7bee52ec9d08e4eea8ef33d49c1d871e6a4ee56f2fd6f44bb87a28a903bf1306cd855c4fa19baa42d604e2f6aa571b4a6a603ab7769162e7fcb8");
-
-                bool isVerify = false;
-                BOOST_FOREACH(std::string strPubKey, pubKeyList){
-                    std::vector<unsigned char> vchPubKey = ParseHex(strPubKey);
-                    CKey key;
-                    key.SetPubKey(vchPubKey);
-                    CScript scriptTime;
-                    scriptTime << nTime;
-                    uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
-                    std::vector<unsigned char> vchSig;
-                    vchSig.insert(vchSig.end(), vout[0].scriptPubKey.begin() + 2, vout[0].scriptPubKey.end());
-                    if(key.Verify(hashScriptTime, vchSig)){
-                        isVerify = true;
-                        break;
-                    }
-                }
-                if(!isVerify)
-                    return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
-                if (GetValueOut() < MINIMUM_FOR_PRIMENODE)
-                    return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-                if (nStakeReward > GetProofOfStakeReward(nCoinAge, 10) - GetMinFee() + MIN_TX_FEE)
-                    return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
-
-            }else if (vout[0].IsEmpty()) {
+            }
+            else
+            {
                 if(GetValueOut() <= MINIMUM_FOR_ORION){
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for orion controller = %lld while you only have %lld", MINIMUM_FOR_ORION, GetValueOut()));
                 }
-                if(nStakeReward > GetProofOfStakeReward(nCoinAge, 0) - GetMinFee() + MIN_TX_FEE){
+                if(nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, 0) - GetMinFee() + MIN_TX_FEE){
                     return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
                 }
             }
@@ -1609,7 +1520,7 @@ bool CBlock::DisconnectBlock(CTxDB& txdb, CBlockIndex* pindex)
             return error("DisconnectBlock() : WriteBlockIndex failed");
     }
 
-    // paycoin: clean up wallet after disconnecting coinstake
+    // paycoin: cleanup wallet after disconnecting coinstake
     BOOST_FOREACH(CTransaction& tx, vtx)
         SyncWithWallets(tx, this, false, false);
 
@@ -1934,6 +1845,7 @@ bool CBlock::SetBestChain(CTxDB& txdb, CBlockIndex* pindexNew)
     // New best block
     hashBestChain = hash;
     pindexBest = pindexNew;
+	pblockindexFBBHLast = NULL;
     nBestHeight = pindexBest->nHeight;
     bnBestChainTrust = pindexNew->bnChainTrust;
     nTimeBestReceived = GetTime();
@@ -1955,7 +1867,7 @@ bool CBlock::SetBestChain(CTxDB& txdb, CBlockIndex* pindexNew)
 // paycoin: total coin age spent in transaction, in the unit of coin-days.
 // Only those coins meeting minimum age requirement counts. As those
 // transactions not in main chain are not currently indexed so we
-// might not find out about their coin age. Older transactions are 
+// might not find out about their coin age. Older transactions are
 // guaranteed to be in main chain by sync-checkpoint. This rule is
 // introduced to help nodes establish a consistent view of the coin
 // age (trust score) of competing branches.
@@ -2503,7 +2415,7 @@ static unsigned int nCurrentBlockFile = 1;
 FILE* AppendBlockFile(unsigned int& nFileRet)
 {
     nFileRet = 0;
-    loop
+    for (;;)
     {
         FILE* file = OpenBlockFile(nCurrentBlockFile, 0, "ab");
         if (!file)
@@ -2741,7 +2653,7 @@ void PrintBlockTree()
 map<uint256, CAlert> mapAlerts;
 CCriticalSection cs_mapAlerts;
 
-static string strMintMessage = _("Info: Minting suspended due to locked wallet."); 
+static string strMintMessage = _("Info: Minting suspended due to locked wallet.");
 static string strMintWarning;
 
 string GetWarnings(string strFor)
@@ -3028,6 +2940,13 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
 
         cPeerBlockCounts.input(pfrom->nStartingHeight);
 
+        // Be more aggressive with blockchain download. Send new getblocks() message after connection
+        // to new node if waited longer than MAX_TIME_SINCE_BEST_BLOCK.
+        int64_t TimeSinceBestBlock = GetTime() - nTimeBestReceived;
+        if (TimeSinceBestBlock > MAX_TIME_SINCE_BEST_BLOCK) {
+            pfrom->PushGetBlocks(pindexBest, uint256(0));
+        }
+
         // paycoin: ask for pending sync-checkpoint if any
         if (!IsInitialBlockDownload())
             Checkpoints::AskForPendingSyncCheckpoint(pfrom);
@@ -3199,7 +3118,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
                         // and we want it right after the last block so they don't
                         // wait for other stuff first.
                         // paycoin: send latest proof-of-work block to allow the
-                        // download node to accept as orphan (proof-of-stake 
+                        // download node to accept as orphan (proof-of-stake
                         // block might be rejected by stake connection check)
                         vector<CInv> vInv;
                         vInv.push_back(CInv(MSG_BLOCK, GetLastBlockIndex(pindexBest, false)->GetBlockHash()));
@@ -3237,7 +3156,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         // Send the rest of the chain
         if (pindex)
             pindex = pindex->pnext;
-        int nLimit = 500 + locator.GetDistanceBack();
+        int nLimit = 1500 + locator.GetDistanceBack();
         unsigned int nBytes = 0;
         printf("getblocks %d to %s limit %d\n", (pindex ? pindex->nHeight : -1), hashStop.ToString().substr(0,20).c_str(), nLimit);
         for (; pindex; pindex = pindex->pnext)
@@ -3383,8 +3302,16 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         CInv inv(MSG_BLOCK, block.GetHash());
         pfrom->AddInventoryKnown(inv);
 
-        if (ProcessBlock(pfrom, &block))
+        if (ProcessBlock(pfrom, &block)) {
             mapAlreadyAskedFor.erase(inv);
+        } else {
+            // Be more aggressive with blockchain download. Send getblocks() message after
+            // an error related to new block download.
+            int64_t TimeSinceBestBlock = GetTime() - nTimeBestReceived;
+            if (TimeSinceBestBlock > MAX_TIME_SINCE_BEST_BLOCK) {
+                pfrom->PushGetBlocks(pindexBest, uint256(0));
+            }
+        }
         if (block.nDoS) pfrom->Misbehaving(block.nDoS);
     }
 
@@ -3505,7 +3432,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
     }
 
 
-    // Update the last seen time for this node's address
+    // Update the last seen time for this nodes address
     if (pfrom->fNetworkNode)
         if (strCommand == "version" || strCommand == "addr" || strCommand == "inv" || strCommand == "getdata" || strCommand == "ping")
             AddressCurrentlyConnected(pfrom->addr);
@@ -3542,7 +3469,7 @@ bool ProcessMessages(CNode* pfrom)
         nTimeLastPrintMessageStart = GetAdjustedTime();
     }
 
-    loop
+    for (;;)
     {
         // Scan for message start
         CDataStream::iterator pstart = search(vRecv.begin(), vRecv.end(), BEGIN(pchMessageStart), END(pchMessageStart));
@@ -3615,7 +3542,7 @@ bool ProcessMessages(CNode* pfrom)
         {
             if (strstr(e.what(), "end of data"))
             {
-                // Allow exceptions from underlength message on vRecv
+                // Allow exceptions from under-length message on vRecv
                 printf("ProcessMessages(%s, %u bytes) : Exception '%s' caught, normally caused by a message being shorter than its stated length\n", strCommand.c_str(), nMessageSize, e.what());
             }
             else if (strstr(e.what(), "size too large"))
@@ -3868,7 +3795,7 @@ unsigned int static ScanHash_CryptoPP(char* pmidstate, char* pdata, char* phash1
     unsigned int& nNonce = *(unsigned int*)(pdata + 12);
     for (;;)
     {
-        // Crypto++ SHA-256
+        // Crypto++ SHA256
         // Hash pdata using pmidstate as the starting state into
         // preformatted buffer phash1, then hash phash1 into phash
         nNonce++;
@@ -4306,7 +4233,7 @@ void BitcoinMiner(CWallet *pwallet, bool fProofOfStake)
                     continue;
                 }
                 SetMintWarning("");
-                printf("CPUMiner : proof-of-stake block found %s\n", pblock->GetHash().ToString().c_str()); 
+                printf("CPUMiner : proof-of-stake block found %s\n", pblock->GetHash().ToString().c_str());
                 SetThreadPriority(THREAD_PRIORITY_NORMAL);
                 CheckWork(pblock.get(), *pwalletMain, reservekey);
                 SetThreadPriority(THREAD_PRIORITY_LOWEST);
@@ -4340,12 +4267,12 @@ void BitcoinMiner(CWallet *pwallet, bool fProofOfStake)
         uint256 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
         uint256 hashbuf[2];
         uint256& hash = *alignup<16>(hashbuf);
-        loop
+        for (;;)
         {
             unsigned int nHashesDone = 0;
             unsigned int nNonceFound;
 
-            // Crypto++ SHA-256
+            // Crypto++ SHA256
             nNonceFound = ScanHash_CryptoPP(pmidstate, pdata + 64, phash1,
                                             (char*)&hash, nHashesDone);
 

@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2012-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef BITCOIN_UTIL_H
 #define BITCOIN_UTIL_H
@@ -15,7 +15,7 @@
 #include <sys/resource.h>
 #else
 #ifndef _WIN64
-typedef int pid_t; /* define for windows compatiblity */
+typedef int pid_t; /* define for windows compatibility */
 #endif
 #endif
 #include <map>
@@ -43,7 +43,6 @@ typedef unsigned long long  uint64;
 static const int64 COIN = 1000000;
 static const int64 CENT = 10000;
 
-#define loop                for (;;)
 #define BEGIN(a)            ((char*)&(a))
 #define END(a)              ((char*)&((&(a))[1]))
 #define UBEGIN(a)           ((unsigned char*)&(a))
@@ -665,7 +664,7 @@ inline uint160 Hash160(const std::vector<unsigned char>& vch)
 }
 
 
-/** Median filter over a stream of values. 
+/** Median filter over a stream of values.
  * Returns the median of the last N numbers
  */
 template <typename T> class CMedianFilter
@@ -682,7 +681,7 @@ public:
         vValues.push_back(initial_value);
         vSorted = vValues;
     }
-    
+
     void input(T value)
     {
         if(vValues.size() == nSize)

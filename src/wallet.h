@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2011-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef BITCOIN_WALLET_H
 #define BITCOIN_WALLET_H
@@ -72,7 +72,7 @@ private:
     // the current wallet version: clients below this version are not able to load the wallet
     int nWalletVersion;
 
-    // the maxmimum wallet format version: memory-only variable that specifies to what version this wallet may be upgraded
+    // the maximum wallet format version: memory-only variable that specifies to what version this wallet may be upgraded
     int nWalletMaxVersion;
 
 public:
@@ -106,7 +106,10 @@ public:
         pwalletdbEncryption = NULL;
     }
 
-    
+    // Treefunder Additions
+    std::set< std::set<CTxDestination> > GetAddressGroupings();
+    std::map<CTxDestination, int64> GetAddressBalances();
+
     std::map<uint256, CWalletTx> mapWallet;
     std::vector<uint256> vWalletUpdated;
     std::vector<uint256> vMintingWalletUpdated;
@@ -318,7 +321,7 @@ public:
 };
 
 
-/** A transaction with a bunch of additional info that only the owner cares about. 
+/** A transaction with a bunch of additional info that only the owner cares about.
  * It includes any unrecorded transactions needed to link it back to the block chain.
  */
 class CWalletTx : public CMerkleTx
@@ -565,7 +568,7 @@ public:
     void GetAmounts(int64& nGeneratedImmature, int64& nGeneratedMature, std::list<std::pair<CTxDestination, int64> >& listReceived,
                     std::list<std::pair<CTxDestination, int64> >& listSent, int64& nFee, std::string& strSentAccount) const;
 
-    void GetAccountAmounts(const std::string& strAccount, int64& nGenerated, int64& nReceived, 
+    void GetAccountAmounts(const std::string& strAccount, int64& nGenerated, int64& nReceived,
                            int64& nSent, int64& nFee) const;
 
     bool IsFromMe() const

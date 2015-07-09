@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2011-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include "db.h"
 #include "walletdb.h"
@@ -12,10 +12,12 @@
 #include "util.h"
 #include "ui_interface.h"
 #include "checkpoints.h"
+#include "version.h"
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/convenience.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
+#include <ctime>
 
 #ifndef WIN32
 #include <signal.h>
@@ -25,6 +27,7 @@ using namespace std;
 using namespace boost;
 
 CWallet* pwalletMain;
+int MIN_PROTO_VERSION = 70002;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -79,7 +82,7 @@ void Shutdown(void* parg)
         printf("Paycoin exiting\n\n");
         fExit = true;
 #ifndef QT_GUI
-        // ensure non UI client get's exited here, but let Bitcoin-Qt reach return 0; in bitcoin.cpp
+        // ensure non-UI client get's exited here, but let Bitcoin-Qt reach return 0; in bitcoin.cpp
         exit(0);
 #endif
     }
@@ -151,12 +154,12 @@ bool static Bind(const CService &addr) {
 bool AppInit2(int argc, char* argv[])
 {
 #ifdef _MSC_VER
-    // Turn off microsoft heap dump noise
+    // Turn off Microsoft heap dump noise
     _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
     _CrtSetReportFile(_CRT_WARN, CreateFileA("NUL", GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, 0));
 #endif
 #if _MSC_VER >= 1400
-    // Disable confusing "helpful" text message on abort, ctrl-c
+    // Disable confusing "helpful" text message on abort, Ctrl+C
     _set_abort_behavior(0, _WRITE_ABORT_MSG | _CALL_REPORTFAULT);
 #endif
 #ifndef WIN32
@@ -287,10 +290,6 @@ bool AppInit2(int argc, char* argv[])
     }
 
     fTestNet = GetBoolArg("-testnet");
-    if (fTestNet)
-    {
-        SoftSetBoolArg("-irc", true);
-    }
 
     fDebug = GetBoolArg("-debug");
     fDetachDB = GetBoolArg("-detachdb", false);
@@ -372,6 +371,13 @@ bool AppInit2(int argc, char* argv[])
         ThreadSafeMessageBox(strprintf(_("Cannot obtain a lock on data directory %s.  Paycoin is probably already running."), GetDataDir().string().c_str()), _("Paycoin"), wxOK|wxMODAL);
         return false;
     }
+
+    /* Check and update minium version protocol after a given time (same time
+     * as resetting the primenode stake rates; do this here to insure that it's
+     * done before attempting to load the blockchain, etc (this is also why we
+     * use a time instead of a block number). */
+    if (time(NULL) >= END_PRIME_PHASE_ONE)
+        MIN_PROTO_VERSION = 70003;
 
     std::ostringstream strErrors;
     //
@@ -698,4 +704,3 @@ bool AppInit2(int argc, char* argv[])
 
     return true;
 }
-

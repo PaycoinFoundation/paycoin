@@ -1,7 +1,8 @@
 # Copyright (c) 2009-2010 Satoshi Nakamoto
-# Copyright (c) 2011-2012 The Paycoin developers
-# Distributed under the MIT/X11 software license, see the accompanying
-# file license.txt or http://www.opensource.org/licenses/mit-license.php.
+# Copyright (c) 2011-2012 The Peercoin developers
+# Copyright (c) 2015 The Paycoin developers
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 USE_UPNP:=0
 
@@ -72,7 +73,7 @@ LIBS+= \
 
     # Build position independent code to take advantage of Address Space Layout Randomization
     # offered by some kernels.
-    # see doc/build-unix.txt for more information.
+    # see doc/build-unix.md for more information.
     ifdef PIE
         HARDENING+=-fPIE -pie
     endif
@@ -97,7 +98,6 @@ OBJS= \
     obj/key.o \
     obj/db.o \
     obj/init.o \
-    obj/irc.o \
     obj/keystore.o \
     obj/main.o \
     obj/net.o \
@@ -105,12 +105,14 @@ OBJS= \
     obj/kernelrecord.o \
     obj/bitcoinrpc.o \
     obj/rpcdump.o \
+    obj/rpcnet.o \
     obj/script.o \
     obj/util.o \
     obj/wallet.o \
     obj/walletdb.o \
     obj/noui.o \
-    obj/kernel.o
+    obj/kernel.o \
+    obj/primekeys.o
 
 
 all: paycoind

@@ -16,7 +16,7 @@ Build-Depends: debhelper (>= 9.0.0),
  libminiupnpc-dev,
  libqrencode-dev
 Standards-Version: 0.1.2.26
-Homepage: http://paycoin.com/
+Homepage: https://paycoin.com/
 Vcs-Git: https://github.com/PaycoinFoundation/paycoin.git
 
 Package: paycoin-qt

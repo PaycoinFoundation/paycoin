@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2011-2015 The Peercoin developers
 // Copyright (c) 2014-2015 The Paycoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
+// Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "main.h"
@@ -26,7 +26,7 @@
 #include <boost/iostreams/stream.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/asio/ssl.hpp> 
+#include <boost/asio/ssl.hpp>
 #include <boost/filesystem/fstream.hpp>
 typedef boost::asio::ssl::stream<boost::asio::ip::tcp::socket> SSLStream;
 
@@ -52,6 +52,7 @@ static std::string strRPCUserColonPass;
 static int64 nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;
 
+extern Value getconnectioncount(const Array& params, bool fHelp);
 extern Value dumpprivkey(const Array& params, bool fHelp);
 extern Value importprivkey(const Array& params, bool fHelp);
 
@@ -224,11 +225,11 @@ void TxToJSON(const CTransaction& tx, Object& txdata)
     {
         Object vin;
 
-        if (txin.prevout.IsNull()) 
+        if (txin.prevout.IsNull())
         {
             vin.push_back(Pair("coinbase", HexStr(txin.scriptSig).c_str()));
         }
-        else 
+        else
         {
             vin.push_back(Pair("txid", txin.prevout.hash.ToString().c_str()));
             vin.push_back(Pair("vout", (int)txin.prevout.n));
@@ -276,8 +277,8 @@ void TxToJSON(const CTransaction& tx, Object& txdata)
 
         vout.push_back(Pair("scriptPubKey",scriptpubkey));
 
-        vouts.push_back(vout);   
-        n++;             
+        vouts.push_back(vout);
+        n++;
     }
     txdata.push_back(Pair("vout", vouts));
 }
@@ -316,7 +317,7 @@ Object blockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool fTxI
             BOOST_FOREACH(const CTxOut& txout, tx.vout)
                 txinfo.push_back(txout.ToStringShort());
         }
-        else if (fTxDetails) 
+        else if (fTxDetails)
         {
             Object txdata;
             TxToJSON(tx, txdata);
@@ -422,17 +423,6 @@ Value getblocknumber(const Array& params, bool fHelp)
 }
 
 
-Value getconnectioncount(const Array& params, bool fHelp)
-{
-    if (fHelp || params.size() != 0)
-        throw runtime_error(
-            "getconnectioncount\n"
-            "Returns the number of connections to other nodes.");
-
-    LOCK(cs_vNodes);
-    return (int)vNodes.size();
-}
-
 static void CopyNodeStats(std::vector<CNodeStats>& vstats)
 {
     vstats.clear();
@@ -444,6 +434,35 @@ static void CopyNodeStats(std::vector<CNodeStats>& vstats)
         pnode->copyStats(stats);
         vstats.push_back(stats);
     }
+}
+
+Value listaddressbook(const Array& params, bool fHelp)
+{
+    if (fHelp || params.size() > 1)
+        throw runtime_error(
+            "listaddressbook [all=false]\n"
+            "Returns the address book. "
+            "By default, only returns the wallet addresses.\n"
+            "Set all=true to return entire address book."
+        );
+    Array ret;
+    bool all = false;
+    if (params.size() == 1) {
+        all = params[0].get_bool();
+    }
+    BOOST_FOREACH(const PAIRTYPE(CTxDestination, std::string)& item, pwalletMain->mapAddressBook)
+    {
+        const CBitcoinAddress& address = item.first;
+        const std::string& strName = item.second;
+        bool fMine = IsMine(*pwalletMain, address.Get());
+        if (!fMine && !all) continue;
+        Object obj;
+        obj.push_back(Pair("account", strName));
+        obj.push_back(Pair("address", address.ToString()));
+        ret.push_back(obj);
+    }
+
+    return ret;
 }
 
 Value getpeerinfo(const Array& params, bool fHelp)
@@ -475,7 +494,7 @@ Value getpeerinfo(const Array& params, bool fHelp)
 
         ret.push_back(obj);
     }
-    
+
     return ret;
 }
 
@@ -573,7 +592,7 @@ Value getnetworkghps(const Array& params, bool fHelp)
         }
         pindex = pindex->pnext;
     }
-    double dNetworkGhps = GetDifficulty() * 4.294967296 / nTargetSpacingWork; 
+    double dNetworkGhps = GetDifficulty() * 4.294967296 / nTargetSpacingWork;
     return dNetworkGhps;
 }
 
@@ -1340,7 +1359,7 @@ Value sendmany(const Array& params, bool fHelp)
 
         CScript scriptPubKey;
         scriptPubKey.SetDestination(address.Get());
-        int64 nAmount = AmountFromValue(s.value_); 
+        int64 nAmount = AmountFromValue(s.value_);
         if (nAmount < MIN_TXOUT_AMOUNT)
             throw JSONRPCError(-101, "Send amount too small");
         totalAmount += nAmount;
@@ -1665,7 +1684,7 @@ Value listtransactions(const Array& params, bool fHelp)
         if (ret.size() >= (nCount+nFrom)) break;
     }
     // ret is newest to oldest
-    
+
     if (nFrom > (int)ret.size())
         nFrom = ret.size();
     if ((nFrom + nCount) > (int)ret.size())
@@ -1681,6 +1700,37 @@ Value listtransactions(const Array& params, bool fHelp)
     std::reverse(ret.begin(), ret.end()); // Return oldest to newest
 
     return ret;
+}
+
+Value listaddressgroupings(const Array& params, bool fHelp)
+{
+    if (fHelp)
+        throw runtime_error(
+            "listaddressgroupings\n"
+            "Lists groups of addresses which have had their common ownership\n"
+            "made public by common use as inputs or as the resulting change\n"
+            "in past transactions");
+
+    Array jsonGroupings;
+    map<CTxDestination, int64> balances = pwalletMain->GetAddressBalances();
+    BOOST_FOREACH(set<CTxDestination> grouping, pwalletMain->GetAddressGroupings())
+    {
+        Array jsonGrouping;
+        BOOST_FOREACH(CTxDestination address, grouping)
+        {
+            Array addressInfo;
+            addressInfo.push_back(CBitcoinAddress(address).ToString());
+            addressInfo.push_back(ValueFromAmount(balances[address]));
+            {
+                LOCK(pwalletMain->cs_wallet);
+                if (pwalletMain->mapAddressBook.find(CBitcoinAddress(address).Get()) != pwalletMain->mapAddressBook.end())
+                    addressInfo.push_back(pwalletMain->mapAddressBook.find(CBitcoinAddress(address).Get())->second);
+            }
+            jsonGrouping.push_back(addressInfo);
+        }
+        jsonGroupings.push_back(jsonGrouping);
+    }
+    return jsonGroupings;
 }
 
 Value listaccounts(const Array& params, bool fHelp)
@@ -2427,10 +2477,7 @@ Value getblockhash(const Array& params, bool fHelp)
     if (nHeight < 0 || nHeight > nBestHeight)
         throw runtime_error("Block number out of range.");
 
-    CBlock block;
-    CBlockIndex* pblockindex = mapBlockIndex[hashBestChain];
-    while (pblockindex->nHeight > nHeight)
-        pblockindex = pblockindex->pprev;
+    CBlockIndex* pblockindex = FindBlockByHeight(nHeight);
     return pblockindex->phashBlock->GetHex();
 }
 
@@ -2470,9 +2517,9 @@ Value getcheckpoint(const Array& params, bool fHelp)
 
     Object result;
     CBlockIndex* pindexCheckpoint;
-    
+
     result.push_back(Pair("synccheckpoint", Checkpoints::hashSyncCheckpoint.ToString().c_str()));
-    pindexCheckpoint = mapBlockIndex[Checkpoints::hashSyncCheckpoint];        
+    pindexCheckpoint = mapBlockIndex[Checkpoints::hashSyncCheckpoint];
     result.push_back(Pair("height", pindexCheckpoint->nHeight));
     result.push_back(Pair("timestamp", DateTimeStrFormat(pindexCheckpoint->GetBlockTime()).c_str()));
     if (mapArgs.count("-checkpointkey"))
@@ -2581,7 +2628,7 @@ Value makekeypair(const Array& params, bool fHelp)
     string strPrefix = "";
     if (params.size() > 0)
         strPrefix = params[0].get_str();
- 
+
     CKey key;
     int nCount = 0;
     do
@@ -2638,13 +2685,13 @@ Value sendalert(const Array& params, bool fHelp)
     CDataStream sMsg(SER_NETWORK, PROTOCOL_VERSION);
     sMsg << (CUnsignedAlert)alert;
     alert.vchMsg = vector<unsigned char>(sMsg.begin(), sMsg.end());
-    
+
     vector<unsigned char> vchPrivKey = ParseHex(params[1].get_str());
     key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end())); // if key is not correct openssl may crash
     if (!key.Sign(Hash(alert.vchMsg.begin(), alert.vchMsg.end()), alert.vchSig))
         throw runtime_error(
-            "Unable to sign alert, check private key?\n");  
-    if(!alert.ProcessAlert()) 
+            "Unable to sign alert, check private key?\n");
+    if(!alert.ProcessAlert())
         throw runtime_error(
             "Failed to process alert.\n");
     // Relay alert
@@ -3351,6 +3398,18 @@ Value getrawmempool(const Array& params, bool fHelp)
     return a;
 }
 
+Value clearorphans(const Array& params, bool fHelp)
+{
+    if (fHelp || params.size() !=0)
+        throw runtime_error(
+            "clearorphans\n"
+            "Clears orphaned transactions from the wallet file.");
+
+    pwalletMain->ClearOrphans();
+
+    return true;
+}
+
 //
 // Call Table
 //
@@ -3363,6 +3422,7 @@ static const CRPCCommand vRPCCommands[] =
     { "stop",                   &stop,                   true },
     { "getblockcount",          &getblockcount,          true },
     { "getblocknumber",         &getblocknumber,         true },
+    { "listaddressbook",        &listaddressbook,        false },
     { "getconnectioncount",     &getconnectioncount,     true },
     { "getpeerinfo",            &getpeerinfo,            true },
     { "getdifficulty",          &getdifficulty,          true },
@@ -3400,6 +3460,7 @@ static const CRPCCommand vRPCCommands[] =
     { "getblockhash",           &getblockhash,           false },
     { "gettransaction",         &gettransaction,         false },
     { "listtransactions",       &listtransactions,       false },
+    { "listaddressgroupings",   &listaddressgroupings,   false },
     { "signmessage",            &signmessage,            false },
     { "verifymessage",          &verifymessage,          false },
     { "getwork",                &getwork,                true },
@@ -3424,6 +3485,7 @@ static const CRPCCommand vRPCCommands[] =
     { "sendrawtransaction",     &sendrawtransaction,     false},
     { "gettxout",               &gettxout,               true },
     { "getrawmempool",          &getrawmempool,          true },
+    { "clearorphans",           &clearorphans,           true },
 };
 
 CRPCTable::CRPCTable()
@@ -3477,7 +3539,7 @@ string rfc1123Time()
     time(&now);
     struct tm* now_gmt = gmtime(&now);
     string locale(setlocale(LC_TIME, NULL));
-    setlocale(LC_TIME, "C"); // we want posix (aka "C") weekday/month strings
+    setlocale(LC_TIME, "C"); // we want POSIX (aka "C") weekday/month strings
     strftime(buffer, sizeof(buffer), "%a, %d %b %Y %H:%M:%S +0000", now_gmt);
     setlocale(LC_TIME, locale.c_str());
     return string(buffer);
@@ -3540,7 +3602,7 @@ int ReadHTTPStatus(std::basic_istream<char>& stream)
 int ReadHTTPHeader(std::basic_istream<char>& stream, map<string, string>& mapHeadersRet)
 {
     int nLen = 0;
-    loop
+    for (;;)
     {
         string str;
         std::getline(stream, str);
@@ -3830,7 +3892,7 @@ void ThreadRPCServer2(void* parg)
     }
     catch(boost::system::system_error &e)
     {
-        ThreadSafeMessageBox(strprintf(_("An error occured while setting up the RPC port %i for listening: %s"), endpoint.port(), e.what()),
+        ThreadSafeMessageBox(strprintf(_("An error occurred while setting up the RPC port %i for listening: %s"), endpoint.port(), e.what()),
                              _("Error"), wxOK | wxMODAL);
         StartShutdown();
         return;
@@ -3855,7 +3917,7 @@ void ThreadRPCServer2(void* parg)
         SSL_CTX_set_cipher_list(context.impl(), strCiphers.c_str());
     }
 
-    loop
+    for (;;)
     {
         // Accept connection
         SSLStream sslStream(io_service, context);
@@ -4065,6 +4127,7 @@ Array RPCConvertValues(const std::string &strMethod, const std::vector<std::stri
     if (strMethod == "listreceivedbyaddress"  && n > 1) ConvertTo<bool>(params[1]);
     if (strMethod == "listreceivedbyaccount"  && n > 0) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "listreceivedbyaccount"  && n > 1) ConvertTo<bool>(params[1]);
+    if (strMethod == "listaddressbook"        && n > 0) ConvertTo<bool>(params[0]);
     if (strMethod == "getbalance"             && n > 1) ConvertTo<boost::int64_t>(params[1]);
     if (strMethod == "getblockhash"           && n > 0) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "getblock"               && n > 1) ConvertTo<bool>(params[1]);
@@ -4075,6 +4138,7 @@ Array RPCConvertValues(const std::string &strMethod, const std::vector<std::stri
     if (strMethod == "sendfrom"               && n > 3) ConvertTo<boost::int64_t>(params[3]);
     if (strMethod == "listtransactions"       && n > 1) ConvertTo<boost::int64_t>(params[1]);
     if (strMethod == "listtransactions"       && n > 2) ConvertTo<boost::int64_t>(params[2]);
+    if (strMethod == "listaddressgroupings"       && n > 2) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "listaccounts"           && n > 0) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "walletpassphrase"       && n > 1) ConvertTo<boost::int64_t>(params[1]);
     if (strMethod == "walletpassphrase"       && n > 2) ConvertTo<bool>(params[2]);
@@ -4201,7 +4265,7 @@ int CommandLineRPC(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
 #ifdef _MSC_VER
-    // Turn off microsoft heap dump noise
+    // Turn off Microsoft heap dump noise
     _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
     _CrtSetReportFile(_CRT_WARN, CreateFile("NUL", GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, 0));
 #endif

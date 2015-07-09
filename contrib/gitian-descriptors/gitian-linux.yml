@@ -16,7 +16,7 @@ packages:
 - "libqt4-dev"
 reference_datetime: "2011-01-30 00:00:00"
 remotes:
-- "url": "https://github.com/paycoin/paycoin.git"
+- "url": "https://github.com/paycoinfoundation/paycoin.git"
   "dir": "paycoin"
 files:
 - "paycoin-deps-linux32-gitian-r5.zip"
@@ -41,7 +41,7 @@ script: |
   #
   cd $HOME/build/paycoin
   git archive --format=tar -o paycoin.tar HEAD
-  cp doc/README $OUTDIR
+  cp doc/README.md $OUTDIR
   cp COPYING $OUTDIR
   DISTNAME=paycoin.tar
   #
@@ -50,7 +50,7 @@ script: |
 
   qmake INCLUDEPATH="$STAGING/include" LIBS="-L$STAGING/lib" USE_QRCODE=1 RELEASE=1 BOOST_LIB_SUFFIX=-mt QMAKE_CXXFLAGS=-frandom-seed=paycoin QMAKE_LFLAGS=-frandom-seed=paycoin
   make $MAKEOPTS
-  install -s paycoin $BINDIR
+  install -s paycoin-qt $BINDIR
 
   cd src
   make -f makefile.unix STATIC=1 $MAKEOPTS paycoind USE_UPNP=1 BDB_INCLUDE_PATH=$STAGING/include BDB_LIB_PATH=$STAGING/lib BOOST_LIB_SUFFIX=-mt DEBUGFLAGS=
