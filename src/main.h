@@ -559,6 +559,8 @@ public:
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODE20);
         }else if(!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODE10){
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODE10);
+        }else if(!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODEP2) {
+            return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODEP2);
         }else{
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].IsEmpty());
         }
