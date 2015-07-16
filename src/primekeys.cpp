@@ -125,6 +125,17 @@ void initPrimeP2PubKeyLists() {
 
     p2pubKeyListsInitialized = true;
 
+    if (fTestNet) {
+        // Finally a working testnet, add a primenode
+        if (now >= END_PRIME_PHASE_ONE + (60 * 60 * 24 * 7 * 2))
+            pubKeyListP2.push_back("04d445518d115243639d0dfd057a99da588e8334039ce674f177943d4c660957c810f924a5371a352b1e827121846500a588a4dc47dc6d5d9e5317dfa48c562aa7");
+        // And another primenode to confirm the keys activate properly
+        if (now >= END_PRIME_PHASE_ONE + (60 * 60 * 24 * 7 * 2) + (60 * 60 * 24))
+            pubKeyListP2.push_back("0443e5bf72234d77a591ca2132c5995cccdba377a7022eb014d25e27ebe6ffaf85cd3a214588612186ee1771cfb905d1ec2137193bc01563dbc36d1e28f013e00d");
+        // Cancel out instead of loading normal prime keys.
+        return;
+    }
+
     if (now >= END_PRIME_PHASE_ONE + (60 * 60 * 24 * 7)) {
         pubKeyListP2.push_back("04388d05d6cdbf75a37540e9b94c1c0b4e9b41a109c1466a33b3cf3cbca9e244f7761686502a0a593831fac02753ea5c2c8fc14ed59b9060da2088d2cb674e041d");
         pubKeyListP2.push_back("04190509dad08314b99d137ff42faf23c4c58cc20a86aab3e77ca2bfd2aadb48a3af57ea7c7970521214ebc07dd307a60c3721443025619d7e4b81b52fe7c56c29");
