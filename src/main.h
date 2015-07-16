@@ -61,7 +61,7 @@ static const unsigned int MODIFIER_INTERVAL = 10 * 60;
 //static const unsigned int MODIFIER_INTERVAL = 10;
 static const int64 NUMBER_OF_PRIMENODE = 50;
 static const int64 MINIMUM_FOR_ORION = 50 * COIN;
-static const int64 MINIMUM_FOR_PRIMENODE = 125000 * COIN;
+static const int64 MINIMUM_FOR_PRIMENODE = 160000 * COIN;
 static const int MAX_TIME_SINCE_BEST_BLOCK = 10; // how many seconds to wait before sending next PushGetBlocks()
 // Reset all primenode stakerates to 100% after the given date
 static const unsigned int RESET_PRIMERATES = 1429531200; // Mon, 20 Apr 2015 12:00:00 GMT
@@ -559,6 +559,8 @@ public:
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODE20);
         }else if(!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODE10){
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODE10);
+        }else if(!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODEP2) {
+            return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODEP2);
         }else{
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].IsEmpty());
         }
