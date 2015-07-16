@@ -2,7 +2,6 @@
 #define ASKPASSPHRASEDIALOG_H
 
 #include <QDialog>
-#include "virtualkeyboard.h"
 
 namespace Ui {
     class AskPassphraseDialog;
@@ -36,7 +35,6 @@ private:
     Mode mode;
     WalletModel *model;
     bool fCapsLock;
-    VirtualKeyboard *keyboard;
 
 private slots:
     void textChanged();
