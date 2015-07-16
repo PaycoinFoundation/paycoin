@@ -97,5 +97,13 @@ Crobbo (forum)
 ### Assets Used
 	src/qt/res/images/splash2.jpg (Wallet image)
 
+[Vignoni David](http://www.oxygen-icons.org/)
+-----------------------
 
+### Info
+* Designer: Vignoni David
+* Site: http://www.oxygen-icons.org/
+* License: Oxygen icon theme is dual licensed. You may copy it under the Creative Common Attribution-ShareAlike 3.0 License or the GNU Library General Public License.
 
+### Assets Used
+	src/qt/res/icons/debugwindow.png
