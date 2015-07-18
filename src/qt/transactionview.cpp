@@ -127,7 +127,7 @@ TransactionView::TransactionView(QWidget *parent) :
     QAction *copyAmountAction = new QAction(tr("Copy amount"), this);
     QAction *copyTransactionIdAction = new QAction(tr("Copy transaction id"), this);
     QAction *editLabelAction = new QAction(tr("Edit label"), this);
-    QAction *showDetailsAction = new QAction(tr("Show details..."), this);
+    QAction *showDetailsAction = new QAction(tr("Show transaction details"), this);
     QAction *clearOrphansAction = new QAction(tr("Clear orphans"), this);
 
     contextMenu = new QMenu();
