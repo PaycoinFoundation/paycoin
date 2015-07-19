@@ -1,3 +1,9 @@
+paycoin (0.3.3.0) precise; urgency=low
+
+  * Fix support for paycoin-qt’s paycoin: URI support.
+
+ -- Mitchell Cash (mitchellcash) <mitchell@fastmail.com.au>  Tue, 16 Feb 2016 09:17:00 +1000
+
 paycoin (0.1.2.26) stable; urgency=low
 
   * Bring package version number inline with application
