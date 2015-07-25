@@ -25,5 +25,7 @@ static const int STATUSBAR_ICONSIZE = 16;
 #define COLOR_MINT_MATURE QColor(127, 240, 127)
 #define COLOR_MINT_OLD QColor(240, 127, 127)
 
+/* Number of frames in spinner animation */
+#define SPINNER_FRAMES 35
 
 #endif // GUICONSTANTS_H
