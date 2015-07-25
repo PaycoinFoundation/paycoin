@@ -88,6 +88,8 @@ void locking_callback(int mode, int i, const char* file, int line)
         ppmutexOpenSSL[i]->unlock();
 }
 
+LockedPageManager LockedPageManager::instance;
+
 // Init
 class CInit
 {
