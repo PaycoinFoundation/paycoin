@@ -1409,7 +1409,9 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                     }
                     if(!isVerify)
                         return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
-                    if (GetValueOut() < MINIMUM_FOR_PRIMENODE)
+                    if (nTime >= END_PRIME_PHASE_ONE && GetValueOut() < MINIMUM_FOR_PRIMENODE)
+                        return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
+                    if (GetValueOut() < MINIMUM_FOR_PRIMENODE_OLD)
                         return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
                     /* Use time instead of block number because we can better
                      * control when a manditory wallet update is required. */
