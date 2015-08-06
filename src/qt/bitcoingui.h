@@ -103,7 +103,7 @@ private:
     MintingView *mintingView;
     RPCConsole *rpcConsole;
 
-    QMovie *syncIconMovie;
+    int spinnerFrame;
 
     /** Create the main UI actions. */
     void createActions();

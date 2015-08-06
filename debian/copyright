@@ -43,3 +43,9 @@ License: GPL-2+
  .
  On Debian systems, the complete text of the GNU General
  Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+
+Files:  share/qt/img/reload.xcf, src/qt/res/movies/*.png
+Copyright: Everaldo (Everaldo Coelho)
+License: GPL-3+
+Comment: Icon Pack: Kids
+         Site: http://findicons.com/icon/17102/reload?id=17102
