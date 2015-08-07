@@ -582,6 +582,10 @@ bool CNode::IsBanned(CNetAddr ip)
 
 bool CNode::Misbehaving(int howmuch)
 {
+    // Do not ban addresses on the testnet for misbehaving
+    if (fTestNet)
+        return false;
+
     if (addr.IsLocal())
     {
         printf("Warning: local node %s misbehaving\n", addrName.c_str());
