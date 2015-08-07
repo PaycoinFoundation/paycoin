@@ -89,15 +89,6 @@ Everaldo (Everaldo Coelho)
 ### Assets Used
 	scripts/img/reload.xcf (modified), src/qt/res/movies/*.png
 
-Crobbo (forum)
---------------
-### Info
-* License: Public domain
-* Site: [https://bitcointalk.org/index.php?topic=32273.0](https://bitcointalk.org/index.php?topic=32273.0)
-
-### Assets Used
-	src/qt/res/images/splash2.jpg (Wallet image)
-
 [Vignoni David](http://www.oxygen-icons.org/)
 -----------------------
 
