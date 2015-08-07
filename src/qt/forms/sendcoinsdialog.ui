@@ -614,7 +614,7 @@
       </item>
      </layout>
     </widget>
-   </item> 
+   </item>
    <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="widgetResizable">
@@ -665,7 +665,7 @@
         <string>Send to multiple recipients at once</string>
        </property>
        <property name="text">
-        <string>&amp;Add recipient...</string>
+        <string>&amp;Add Recipient</string>
        </property>
        <property name="icon">
         <iconset resource="../bitcoin.qrc">
