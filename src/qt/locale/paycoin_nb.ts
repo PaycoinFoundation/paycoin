@@ -10,23 +10,15 @@
         <translation>Om Paycoin</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="75"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <location filename="../forms/aboutdialog.ui" line="53"/>
+        <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="113"/>
-        <source>Copyright © 2014 Paycoin Developers</source>
-        <translation>Copyright © 2014 Paycoin Utviklerne</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Peercoin Developers</source>
-        <translation>Copyright © 2011-2014 Paycoin Utviklerne</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="133"/>
-        <source>Copyright © 2009-2014 Bitcoin Developers
+        <location filename="../forms/aboutdialog.ui" line="97"/>
+        <source>Copyright © 2009-2012 Bitcoin Developers
+Copyright © 2011-2014 Peercoin Developers
+Copyright © 2014-2015 Paycoin Developers
 
 This is experimental software.
 
@@ -34,6 +26,8 @@ Distributed under the MIT software license, see the accompanying file COPYING or
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
         <translation>Copyright © 2009-2012 Bitcoin Utviklerne
+Copyright © 2011-2014 Peercoin Utviklerne
+Copyright © 2014 Paycoin Utviklerne
 Dette er eksperimentell programvare.
 Distribuert under MIT programvarelisensen, se medfølgende fil COPYING eller http://www.opensource.org/licenses/mit-license.php.
 Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i OpenSSL Toolkit (https://www.openssl.org/), kryptografisk programvare skrevet av Eric Young (eay@cryptsoft.com) og UPnP programvare skrevet av Thomas Bernard.</translation>
@@ -261,7 +255,7 @@ Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i Op
         <location filename="../askpassphrasedialog.cpp" line="107"/>
         <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
-        <translation>ADVARSEL: Hvis du krypterer lommeboken og mister passordet, så vil du &lt;b&gt;MISTE ALLE DINE PAYCOINS&lt;/b&gt;! 
+        <translation>ADVARSEL: Hvis du krypterer lommeboken og mister passordet, så vil du &lt;b&gt;MISTE ALLE DINE PAYCOINS&lt;/b&gt;!
 Er du sikker på at du vil kryptere lommeboken din?</translation>
     </message>
     <message>
@@ -928,11 +922,11 @@ Dette betyr at et gebyr på minst %1 per kB er påkrevd.</translation>
         <location filename="../coincontroldialog.cpp" line="584"/>
         <source>This label turns red, if any recipient receives an amount smaller than %1.
 
- This means a fee of at least %2 is required. 
+ This means a fee of at least %2 is required.
 
  Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
-        <translation>Denne merkelappen blir rød, hvis en mottaker mottar et beløp på mindre enn %1. 
-Dette betyr at et gebyr på minst %2 er påkrevd. 
+        <translation>Denne merkelappen blir rød, hvis en mottaker mottar et beløp på mindre enn %1.
+Dette betyr at et gebyr på minst %2 er påkrevd.
 Beløp under 0.546 ganger minimum relégebyr er vist som STØV.</translation>
     </message>
     <message>
