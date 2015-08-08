@@ -595,12 +595,12 @@ void BitcoinGUI::setNumBlocks(int count)
     // Set icon state: spinning if catching up, tick otherwise
     if(secs < 90*60 && count >= nTotalBlocks)
     {
-        tooltip = tr("Up to date") + QString(".\n") + tooltip;
+        tooltip = tr("Up to date") + QString(".<br>") + tooltip;
         labelBlocksIcon->setPixmap(QIcon(":/icons/synced").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
     }
     else
     {
-        tooltip = tr("Catching up...") + QString("\n") + tooltip;
+        tooltip = tr("Catching up...") + QString("<br>") + tooltip;
         labelBlocksIcon->setPixmap(QIcon(QString(
             ":/movies/spinner-%1").arg(spinnerFrame, 3, 10, QChar('0')))
             .pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
@@ -609,9 +609,12 @@ void BitcoinGUI::setNumBlocks(int count)
 
     if(!text.isEmpty())
     {
-        tooltip += QString("\n");
+        tooltip += QString("<br>");
         tooltip += tr("Last received block was generated %1.").arg(text);
     }
+
+    // Don't word-wrap this (fixed-width) tooltip
+    tooltip = QString("<nobr>") + tooltip + QString("</nobr>");
 
     labelBlocksIcon->setToolTip(tooltip);
     progressBarLabel->setToolTip(tooltip);
