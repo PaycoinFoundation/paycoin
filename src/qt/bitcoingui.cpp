@@ -597,6 +597,8 @@ void BitcoinGUI::setNumBlocks(int count)
     {
         tooltip = tr("Up to date") + QString(".<br>") + tooltip;
         labelBlocksIcon->setPixmap(QIcon(":/icons/synced").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+
+        overviewPage->showOutOfSyncWarning(false);
     }
     else
     {
@@ -605,6 +607,8 @@ void BitcoinGUI::setNumBlocks(int count)
             ":/movies/spinner-%1").arg(spinnerFrame, 3, 10, QChar('0')))
             .pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
         spinnerFrame = (spinnerFrame + 1) % SPINNER_FRAMES;
+
+        overviewPage->showOutOfSyncWarning(true);
     }
 
     if(!text.isEmpty())
