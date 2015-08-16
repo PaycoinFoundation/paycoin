@@ -10,23 +10,15 @@
         <translation>Su Paycoin</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="75"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <location filename="../forms/aboutdialog.ui" line="53"/>
+        <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="113"/>
-        <source>Copyright © 2014 Paycoin Developers</source>
-        <translation>Copyright © 2014 Sviluppatori Paycoin</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Peercoin Developers</source>
-        <translation>Copyright © 2011-2014 Sviluppatori Paycoin </translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="133"/>
-        <source>Copyright © 2009-2014 Bitcoin Developers
+        <location filename="../forms/aboutdialog.ui" line="97"/>
+        <source>Copyright © 2009-2012 Bitcoin Developers
+Copyright © 2011-2014 Peercoin Developers
+Copyright © 2014-2015 Paycoin Developers
 
 This is experimental software.
 
@@ -34,6 +26,8 @@ Distributed under the MIT software license, see the accompanying file COPYING or
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
         <translation>Copyright © 2009-2014 Bitcoin Developers
+Copyright © 2011-2014 Sviluppatori Peercoin
+Copyright © 2014 Sviluppatori Paycoin
 Questo è un software sperimentale.
 Distribuito secondo la licenza software MIT, leggi il file di accompagnamento COPYING o http://www.opensource.org/licenses/mit-license.php.
 Questo prodotto include software sviluppato dal progetto OpenSSL per l&apos;utilizzo nel Toolkit OpenSSL (https://www.openssl.org/)  e software crittografico scritto da Eric Young (eay@cryptsoft.com) e software UPnP scritto da by Thomas Bernard.</translation>
@@ -927,11 +921,11 @@ Questo significa che è necessaria una tariffa di almeno %1 per kb </translation
         <location filename="../coincontroldialog.cpp" line="584"/>
         <source>This label turns red, if any recipient receives an amount smaller than %1.
 
- This means a fee of at least %2 is required. 
+ This means a fee of at least %2 is required.
 
  Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
         <translation>Questa etichetta diventa rossa, se qualsiasi ricevente riceve un ammontare inferiore a %1.
-Questo significa che è necessaria una tariffa di almeno %2.  
+Questo significa che è necessaria una tariffa di almeno %2.
 Ammontare al di sotto di 0.546 volte la tariffia minima di relay sono mostrate come DUST. </translation>
     </message>
     <message>
