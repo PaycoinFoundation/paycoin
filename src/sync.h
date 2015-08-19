@@ -7,7 +7,6 @@
 #ifndef BITCOIN_SYNC_H
 #define BITCOIN_SYNC_H
 
-#include "util.h"
 #include <boost/interprocess/sync/interprocess_recursive_mutex.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
