@@ -7,7 +7,6 @@
 #include "netbase.h"
 #include "protocol.h"
 #include "util.h"
-#include "sync.h"
 
 
 #include <map>

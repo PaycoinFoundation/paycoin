@@ -116,7 +116,6 @@ OBJS= \
     obj/rpcdump.o \
     obj/rpcnet.o \
     obj/script.o \
-    obj/sync.o \
     obj/util.o \
     obj/wallet.o \
     obj/walletdb.o \
