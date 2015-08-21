@@ -2960,8 +2960,8 @@ If the file does not exist, create it with owner-readable-only file permissions.
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="101"/>
-        <source>Error: CreateThread(StartNode) failed</source>
-        <translation>שגיאה: כישלון ב- CreateThread(StartNode)</translation>
+        <source>Error: NewThread(StartNode) failed</source>
+        <translation>שגיאה: כישלון ב- NewThread(StartNode)</translation>
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="102"/>

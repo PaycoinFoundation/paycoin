@@ -2996,8 +2996,8 @@ If the file does not exist, create it with owner-readable-only file permissions.
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="101"/>
-        <source>Error: CreateThread(StartNode) failed</source>
-        <translation>Помилка: CreateThread(StartNode) дала збій</translation>
+        <source>Error: NewThread(StartNode) failed</source>
+        <translation>Помилка: NewThread(StartNode) дала збій</translation>
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="102"/>
