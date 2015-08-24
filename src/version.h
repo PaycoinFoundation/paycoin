@@ -61,7 +61,7 @@ extern const std::string CLIENT_DATE;
 // network protocol versioning
 //
 
-static const int PROTOCOL_VERSION = 70003;
+static const int PROTOCOL_VERSION = 70004;
 
 /* As of Paycoin protocol 70002 the MIN_PROTO_VERSION is initialized
  * and determined in init to allow for a pseudo dynamic change of minimum

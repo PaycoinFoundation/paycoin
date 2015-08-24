@@ -662,11 +662,11 @@ void ThreadSocketHandler2(void* parg)
 
     for (;;)
     {
-        if (MIN_PROTO_VERSION != 70003 && !droppedPostVersionChange && time(NULL) >= END_PRIME_PHASE_ONE)
+        if (MIN_PROTO_VERSION != 70004 && !droppedPostVersionChange && time(NULL) >= ENABLE_PHASE_TWO_PRIMES)
         {
             droppedPostVersionChange = true;
             droppingPostVersionChange = true;
-            MIN_PROTO_VERSION = 70003;
+            MIN_PROTO_VERSION = 70004;
         }
         //
         // Disconnect nodes

@@ -28,7 +28,7 @@ using namespace std;
 using namespace boost;
 
 CWallet* pwalletMain;
-int MIN_PROTO_VERSION = 70002;
+int MIN_PROTO_VERSION = 70003;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -390,7 +390,7 @@ bool AppInit2(int argc, char* argv[])
      * done before attempting to load the blockchain, etc (this is also why we
      * use a time instead of a block number). */
     if (time(NULL) >= END_PRIME_PHASE_ONE)
-        MIN_PROTO_VERSION = 70003;
+        MIN_PROTO_VERSION = 70004;
 
     std::ostringstream strErrors;
     //
