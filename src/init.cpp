@@ -17,6 +17,7 @@
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/convenience.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #include <ctime>
 
 #ifndef WIN32
@@ -315,7 +316,7 @@ bool AppInit2(int argc, char* argv[])
 
 #ifndef QT_GUI
     for (int i = 1; i < argc; i++)
-        if (!IsSwitchChar(argv[i][0]) && !(strlen(argv[i]) >= 7 && strncasecmp(argv[i], "paycoin:", 7) == 0))
+        if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "paycoin:"))
             fCommandLine = true;
 
     if (fCommandLine)
