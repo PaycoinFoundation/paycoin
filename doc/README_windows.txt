@@ -1,5 +1,5 @@
-Paycoin 0.3.0.2
-Copyright (c) 2014 Paycoin developers
+Paycoin 0.3.1.0
+Copyright (c) 2014-2015 Paycoin developers
 
 Distributed under the MIT software license, see the accompanying
 file COPYING or http://www.opensource.org/licenses/mit-license.php.
