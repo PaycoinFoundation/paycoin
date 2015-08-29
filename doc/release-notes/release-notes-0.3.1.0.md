@@ -122,6 +122,7 @@ Miscellaneous:
 - `05a76ad` Revert "Revert "Rename CreateThread to NewThread""
 - `6d0788e` implement CreateThread with boost::thread
 - `0bf57ce` Remove contrib/bitrpc
+- `b692772` Switch protocol on the correct date
 
 Credits
 =======
