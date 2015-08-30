@@ -172,6 +172,8 @@ void CDB::Close()
         nMinutes = 1;
     if (strFile == "blkindex.dat")
         nMinutes = 2;
+    if (strFile == "primenodes.dat")
+        nMinutes = 2;
     if (strFile == "scrapes.dat")
         nMinutes = 2;
     if (strFile == "blkindex.dat" && IsInitialBlockDownload())

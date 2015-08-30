@@ -122,9 +122,8 @@ OBJS= \
     obj/walletdb.o \
     obj/noui.o \
     obj/kernel.o \
-    obj/primekeys.o \
+    obj/primenodes.o \
     obj/scrapesdb.o
-
 
 all: paycoind.exe
 
