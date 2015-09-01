@@ -225,6 +225,7 @@ bool AppInit2(int argc, char* argv[])
             "  -timeout=<n>     \t  "   + _("Specify connection timeout (in milliseconds)") + "\n" +
             "  -proxy=<ip:port> \t  "   + _("Connect through socks proxy") + "\n" +
             "  -socks=<n>       \t  "   + _("Select the version of socks proxy to use (4 or 5, 5 is default)") + "\n" +
+            "  -tor=<ip:port>         " + _("Use proxy to reach tor hidden services (default: same as -proxy)") + "\n"
             "  -noproxy=<net>   \t  "   + _("Do not use proxy for connections to network net (ipv4 or ipv6)") + "\n" +
             "  -dns             \t  "   + _("Allow DNS lookups for -addnode, -seednode and -connect") + "\n" +
             "  -proxydns        \t  "   + _("Pass DNS requests to (SOCKS5) proxy") + "\n" +
@@ -234,14 +235,14 @@ bool AppInit2(int argc, char* argv[])
             "  -connect=<ip>    \t\t  " + _("Connect only to the specified node") + "\n" +
             "  -seednode=<ip>   \t\t  " + _("Connect to a node to retrieve peer addresses, and disconnect") + "\n" +
             "  -externalip=<ip> \t  "   + _("Specify your own public address") + "\n" +
-            "  -onlynet=<net>   \t  "   + _("Only connect to nodes in network <net> (IPv4 or IPv6)") + "\n" +
+            "  -onlynet=<net>         " + _("Only connect to nodes in network <net> (IPv4, IPv6 or Tor)") + "\n" +
             "  -discover        \t  "   + _("Try to discover public IP address (default: 1)") + "\n" +
             "  -listen          \t  "   + _("Accept connections from outside (default: 1)") + "\n" +
             "  -bind=<addr>     \t  "   + _("Bind to given address. Use [host]:port notation for IPv6") + "\n" +
 #ifdef QT_GUI
             "  -lang=<lang>     \t\t  " + _("Set language, for example \"de_DE\" (default: system locale)") + "\n" +
 #endif
-            "  -dnsseed         \t  "   + _("Find peers using DNS lookup (default: 1)") + "\n" +
+            "  -dnsseed               " + _("Find peers using DNS lookup (default: 1 unless -connect)") + "\n" +
             "  -banscore=<n>    \t  "   + _("Threshold for disconnecting misbehaving peers (default: 100)") + "\n" +
             "  -bantime=<n>     \t  "   + _("Number of seconds to keep misbehaving peers from reconnecting (default: 86400)") + "\n" +
             "  -maxreceivebuffer=<n>\t  " + _("Maximum per-connection receive buffer, <n>*1000 bytes (default: 10000)") + "\n" +
@@ -558,6 +559,8 @@ bool AppInit2(int argc, char* argv[])
         return false;
     }
 
+    CService addrProxy;
+    bool fProxy = false;
     if (mapArgs.count("-proxy"))
     {
         fUseProxy = true;
@@ -567,6 +570,20 @@ bool AppInit2(int argc, char* argv[])
             ThreadSafeMessageBox(_("Invalid -proxy address"), _("Paycoin"), wxOK | wxMODAL);
             return false;
         }
+        fProxy = true;
+    }
+
+    // -tor can override normal proxy, -notor disables tor entirely
+    if (!(mapArgs.count("-tor") && mapArgs["-tor"] == "0") && (fProxy || mapArgs.count("-tor"))) {
+        CService addrOnion;
+        if (!mapArgs.count("-tor"))
+            addrOnion = addrProxy;
+        else
+            addrOnion = CService(mapArgs["-tor"], 9050);
+        if (!addrOnion.IsValid())
+            return InitError(strprintf(_("Invalid -tor address: '%s'"), mapArgs["-tor"].c_str()));
+        SetProxy(NET_TOR, addrOnion, 5);
+        SetReachable(NET_TOR);
     }
 
     if (mapArgs.count("-noproxy"))
