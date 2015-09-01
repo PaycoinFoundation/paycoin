@@ -42,6 +42,15 @@ void SetNoProxy(enum Network net, bool fNoProxy) {
 bool static LookupIntern(const char *pszName, std::vector<CNetAddr>& vIP, unsigned int nMaxSolutions, bool fAllowLookup)
 {
     vIP.clear();
+
+    {
+        CNetAddr addr;
+        if (addr.SetSpecial(std::string(pszName))) {
+            vIP.push_back(addr);
+            return true;
+        }
+    }
+
     struct addrinfo aiHint;
     memset(&aiHint, 0, sizeof(struct addrinfo));
 
@@ -508,6 +517,32 @@ void CNetAddr::Init()
 void CNetAddr::SetIP(const CNetAddr& ipIn)
 {
     memcpy(ip, ipIn.ip, sizeof(ip));
+}
+
+static const unsigned char pchOnionCat[] = {0xFD,0x87,0xD8,0x7E,0xEB,0x43};
+static const unsigned char pchGarliCat[] = {0xFD,0x60,0xDB,0x4D,0xDD,0xB5};
+
+bool CNetAddr::SetSpecial(const std::string &strName)
+{
+    if (strName.size()>6 && strName.substr(strName.size() - 6, 6) == ".onion") {
+        std::vector<unsigned char> vchAddr = DecodeBase32(strName.substr(0, strName.size() - 6).c_str());
+        if (vchAddr.size() != 16-sizeof(pchOnionCat))
+            return false;
+        memcpy(ip, pchOnionCat, sizeof(pchOnionCat));
+        for (unsigned int i=0; i<16-sizeof(pchOnionCat); i++)
+            ip[i + sizeof(pchOnionCat)] = vchAddr[i];
+        return true;
+    }
+    if (strName.size()>11 && strName.substr(strName.size() - 11, 11) == ".oc.b32.i2p") {
+        std::vector<unsigned char> vchAddr = DecodeBase32(strName.substr(0, strName.size() - 11).c_str());
+        if (vchAddr.size() != 16-sizeof(pchGarliCat))
+            return false;
+        memcpy(ip, pchOnionCat, sizeof(pchGarliCat));
+        for (unsigned int i=0; i<16-sizeof(pchGarliCat); i++)
+            ip[i + sizeof(pchGarliCat)] = vchAddr[i];
+        return true;
+    }
+    return false;
 }
 
 CNetAddr::CNetAddr()
