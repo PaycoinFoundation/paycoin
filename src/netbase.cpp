@@ -480,7 +480,7 @@ bool ConnectSocket(const CService &addrDest, SOCKET& hSocketRet, int nTimeout)
         return ConnectSocketDirectly(addrDest, hSocketRet, nTimeout);
 
     SOCKET hSocket = INVALID_SOCKET;
-    
+
     // first connect to proxy server
     if (!ConnectSocketDirectly(proxy.first, hSocket, nTimeout))
         return false;
@@ -688,11 +688,13 @@ bool CNetAddr::IsRFC4843() const
 
 bool CNetAddr::IsTor() const
 {
+    static const unsigned char pchOnionCat[] = {0xFD,0x87,0xD8,0x7E,0xEB,0x43};
     return (memcmp(ip, pchOnionCat, sizeof(pchOnionCat)) == 0);
 }
 
 bool CNetAddr::IsI2P() const
 {
+    static const unsigned char pchGarliCat[] = {0xFD,0x60,0xDB,0x4D,0xDD,0xB5};
     return (memcmp(ip, pchGarliCat, sizeof(pchGarliCat)) == 0);
 }
 

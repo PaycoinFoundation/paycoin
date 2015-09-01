@@ -28,6 +28,7 @@ using namespace std;
 using namespace boost;
 
 CWallet* pwalletMain;
+CClientUIInterface uiInterface;
 int MIN_PROTO_VERSION = 70003;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -546,7 +547,7 @@ bool AppInit2()
 
     BOOST_FOREACH(string strDest, mapMultiArgs["-seednode"])
         AddOneShot(strDest);
-        
+
     // ********************************************************* Step 6: load blockchain
 
     if (GetBoolArg("-loadblockindextest"))
