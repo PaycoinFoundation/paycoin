@@ -620,8 +620,8 @@ bool AppInit2()
         std::set<enum Network> nets;
         BOOST_FOREACH(std::string snet, mapMultiArgs["-onlynet"]) {
             enum Network net = ParseNetwork(snet);
-            if (net == NET_UNROUTABLE) 
-                return InitError(strprintf(_("Unknown network specified in -blocknet: '%s'"), snet.c_str()));
+            if (net == NET_UNROUTABLE)
+                return InitError(strprintf(_("Unknown network specified in -onlynet: '%s'"), snet.c_str()));
             nets.insert(net);
         }
         for (int n = 0; n < NET_MAX; n++) {
@@ -663,9 +663,11 @@ bool AppInit2()
         } else {
             struct in_addr inaddr_any;
             inaddr_any.s_addr = INADDR_ANY;
-            fBound |= Bind(CService(inaddr_any, GetListenPort()));
+            if (!IsLimited(NET_IPV4))
+                fBound |= Bind(CService(inaddr_any, GetListenPort()));
 #ifdef USE_IPV6
-            fBound |= Bind(CService(in6addr_any, GetListenPort()));
+            if (!IsLimited(NET_IPV6))
+                fBound |= Bind(CService(in6addr_any, GetListenPort()));
 #endif
         }
         if (!fBound)
