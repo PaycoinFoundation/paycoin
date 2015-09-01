@@ -71,6 +71,7 @@ bool fRequestShutdown = false;
 bool fShutdown = false;
 bool fDaemon = false;
 bool fServer = false;
+bool fReopenDebugLog = false;
 bool fCommandLine = false;
 string strMiscWarning;
 bool fTestNet = false;
@@ -222,6 +223,14 @@ inline int OutputDebugStringF(const char* pszFormat, ...)
             static bool fStartedNewLine = true;
             static boost::mutex mutexDebugLog;
             boost::mutex::scoped_lock scoped_lock(mutexDebugLog);
+
+            // reopen the log file, if requested
+            if (fReopenDebugLog) {
+                fReopenDebugLog = false;
+                boost::filesystem::path pathDebug = GetDataDir() / "debug.log";
+                if (freopen(pathDebug.string().c_str(),"a",fileout) != NULL)
+                    setbuf(fileout, NULL); // unbuffered
+            }
 
             // Debug print useful for profiling
             if (fLogTimestamps && fStartedNewLine)
