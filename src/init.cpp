@@ -687,7 +687,7 @@ bool AppInit2()
         if (!ParseMoney(mapArgs["-paytxfee"], nTransactionFee) || nTransactionFee < MIN_TX_FEE)
             return InitError(strprintf(_("Invalid amount for -paytxfee=<amount>: '%s'"), mapArgs["-paytxfee"].c_str()));
         if (nTransactionFee > 0.25 * COIN)
-            InitWarning(_("Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction."));
+            InitWarning(_("Warning: -paytxfee is set very high. This is the transaction fee you will pay if you send a transaction."));
     }
 
     if (mapArgs.count("-reservebalance")) // paycoin: reserve balance amount
