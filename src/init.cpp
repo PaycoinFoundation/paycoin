@@ -193,12 +193,15 @@ bool static InitWarning(const std::string &str)
     return true;
 }
 
-bool static Bind(const CService &addr) {
+bool static Bind(const CService &addr, bool fError = true) {
     if (IsLimited(addr))
         return false;
     std::string strError;
-    if (!BindListenPort(addr, strError))
-        return InitError(strError);
+    if (!BindListenPort(addr, strError)) {
+        if (fError)
+            return InitError(strError);
+        return false;
+    }
     return true;
 }
 
@@ -337,19 +340,8 @@ bool AppInit2()
         SoftSetBoolArg("-dnsseed", false);
 
     // even in Tor mode, if -bind is specified, you really want -listen
-    if (mapArgs.count("-bind"))
+    if (mapArgs.count("-bind")) {
         SoftSetBoolArg("-listen", true);
-
-    bool fTor = (fUseProxy && addrProxy.GetPort() == 9050);
-    if (fTor)
-    {
-        // Use SoftSetBoolArg here so user can override any of these if they wish.
-        // Note: the GetBoolArg() calls for all of these must happen later.
-        SoftSetBoolArg("-listen", false);
-        SoftSetBoolArg("-irc", false);
-        SoftSetBoolArg("-proxydns", true);
-        SoftSetBoolArg("-upnp", false);
-        SoftSetBoolArg("-discover", false);
     }
 
     if (mapArgs.count("-connect")) {
@@ -464,35 +456,12 @@ bool AppInit2()
 
     int64 nStart;
 
-    if (mapArgs.count("-proxy"))
-    {
-        fUseProxy = true;
-        addrProxy = CService(mapArgs["-proxy"], 9050);
-        if (!addrProxy.IsValid())
-            return InitError(strprintf(_("Invalid -proxy address: '%s'"), mapArgs["-proxy"].c_str()));
-    }
-
-
-    if (mapArgs.count("-noproxy"))
-    {
-        BOOST_FOREACH(std::string snet, mapMultiArgs["-noproxy"]) {
-            enum Network net = ParseNetwork(snet);
-            if (net == NET_UNROUTABLE)
-                return InitError(strprintf(_("Unknown network specified in -noproxy: '%s'"), snet.c_str()));
-            SetNoProxy(net);
-        }
-    }
+    int nSocksVersion = GetArg("-socks", 5);
 
     // Check and update minium version protocol after a given time.
     if (time(NULL) >= ENABLE_PHASE_TWO_PRIMES)
         MIN_PROTO_VERSION = 70004;
 
-    fNameLookup = GetBoolArg("-dns");
-    fProxyNameLookup = GetBoolArg("-proxydns");
-    if (fProxyNameLookup)
-        fNameLookup = true;
-    fNoListen = !GetBoolArg("-listen", true);
-    nSocksVersion = GetArg("-socks", 5);
     if (nSocksVersion != 4 && nSocksVersion != 5)
         return InitError(strprintf(_("Unknown -socks proxy version requested: %i"), nSocksVersion));
 
@@ -511,8 +480,29 @@ bool AppInit2()
         }
     }
 
-    BOOST_FOREACH(string strDest, mapMultiArgs["-seednode"])
-        AddOneShot(strDest);
+    if (mapArgs.count("-proxy")) {
+        CService addrProxy = CService(mapArgs["-proxy"], 9050);
+        if (!addrProxy.IsValid())
+            return InitError(strprintf(_("Invalid -proxy address: '%s'"), mapArgs["-proxy"].c_str()));
+
+        if (!IsLimited(NET_IPV4))
+            SetProxy(NET_IPV4, addrProxy, nSocksVersion);
+        if (nSocksVersion > 4) {
+#ifdef USE_IPV6
+            if (!IsLimited(NET_IPV6))
+                SetProxy(NET_IPV6, addrProxy, nSocksVersion);
+#endif
+            SetNameProxy(addrProxy, nSocksVersion);
+        }
+    }
+
+    // see Step 2: parameter interactions for more information about these
+    fNoListen = !GetBoolArg("-listen", true);
+    fDiscover = GetBoolArg("-discover", true);
+    fNameLookup = GetBoolArg("-dns", true);
+#ifdef USE_UPNP
+    fUseUPnP = GetBoolArg("-upnp", USE_UPNP);
+#endif
 
     fNoListen = !GetBoolArg("-listen", true);
     fDiscover = GetBoolArg("-discover", true);
@@ -532,15 +522,15 @@ bool AppInit2()
         } else {
             struct in_addr inaddr_any;
             inaddr_any.s_addr = INADDR_ANY;
-            if (!IsLimited(NET_IPV4))
-                fBound |= Bind(CService(inaddr_any, GetListenPort()));
 #ifdef USE_IPV6
             if (!IsLimited(NET_IPV6))
-                fBound |= Bind(CService(in6addr_any, GetListenPort()));
+                fBound |= Bind(CService(in6addr_any, GetListenPort()), false);
 #endif
+            if (!IsLimited(NET_IPV4))
+                fBound |= Bind(CService(inaddr_any, GetListenPort()), !fBound);
         }
         if (!fBound)
-            return InitError(_("Not listening on any port"));
+            return InitError(_("Failed to listen on any port. Use -listen=0 if you want this."));
     }
 
 
@@ -554,6 +544,9 @@ bool AppInit2()
         }
     }
 
+    BOOST_FOREACH(string strDest, mapMultiArgs["-seednode"])
+        AddOneShot(strDest);
+        
     // ********************************************************* Step 6: load blockchain
 
     if (GetBoolArg("-loadblockindextest"))

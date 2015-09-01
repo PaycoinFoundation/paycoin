@@ -40,7 +40,7 @@ void AddressCurrentlyConnected(const CService& addr);
 CNode* FindNode(const CNetAddr& ip);
 CNode* FindNode(const CService& ip);
 CNode* ConnectNode(CAddress addrConnect, const char *strDest = NULL, int64 nTimeout=0);
-void MapPort(bool fMapPort);
+void MapPort();
 bool BindListenPort(const CService &bindAddr, std::string& strError=REF(std::string()));
 void StartNode(void* parg);
 bool StopNode();
@@ -113,6 +113,8 @@ enum threadId
 };
 
 extern bool fClient;
+extern bool fDiscover;
+extern bool fUseUPnP;
 extern uint64 nLocalServices;
 extern CAddress addrSeenByPeer;
 extern uint64 nLocalHostNonce;

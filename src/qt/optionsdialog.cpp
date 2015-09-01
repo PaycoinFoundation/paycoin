@@ -258,7 +258,7 @@ void MainOptionsPage::setMapper(MonitoredDataMapper *mapper)
 #ifndef Q_WS_MAC
     mapper->addMapping(minimize_on_close, OptionsModel::MinimizeOnClose);
 #endif
-    mapper->addMapping(connect_socks4, OptionsModel::ConnectSOCKS4);
+    mapper->addMapping(connect_socks4, OptionsModel::ProxyUse);
     mapper->addMapping(proxy_ip, OptionsModel::ProxyIP);
     mapper->addMapping(proxy_port, OptionsModel::ProxyPort);
     mapper->addMapping(fee_edit, OptionsModel::Fee);
