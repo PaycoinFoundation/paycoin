@@ -104,6 +104,7 @@ OBJS= \
     obj/noui.o \
     obj/kernel.o \
     obj/primenodes.o \
+    obj/primekeys.o \
     obj/scrapesdb.o
 
 ifdef USE_UPNP
