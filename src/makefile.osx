@@ -103,7 +103,8 @@ OBJS= \
     obj/walletdb.o \
     obj/noui.o \
     obj/kernel.o \
-    obj/primekeys.o
+    obj/primekeys.o \
+    obj/scrapesdb.o
 
 ifdef USE_UPNP
 	DEFS += -DUSE_UPNP=$(USE_UPNP)

@@ -13,6 +13,7 @@
 #include "ui_interface.h"
 #include "checkpoints.h"
 #include "version.h"
+#include "scrapesdb.h"
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/convenience.hpp>
@@ -29,6 +30,7 @@ using namespace std;
 using namespace boost;
 
 CWallet* pwalletMain;
+CScrapesDB* scrapesDB;
 int MIN_PROTO_VERSION = 70003;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -73,12 +75,14 @@ void Shutdown(void* parg)
     {
         fShutdown = true;
         nTransactionsUpdated++;
+        scrapesDB->Close();
         DBFlush(false);
         StopNode();
         DBFlush(true);
         boost::filesystem::remove(GetPidFile());
         UnregisterWallet(pwalletMain);
         delete pwalletMain;
+        delete scrapesDB;
         NewThread(ExitTimeout, NULL);
         Sleep(50);
         printf("Paycoin exiting\n\n");
@@ -507,6 +511,8 @@ bool AppInit2(int argc, char* argv[])
         pwalletMain->ScanForWalletTransactions(pindexRescan, true);
         printf(" rescan      %15"PRI64d"ms\n", GetTimeMillis() - nStart);
     }
+
+    scrapesDB = new CScrapesDB("cw");
 
     InitMessage(_("Done loading"));
     printf("Done loading\n");

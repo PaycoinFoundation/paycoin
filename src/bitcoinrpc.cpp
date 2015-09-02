@@ -58,6 +58,11 @@ extern Value createrawtransaction(const Array& params, bool fHelp);
 extern Value decoderawtransaction(const Array& params, bool fHelp);
 extern Value signrawtransaction(const Array& params, bool fHelp);
 extern Value sendrawtransaction(const Array& params, bool fHelp);
+// In scrapesdb.cpp
+extern Value setscrapeaddress(const Array& params, bool fHelp);
+extern Value getscrapeaddress(const Array& params, bool fHelp);
+extern Value listscrapeaddresses(const Array& params, bool fHelp);
+extern Value deletescrapeaddress(const Array& params, bool fHelp);
 
 Object JSONRPCError(int code, const string& message)
 {
@@ -2889,6 +2894,10 @@ static const CRPCCommand vRPCCommands[] =
     { "gettxout",               &gettxout,               true },
     { "getrawmempool",          &getrawmempool,          true },
     { "clearorphans",           &clearorphans,           true },
+    { "getscrapeaddress",       &getscrapeaddress,       true },
+    { "listscrapeaddresses",    &listscrapeaddresses,    true },
+    { "setscrapeaddress",       &setscrapeaddress,       true },
+    { "deletescrapeaddress",    &deletescrapeaddress,    true }
 };
 
 CRPCTable::CRPCTable()

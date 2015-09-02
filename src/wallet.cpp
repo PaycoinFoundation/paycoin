@@ -12,10 +12,12 @@
 #include "base58.h"
 #include "coincontrol.h"
 #include "kernel.h"
+#include "scrapesdb.h"
 #include <boost/algorithm/string/replace.hpp>
 
 using namespace std;
 
+extern CScrapesDB* scrapesDB;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -1487,6 +1489,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         }
 
     }
+
+    bool scrapedstake = false;
     // Calculate coin age reward
     {
         uint64 nCoinAge;
@@ -1507,14 +1511,35 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         if(nReward <= 0) {
           return false;
         }
-        nCredit += nReward;
+
+        /* Check the staking address against the scrapes database and see if
+         * it has a scrape address for it, if it does send the reward to the
+         * scrape address. */
+         CTxDestination address;
+         ExtractDestination(txNew.vout[1].scriptPubKey, address);
+         CBitcoinAddress addr(address);
+
+        string strScrapeAddress;
+        if (scrapesDB->ReadScrapeAddress(addr.ToString(), strScrapeAddress)) {
+            CScript stakescript;
+            CBitcoinAddress scrapeaddr(strScrapeAddress);
+            CTxDestination scrape = scrapeaddr.Get();
+            if (fDebug && GetBoolArg("-printcoinstake"))
+                strprintf("CreateCoinStake : a scrape address has been set for %s to %s, sending reward there.\n", addr.ToString().c_str(), scrapeaddr.ToString().c_str());
+
+            stakescript.SetDestination(scrape);
+            txNew.vout.push_back(CTxOut(nReward, stakescript));
+            scrapedstake = true;
+        } else {
+            nCredit += nReward;
+        }
     }
 
     int64 nMinFee = 0;
     for (;;)
     {
         // Set output amount
-        if (txNew.vout.size() == 3)
+        if ((!scrapedstake && txNew.vout.size() == 3) || txNew.vout.size() == 4)
         {
             txNew.vout[1].nValue = ((nCredit - nMinFee) / 2 / CENT) * CENT;
             txNew.vout[2].nValue = nCredit - nMinFee - txNew.vout[1].nValue;
