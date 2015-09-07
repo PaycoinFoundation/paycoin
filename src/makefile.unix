@@ -115,7 +115,14 @@ OBJS= \
     obj/kernel.o \
     obj/primenodes.o \
     obj/primekeys.o \
+    obj/mpkeys_test.o \
     obj/scrapesdb.o
+
+# This isn't present in Clang but without it in GCC the key files are compiled
+# twice (once with var-tracking-assignments which fails then again without).
+ifeq ($(CXX), g++)
+    obj/mpkeys_test.o : xCXXFLAGS += -fno-var-tracking-assignments
+endif
 
 all: paycoind
 

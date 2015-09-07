@@ -552,13 +552,15 @@ public:
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODE10);
         }else if(!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODEP2) {
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODEP2);
+        }else if(!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_MICROPRIME) {
+            return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_MICROPRIME);
         }else{
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].IsEmpty());
         }
 
     }
 
-    /** Check if a stake transaction is a prime stake
+    /** Check if a stake transaction is a prime or microprime stake
         this is defined in primekeys.cpp and is utilized in ConnectInputs.
         @ return True for either and DoS for anything else.
     */

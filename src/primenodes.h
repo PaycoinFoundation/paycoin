@@ -9,6 +9,8 @@
 
 void initPrimeNodes();
 void WritePrimeNodeDB();
+void WriteMicroPrimeDB();
+void WriteTestMicroPrimeDB();
 
 /* This is used to unseralize the a database entry retaining all of the the
  * primenode information */
@@ -50,8 +52,12 @@ private:
     void operator=(const CPrimeNodeDB);
 public:
     bool WritePrimeNodeKey(const std::string /*key*/, int /*primeNodeRate*/, unsigned int /*valid_starting*/, unsigned int /*valid_until*/);
+    bool WriteMicroPrimeAddr(const std::string /*address*/, int64 /*group*/, int /*primeNodeRate*/);
     bool IsPrimeNodeKey(CScript /*scriptPubKeyType*/, unsigned int /*nTime*/, CPrimeNodeDBEntry &/*entry*/);
+    bool IsMicroPrime(CScript /*scriptPubKeyAddress*/, int &/*primeNodeRate*/, int64 &/*group*/);
     bool CheckPrimeNodeKey(const std::string /*key*/);
+    bool CheckMicroPrime(const std::string /*address*/);
+    bool CheckMicroPrime(CScript /*scriptPubKeyAddress*/);
 };
 
 extern CPrimeNodeDB* primeNodeDB;
