@@ -75,14 +75,16 @@ void Shutdown(void* parg)
     {
         fShutdown = true;
         nTransactionsUpdated++;
-        scrapesDB->Close();
+        if (scrapesDB)
+            scrapesDB->Close();
         DBFlush(false);
         StopNode();
         DBFlush(true);
         boost::filesystem::remove(GetPidFile());
         UnregisterWallet(pwalletMain);
         delete pwalletMain;
-        delete scrapesDB;
+        if (scrapesDB)
+            delete scrapesDB;
         NewThread(ExitTimeout, NULL);
         Sleep(50);
         printf("Paycoin exiting\n\n");
@@ -512,7 +514,11 @@ bool AppInit2(int argc, char* argv[])
         printf(" rescan      %15"PRI64d"ms\n", GetTimeMillis() - nStart);
     }
 
+    InitMessage(_("Loading scrapes..."));
+    printf("Loading scrapes...\n");
+    nStart = GetTimeMillis();
     scrapesDB = new CScrapesDB("cw");
+    printf(" scrapes     %15"PRI64d"ms\n", GetTimeMillis() - nStart);
 
     InitMessage(_("Done loading"));
     printf("Done loading\n");
