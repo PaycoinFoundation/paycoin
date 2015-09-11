@@ -1806,7 +1806,7 @@ public:
     bool CheckSignature()
     {
         CKey key;
-        if (!key.SetPubKey(ParseHex("045dc635516bcd6c75152473bef99e700f364f4aac8fd1951c35e4696c9be8487e750e5efcc67e6e3f71a17696a6d9bd12e97c239bd00cd3fdea8296905c9b7dcf")))
+        if (!key.SetPubKey(ParseHex("04eb0313f4945567ad9d71c49fb11ede4cd75e6716658613c8f0305d09bc21a00dbe2792b4217518ae0407aac8c749a9b29d3b7b1d91007a09a340e1dc326248a2")))
             return error("CAlert::CheckSignature() : SetPubKey failed");
         if (!key.Verify(Hash(vchMsg.begin(), vchMsg.end()), vchSig))
             return error("CAlert::CheckSignature() : verify signature failed");
