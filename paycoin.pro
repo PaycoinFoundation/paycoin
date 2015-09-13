@@ -129,7 +129,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/script.h \
     src/init.h \
     src/mruset.h \
-    src/primekeys.h \
     src/json/json_spirit_writer_template.h \
     src/json/json_spirit_writer.h \
     src/json/json_spirit_value.h \

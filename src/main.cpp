@@ -11,7 +11,6 @@
 #include "init.h"
 #include "ui_interface.h"
 #include "kernel.h"
-#include "primekeys.h"
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -1379,51 +1378,12 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
             if (!GetCoinAge(txdb, nCoinAge))
                 return error("ConnectInputs() : %s unable to get coin age for coinstake", GetHash().ToString().substr(0,10).c_str());
             int64 nStakeReward = GetValueOut() - nValueIn;
-            // todo : using accumulator in later version; make it short please
-            if (!vout[0].IsEmpty()){
-                std::vector<string> pubKeyList;
-                int primeNodeRate = 0;
 
-                if (nTime >= END_PRIME_PHASE_ONE && vout[0].scriptPubKey[0] != OP_PRIMENODEP2)
-                    return DoS(100, error("ConnectInputs() : prime node staking has ended for the given keypair"));
-
-                getPrimePubKeyList(vout[0].scriptPubKey[0], pubKeyList, primeNodeRate);
-
-                if (primeNodeRate) {
-                    bool isVerify = false;
-                    BOOST_FOREACH(std::string strPubKey, pubKeyList){
-                        std::vector<unsigned char> vchPubKey = ParseHex(strPubKey);
-                        CKey key;
-                        key.SetPubKey(vchPubKey);
-                        CScript scriptTime;
-                        scriptTime << nTime;
-                        uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
-                        std::vector<unsigned char> vchSig;
-                        vchSig.insert(vchSig.end(), vout[0].scriptPubKey.begin() + 2, vout[0].scriptPubKey.end());
-                        if(key.Verify(hashScriptTime, vchSig)){
-                            isVerify = true;
-                            break;
-                        }
-                    }
-                    if(!isVerify)
-                        return DoS(10, error("CTransaction::ConnectInputs() : verify signature failed"));
-                    if (nTime >= END_PRIME_PHASE_ONE && GetValueOut() < MINIMUM_FOR_PRIMENODE)
-                        return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-                    if (GetValueOut() < MINIMUM_FOR_PRIMENODE_OLD)
-                        return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-                    /* Use time instead of block number because we can better
-                     * control when a manditory wallet update is required. */
-                    if (nTime >= RESET_PRIMERATES && nTime < END_PRIME_PHASE_ONE) {
-                        if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, 100) - GetMinFee() + MIN_TX_FEE)
-                            return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
-                    } else {
-                        if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
-                            return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
-                    }
-                }
-            }
-            else
-            {
+            // If vout[0] is not empty check if this is a prime stake.
+            if (!vout[0].IsEmpty()) {
+                // Type ID is stored in vout[0] destination is stored in vout[1]
+                return IsPrimeStake(vout[0].scriptPubKey, vout[1].scriptPubKey, nTime, nValueIn, nCoinAge, nStakeReward);
+            } else {
                 if(GetValueOut() <= MINIMUM_FOR_ORION){
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for orion controller = %lld while you only have %lld", MINIMUM_FOR_ORION, GetValueOut()));
                 }

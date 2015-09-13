@@ -1,22 +1,95 @@
 // Copyright (c) 2015 The Paycoin developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#include "db.h"
 #include "main.h"
-#include "primekeys.h"
 #include "script.h"
+#include "util.h"
 
-#include <ctime>
+// Prototype
+void getPrimePubKeyList(std::vector<std::string> &/*pubKeyList*/);
 
-std::vector<std::string> pubKeyList350;
-std::vector<std::string> pubKeyList100;
-std::vector<std::string> pubKeyList20;
-std::vector<std::string> pubKeyList10;
+bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, uint64 nCoinAge, int64 nStakeReward) {
+    int primeNodeRate = 0;
+
+    // Block new stakes from legacy phase 1 primenodes
+    if (nTime >= END_PRIME_PHASE_ONE && scriptPubKeyType[0] != OP_PRIMENODEP2)
+        return DoS(100, error("IsPrimeStake() : prime node staking has ended for the given keypair"));
+
+    switch (scriptPubKeyType[0]) {
+        case OP_PRIMENODEP2:
+            primeNodeRate = 25;
+            break;
+        case OP_PRIMENODE350:
+            primeNodeRate = 350;
+            break;
+        case OP_PRIMENODE100:
+            primeNodeRate = 100;
+            break;
+        case OP_PRIMENODE20:
+            primeNodeRate = 20;
+            break;
+        case OP_PRIMENODE10:
+            primeNodeRate = 10;
+            break;
+    }
+
+    /* Don't check legacy phase 1 primenode key sigs, these are old blocks which
+     * are known good. Future stakes are already invalidated by the above.
+     * Old blocks are valid so long as they pass standard chain integrity checks
+     */
+    if (scriptPubKeyType[0] == OP_PRIMENODEP2) {
+        std::vector<std::string> pubKeyList;
+        getPrimePubKeyList(pubKeyList);
+
+        bool isVerify = false;
+        BOOST_FOREACH(std::string strPubKey, pubKeyList) {
+            std::vector<unsigned char> vchPubKey = ParseHex(strPubKey);
+            CKey key;
+            key.SetPubKey(vchPubKey);
+            CScript scriptTime;
+            scriptTime << nTime;
+            uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
+
+            std::vector<unsigned char> vchSig;
+            vchSig.insert(vchSig.end(), scriptPubKeyType.begin() + 2, scriptPubKeyType.end());
+
+            if(key.Verify(hashScriptTime, vchSig)) {
+                isVerify = true;
+                break;
+            }
+        }
+        if(!isVerify)
+            return DoS(10, error("IsPrimeStake() : verify signature failed"));
+    }
+
+    // Confirm the stake passes the minimum for a primenode
+    if (nTime >= END_PRIME_PHASE_ONE && GetValueOut() < MINIMUM_FOR_PRIMENODE)
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
+    if (GetValueOut() < MINIMUM_FOR_PRIMENODE_OLD)
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
+
+    /* Reset the primeNodeRate to 100 on the Legacy Phase 1 primenodes after the
+     * specified time. Stakes existing prior to that or created after the end of
+     * prime phase 1 use the normal primeNodeRate specified. */
+    if (nTime >= RESET_PRIMERATES && nTime < END_PRIME_PHASE_ONE) {
+        if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, 100) - GetMinFee() + MIN_TX_FEE)
+            return DoS(100, error("IsPrimeStake() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+    } else {
+        if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
+            return DoS(100, error("IsPrimeStake() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+    }
+
+    return true;
+}
+
 std::vector<std::string> pubKeyListP2;
-bool pubKeyListsInitialized = false;
 bool p2pubKeyListsInitialized = false;
 
-void getPrimePubKeyList(unsigned char primeType, std::vector<std::string> &pubKeyList, int &primeNodeRate) {
-    if (!pubKeyListsInitialized) initPrimePubKeyLists();
+// Prototype
+void initPrimeP2PubKeyLists();
+
+void getPrimePubKeyList(std::vector<std::string> &pubKeyList) {
     /* Reload the Phase 2 keys everytime they're needed until after the
      * end of the Phase 2 distribution.  We pad this with an extra 10
      * minutes to insure the correct list is loaded for machines that
@@ -25,96 +98,13 @@ void getPrimePubKeyList(unsigned char primeType, std::vector<std::string> &pubKe
         || (time(NULL) < (END_PRIME_PHASE_ONE + ((60 * 60 * 24 * 7 * 25) + (60 * 10)))))
             initPrimeP2PubKeyLists();
 
-    switch (primeType) {
-    case OP_PRIMENODE350:
-        primeNodeRate = 350;
-        pubKeyList = pubKeyList350;
-        break;
-
-    case OP_PRIMENODE100:
-        primeNodeRate = 100;
-        pubKeyList = pubKeyList100;
-        break;
-
-    case OP_PRIMENODE20:
-        primeNodeRate = 20;
-        pubKeyList = pubKeyList20;
-        break;
-
-    case OP_PRIMENODE10:
-        primeNodeRate = 10;
-        pubKeyList = pubKeyList10;
-        break;
-
-    case OP_PRIMENODEP2:
-        primeNodeRate = 25;
-        pubKeyList = pubKeyListP2;
-        break;
-    }
-}
-
-void initPrimePubKeyLists() {
-    pubKeyListsInitialized = true;
-
-    pubKeyList350.push_back("0427096f2e3123970010d97a1f0e210499435482927b12b1d6a209f0c383e03b444a244e372cad494c144b47ac3686fc4feea2aec2df3ba77f41cc27dbf8f3c4ff");
-    pubKeyList350.push_back("04d96b945eca3ea23e1dfd414d2a4772c66e6c7297d0d4f88b7a3b7c285931c36f16ef26299704d49bda770621d9145d96365e02380b4329aceafe7b81012bef48");
-    pubKeyList350.push_back("040057901e3de5e6429912047c2b5175dde2586b981397a0e434d43accf2e49c108fb3361b3957fcbbfa39930d50aeff56c690e91ffb2d953eefa46aa50fcb6917");
-    pubKeyList350.push_back("0486022d6dd5c8d17c411cf28add879e5c738b64090e83a43cca1699ececdb8f3524379aa71bb76a2af2d7e8294c9d7b8179d98215afe589c921e4507f63c5c802");
-    pubKeyList350.push_back("0436639ad108f7630881fb3af5f540ded3bb4653dab695f1716e71ea5838bcee7c238fa624bc2f1bfe0990cea4c3ee3e9f949bbc61e347b5887815eb51468b5c88");
-    pubKeyList350.push_back("04d04183c8caad2f41edffbabd5b6a266e886457ef0621283b3418979d841bc2425e6b273ce0ea2b461b9797a7d3edd74a4407af9995a9702018cf69df8eee6aba");
-    pubKeyList350.push_back("04a8b4a8c55361f37cad732da49b2bccadb9be522dd84f9c2329a7dbfaac8c5dd093b803d791719c413196694c97fcb360b7935034dcc4b1b3c2e45a39e67b8dd6");
-    pubKeyList350.push_back("04b7930cd8bda83097841cfa0a2b5317ecc029a512bbf056a130421ee500773f16850f74e2cbffa4e8aa2a0b0a25009ea619e49839e8608db4469de285d6ee781d");
-    pubKeyList350.push_back("04d0e3e0e688659d07d4510e25a9884c12931e581b8a2bcdd8ad6c4362ae219b08089761e88e17109aa6618dfca152f854e880ca66414d7f8e5d1d95e70dc95dee");
-    pubKeyList350.push_back("04025f944a31226086da4f0f49188bfe12d29a304986d909b00560a5f8c84c09ab0f6d0e16926d42a07eaa522dad74404ef25ca863fbd78d45ecdb6da282caf9da");
-    pubKeyList350.push_back("04983ebed643535907ebbea93387ca38c262778d21dab385f0d0c5dc49b66ebe54c27d9e318ea2798800a067dc3ad8e414684d477e7633f261b08522a0f81b3c5e");
-    pubKeyList350.push_back("04512b7f555a89e73cd1f9d5138d8e46b81c49a184e0cb7b538167e046dea93689101f076c59874c085642b33b2ad58ff1dee34ffa1d03880c0272686291bd64b5");
-    pubKeyList350.push_back("045f46a60dd9c3c3e68a127aee68a4ad59d303f9cfe91e2015156fe25a42687855a6de4ccb53756f06e7c3cf66e295fd84d8c3c0fd73c7cee44966aaae3d033652");
-    pubKeyList350.push_back("049a0e427b86663cc928d6475d0e591fd6dbaf686e2b6a140e79e646fbaa0c88481984f61de390c9fc73c9f58d2c26bd8bdadbdd400a8cc96b4d7a6f52fbe1209d");
-    pubKeyList350.push_back("040da5d570e39531f25ae747a1698d67470c0d7fb4941f104d081235f7425cefb95b5eca24daf80a732cb267bd13d47b62ce4102394c180b2a792216f4a087d320");
-    pubKeyList350.push_back("04672dbddcb26bc82028652a5ff042f98c5c5f58f7330d49ad4a22268f9a93e2cca8ce2ed7a93012b83903f4ddcef5f1a0ea5fb90df3ae38528489d9b69cd0dd39");
-    pubKeyList350.push_back("04fb8a251640f766ec63aee35f74f49e46b5ae7f61f7bcabe6103d13ab56086c884c525b96e10741704a3c44982aa9c6577184f0259a36f18e4ca8325ff2cd8330");
-    pubKeyList350.push_back("04f9644ebc672e382eb45a82e221f2ab9d5124fea1de7de2d417c863ddd760c5c778f8fe39e09e7937ac99172a3a9d0b013020c1256b935da171b66864a1e16b9c");
-    pubKeyList350.push_back("048a58fe8de7c123f6f816667fb1bfe6d99b9f0ac415bde1fdf4e9725fc80d2699c30b362faf992cd00edb586df9f459081c3f586becbabdd33bdd8becf31f85c2");
-    pubKeyList350.push_back("0475a43388b6023722d93c03128541b3877153736a9ac7f48bf1d1a37e46aa1381a450aa0a6c40e2f4e317a4212c37c18bd1cf99ea3f70ecec83c30f4ceca65201");
-    pubKeyList350.push_back("04bf85a4920b6fb89868fac40c4917af40546867221f2da2de84b9a9f26c569cee689c2eafe0c911c31ac88d9005badb8f32fb0650ffe2e272194ef5df162b35ac");
-    pubKeyList350.push_back("04e75eda3a94f74d684a7239b8c6cc056e75fba2690888855f81810c439270265f4c3c46c3aedfaff81da2dfb236e091cc36b5759e6a0513898ad443cf91ff6631");
-    pubKeyList350.push_back("04c62eb46a011e45f0069d8881894ac22889988b384ba7234c5caeed42d4f11d16e2ba0b55198cec0a0a710714d0602e1ccaada5284ae07fa0ae43b0cb1e7d59b1");
-    pubKeyList350.push_back("043d60413953d4a9e144d86390c8ddb51b674df65ce1a05a26e400b3bc27cbc55c6c6b05d5030e60dfe59101dc9614e4298c33716be751feb0d494a788e00ad627");
-    pubKeyList350.push_back("041c10a07fa1799e8d43d4a0b74b89614722fabcfd90dac380d170ebfddd0b5f0462e67c0704172cbe925c77c1890af68000d44fed56d628cceea6101fcaf74d38");
-    pubKeyList350.push_back("04640a129ecf82ed28875881c28f59bf46b82aba8e8be77ad39bb1dd0ffd7944f49da4dc3de9cac50d88763167583b030d7df0e234e8a6e9de725aa337fcb1f0ed");
-    pubKeyList350.push_back("04e5cba6da1d31076d42db494613e6c8587ba4252693c8d8dbcdae033479e8cab10921c147b91127ef4b36d0209a8de917f3c51fd231b07acdcce47d0ac3a14de8");
-    pubKeyList350.push_back("0479502526431508d1edcb054bfb49dfed971e144ff1d3d89384f1af8c95a2ee3d6f296cade67c2dfb8c43b324ed6cc079395a5ec4118f0b8c5737fe8988d4ecfc");
-    pubKeyList350.push_back("04048059da03e2ecca976fb0c8e8ea408ea3a8e2b45c55c9ee095011077ded701f9b8639b265e1dc1eb0ac08f990f67b99da03f4bb5c68bef182488d49f5e27762");
-    pubKeyList350.push_back("04f3b1f9c8b07034eb3f7f609d150561ee4ae05a1051816060974221f5c36a1e3db4b79b46146da9bae303648dbf94bf740ad41d6e3297eeae6829bd2d9f3e3a5e");
-    pubKeyList350.push_back("048f400e748d54d8fdf148a270adcb7aa4b73c9d49f3c8bbdf57df6a8a349c54abaae8e223bab43cb1770e8a80c00cb11904e301f32ea0aeec5d59ce8a9b9dc5c1");
-    pubKeyList350.push_back("04cf206b074a8da673f6b06cdbd28b82253ef4b4aeb6689745bf9e42a5d9007269b18a3ba5becfabb3a2d5f7b4e84ad9f6d6283856fc315ddf4fd8e5797a4d8be7");
-    pubKeyList350.push_back("04ae324ce3d313a42a76ec17f09625185c53bfa99c5f06920105291bea676220203d3f1b7c0de605c2bbcaa760a632f5b9a55dd86d8f36b6b985932d61a9a88946");
-    pubKeyList350.push_back("040ba9aeeff11561fa33827d17957fc40ed5b1b8d260140535e0350ba431609abf3a31166a9e014d26553520f59de730dbcf5944fb433d1abfadb3f4f30668ab48");
-    pubKeyList350.push_back("0416683a0796c3dfda8065c6011a61747488345bf0a0f559836104b4e9074e6c40b206797850603862baac60ba61bea930db1f2b4362c117d54472dc2a8b93bbd4");
-
-    pubKeyList100.push_back("046ebc739ff7d6a0dbb3ae9bb9260a17b9d2fc40ca77d9c018784834ef863414c17b4fd3a580d9721ec0ee12c823f1eb48821b8135cd32aee26ba3be9cb22f7a31");
-    pubKeyList100.push_back("04ffcd9e3acffbd40d6472f354e76f03a5c806623a5fbe341796b92e71ad59f5c4a4ad5f04c4fe7d6e50f6546d361a06020f8670eae020e8a7a1d036155e75d10a");
-    pubKeyList100.push_back("04a61c5b67927c4a0389baa1089a87a93d60fbf15cc345823097245d0c331525d273a03544720f3a4e8f9afb443793f3ea595d5f0af7e17d764385750a9eb54d19");
-    pubKeyList100.push_back("04f9f78f1dcdb6f76ba0a962aba3058a605691e2ecd63e16b5e0e39d19c5821f8eda421d06b4bf1159bcee989f01b273a4337ba0bc9fc749ef35c32e6e4a7bc1e9");
-    pubKeyList100.push_back("0444b7d2aa1b9c74710325735df89692d1fa686a3a67d95462cbf4cb0d8f47eb9ac18da92bcce99b58e1be020c36736d9a1f85fa191c2ddcc779c53c4ede7c73b9");
-    pubKeyList100.push_back("0426bbbd25a4dc0a295b64d4f1d3787d39cba04534109cd145c5229a8cc3285d097462131dd6fa1968eb510d53fee8a012250390ef6149c2003784f5585fef97a2");
-    pubKeyList100.push_back("04ab438d669c7ed7db2e0eef61bd7ae4937ac32347d39adfb204f4d6e4e2a5adfa4548f69dc4cdc2ff3da0506e9382f69175138163328d445f110081dfa5d5d416");
-    pubKeyList100.push_back("04406932519cd5e47333a049922eb8bcddc6b722c31440f36ca2851e119314b375914b08c635837e47c7cbf6ace95acbadee62acb054551bc4255c81d03c485e95");
-    pubKeyList100.push_back("0454d677fbe06d5f56920db9bd124015edfd1fb32786c88a1a15cf0a84204d4386bd48fb31239eb3e594b13ca952b3c5f25aca9f3f702ad5b0120160dc355a6fbd");
-    pubKeyList100.push_back("0452f030183dffd2b53d639b16488bd451ba2dc9d1791464300f28abf5414036530735b6a8de119443e3875f2e67514b6b2678ed3966629d354e6aabdb8251ed19");
-
-    pubKeyList20.push_back("04ce27308191e2e0274459bb191ba2cb93ef4dc8a838e8e8310083fcf7e2be9c7c20b3b15e2dc2a1482275ee55138c2350771231b00d7740e1e495269987faa24b");
-    pubKeyList20.push_back("04311cc5333eeadbb3b18f6c70832df159796b1872bfa66bf214030ced65f8a33c4c6b4da48ffebb111a09129b337c9ed5129256995a4fa315fab3b81666cf2bad");
-
-    pubKeyList10.push_back("0428588850c9361e7f5848807ef40ac839d5cd664db6183cbc53f63b0e8682a5b4b6caa6782db2b314e3cab43503f05df280b9e98e82b2235a00e4dd24997b49a0");
-    pubKeyList10.push_back("04bf2832da17137215912a1173b3ad2675e1b03c4df22bb93f2f2fdb92bdd0097e0a267d8813799fe335d1b80ff23fa48809dea4517211b48eacadc85147d5c643");
-    pubKeyList10.push_back("04c8ad33bb094d7bee52ec9d08e4eea8ef33d49c1d871e6a4ee56f2fd6f44bb87a28a903bf1306cd855c4fa19baa42d604e2f6aa571b4a6a603ab7769162e7fcb8");
+    pubKeyList = pubKeyListP2;
 }
 
 void initPrimeP2PubKeyLists() {
     /* Get the time at the beginning of the method instead of fetching
      * it repeatedly. */
-    const int now = time(NULL);
+    const unsigned int now = GetTime();
 
     /* Because this list is reloaded each time it's needed for the
      * interim of the Phase 2 key distribution we need to clear the
