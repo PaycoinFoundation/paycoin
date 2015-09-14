@@ -4,12 +4,15 @@
 
 #include "wallet.h"
 #include "base58.h"
+#include "scrapesdb.h"
 
 #include <QFont>
 #include <QColor>
 
 const QString AddressTableModel::Send = "S";
 const QString AddressTableModel::Receive = "R";
+
+extern CScrapesDB* scrapesDB;
 
 struct AddressTableEntry
 {
@@ -21,8 +24,11 @@ struct AddressTableEntry
     Type type;
     QString label;
     QString address;
+    QString scrape_address;
 
     AddressTableEntry() {}
+    AddressTableEntry(Type type, const QString &label, const QString &address, const QString &scrape_address):
+        type(type), label(label), address(address), scrape_address(scrape_address) {}
     AddressTableEntry(Type type, const QString &label, const QString &address):
         type(type), label(label), address(address) {}
 };
@@ -48,9 +54,21 @@ public:
                 const CBitcoinAddress& address = item.first;
                 const std::string& strName = item.second;
                 bool fMine = IsMine(*wallet, address.Get());
-                cachedAddressTable.append(AddressTableEntry(fMine ? AddressTableEntry::Receiving : AddressTableEntry::Sending,
-                                  QString::fromStdString(strName),
-                                  QString::fromStdString(address.ToString())));
+
+                if (fMine) {
+                    std::string addr;
+                    if (scrapesDB->HasScrapeAddress(address.ToString()))
+                        scrapesDB->ReadScrapeAddress(address.ToString(), addr);
+
+                    cachedAddressTable.append(AddressTableEntry(AddressTableEntry::Receiving,
+                                       QString::fromStdString(strName),
+                                       QString::fromStdString(address.ToString()),
+                                       QString::fromStdString(addr)));
+                } else {
+                    cachedAddressTable.append(AddressTableEntry(AddressTableEntry::Sending,
+                                       QString::fromStdString(strName),
+                                       QString::fromStdString(address.ToString())));
+                }
             }
         }
     }
@@ -76,7 +94,8 @@ public:
 AddressTableModel::AddressTableModel(CWallet *wallet, WalletModel *parent) :
     QAbstractTableModel(parent),walletModel(parent),wallet(wallet),priv(0)
 {
-    columns << tr("Label") << tr("Address");
+    columns << tr("Label") << tr("Address") << tr("Scrape Address");
+
     priv = new AddressTablePriv(wallet);
     priv->refreshAddressTable();
 }
@@ -120,6 +139,20 @@ QVariant AddressTableModel::data(const QModelIndex &index, int role) const
             }
         case Address:
             return rec->address;
+
+        case ScrapeAddress:
+            // No scrape address for sending tab.
+            if (rec->type == AddressTableEntry::Sending)
+                break;
+
+            if (rec->scrape_address.isEmpty() && role == Qt::DisplayRole)
+            {
+                return tr("(no scrape address)");
+            }
+            else
+            {
+                return rec->scrape_address;
+            }
         }
     }
     else if (role == Qt::FontRole)
@@ -182,6 +215,30 @@ bool AddressTableModel::setData(const QModelIndex & index, const QVariant & valu
                 rec->address = value.toString();
             }
             break;
+        case ScrapeAddress:
+            // No scrape address for sending tab.
+            if (rec->type == AddressTableEntry::Sending)
+                break;
+
+            /* If passing an empty string delete the current scrape address
+             * if one exists. */
+            if (value.toString().toStdString().empty()) {
+                if (scrapesDB->HasScrapeAddress(rec->address.toStdString()))
+                    if (!scrapesDB->EraseScrapeAddress(rec->address.toStdString()))
+                        return false;
+            } else {
+                // Confirm the scrape address is a valid address before setting it
+                if(!walletModel->validateAddress(value.toString())) {
+                    editStatus = INVALID_ADDRESS;
+                    return false;
+                }
+
+                if (!scrapesDB->WriteScrapeAddress(rec->address.toStdString(), value.toString().toStdString()))
+                    return false;
+            }
+
+            rec->scrape_address = value.toString();
+            break;
         }
         emit dataChanged(index, index);
 
@@ -210,9 +267,10 @@ Qt::ItemFlags AddressTableModel::flags(const QModelIndex & index) const
 
     Qt::ItemFlags retval = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
     // Can edit address and label for sending addresses,
-    // and only label for receiving addresses.
+    // label and scrapeaddress for receiving addresses.
     if(rec->type == AddressTableEntry::Sending ||
-      (rec->type == AddressTableEntry::Receiving && index.column()==Label))
+      (rec->type == AddressTableEntry::Receiving && index.column()==Label) ||
+      (rec->type == AddressTableEntry::Receiving && index.column()==ScrapeAddress))
     {
         retval |= Qt::ItemIsEditable;
     }
@@ -341,4 +399,3 @@ int AddressTableModel::lookupAddress(const QString &address) const
         return lst.at(0).row();
     }
 }
-

@@ -174,6 +174,8 @@ void CDB::Close()
         nMinutes = 2;
     if (strFile == "blkindex.dat")
         nMinutes = 2;
+    if (strFile == "scrapes.dat")
+        nMinutes = 2;
     if (strFile == "blkindex.dat" && IsInitialBlockDownload())
         nMinutes = 5;
 
@@ -851,5 +853,3 @@ bool LoadAddresses()
 {
     return CAddrDB("cr+").LoadAddresses();
 }
-
-
