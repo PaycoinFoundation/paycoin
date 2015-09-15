@@ -1023,6 +1023,8 @@ void ShrinkDebugFile()
             fclose(file);
         }
     }
+    else if(file != NULL)
+	     fclose(file);
 }
 
 
