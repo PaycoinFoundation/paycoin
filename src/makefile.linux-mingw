@@ -99,6 +99,6 @@ clean:
 	-rm -f paycoind.exe
 	-rm -f obj-test/*.o
 	-rm -f test_paycoin.exe
-	-rm -f src/build.h
+	-rm -f obj/build.h
 
 FORCE:
