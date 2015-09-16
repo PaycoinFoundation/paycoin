@@ -194,7 +194,7 @@ public:
         if (vch.size() > 4)
             vch[4] &= 0x7f;
         uint64 n = 0;
-        for (int i = 0, j = vch.size()-1; i < sizeof(n) && j >= 4; i++, j--)
+        for (unsigned int i = 0, j = vch.size()-1; i < sizeof(n) && j >= 4; i++, j--)
             ((unsigned char*)&n)[i] = vch[j];
         return n;
     }

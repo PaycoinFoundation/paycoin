@@ -950,7 +950,7 @@ bool EvalScript(vector<vector<unsigned char> >& stack, const CScript& script, co
                     // ([sig ...] num_of_signatures [pubkey ...] num_of_pubkeys -- bool)
 
                     int i = 1;
-                    if (stack.size() < i)
+                    if ((int)stack.size() < i)
                         return false;
 
                     int nKeysCount = CastToBigNum(stacktop(-i)).getint();
@@ -961,7 +961,7 @@ bool EvalScript(vector<vector<unsigned char> >& stack, const CScript& script, co
                         return false;
                     int ikey = ++i;
                     i += nKeysCount;
-                    if (stack.size() < i)
+                    if ((int)stack.size() < i)
                         return false;
 
                     int nSigsCount = CastToBigNum(stacktop(-i)).getint();
@@ -969,7 +969,7 @@ bool EvalScript(vector<vector<unsigned char> >& stack, const CScript& script, co
                         return false;
                     int isig = ++i;
                     i += nSigsCount;
-                    if (stack.size() < i)
+                    if ((int)stack.size() < i)
                         return false;
 
                     // Subset of script starting at the most recent codeseparator
