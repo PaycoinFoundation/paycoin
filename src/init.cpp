@@ -383,6 +383,7 @@ bool AppInit2(int argc, char* argv[])
     printf("Paycoin version %s (%s)\n", FormatFullVersion().c_str(), CLIENT_DATE.c_str());
     printf("Using OpenSSL version %s\n", SSLeay_version(SSLEAY_VERSION));
     printf("Default data directory %s\n", GetDefaultDataDir().string().c_str());
+    printf("Used data directory %s\n", GetDataDir().string().c_str());
 
     if (GetBoolArg("-loadblockindextest"))
     {
