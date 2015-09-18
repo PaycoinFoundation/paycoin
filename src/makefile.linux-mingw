@@ -71,6 +71,7 @@ OBJS= \
     obj/kernel.o \
     obj/primenodes.o \
     obj/primekeys.o \
+    obj/mpkeys_test.o \
     obj/scrapesdb.o
 
 all: paycoind.exe

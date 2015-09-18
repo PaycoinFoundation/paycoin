@@ -1,7 +1,7 @@
 // Copyright (c) 2015 The Paycoin developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-//#include "base58.h"
+#include "base58.h"
 #include "db.h"
 #include "util.h"
 #include "primenodes.h"
@@ -12,7 +12,14 @@ extern void CloseDb(const string& strFile);
 
 CPrimeNodeDB* primeNodeDB;
 
-void InflatePrimeNodeDB(); // Prototype
+enum dbtype {
+    nodb,
+    primedb,
+    microdb,
+    fulldb
+};
+
+void InflatePrimeNodeDB(dbtype); // Prototype
 
 void initPrimeNodes() {
     // Create our database if it doesn't exist..
@@ -24,27 +31,70 @@ void initPrimeNodes() {
      * in between are present, if either key is missing, attempt to inflate
      * the database. These checks can be done with a single if statement for
      * each node type but it causes a warning about missing parenthesis that if
-     * added break the function....
+     * added break the function. The dbtype checks should be doable with a
+     * ternary but when using one the value of fulldb is always returned.
      *
      * So if you are done trying to 'optimize' this routine (and failed).
      * Please increment the following counter as a warning to the next guy.
      *
-     * total_hours_wasted_here = 4
+     * total_hours_wasted_here = 5
      */
-    if (fTestNet && (!primeNodeDB->CheckPrimeNodeKey(string("04d445518d115243639d0dfd057a99da588e8334039ce674f177943d4c660957c810f924a5371a352b1e827121846500a588a4dc47dc6d5d9e5317dfa48c562aa7"))
-        || !primeNodeDB->CheckPrimeNodeKey(string("0443e5bf72234d77a591ca2132c5995cccdba377a7022eb014d25e27ebe6ffaf85cd3a214588612186ee1771cfb905d1ec2137193bc01563dbc36d1e28f013e00d"))))
-        InflatePrimeNodeDB();
+     dbtype db = nodb;
+     if (fTestNet) {
+         if (!primeNodeDB->CheckPrimeNodeKey(string("04d445518d115243639d0dfd057a99da588e8334039ce674f177943d4c660957c810f924a5371a352b1e827121846500a588a4dc47dc6d5d9e5317dfa48c562aa7"))
+             || !primeNodeDB->CheckPrimeNodeKey(string("0443e5bf72234d77a591ca2132c5995cccdba377a7022eb014d25e27ebe6ffaf85cd3a214588612186ee1771cfb905d1ec2137193bc01563dbc36d1e28f013e00d")))
+             db = primedb;
 
-    if(!fTestNet && (!primeNodeDB->CheckPrimeNodeKey(string("04388d05d6cdbf75a37540e9b94c1c0b4e9b41a109c1466a33b3cf3cbca9e244f7761686502a0a593831fac02753ea5c2c8fc14ed59b9060da2088d2cb674e041d"))
-        || !primeNodeDB->CheckPrimeNodeKey(string("04df482827573b607fe7279687bb287ccb48f87d24752c69d68e2c130d2d2c8993056e05fb86e61d54747b043c3f6f22b31b891664a90e4c071c794c93455b1cbe"))))
-        InflatePrimeNodeDB();
+         if (!primeNodeDB->CheckMicroPrime(string("muVEJW5YZpZc4QxUaDMJVxcy1vQcMrPhmQ"))
+             || !primeNodeDB->CheckMicroPrime(string("mpCYzc3XqcLYGBHtJxAFQQ1nz7YZwecE3v")))
+         {
+             if (db == primedb) {
+                 db = fulldb;
+             } else {
+                 db = microdb;
+             }
+         }
+     } else {
+         if (!primeNodeDB->CheckPrimeNodeKey(string("04388d05d6cdbf75a37540e9b94c1c0b4e9b41a109c1466a33b3cf3cbca9e244f7761686502a0a593831fac02753ea5c2c8fc14ed59b9060da2088d2cb674e041d"))
+             || !primeNodeDB->CheckPrimeNodeKey(string("04df482827573b607fe7279687bb287ccb48f87d24752c69d68e2c130d2d2c8993056e05fb86e61d54747b043c3f6f22b31b891664a90e4c071c794c93455b1cbe")))
+             db = primedb;
+     }
+     if (db != nodb)
+         InflatePrimeNodeDB(db);
 }
 
 // Prototype
 bool IsPrimeNodeKey(CScript /*scriptPubKeyType*/, unsigned int /*nTime*/, CPrimeNodeDBEntry &/*entry*/);
 
+// Check if a stake is either a prime or microprime stake.
 bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, uint64 nCoinAge, int64 nStakeReward) {
     int primeNodeRate = 0;
+
+    // Process microprime transactions first as these are easier to confirm.
+    if (scriptPubKeyType[0] == OP_MICROPRIME) {
+        int64 group;
+        /* Destination address is stored in the CScript for vout[1] of the input
+         * so extract it against our database.
+         *
+         * IsMicroPrime returns the DB return value which will always return
+         * true for a read even if nothing has been read, check that the address
+         * exists before trying to read the related entries. */
+        if (!primeNodeDB->CheckMicroPrime(scriptPubKeyAddress))
+            return DoS(100, error("IsPrimeStake() : invalid microprime address, HAXORS!!!"));
+
+        primeNodeDB->IsMicroPrime(scriptPubKeyAddress, primeNodeRate, group);
+        /* Confirm the nValueIn is not greater than the balance allowed per
+         * microPrimeGroup. This should not occur and will only happen if
+         * someone attempts to hack the stake rate. */
+        if (nValueIn > group * COIN)
+            return DoS(100, error("IsPrimeStake() : nValueIn %lld exceeds max balance for microprime group %lld", nValueIn, group));
+
+        if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
+            return DoS(100, error("IsPrimeStake() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
+
+        // No need to validate primes at this point, just return true.
+        return true;
+    }
 
     /* Block new stakes from legacy phase 1 primenodes
      *.
@@ -176,7 +226,7 @@ bool CPrimeNodeDB::IsPrimeNodeKey(CScript scriptPubKeyType, unsigned int nTime, 
 void WritePrimeNodeDB(); // Prototype
 
 // Inflate the primenode table in the primeNodeDB
-void InflatePrimeNodeDB() {
+void InflatePrimeNodeDB(dbtype db) {
     printf("InflatePrimeNodeDB() : Primenode database is inconsistent, inflating database.\n");
     // Db is open in read-only mode, close and reopen it with write privs.
     primeNodeDB->Close();
@@ -184,7 +234,11 @@ void InflatePrimeNodeDB() {
     delete primeNodeDB;
     primeNodeDB = new CPrimeNodeDB("w+");
 
-    WritePrimeNodeDB();
+    if (db == primedb || db == fulldb)
+        WritePrimeNodeDB();
+
+    if (db == microdb || db == fulldb)
+        WriteTestMicroPrimeDB();
 
     /* Close Db and reopen it w/ read-only privs because we won't need to write
      * to it again. */
@@ -199,7 +253,39 @@ bool CPrimeNodeDB::WritePrimeNodeKey(const string key, int primeNodeRate, unsign
     return Write(make_pair(string("primenode"), key), boost::make_tuple(primeNodeRate, valid_starting, valid_until));
 }
 
+bool CPrimeNodeDB::WriteMicroPrimeAddr(const string address, int64 group, int primeNodeRate)
+{
+    return Write(make_pair(string("microprime"), address), make_pair(primeNodeRate, group));
+}
+
 bool CPrimeNodeDB::CheckPrimeNodeKey(const string key)
 {
     return Exists(make_pair(string("primenode"), key));
+}
+
+bool CPrimeNodeDB::IsMicroPrime(CScript scriptPubKeyAddress, int &primeNodeRate, int64 &group)
+{
+    CTxDestination address;
+    ExtractDestination(scriptPubKeyAddress, address);
+    CBitcoinAddress addr(address);
+
+    pair<int, int64> p;
+    Read(make_pair(string("microprime"), addr.ToString()), p);
+    primeNodeRate = p.first;
+    group = p.second;
+    return true;
+}
+
+bool CPrimeNodeDB::CheckMicroPrime(const string address)
+{
+    return Exists(make_pair(string("microprime"), address));
+}
+
+bool CPrimeNodeDB::CheckMicroPrime(CScript scriptPubKeyAddress)
+{
+    CTxDestination address;
+    ExtractDestination(scriptPubKeyAddress, address);
+    CBitcoinAddress addr(address);
+
+    return CheckMicroPrime(addr.ToString());
 }

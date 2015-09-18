@@ -293,6 +293,8 @@ public:
 
     bool GetStakeWeight(const CKeyStore& keystore, uint64& nMinWeight, uint64& nMaxWeight, uint64& nWeight);
 
+    bool GetSingleAddressBalance(CTxDestination address, int64 &balance);
+    bool GetSingleAddressBalance(CScript scriptPubKey, int64 &balance);
 };
 
 /** A key allocated from the key pool. */

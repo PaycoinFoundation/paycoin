@@ -230,8 +230,7 @@ const char* GetOpName(opcodetype opcode)
     case OP_PRIMENODE20            : return "OP_PRIMENODE20";
     case OP_PRIMENODE10            : return "OP_PRIMENODE10";
     case OP_PRIMENODEP2            : return "OP_PRIMENODEP2";
-
-
+    case OP_MICROPRIME             : return "OP_MICROPRIME";
 
     // template matching params
     case OP_PUBKEYHASH             : return "OP_PUBKEYHASH";

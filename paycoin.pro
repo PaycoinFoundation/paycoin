@@ -208,6 +208,7 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/scrapesdb.cpp \
     src/primenodes.cpp \
     src/primekeys.cpp \
+    src/mpkeys_test.cpp \
     src/json/json_spirit_writer.cpp \
     src/json/json_spirit_value.cpp \
     src/json/json_spirit_reader.cpp \
