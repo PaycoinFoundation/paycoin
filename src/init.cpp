@@ -14,6 +14,7 @@
 #include "checkpoints.h"
 #include "version.h"
 #include "scrapesdb.h"
+#include "primenodes.h"
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/convenience.hpp>
@@ -75,6 +76,8 @@ void Shutdown(void* parg)
     {
         fShutdown = true;
         nTransactionsUpdated++;
+        if (primeNodeDB)
+            primeNodeDB->Close();
         if (scrapesDB)
             scrapesDB->Close();
         DBFlush(false);
@@ -83,6 +86,8 @@ void Shutdown(void* parg)
         boost::filesystem::remove(GetPidFile());
         UnregisterWallet(pwalletMain);
         delete pwalletMain;
+        if (primeNodeDB)
+            delete primeNodeDB;
         if (scrapesDB)
             delete scrapesDB;
         NewThread(ExitTimeout, NULL);
@@ -519,6 +524,12 @@ bool AppInit2(int argc, char* argv[])
         pwalletMain->ScanForWalletTransactions(pindexRescan, true);
         printf(" rescan      %15"PRI64d"ms\n", GetTimeMillis() - nStart);
     }
+
+    InitMessage(_("Loading prime nodes..."));
+    printf("Loading prime nodes...");
+    nStart = GetTimeMillis();
+    initPrimeNodes();
+    printf(" prime nodes %15"PRI64d"ms\n", GetTimeMillis() - nStart);
 
     InitMessage(_("Loading scrapes..."));
     printf("Loading scrapes...\n");

@@ -13,6 +13,7 @@
 #include "coincontrol.h"
 #include "kernel.h"
 #include "scrapesdb.h"
+#include "primenodes.h"
 #include <boost/algorithm/string/replace.hpp>
 
 using namespace std;

@@ -104,6 +104,7 @@ OBJS= \
     obj/walletdb.o \
     obj/noui.o \
     obj/kernel.o \
+    obj/primenodes.o \
     obj/primekeys.o \
     obj/scrapesdb.o
 
