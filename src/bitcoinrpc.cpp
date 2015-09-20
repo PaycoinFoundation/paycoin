@@ -3216,8 +3216,6 @@ private:
 
 void ThreadRPCServer(void* parg)
 {
-    IMPLEMENT_RANDOMIZE_STACK(ThreadRPCServer(parg));
-
     // getwork/getblocktemplate mining rewards paid here:
     pMiningKey = new CReserveKey(pwalletMain);
 
