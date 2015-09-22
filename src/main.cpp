@@ -674,7 +674,8 @@ bool CTxMemPool::accept(CTxDB& txdb, CTransaction &tx, bool fCheckInputs,
 
         // Check against previous transactions
         // This is done last to help prevent CPU exhaustion denial-of-service attacks.
-        if (!tx.ConnectInputs(txdb, mapInputs, mapUnused, CDiskTxPos(1,1,1), pindexBest, false, false))
+        int64 nBurnCoins = 0;
+        if (!tx.ConnectInputs(txdb, mapInputs, mapUnused, CDiskTxPos(1,1,1), pindexBest, nBurnCoins, false, false))
         {
             return error("CTxMemPool::accept() : ConnectInputs failed %s", hash.ToString().substr(0,10).c_str());
         }
@@ -1292,7 +1293,8 @@ unsigned int CTransaction::GetP2SHSigOpCount(const MapPrevTx& inputs) const
 
 bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                                  map<uint256, CTxIndex>& mapTestPool, const CDiskTxPos& posThisTx,
-                                 const CBlockIndex* pindexBlock, bool fBlock, bool fMiner, bool fStrictPayToScriptHash)
+                                 const CBlockIndex* pindexBlock, int64 &nBurnCoins, bool fBlock,
+                                 bool fMiner, bool fStrictPayToScriptHash)
 {
     // Take over previous transactions' spent pointers
     // fBlock is true when this is called from AcceptBlock when a new best-block is added to the blockchain
@@ -1407,6 +1409,18 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
             nFees += nTxFee;
             if (!MoneyRange(nFees))
                 return DoS(100, error("ConnectInputs() : nFees out of range"));
+
+            /* The coins, the coins, the coins are on fire;
+             * we don't need no water let the mother frackers burn!!!
+             * If OP_BURN is set destroy the coins in question. */
+            for (unsigned int i = 0; i < vout.size(); i++)
+            {
+                if (vout[i].scriptPubKey[1] == OP_BURN) {
+                    nBurnCoins += vout[i].nValue;
+                    if (fDebug && GetBoolArg("-printcreation"))
+                        printf("ConnectInputs() : destination is burn address, coins to burn %ld\n", vout[i].nValue);
+                }
+            }
         }
     }
 
@@ -1516,6 +1530,7 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex)
     int64 nFees = 0;
     int64 nValueIn = 0;
     int64 nValueOut = 0;
+    int64 nBurnCoins = 0;
     unsigned int nSigOps = 0;
     BOOST_FOREACH(CTransaction& tx, vtx)
     {
@@ -1563,16 +1578,18 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex)
             if (!tx.IsCoinStake())
                 nFees += nTxValueIn - nTxValueOut;
 
-            if (!tx.ConnectInputs(txdb, mapInputs, mapQueuedChanges, posThisTx, pindex, true, false, fStrictPayToScriptHash))
+            if (!tx.ConnectInputs(txdb, mapInputs, mapQueuedChanges, posThisTx, pindex, nBurnCoins, true, false, fStrictPayToScriptHash))
                 return false;
         }
 
         mapQueuedChanges[hashTx] = CTxIndex(posThisTx, tx.vout.size());
     }
+    if (nBurnCoins > 0 && fDebug && GetBoolArg("-printcreation"))
+        printf("ConnectBlock() : burning coins %s\n", FormatMoney(nBurnCoins).c_str());
 
     // paycoin: track money supply and mint amount info
     pindex->nMint = nValueOut - nValueIn + nFees;
-    pindex->nMoneySupply = (pindex->pprev? pindex->pprev->nMoneySupply : 0) + nValueOut - nValueIn;
+    pindex->nMoneySupply = ((pindex->pprev? pindex->pprev->nMoneySupply : 0) + nValueOut - nValueIn) - nBurnCoins;
     if (!txdb.WriteBlockIndex(CDiskBlockIndex(pindex)))
         return error("Connect() : WriteBlockIndex for pindex failed");
 
@@ -3920,7 +3937,8 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, CWallet* pwallet, bool fProofOfS
             if (nBlockSigOps + nTxSigOps >= MAX_BLOCK_SIGOPS)
                 continue;
 
-            if (!tx.ConnectInputs(txdb, mapInputs, mapTestPoolTmp, CDiskTxPos(1,1,1), pindexPrev, false, true))
+            int64 nBurnCoins = 0;
+            if (!tx.ConnectInputs(txdb, mapInputs, mapTestPoolTmp, CDiskTxPos(1,1,1), pindexPrev, nBurnCoins, false, true))
                 continue;
             mapTestPoolTmp[tx.GetHash()] = CTxIndex(CDiskTxPos(1,1,1), tx.vout.size());
             swap(mapTestPool, mapTestPoolTmp);

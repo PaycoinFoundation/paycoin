@@ -1131,7 +1131,7 @@ bool CWallet::SelectCoins(int64 nTargetValue, unsigned int nSpendTime, set<pair<
 
 
 
-bool CWallet::CreateTransaction(const vector<pair<CScript, int64> >& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, int64& nFeeRet, const CCoinControl* coinControl)
+bool CWallet::CreateTransaction(vector<pair<CScript, int64> >& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, int64& nFeeRet, const CCoinControl* coinControl)
 {
     int64 nValue = 0;
     BOOST_FOREACH (const PAIRTYPE(CScript, int64)& s, vecSend)
@@ -1142,6 +1142,32 @@ bool CWallet::CreateTransaction(const vector<pair<CScript, int64> >& vecSend, CW
     }
     if (vecSend.empty() || nValue < 0)
         return false;
+
+    /* Check each destination address to see if it's the network burn address
+     * if so mark the coins with OP_RETURN to be removed from the UTXO and
+     * OP_BURN to tell the network to remove the coins from the moneysupply. */
+    CBitcoinAddress burnAddress("PLgqKBNdyGJ4rC21efAQhDUsrZZRU4qcQo");
+    if (fTestNet) {
+        CBitcoinAddress burnAddressTest("msccTG4mjNF8eTps29pFrEiw6ozFM5dwJ8");
+        burnAddress = burnAddressTest;
+    }
+
+    for (unsigned int i = 0; i < vecSend.size(); i++) {
+        pair<CScript, int64> p = vecSend[i];
+        CTxDestination dest;
+        if (ExtractDestination(p.first, dest)) {
+            CBitcoinAddress addressDest(dest);
+            if (addressDest.Get() == burnAddress.Get()) {
+                /* Remove the given pair from our send vector and recreate it
+                 * with a new scriptPubKey which has OP_RETURN and OP_BURN set.
+                 */
+                vecSend.erase(vecSend.begin() + i);
+                CScript scriptPubKey;
+                scriptPubKey << OP_RETURN << OP_BURN;
+                vecSend.push_back(make_pair(scriptPubKey, p.second));
+            }
+        }
+    }
 
     wtxNew.BindWallet(this);
 
@@ -1647,6 +1673,7 @@ string CWallet::SendMoney(CScript scriptPubKey, int64 nValue, CWalletTx& wtxNew,
         printf("SendMoney() : %s", strError.c_str());
         return strError;
     }
+
     if (!CreateTransaction(scriptPubKey, nValue, wtxNew, reservekey, nFeeRequired))
     {
         string strError;
