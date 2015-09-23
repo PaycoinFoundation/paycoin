@@ -362,20 +362,24 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
     this->clientModel = clientModel;
     if(clientModel)
     {
+        // Replace some strings and icons, when using the testnet
         if(clientModel->isTestNet())
         {
             QString title_testnet = windowTitle() + QString(" ") + tr("[testnet]");
             setWindowTitle(title_testnet);
 #ifndef Q_WS_MAC
-            setWindowIcon(QIcon(":icons/paycoin_icon"));
+            setWindowIcon(QIcon(":icons/paycoin_testnet"));
 #else
-            MacDockIconHandler::instance()->setIcon(QIcon(":icons/paycoin_icon"));
+            MacDockIconHandler::instance()->setIcon(QIcon(":icons/paycoin_testnet"));
 #endif
             if(trayIcon)
             {
                 trayIcon->setToolTip(title_testnet);
-                trayIcon->setIcon(QIcon(":/icons/paycoin_tooltip"));
+                trayIcon->setIcon(QIcon(":/icons/toolbar_testnet"));
+                toggleHideAction->setIcon(QIcon(":/icons/toolbar_testnet"));
             }
+
+            aboutAction->setIcon(QIcon(":/icons/toolbar_testnet"));
         }
 
         // Keep up to date with client
