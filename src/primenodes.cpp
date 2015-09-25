@@ -230,7 +230,7 @@ void InflatePrimeNodeDB(dbtype db) {
     printf("InflatePrimeNodeDB() : Primenode database is inconsistent, inflating database.\n");
     // Db is open in read-only mode, close and reopen it with write privs.
     primeNodeDB->Close();
-    CloseDb("primenodes.dat");
+    bitdb.CloseDb("primenodes.dat");
     delete primeNodeDB;
     primeNodeDB = new CPrimeNodeDB("w+");
 
@@ -243,7 +243,7 @@ void InflatePrimeNodeDB(dbtype db) {
     /* Close Db and reopen it w/ read-only privs because we won't need to write
      * to it again. */
     primeNodeDB->Close();
-    CloseDb("primenodes.dat");
+    bitdb.CloseDb("primenodes.dat");
     delete primeNodeDB;
     primeNodeDB = new CPrimeNodeDB("r");
 }

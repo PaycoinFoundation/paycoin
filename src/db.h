@@ -43,6 +43,8 @@ private:
 public:
     mutable CCriticalSection cs_db;
     DbEnv dbenv;
+    std::map<std::string, int> mapFileUseCount;
+    std::map<std::string, Db*> mapDb;
 
     CDBEnv();
     ~CDBEnv();
@@ -57,6 +59,8 @@ public:
      * to be checked outside of CDBEnv as a wortkaround until a more proper
      * solution is determined. */
     bool GetDetached() { return fDetachDB; }
+
+    void CloseDb(const std::string& strFile);
 
     DbTxn *TxnBegin(int flags=DB_TXN_WRITE_NOSYNC)
     {

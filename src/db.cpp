@@ -22,18 +22,13 @@
 using namespace std;
 using namespace boost;
 
-
 unsigned int nWalletDBUpdated;
-
-
 
 //
 // CDB
 //
 
 CDBEnv bitdb;
-map<string, int> mapFileUseCount;
-static map<string, Db*> mapDb;
 
 void CDBEnv::EnvShutdown()
 {
@@ -133,8 +128,8 @@ CDB::CDB(const char *pszFile, const char* pszMode) :
             throw runtime_error("env open failed");
 
         strFile = pszFile;
-        ++mapFileUseCount[strFile];
-        pdb = mapDb[strFile];
+        ++bitdb.mapFileUseCount[strFile];
+        pdb = bitdb.mapDb[strFile];
         if (pdb == NULL)
         {
             pdb = new Db(&bitdb.dbenv, 0);
@@ -152,7 +147,7 @@ CDB::CDB(const char *pszFile, const char* pszMode) :
                 pdb = NULL;
                 {
                      LOCK(bitdb.cs_db);
-                    --mapFileUseCount[strFile];
+                    --bitdb.mapFileUseCount[strFile];
                 }
                 strFile = "";
                 throw runtime_error(strprintf("CDB() : can't open database file %s, error %d", pszFile, ret));
@@ -166,7 +161,7 @@ CDB::CDB(const char *pszFile, const char* pszMode) :
                 fReadOnly = fTmp;
             }
 
-            mapDb[strFile] = pdb;
+            bitdb.mapDb[strFile] = pdb;
         }
     }
 }
@@ -197,14 +192,14 @@ void CDB::Close()
 
     {
         LOCK(bitdb.cs_db);
-        --mapFileUseCount[strFile];
+        --bitdb.mapFileUseCount[strFile];
     }
 }
 
-void CloseDb(const string& strFile)
+void CDBEnv::CloseDb(const string& strFile)
 {
     {
-        LOCK(bitdb.cs_db);
+        LOCK(cs_db);
         if (mapDb[strFile] != NULL)
         {
             // Close the database handle
@@ -222,12 +217,12 @@ bool CDB::Rewrite(const string& strFile, const char* pszSkip)
     {
         {
             LOCK(bitdb.cs_db);
-            if (!mapFileUseCount.count(strFile) || mapFileUseCount[strFile] == 0)
+            if (!bitdb.mapFileUseCount.count(strFile) || bitdb.mapFileUseCount[strFile] == 0)
             {
                 // Flush log data to the dat file
-                CloseDb(strFile);
+                bitdb.CloseDb(strFile);
                 bitdb.CheckpointLSN(strFile);
-                mapFileUseCount.erase(strFile);
+                bitdb.mapFileUseCount.erase(strFile);
 
                 bool fSuccess = true;
                 printf("Rewriting %s...\n", strFile.c_str());
@@ -284,7 +279,7 @@ bool CDB::Rewrite(const string& strFile, const char* pszSkip)
                     if (fSuccess)
                     {
                         db.Close();
-                        CloseDb(strFile);
+                        bitdb.CloseDb(strFile);
                         if (pdbCopy->close(0))
                             fSuccess = false;
                         delete pdbCopy;
