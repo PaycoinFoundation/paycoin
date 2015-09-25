@@ -125,7 +125,7 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
         case DisplayAddresses:
             return QVariant(bDisplayAddresses);
         case DetachDatabases:
-            return QVariant(fDetachDB);
+            return QVariant(bitdb.GetDetached());
         case CoinControlFeatures:
             return QVariant(fCoinControlFeatures);
         default:
@@ -213,8 +213,8 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             }
             break;
         case DetachDatabases: {
-            fDetachDB = value.toBool();
-            settings.setValue("detachDB", fDetachDB);
+            bitdb.SetDetach(value.toBool());
+            settings.setValue("detachDB", bitdb.GetDetached());
             }
             break;
         case CoinControlFeatures: {

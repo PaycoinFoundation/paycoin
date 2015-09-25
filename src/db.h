@@ -27,13 +27,39 @@ class CWallet;
 class CWalletTx;
 
 extern unsigned int nWalletDBUpdated;
-extern bool fDetachDB;
-extern DbEnv dbenv;
 
-extern void DBFlush(bool fShutdown);
 void ThreadFlushWalletDB(void* parg);
 bool BackupWallet(const CWallet& wallet, const std::string& strDest);
 
+class CDBEnv
+{
+private:
+    bool fDetachDB;
+    bool fDbEnvInit;
+    boost::filesystem::path pathEnv;
+
+    void EnvShutdown();
+
+public:
+    mutable CCriticalSection cs_db;
+    DbEnv dbenv;
+
+    CDBEnv();
+    ~CDBEnv();
+    bool Open(boost::filesystem::path pathEnv_);
+    void Close();
+    void Flush(bool fShutdown);
+    void CheckpointLSN(std::string strFile);
+    void SetDetach(bool fDetachDB_) { fDetachDB = fDetachDB_; }
+    /* For whatever reason the QT code (for Bitcoin) still uses fDetachDB after
+     * implementing it as a private variable in CDBEnv (above), I see no valid
+     * fix for this (almost as if the QT shouldn't even work). Allow fDetachDB
+     * to be checked outside of CDBEnv as a wortkaround until a more proper
+     * solution is determined. */
+    bool GetDetached() { return fDetachDB; }
+};
+
+extern CDBEnv bitdb;
 
 /** RAII class that provides access to a Berkeley database */
 class CDB
@@ -223,7 +249,7 @@ public:
         if (!pdb)
             return false;
         DbTxn* ptxn = NULL;
-        int ret = dbenv.txn_begin(GetTxn(), &ptxn, DB_TXN_WRITE_NOSYNC);
+        int ret = bitdb.dbenv.txn_begin(GetTxn(), &ptxn, DB_TXN_WRITE_NOSYNC);
         if (!ptxn || ret != 0)
             return false;
         vTxn.push_back(ptxn);
