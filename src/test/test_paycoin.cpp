@@ -15,12 +15,18 @@ struct TestingSetup {
     TestingSetup() {
         fPrintToConsole = true; // don't want to write to debug.log file
         pwalletMain = new CWallet();
+        bitdb.MakeMock();
+        LoadBlockIndex(true);
+        bool fFirstRun;
+        pwalletMain = new CWallet("wallet.dat");
+        pwalletMain->LoadWallet(fFirstRun);
         RegisterWallet(pwalletMain);
     }
     ~TestingSetup()
     {
         delete pwalletMain;
         pwalletMain = NULL;
+        bitdb.Flush(true);
     }
 };
 
