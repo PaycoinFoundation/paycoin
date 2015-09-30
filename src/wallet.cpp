@@ -1427,12 +1427,14 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                      txNew.vout.push_back(CTxOut(0, scriptStake));
                  }
 
+                printf("MicroPrimeStake : primenode rate = %d\n", primeNodeRate);
+
                 txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
                 nCredit += pcoin.first->vout[pcoin.second].nValue;
                 vwtxPrev.push_back(pcoin.first);
                 txNew.vout.push_back(CTxOut(0, scriptPubKeyOut));
 
-                if ((block.GetBlockTime() + nStakeSplitAge > txNew.nTime) && ((nCredit < MINIMUM_FOR_PRIMENODE) || primeNodeRate == 0 ))
+                if ((block.GetBlockTime() + nStakeSplitAge > txNew.nTime) && ((nCredit < MINIMUM_FOR_PRIMENODE) || primeNodeRate == 0) && microPrimeGroup == 0)
                     txNew.vout.push_back(CTxOut(0, scriptPubKeyOut)); //split stake
                 if (fDebug && GetBoolArg("-printcoinstake"))
                     printf("CreateCoinStake : added kernel type=%d\n", whichType);
