@@ -19,6 +19,23 @@ enum dbtype {
     fulldb
 };
 
+bool NewScriptPrimeID(CScript &scriptPrimeID, unsigned int nTime) {
+    string strPrivKey = GetArg("-primenodekey", "");
+    vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
+    CKey key;
+    key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end()));
+    CScript scriptTime;
+    scriptTime << nTime;
+    uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
+    vector<unsigned char> vchSig;
+
+    if (!key.Sign(hashScriptTime, vchSig)) // Should only ever occur on init.
+        return error("NewScriptPrimeID() : unable to sign ID script, possible invalid key format.");
+
+    scriptPrimeID << OP_PRIMENODEP2 << vchSig;
+    return true;
+}
+
 void InflatePrimeNodeDB(dbtype); // Prototype
 
 bool initPrimeNodes(string &str) {
@@ -62,30 +79,20 @@ bool initPrimeNodes(string &str) {
      if (db != nodb)
          InflatePrimeNodeDB(db);
 
+    // If there is a primenode key in the conf file, confirm it's valid.
     if (mapArgs.count("-primenodekey")) {
         printf("Primenode key found in configuration, verifying...\n");
-        string strPrivKey = GetArg("-primenodekey", "");
-        vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
-        CKey key;
-        key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end()));
-        unsigned int nTime;
-        nTime = GetTime();
-        CScript scriptTime;
-        scriptTime << nTime;
-        uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
-        vector<unsigned char> vchSig;
 
-        if (!key.Sign(hashScriptTime, vchSig)) {
-            str = "initPrimeNode() : unable to sign test script, possible invalid key format.";
+        CScript scriptPrimeID;
+        unsigned int nTime = GetTime();
+        if (!NewScriptPrimeID(scriptPrimeID, nTime)) {
+            str = "initPrimeNodes() : unable to sign ID script, possible invalid key format.";
             return false;
         }
 
-        CScript scriptPrimeTest;
-        // OP code doesn't mean anything here it's just stripped out.
-        scriptPrimeTest << OP_PRIMENODEP2 << vchSig;
         // We don't use this entry, we just want to know that the key is valid.
         CPrimeNodeDBEntry entry;
-        if (!primeNodeDB->IsPrimeNodeKey(scriptPrimeTest, nTime, entry)) {
+        if (!primeNodeDB->IsPrimeNodeKey(scriptPrimeID, nTime, entry)) {
             str = "initPrimeNode() : invalid primenode key";
             return false;
         }

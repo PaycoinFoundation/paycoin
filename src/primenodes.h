@@ -12,7 +12,9 @@ void WritePrimeNodeDB();
 void WriteMicroPrimeDB();
 void WriteTestMicroPrimeDB();
 
-/* This is used to unseralize the a database entry retaining all of the the
+bool NewScriptPrimeID(CScript &/*scriptPrimeID*/, unsigned int /*nTime*/);
+
+/* This is used to unseralize a database entry retaining all of the
  * primenode information */
 class CPrimeNodeDBEntry
 {

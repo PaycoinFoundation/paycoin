@@ -1296,26 +1296,15 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     unsigned int primeNodeRate = 0;
     int64 microPrimeGroup;
 
-    if (mapArgs.count("-primenodekey")) // paycoin: primenode priv key
+    if (mapArgs.count("-primenodekey"))
     {
-        std::string strPrivKey = GetArg("-primenodekey", "");
-        std::vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
-        CKey key;
-        key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end())); // if key is not correct openssl may crash
-        CScript scriptTime;
-        scriptTime << txNew.nTime;
-        uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
-        std::vector<unsigned char> vchSig;
-
-        if(!key.Sign(hashScriptTime, vchSig)) // This should not occur as this is checked at init.
-            return error("CreateCoinStake : Unable to sign checkpoint, possible invalid key format");
-
         CScript scriptPrimeNode;
-        scriptPrimeNode << OP_PRIMENODEP2 << vchSig;
+        if (!NewScriptPrimeID(scriptPrimeNode, txNew.nTime))
+            return false;
+
         primeNodeRate = 25;
         nCombineThreshold = MINIMUM_FOR_PRIMENODE;
 
-        printf("Primenode rate for staking is %d\n", primeNodeRate);
         txNew.vout.push_back(CTxOut(0, scriptPrimeNode));
      }
 
