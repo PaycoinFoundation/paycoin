@@ -1299,7 +1299,9 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     if (mapArgs.count("-primenodekey"))
     {
         CScript scriptPrimeNode;
-        if (!NewScriptPrimeID(scriptPrimeNode, txNew.nTime))
+        string strPrivKey = GetArg("-primenodekey", "");
+        vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
+        if (!NewScriptPrimeID(scriptPrimeNode, vchPrivKey, txNew.nTime))
             return false;
 
         primeNodeRate = 25;

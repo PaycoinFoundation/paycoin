@@ -12,7 +12,15 @@ void WritePrimeNodeDB();
 void WriteMicroPrimeDB();
 void WriteTestMicroPrimeDB();
 
-bool NewScriptPrimeID(CScript &/*scriptPrimeID*/, unsigned int /*nTime*/);
+enum dbtype {
+    nodb,
+    primedb,
+    microdb,
+    fulldb
+};
+
+bool NewScriptPrimeID(CScript &/*scriptPrimeID*/, std::vector<unsigned char> /*vchPrivKey*/, unsigned int /*nTime*/);
+void InflatePrimeNodeDB(dbtype);
 
 /* This is used to unseralize a database entry retaining all of the
  * primenode information */

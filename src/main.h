@@ -563,7 +563,7 @@ public:
         this is defined in primekeys.cpp and is utilized in ConnectInputs.
         @ return True for either and DoS for anything else.
     */
-    bool IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, uint64 nCoinAge, int64 nStakeReward);
+    bool IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, int64 nValoueOut, uint64 nCoinAge);
 
     /** Check for standard transaction types
         @return True if all outputs (scriptPubKeys) use only standard transaction forms

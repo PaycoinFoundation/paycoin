@@ -1377,16 +1377,17 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
             uint64 nCoinAge;
             if (!GetCoinAge(txdb, nCoinAge))
                 return error("ConnectInputs() : %s unable to get coin age for coinstake", GetHash().ToString().substr(0,10).c_str());
-            int64 nStakeReward = GetValueOut() - nValueIn;
+            int64 nValueOut = GetValueOut();
 
             // If vout[0] is not empty check if this is a prime stake.
             if (!vout[0].IsEmpty()) {
                 // Type ID is stored in vout[0] destination is stored in vout[1]
-                return IsPrimeStake(vout[0].scriptPubKey, vout[1].scriptPubKey, nTime, nValueIn, nCoinAge, nStakeReward);
+                return IsPrimeStake(vout[0].scriptPubKey, vout[1].scriptPubKey, nTime, nValueIn, nValueOut, nCoinAge);
             } else {
                 if(GetValueOut() <= MINIMUM_FOR_ORION){
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for orion controller = %lld while you only have %lld", MINIMUM_FOR_ORION, GetValueOut()));
                 }
+                int64 nStakeReward = nValueOut - nValueIn;
                 if(nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, 0) - GetMinFee() + MIN_TX_FEE){
                     return DoS(100, error("ConnectInputs() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
                 }
