@@ -1292,7 +1292,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     txNew.vin.clear();
     txNew.vout.clear();
 
-    // Make variable interested rate
+    // Make variable interest rate
     unsigned int primeNodeRate = 0;
     int64 microPrimeGroup;
 
@@ -1307,11 +1307,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
         std::vector<unsigned char> vchSig;
 
-        if(!key.Sign(hashScriptTime, vchSig)){
-            return error("CreateCoinStake : Unable to sign checkpoint, wrong primenodekey?");
-        }else{
-            printf("Primenode key is correct for activating a prime controller\n");
-        }
+        if(!key.Sign(hashScriptTime, vchSig)) // This should not occur as this is checked at init.
+            return error("CreateCoinStake : Unable to sign checkpoint, possible invalid key format");
 
         CScript scriptPrimeNode;
         scriptPrimeNode << OP_PRIMENODEP2 << vchSig;

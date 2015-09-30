@@ -7,7 +7,7 @@
 #include "db.h"
 #include "script.h"
 
-void initPrimeNodes();
+bool initPrimeNodes(std::string &/*ret*/);
 void WritePrimeNodeDB();
 void WriteMicroPrimeDB();
 void WriteTestMicroPrimeDB();

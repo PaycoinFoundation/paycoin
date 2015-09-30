@@ -21,7 +21,7 @@ enum dbtype {
 
 void InflatePrimeNodeDB(dbtype); // Prototype
 
-void initPrimeNodes() {
+bool initPrimeNodes(string &str) {
     // Create our database if it doesn't exist..
     primeNodeDB = new CPrimeNodeDB("cr");
 
@@ -61,6 +61,38 @@ void initPrimeNodes() {
      }
      if (db != nodb)
          InflatePrimeNodeDB(db);
+
+    if (mapArgs.count("-primenodekey")) {
+        printf("Primenode key found in configuration, verifying...\n");
+        string strPrivKey = GetArg("-primenodekey", "");
+        vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
+        CKey key;
+        key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end()));
+        unsigned int nTime;
+        nTime = GetTime();
+        CScript scriptTime;
+        scriptTime << nTime;
+        uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
+        vector<unsigned char> vchSig;
+
+        if (!key.Sign(hashScriptTime, vchSig)) {
+            str = "initPrimeNode() : unable to sign test script, possible invalid key format.";
+            return false;
+        }
+
+        CScript scriptPrimeTest;
+        // OP code doesn't mean anything here it's just stripped out.
+        scriptPrimeTest << OP_PRIMENODEP2 << vchSig;
+        // We don't use this entry, we just want to know that the key is valid.
+        CPrimeNodeDBEntry entry;
+        if (!primeNodeDB->IsPrimeNodeKey(scriptPrimeTest, nTime, entry)) {
+            str = "initPrimeNode() : invalid primenode key";
+            return false;
+        }
+
+        str = "Primenode key is correct for activating a prime controller";
+    }
+    return true;
 }
 
 // Prototype
