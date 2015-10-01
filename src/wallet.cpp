@@ -1317,6 +1317,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         scriptPrimeNode << OP_PRIMENODEP2 << vchSig;
         primeNodeRate = 25;
         nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+        microPrimeGroup = 0;
 
         printf("Primenode rate for staking is %d\n", primeNodeRate);
         txNew.vout.push_back(CTxOut(0, scriptPrimeNode));
