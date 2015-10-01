@@ -45,7 +45,11 @@ bool CWalletDB::WriteAccount(const string& strAccount, const CAccount& account)
 
 bool CWalletDB::WriteAccountingEntry(const CAccountingEntry& acentry)
 {
-    return Write(boost::make_tuple(string("acentry"), acentry.strAccount, ++nAccountingEntryNumber), acentry);
+    uint64 nEntry = ++nAccountingEntryNumber;
+    if(fDebug && GetBoolArg("-printaccounting"))
+        printf("WriteAccountingEntry : strAccount %s, entry number %llu, nCreditDebit %lld, nTime %lld\n", acentry.strAccount.c_str(), nEntry, acentry.nCreditDebit, acentry.nTime);
+
+    return Write(boost::make_tuple(string("acentry"), acentry.strAccount, nEntry), acentry);
 }
 
 int64 CWalletDB::GetAccountCreditDebit(const string& strAccount)
