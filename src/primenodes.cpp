@@ -274,10 +274,10 @@ void InflatePrimeNodeDB(dbtype db) {
     primeNodeDB = new CPrimeNodeDB("w+");
 
     if (db == primedb || db == fulldb)
-        WritePrimeNodeDB();
+        primeNodeDB->WritePrimeNodeDB();
 
     if (db == microdb || db == fulldb)
-        WriteTestMicroPrimeDB();
+        primeNodeDB->WriteTestMicroPrimeDB();
 
     /* Close Db and reopen it w/ read-only privs because we won't need to write
      * to it again. */
