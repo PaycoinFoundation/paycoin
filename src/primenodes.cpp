@@ -26,6 +26,7 @@ bool NewScriptPrimeID(CScript &scriptPrimeID, vector<unsigned char> vchPrivKey, 
     if (!key.Sign(hashScriptTime, vchSig)) // Should only ever occur on init.
         return error("NewScriptPrimeID() : unable to sign ID script, possible invalid key format.");
 
+    scriptPrimeID.clear();
     scriptPrimeID << OP_PRIMENODEP2 << vchSig;
     return true;
 }
