@@ -49,8 +49,15 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             CTxDestination address;
             CTxOut txout = wtx.vout[1];
 
-            if(ExtractDestination(txout.scriptPubKey, address) && IsMine(*wallet, address))
+            if (ExtractDestination(txout.scriptPubKey, address)) {
+                if (!IsMine(*wallet, address)) {
+                    sub.type = TransactionRecord::ExternalScrape;
+                    // Scrape balance is always in the last output.
+                    sub.credit = wtx.vout[wtx.vout.size() - 1].nValue;
+                }
+
                 sub.address = CBitcoinAddress(address).ToString();
+            }
 
             parts.append(sub);
         }
@@ -217,7 +224,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
     }
 
     // For generated transactions, determine maturity
-    if(type == TransactionRecord::Generated || type == TransactionRecord::StakeMint)
+    if(type == TransactionRecord::Generated || type == TransactionRecord::StakeMint || TransactionRecord::ExternalScrape)
     {
         int64 nCredit = wtx.GetCredit(true);
         if (nCredit == 0)
@@ -253,4 +260,3 @@ std::string TransactionRecord::getTxID()
 {
     return hash.ToString(); // + strprintf("-%03d", idx);
 }
-

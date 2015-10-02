@@ -293,7 +293,7 @@ QString TransactionTableModel::formatTxStatus(const TransactionRecord *wtx) cons
         status = tr("Confirmed (%1 confirmations)").arg(wtx->status.depth);
         break;
     }
-    if(wtx->type == TransactionRecord::Generated || wtx->type == TransactionRecord::StakeMint)
+    if(wtx->type == TransactionRecord::Generated || wtx->type == TransactionRecord::StakeMint || wtx->type == TransactionRecord::ExternalScrape)
     {
         switch(wtx->status.maturity)
         {
@@ -362,6 +362,8 @@ QString TransactionTableModel::formatTxType(const TransactionRecord *wtx) const
         return tr("Mined");
     case TransactionRecord::StakeMint:
         return tr("Mint by stake");
+    case TransactionRecord::ExternalScrape:
+        return tr("External scrape");
     default:
         return QString();
     }
@@ -394,6 +396,7 @@ QString TransactionTableModel::formatTxToAddress(const TransactionRecord *wtx, b
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::SendToAddress:
     case TransactionRecord::StakeMint:
+    case TransactionRecord::ExternalScrape:
         return lookupAddress(wtx->address, tooltip);
     case TransactionRecord::SendToOther:
         return QString::fromStdString(wtx->address);
@@ -412,6 +415,7 @@ QVariant TransactionTableModel::addressColor(const TransactionRecord *wtx) const
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::SendToAddress:
     case TransactionRecord::StakeMint:
+    case TransactionRecord::ExternalScrape:
         {
         QString label = walletModel->getAddressTableModel()->labelForAddress(QString::fromStdString(wtx->address));
         if(label.isEmpty())
@@ -441,7 +445,7 @@ QString TransactionTableModel::formatTxAmount(const TransactionRecord *wtx, bool
 
 QVariant TransactionTableModel::txStatusDecoration(const TransactionRecord *wtx) const
 {
-    if(wtx->type == TransactionRecord::Generated || wtx->type == TransactionRecord::StakeMint)
+    if(wtx->type == TransactionRecord::Generated || wtx->type == TransactionRecord::StakeMint || wtx->type == TransactionRecord::ExternalScrape)
     {
         switch(wtx->status.maturity)
         {
@@ -628,4 +632,3 @@ QModelIndex TransactionTableModel::index(int row, int column, const QModelIndex 
         return QModelIndex();
     }
 }
-
