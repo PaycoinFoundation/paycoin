@@ -133,11 +133,13 @@ Value deletescrapeaddress(const Array& params, bool fHelp)
 
 bool CScrapesDB::WriteScrapeAddress(const string strAddress, const string strScrapeAddress)
 {
+    LOCK(cs);
     return Write(make_pair(string("scrapeaddress"), strAddress), strScrapeAddress);
 }
 
 bool CScrapesDB::EraseScrapeAddress(const string strAddress)
 {
+    LOCK(cs);
     return Erase(make_pair(string("scrapeaddress"), strAddress));
 }
 
