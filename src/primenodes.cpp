@@ -130,7 +130,7 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
          * microPrimeGroup. This should not occur and will only happen if
          * someone attempts to hack the stake rate. */
         if (nValueIn > group * COIN)
-            return DoS(100, error("IsPrimeStake() : nValueIn %lld exceeds max balance for microprime group %lld", nValueIn, group));
+            return DoS(100, error("IsPrimeStake() : nValueIn %"PRI64d" exceeds max balance for microprime group %"PRI64d, nValueIn, group));
 
         if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
             return DoS(100, error("IsPrimeStake() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
@@ -189,9 +189,9 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
 
     // Confirm the stake passes the minimum for a primenode
     if (nTime >= END_PRIME_PHASE_ONE && nValueOut < MINIMUM_FOR_PRIMENODE_PHASE2)
-        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE_PHASE2, nValueOut));
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %"PRI64d" while you only have %"PRI64d, MINIMUM_FOR_PRIMENODE_PHASE2, nValueOut));
     if (nValueOut < MINIMUM_FOR_PRIMENODE_PHASE1)
-        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE_PHASE1, nValueOut));
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %"PRI64d" while you only have %"PRI64d, MINIMUM_FOR_PRIMENODE_PHASE1, nValueOut));
 
     /* Reset the primeNodeRate to 100 on the Legacy Phase 1 primenodes after the
      * specified time. Stakes existing prior to that or created after the end of

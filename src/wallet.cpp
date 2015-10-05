@@ -1345,7 +1345,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     int64 nReserveBalance = 0;
     if (mapArgs.count("-reservebalance") && !ParseMoney(mapArgs["-reservebalance"], nReserveBalance))
         return error("CreateCoinStake : invalid reserve balance amount");
-    printf("Your balance is %lld and reservebalance is %lld\n", nBalance, nReserveBalance);
+    printf("Your balance is %"PRI64d" and reservebalance is %"PRI64d"\n", nBalance, nReserveBalance);
     if (nBalance <= nReserveBalance)
         return false;
     set<pair<const CWalletTx*,unsigned int> > setCoins;
@@ -1495,7 +1495,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             }
             txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
             nCredit += pcoin.first->vout[pcoin.second].nValue;
-            printf("CreateCoinStake : nCombineThreshold = %lld pcoin.first->vout[pcoin.second].nValue = %lld\n", nCombineThreshold, pcoin.first->vout[pcoin.second].nValue);
+            printf("CreateCoinStake : nCombineThreshold = %"PRI64d" pcoin.first->vout[pcoin.second].nValue = %"PRI64d"\n", nCombineThreshold, pcoin.first->vout[pcoin.second].nValue);
             vwtxPrev.push_back(pcoin.first);
         }
 
@@ -1510,17 +1510,17 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             return error("CreateCoinStake : failed to calculate coin age");
 
         if (microPrimeGroup > 0 && nCredit > microPrimeGroup * COIN)
-            return error("CreateCoinStake : credit is too high for microprime group; credit = %lld; group = %lld\n", nCredit, microPrimeGroup);
+            return error("CreateCoinStake : credit is too high for microprime group; credit = %"PRI64d"; group = %"PRI64d"\n", nCredit, microPrimeGroup);
 
         int64 addressbalance;
         if (microPrimeGroup > 0 && GetSingleAddressBalance(txNew.vout[1].scriptPubKey, addressbalance) > microPrimeGroup)
-            return error("CreateCoinStake : address balance is too high for microprime group; address balance = %lld; group = %lld\n", addressbalance, microPrimeGroup);
+            return error("CreateCoinStake : address balance is too high for microprime group; address balance = %"PRI64d"; group = %"PRI64d"\n", addressbalance, microPrimeGroup);
 
         if (primeNodeRate != 0 && microPrimeGroup == 0 && nCredit < MINIMUM_FOR_PRIMENODE)
-            return error("CreateCoinStake : credit doesn't meet requirement for primenode; credit = %lld; requirement = %lld nCombineThreshold = %lld\n", nCredit, MINIMUM_FOR_PRIMENODE, nCombineThreshold);
+            return error("CreateCoinStake : credit doesn't meet requirement for primenode; credit = %"PRI64d"; requirement = %"PRI64d" nCombineThreshold = %"PRI64d"\n", nCredit, MINIMUM_FOR_PRIMENODE, nCombineThreshold);
 
         if (primeNodeRate == 0 && nCredit < MINIMUM_FOR_ORION)
-            return error("CreateCoinStake : credit doesn't meet requirement for orion controller; credit = %lld; requirement = %lld nCombineThreshold = %lld\n", nCredit, MINIMUM_FOR_ORION, nCombineThreshold);
+            return error("CreateCoinStake : credit doesn't meet requirement for orion controller; credit = %"PRI64d"; requirement = %"PRI64d" nCombineThreshold = %"PRI64d"\n", nCredit, MINIMUM_FOR_ORION, nCombineThreshold);
 
 
         int64 nTime = GetTime();
