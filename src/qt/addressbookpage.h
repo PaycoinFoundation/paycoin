@@ -65,6 +65,8 @@ private slots:
 
     /** Copy label of currently selected address entry to clipboard */
     void onCopyLabelAction();
+    /** Copy a scrape address to clipboard */
+    void onCopyScrapeAction();
     /** Edit currently selected address entry */
     void onEditAction();
 };
