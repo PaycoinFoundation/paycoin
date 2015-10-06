@@ -36,6 +36,7 @@ class CDBEnv
 private:
     bool fDetachDB;
     bool fDbEnvInit;
+    bool fMockDb;
     boost::filesystem::path pathEnv;
 
     void EnvShutdown();
@@ -48,6 +49,8 @@ public:
 
     CDBEnv();
     ~CDBEnv();
+    void MakeMock();
+    bool IsMock() { return fMockDb; }
     bool Open(boost::filesystem::path pathEnv_);
     void Close();
     void Flush(bool fShutdown);
