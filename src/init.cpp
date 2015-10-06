@@ -536,7 +536,15 @@ bool AppInit2(int argc, char* argv[])
     InitMessage(_("Loading prime nodes..."));
     printf("Loading prime nodes...");
     nStart = GetTimeMillis();
-    initPrimeNodes();
+    /* Handle primenode keys on start to confirm their validity.
+     * If it fails for any reason prompt with a QT friendly message. */
+    string ret;
+    if (!initPrimeNodes(ret)) {
+        strErrors << ret << "\n";
+    } else if (!ret.empty()) {
+        InitMessage(ret);
+        printf("%s\n", ret.c_str());
+    }
     printf(" prime nodes %15"PRI64d"ms\n", GetTimeMillis() - nStart);
 
     InitMessage(_("Loading scrapes..."));

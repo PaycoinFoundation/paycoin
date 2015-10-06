@@ -19,9 +19,26 @@ enum dbtype {
     fulldb
 };
 
+bool NewScriptPrimeID(CScript &scriptPrimeID, unsigned int nTime) {
+    string strPrivKey = GetArg("-primenodekey", "");
+    vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
+    CKey key;
+    key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end()));
+    CScript scriptTime;
+    scriptTime << nTime;
+    uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
+    vector<unsigned char> vchSig;
+
+    if (!key.Sign(hashScriptTime, vchSig)) // Should only ever occur on init.
+        return error("NewScriptPrimeID() : unable to sign ID script, possible invalid key format.");
+
+    scriptPrimeID << OP_PRIMENODEP2 << vchSig;
+    return true;
+}
+
 void InflatePrimeNodeDB(dbtype); // Prototype
 
-void initPrimeNodes() {
+bool initPrimeNodes(string &str) {
     // Create our database if it doesn't exist..
     primeNodeDB = new CPrimeNodeDB("cr");
 
@@ -61,6 +78,28 @@ void initPrimeNodes() {
      }
      if (db != nodb)
          InflatePrimeNodeDB(db);
+
+    // If there is a primenode key in the conf file, confirm it's valid.
+    if (mapArgs.count("-primenodekey")) {
+        printf("Primenode key found in configuration, verifying...\n");
+
+        CScript scriptPrimeID;
+        unsigned int nTime = GetTime();
+        if (!NewScriptPrimeID(scriptPrimeID, nTime)) {
+            str = "initPrimeNodes() : unable to sign ID script, possible invalid key format.";
+            return false;
+        }
+
+        // We don't use this entry, we just want to know that the key is valid.
+        CPrimeNodeDBEntry entry;
+        if (!primeNodeDB->IsPrimeNodeKey(scriptPrimeID, nTime, entry)) {
+            str = "initPrimeNode() : invalid primenode key";
+            return false;
+        }
+
+        str = "Primenode key is correct for activating a prime controller";
+    }
+    return true;
 }
 
 // Prototype
