@@ -20,15 +20,7 @@ static const int PRIME_NODE_RATE = 25;
 
 bool initPrimeNodes(std::string &/*ret*/);
 
-enum dbtype {
-    nodb,
-    primedb,
-    microdb,
-    fulldb
-};
-
 bool NewScriptPrimeID(CScript &/*scriptPrimeID*/, std::vector<unsigned char> /*vchPrivKey*/, unsigned int /*nTime*/);
-void InflatePrimeNodeDB(dbtype);
 
 /* This is used to unseralize a database entry retaining all of the
  * primenode information */
@@ -61,6 +53,13 @@ public:
 class CPrimeNodeDB : public CDB
 {
 public:
+    enum dbtype {
+        nodb,
+        primedb,
+        microdb,
+        fulldb
+    };
+
     CPrimeNodeDB(const char* pszMode="r+") : CDB("primenodes.dat", pszMode) { }
 private:
     mutable CCriticalSection cs;
@@ -84,6 +83,8 @@ public:
     bool CheckMicroPrime(const std::string /*address*/);
     bool CheckMicroPrime(CScript /*scriptPubKeyAddress*/);
 };
+
+void InflatePrimeNodeDB(CPrimeNodeDB::dbtype /*db*/);
 
 extern CPrimeNodeDB* primeNodeDB;
 
