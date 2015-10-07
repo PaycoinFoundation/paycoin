@@ -45,14 +45,9 @@ static const unsigned int POW_START_TIME = 1418403600; // Fri 12 Dec 2014 12:00:
 static const unsigned int POW_END_TIME = 1419181200; // Sun 21 Dec 2014 12:00:00 PM EST
 // MODIFIER_INTERVAL: time to elapse before new modifier is computed
 static const unsigned int MODIFIER_INTERVAL = 10 * 60;
-static const int64 NUMBER_OF_PRIMENODE = 50;
 static const int64 MINIMUM_FOR_ORION = 50 * COIN;
-static const int64 MINIMUM_FOR_PRIMENODE = 160000 * COIN;
-static const int64 MINIMUM_FOR_PRIMENODE_OLD = 125000 * COIN;
 static const int MAX_TIME_SINCE_BEST_BLOCK = 10; // how many seconds to wait before sending next PushGetBlocks()
-// Reset all primenode stakerates to 100% after the given date
-static const unsigned int RESET_PRIMERATES = 1429531200; // Mon, 20 Apr 2015 12:00:00 GMT
-static const unsigned int END_PRIME_PHASE_ONE = 1435752000; // Wed, 01 Jul 2015 12:00:00 GMT
+
 // Enable phase 2 primenodes because of issue w/ IsProofOfStake check in previous update
 static const unsigned int ENABLE_PHASE_TWO_PRIMES = 1442318400; // Tue, 15 Sep 2015 12:00:00 GMT
 
