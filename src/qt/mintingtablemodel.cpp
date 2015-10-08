@@ -151,9 +151,21 @@ public:
                     cachedWallet.erase(lower, upper);
                     parent->endRemoveRows();
                 }
+
                 else if(inWallet && inModel)
                 {
-                    // Updated -- nothing to do, status update will take care of this
+                    // Remove spent transactions from the table model.
+                    std::vector<KernelRecord> maybeRemove =
+                            KernelRecord::decomposeOutput(wallet, mi->second);
+
+                    BOOST_FOREACH(const KernelRecord &rec, maybeRemove)
+                    {
+                        if(rec.spent) {
+                            parent->beginRemoveRows(QModelIndex(), lowerIndex, upperIndex-1);
+                            cachedWallet.erase(lower, upper);
+                            parent->endRemoveRows();
+                        }
+                    }
                 }
             }
         }
@@ -445,4 +457,3 @@ QModelIndex MintingTableModel::index(int row, int column, const QModelIndex &par
         return QModelIndex();
     }
 }
-
