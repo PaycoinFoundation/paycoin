@@ -28,6 +28,7 @@ AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
 #ifdef Q_WS_MAC // Icons on push buttons are very uncommon on Mac
     ui->newAddressButton->setIcon(QIcon());
     ui->copyToClipboard->setIcon(QIcon());
+    ui->copyScrapeAddrToClipboard->setIcon(QIcon());
     ui->deleteButton->setIcon(QIcon());
 #endif
 
@@ -62,7 +63,7 @@ AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
     // Context menu actions
     QAction *copyLabelAction = new QAction(tr("Copy &Label"), this);
     QAction *copyAddressAction = new QAction(ui->copyToClipboard->text(), this);
-    QAction *copyScrapeAddrAction = new QAction(tr("Copy Scrape Address"), this);
+    QAction *copyScrapeAddrAction = new QAction(ui->copyScrapeAddrToClipboard->text(), this);
     QAction *editAction = new QAction(tr("&Edit"), this);
     QAction *showQRCodeAction = new QAction(ui->showQRCode->text(), this);
     QAction *signMessageAction = new QAction(ui->signMessage->text(), this);
@@ -85,7 +86,7 @@ AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
     // Connect signals for context menu actions
     connect(copyAddressAction, SIGNAL(triggered()), this, SLOT(on_copyToClipboard_clicked()));
     connect(copyLabelAction, SIGNAL(triggered()), this, SLOT(onCopyLabelAction()));
-    connect(copyScrapeAddrAction, SIGNAL(triggered()), this, SLOT(onCopyScrapeAction()));
+    connect(copyScrapeAddrAction, SIGNAL(triggered()), this, SLOT(on_copyScrapeAddrToClipboard_clicked()));
     connect(editAction, SIGNAL(triggered()), this, SLOT(onEditAction()));
     connect(deleteAction, SIGNAL(triggered()), this, SLOT(on_deleteButton_clicked()));
     connect(showQRCodeAction, SIGNAL(triggered()), this, SLOT(on_showQRCode_clicked()));
@@ -158,7 +159,7 @@ void AddressBookPage::onCopyLabelAction()
     GUIUtil::copyEntryData(ui->tableView, AddressTableModel::Label);
 }
 
-void AddressBookPage::onCopyScrapeAction()
+void AddressBookPage::on_copyScrapeAddrToClipboard_clicked()
 {
     GUIUtil::copyEntryData(ui->tableView, AddressTableModel::ScrapeAddress);
 }
@@ -254,6 +255,7 @@ void AddressBookPage::selectionChanged()
             break;
         }
         ui->copyToClipboard->setEnabled(true);
+        ui->copyScrapeAddrToClipboard->setEnabled(true);
         ui->showQRCode->setEnabled(true);
     }
     else
@@ -261,6 +263,7 @@ void AddressBookPage::selectionChanged()
         ui->deleteButton->setEnabled(false);
         ui->showQRCode->setEnabled(false);
         ui->copyToClipboard->setEnabled(false);
+        ui->copyScrapeAddrToClipboard->setEnabled(false);
         ui->signMessage->setEnabled(false);
     }
 }
