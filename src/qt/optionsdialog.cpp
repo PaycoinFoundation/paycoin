@@ -19,6 +19,8 @@
 #include <QDoubleValidator>
 #include <QRegExpValidator>
 #include <QDialogButtonBox>
+#include <QDir>
+#include <QMessageBox>
 
 class OptionsPage: public QWidget
 {
@@ -66,9 +68,13 @@ public:
 
     virtual void setMapper(MonitoredDataMapper *mapper);
 private:
+    QValueComboBox *lang;
     QValueComboBox *unit;
     QCheckBox *display_addresses;
     QCheckBox *coin_control_features;
+    bool restart_warning_displayed;
+private slots:
+    void showRestartWarning();
 };
 
 class NetworkOptionsPage: public OptionsPage
@@ -106,9 +112,9 @@ OptionsDialog::OptionsDialog(QWidget *parent):
 
     foreach(OptionsPage *page, pages)
     {
-        QListWidgetItem *item = new QListWidgetItem(page->windowTitle());
-        contents_widget->addItem(item);
-        pages_widget->addWidget(page);
+       QListWidgetItem *item = new QListWidgetItem(page->windowTitle());
+       contents_widget->addItem(item);
+       pages_widget->addWidget(page);
     }
 
     contents_widget->setCurrentRow(0);
@@ -152,7 +158,7 @@ void OptionsDialog::setModel(OptionsModel *model)
 
     foreach(OptionsPage *page, pages)
     {
-        page->setMapper(mapper);
+       page->setMapper(mapper);
     }
 
     mapper->toFirst();
@@ -192,7 +198,7 @@ void OptionsDialog::disableApply()
 
 /* Main options */
 MainOptionsPage::MainOptionsPage(QWidget *parent):
-        OptionsPage(parent)
+       OptionsPage(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout();
     setWindowTitle(tr("Main"));
@@ -230,28 +236,49 @@ void MainOptionsPage::setMapper(MonitoredDataMapper *mapper)
 
 /* Display options */
 DisplayOptionsPage::DisplayOptionsPage(QWidget *parent):
-        OptionsPage(parent)
+    OptionsPage(parent), restart_warning_displayed(false)
 {
     setWindowTitle(tr("Display"));
 
     QVBoxLayout *layout = new QVBoxLayout();
 
-     QHBoxLayout *unit_hbox = new QHBoxLayout();
-     unit_hbox->addSpacing(18);
-     QLabel *unit_label = new QLabel(tr("&Unit to show amounts in: "));
-     unit_hbox->addWidget(unit_label);
-     unit = new QValueComboBox(this);
-     unit->setModel(new BitcoinUnits(this));
-     unit->setToolTip(tr("Choose the default subdivision unit to show in the interface, and when sending coins"));
+    QHBoxLayout *lang_hbox = new QHBoxLayout();
+    lang_hbox->addSpacing(18);
+    QLabel *lang_label = new QLabel(tr("User Interface &Language: "));
+    lang_hbox->addWidget(lang_label);
+    lang = new QValueComboBox(this);
+    // Make list of languages
+    QDir translations(":translations");
+    lang->addItem("(default)", QVariant(""));
+    foreach(const QString &langStr, translations.entryList())
+    {
+       lang->addItem(langStr, QVariant(langStr));
+    }
 
-     unit_label->setBuddy(unit);
-     unit_hbox->addWidget(unit);
+    lang->setToolTip(tr("The user interface language can be set here. This setting will only take effect after restarting Paycoin."));
+    connect(lang, SIGNAL(activated(int)), this, SLOT(showRestartWarning()));
 
-     layout->addLayout(unit_hbox);
+    lang_label->setBuddy(lang);
+    lang_hbox->addWidget(lang);
 
-     display_addresses = new QCheckBox(tr("&Display addresses in transaction list"), this);
-     display_addresses->setToolTip(tr("Whether to show Paycoin addresses in the transaction list"));
-     layout->addWidget(display_addresses);
+    layout->addLayout(lang_hbox);
+
+    QHBoxLayout *unit_hbox = new QHBoxLayout();
+    unit_hbox->addSpacing(18);
+    QLabel *unit_label = new QLabel(tr("&Unit to show amounts in: "));
+    unit_hbox->addWidget(unit_label);
+    unit = new QValueComboBox(this);
+    unit->setModel(new BitcoinUnits(this));
+    unit->setToolTip(tr("Choose the default subdivision unit to show in the interface, and when sending coins"));
+
+    unit_label->setBuddy(unit);
+    unit_hbox->addWidget(unit);
+
+    layout->addLayout(unit_hbox);
+
+    display_addresses = new QCheckBox(tr("&Display addresses in transaction list"), this);
+    display_addresses->setToolTip(tr("Whether to show Paycoin addresses in the transaction list"));
+    layout->addWidget(display_addresses);
 
     coin_control_features = new QCheckBox(tr("Display coin control features (experts only!)"), this);
     coin_control_features->setToolTip(tr("Whether to show coin control features or not"));
@@ -263,14 +290,24 @@ DisplayOptionsPage::DisplayOptionsPage(QWidget *parent):
 
  void DisplayOptionsPage::setMapper(MonitoredDataMapper *mapper)
  {
+     mapper->addMapping(lang, OptionsModel::Language);
      mapper->addMapping(unit, OptionsModel::DisplayUnit);
      mapper->addMapping(display_addresses, OptionsModel::DisplayAddresses);
      mapper->addMapping(coin_control_features, OptionsModel::CoinControlFeatures);
 }
 
+void DisplayOptionsPage::showRestartWarning()
+{
+    if(!restart_warning_displayed)
+    {
+        QMessageBox::warning(this, tr("Warning"), tr("This setting will take effect after restarting Paycoin."), QMessageBox::Ok);
+        restart_warning_displayed = true;
+    }
+}
+
 /* Window options */
 WindowOptionsPage::WindowOptionsPage(QWidget *parent):
-        OptionsPage(parent)
+       OptionsPage(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout();
     setWindowTitle(tr("Window"));
@@ -307,7 +344,7 @@ void WindowOptionsPage::setMapper(MonitoredDataMapper *mapper)
 
 /* Network options */
 NetworkOptionsPage::NetworkOptionsPage(QWidget *parent):
-        OptionsPage(parent)
+       OptionsPage(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout();
     setWindowTitle(tr("Network"));
