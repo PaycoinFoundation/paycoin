@@ -20,7 +20,7 @@ static unsigned char pchMessageStartMain[4] = { 0xaa, 0xaa, 0xaa, 0xaa };
 // Public testnet message start
 static unsigned char pchMessageStartTest[4] = { 0xbb, 0xbb, 0xbb, 0xbb };
 
-void GetMessageStart(unsigned char pchMessageStart[], bool fPersistent)
+void GetMessageStart(unsigned char pchMessageStart[])
 {
     if (fTestNet)
         memcpy(pchMessageStart, pchMessageStartTest, sizeof(pchMessageStartTest));

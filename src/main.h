@@ -1032,7 +1032,7 @@ public:
 
         // Write index header
         unsigned char pchMessageStart[4];
-        GetMessageStart(pchMessageStart, true);
+        GetMessageStart(pchMessageStart);
         unsigned int nSize = fileout.GetSerializeSize(*this);
         fileout << FLATDATA(pchMessageStart) << nSize;
 
