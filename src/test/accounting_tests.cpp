@@ -28,29 +28,29 @@ BOOST_AUTO_TEST_CASE(acc_basics)
     ae.strOtherAccount = "b";
     ae.strComment = "";
 
-    BOOST_CHECK(walletdb.GetAccountCreditDebit("") == (int64)0);
+    BOOST_CHECK_EQUAL(walletdb.GetAccountCreditDebit(""), (int64)0);
     BOOST_CHECK(walletdb.GetAccountCreditDebit("") != (int64)1);
 
     walletdb.ListAccountCreditDebit("", aes);
 
-    BOOST_CHECK(aes.size() == 0);
+    BOOST_CHECK_EQUAL(aes.size(), 0);
     BOOST_CHECK(aes.size() != 1);
 
     walletdb.WriteAccountingEntry(ae);
 
     BOOST_CHECK(walletdb.GetAccountCreditDebit("") != (int64)0);
-    BOOST_CHECK(walletdb.GetAccountCreditDebit("") == (int64)1);
+    BOOST_CHECK_EQUAL(walletdb.GetAccountCreditDebit(""), (int64)1);
 
     nTime = nTime + (24 * 60 * 60);
     ae.nTime = nTime;
     walletdb.WriteAccountingEntry(ae);
 
-    BOOST_CHECK(walletdb.GetAccountCreditDebit("") == (int64)2);
+    BOOST_CHECK_EQUAL(walletdb.GetAccountCreditDebit(""), (int64)2);
     BOOST_CHECK(walletdb.GetAccountCreditDebit("") != (int64)9);
 
     aes.clear();
     walletdb.ListAccountCreditDebit("", aes);
-    BOOST_CHECK(aes.size() == 2);
+    BOOST_CHECK_EQUAL(aes.size(), 2);
 
     nTime = nTime + (24 * 60 * 60);
     for (int i = 0; i < 8; i++) {
@@ -59,20 +59,20 @@ BOOST_AUTO_TEST_CASE(acc_basics)
         walletdb.WriteAccountingEntry(ae);
     }
 
-    BOOST_CHECK(walletdb.GetAccountCreditDebit("") == (int64)10);
+    BOOST_CHECK_EQUAL(walletdb.GetAccountCreditDebit(""), (int64)10);
 
     aes.clear();
     walletdb.ListAccountCreditDebit("", aes);
-    BOOST_CHECK(aes.size() == 10);
+    BOOST_CHECK_EQUAL(aes.size(), 10);
 
     ae.nCreditDebit = 10;
     walletdb.WriteAccountingEntry(ae);
 
-    BOOST_CHECK(walletdb.GetAccountCreditDebit("") == (int64)20);
+    BOOST_CHECK_EQUAL(walletdb.GetAccountCreditDebit(""), (int64)20);
 
     aes.clear();
     walletdb.ListAccountCreditDebit("", aes);
-    BOOST_CHECK(aes.size() == 11);
+    BOOST_CHECK_EQUAL(aes.size(), 11);
 
     map<int, CAccountingEntry> entries;
     int i = 0;
@@ -81,9 +81,9 @@ BOOST_AUTO_TEST_CASE(acc_basics)
         i++;
     }
 
-    BOOST_CHECK(entries[0].nTime = 1443808862);
-    BOOST_CHECK(entries[4].nTime = 1444240862);
-    BOOST_CHECK(entries[10].nTime = 1446400862);
+    BOOST_CHECK_EQUAL(entries[0].nTime, 1443808862);
+    BOOST_CHECK_EQUAL(entries[4].nTime, 1444240862);
+    BOOST_CHECK_EQUAL(entries[10].nTime, 1446400862);
 
     fDebug = false;
 }
