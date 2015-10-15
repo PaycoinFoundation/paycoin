@@ -1907,8 +1907,12 @@ void StartNode(void* parg)
     GenerateBitcoins(GetBoolArg("-gen", false), pwalletMain);
 
     // paycoin: mint proof-of-stake blocks in the background
-    if (!NewThread(ThreadStakeMinter, pwalletMain))
-        printf("Error: NewThread(ThreadStakeMinter) failed\n");
+    // Don't run the thread if staking is disabled (no need to waste resources)
+    if (!GetBoolArg("-stake", true))
+        printf("Staking disabled\n");
+    else
+        if (!NewThread(ThreadStakeMinter, pwalletMain))
+            printf("Error: NewThread(ThreadStakeMinter) failed\n");
 }
 
 bool StopNode()
