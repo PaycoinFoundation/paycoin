@@ -82,7 +82,7 @@ MintingView::MintingView(QWidget *parent) :
     vlayout->setSpacing(0);
     int width = view->verticalScrollBar()->sizeHint().width();
     // Cover scroll bar width with spacing
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     hlayout->addSpacing(width+2);
 #else
     hlayout->addSpacing(width);

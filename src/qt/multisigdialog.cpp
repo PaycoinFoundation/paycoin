@@ -23,7 +23,7 @@ MultisigDialog::MultisigDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Mu
 {
     ui->setupUi(this);
 
-#ifdef Q_WS_MAC // Icons on push buttons are very uncommon on Mac
+#ifdef Q_OS_MAC // Icons on push buttons are very uncommon on Mac
     ui->addPubKeyButton->setIcon(QIcon());
     ui->clearButton->setIcon(QIcon());
     ui->addInputButton->setIcon(QIcon());
