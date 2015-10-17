@@ -54,7 +54,7 @@ Licenses of statically linked libraries:
 
 Versions used in this release:
  GCC           4.3.3
- OpenSSL       1.0.1g
+ OpenSSL       1.0.1h
  Berkeley DB   4.8.30.NC
  Boost         1.37
  miniupnpc     1.6
@@ -75,12 +75,12 @@ If using Boost 1.37, append -mt to the boost libraries in the makefile.
 Dependency Build Instructions: Gentoo
 -------------------------------------
 
-Note: Currently, there is no paycoin ebuild available in overlay 
+Note: Currently, there is no paycoin ebuild available in overlay
 
 emerge -av1 --noreplace dev-libs/boost dev-libs/glib dev-libs/openssl sys-libs/db:4.8
 
 Note: If you like to have UPnP support, you need to install net-libs/miniupnpc.
- 
+
 Take the following steps to build (no UPnP support):
  cd paycoin/src
  make -f makefile.unix USE_UPNP= BDB_INCLUDE_PATH='/usr/include/db4.8'
