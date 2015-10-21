@@ -21,8 +21,8 @@ files:
 - "qt-win64-4.8.5-gitian-r3.zip"
 - "boost-win32-1.55.0-gitian-r6.zip"
 - "boost-win64-1.55.0-gitian-r6.zip"
-- "paycoin-deps-win32-gitian-r12.zip"
-- "paycoin-deps-win64-gitian-r12.zip"
+- "paycoin-deps-win32-gitian-r13.zip"
+- "paycoin-deps-win64-gitian-r13.zip"
 script: |
   # Defines
   export TZ=UTC
@@ -46,7 +46,7 @@ script: |
     cd $STAGING
     unzip $INDIR/qt-win${BITS}-4.8.5-gitian-r3.zip
     unzip $INDIR/boost-win${BITS}-1.55.0-gitian-r6.zip
-    unzip $INDIR/paycoin-deps-win${BITS}-gitian-r12.zip
+    unzip $INDIR/paycoin-deps-win${BITS}-gitian-r13.zip
     if [ "$NEEDDIST" == "1" ]; then
       # Make source code archive which is architecture independent so it only needs to be done once
       cd $HOME/build/paycoin
