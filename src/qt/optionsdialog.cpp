@@ -30,11 +30,11 @@ public:
     void setMapper(MonitoredDataMapper *mapper);
 private:
     QCheckBox *bitcoin_at_startup;
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     QCheckBox *minimize_to_tray;
 #endif
     QCheckBox *map_port_upnp;
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     QCheckBox *minimize_on_close;
 #endif
     QCheckBox *connect_socks4;
@@ -173,7 +173,7 @@ MainOptionsPage::MainOptionsPage(QWidget *parent):
     bitcoin_at_startup->setToolTip(tr("Automatically start Paycoin after the computer is turned on"));
     layout->addWidget(bitcoin_at_startup);
 
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     minimize_to_tray = new QCheckBox(tr("&Minimize to the tray instead of the taskbar"));
     minimize_to_tray->setToolTip(tr("Show only a tray icon after minimizing the window"));
     layout->addWidget(minimize_to_tray);
@@ -251,11 +251,11 @@ void MainOptionsPage::setMapper(MonitoredDataMapper *mapper)
 {
     // Map model to widgets
     mapper->addMapping(bitcoin_at_startup, OptionsModel::StartAtStartup);
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     mapper->addMapping(minimize_to_tray, OptionsModel::MinimizeToTray);
 #endif
     mapper->addMapping(map_port_upnp, OptionsModel::MapPortUPnP);
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     mapper->addMapping(minimize_on_close, OptionsModel::MinimizeOnClose);
 #endif
     mapper->addMapping(connect_socks4, OptionsModel::ConnectSOCKS4);
