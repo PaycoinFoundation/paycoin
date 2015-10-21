@@ -66,6 +66,7 @@ private slots:
     void copyLabel();
     void copyAmount();
     void copyTransactionId();
+    void openTransactionInLedger();
     void clearOrphans();
 
 signals:

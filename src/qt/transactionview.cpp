@@ -28,6 +28,8 @@
 #include <QClipboard>
 #include <QLabel>
 #include <QDateTimeEdit>
+#include <QDesktopServices>
+#include <QUrl>
 
 TransactionView::TransactionView(QWidget *parent) :
     QWidget(parent), model(0), transactionProxyModel(0),
@@ -126,6 +128,7 @@ TransactionView::TransactionView(QWidget *parent) :
     QAction *copyLabelAction = new QAction(tr("Copy label"), this);
     QAction *copyAmountAction = new QAction(tr("Copy amount"), this);
     QAction *copyTransactionIdAction = new QAction(tr("Copy transaction id"), this);
+    QAction *openTransactionInLedgerAction = new QAction(tr("Open transaction in ledger"), this);
     QAction *editLabelAction = new QAction(tr("Edit label"), this);
     QAction *showDetailsAction = new QAction(tr("Show transaction details"), this);
     QAction *clearOrphansAction = new QAction(tr("Clear orphans"), this);
@@ -135,6 +138,7 @@ TransactionView::TransactionView(QWidget *parent) :
     contextMenu->addAction(copyLabelAction);
     contextMenu->addAction(copyAmountAction);
     contextMenu->addAction(copyTransactionIdAction);
+    contextMenu->addAction(openTransactionInLedgerAction);
     contextMenu->addAction(editLabelAction);
     contextMenu->addAction(showDetailsAction);
     contextMenu->addSeparator();
@@ -153,6 +157,7 @@ TransactionView::TransactionView(QWidget *parent) :
     connect(copyLabelAction, SIGNAL(triggered()), this, SLOT(copyLabel()));
     connect(copyAmountAction, SIGNAL(triggered()), this, SLOT(copyAmount()));
     connect(copyTransactionIdAction, SIGNAL(triggered()), this, SLOT(copyTransactionId()));
+    connect(openTransactionInLedgerAction, SIGNAL(triggered()), this, SLOT(openTransactionInLedger()));
     connect(editLabelAction, SIGNAL(triggered()), this, SLOT(editLabel()));
     connect(showDetailsAction, SIGNAL(triggered()), this, SLOT(showDetails()));
     connect(clearOrphansAction, SIGNAL(triggered()), this, SLOT(clearOrphans()));
@@ -324,6 +329,27 @@ void TransactionView::copyAmount()
 void TransactionView::copyTransactionId()
 {
     GUIUtil::copyEntryData(transactionView, 0, TransactionTableModel::TxIDRole);
+}
+
+void TransactionView::openTransactionInLedger()
+{
+    QAbstractItemView *view = transactionView;
+    if (!view->selectionModel())
+        return;
+
+    QModelIndexList selection = view->selectionModel()->selectedRows(0);
+    if (!selection.isEmpty())
+    {
+        QString url;
+        if (fTestNet) {
+            url = "http://testnet.paycoin.com/transaction/";
+        } else {
+            url = "http://ledger.paycoin.com/transaction/";
+        }
+
+        url.append(selection.at(0).data(TransactionTableModel::TxIDRole).toString());
+        QDesktopServices::openUrl(QUrl(url));
+    }
 }
 
 void TransactionView::editLabel()
