@@ -199,6 +199,9 @@ enum opcodetype
     OP_PRIMENODEP2 = 0xc5,
     OP_MICROPRIME = 0xc6,
 
+    // extra control function
+    OP_BURN = 0xd0,
+
     // template matching params
     OP_SMALLINTEGER = 0xfa,
     OP_PUBKEYS = 0xfb,
