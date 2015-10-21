@@ -296,7 +296,7 @@ bool AppInit2(int argc, char* argv[])
             "  -testnet         \t\t  " + _("Use the test network") + "\n" +
             "  -debug           \t\t  " + _("Output extra debugging information") + "\n" +
             "  -logtimestamps   \t  "   + _("Prepend debug output with timestamp") + "\n" +
-            "  -shrinkdebugfile       " + _("Shrink debug.log file on client startup (default: 1 when no -debug)") + "\n" +
+            "  -shrinkdebugfile \t  "   + _("Shrink debug.log file on client startup (default: 1 when no -debug)") + "\n" +
             "  -printtoconsole  \t  "   + _("Send trace/debug info to console instead of debug.log file") + "\n" +
 #ifdef WIN32
             "  -printtodebugger \t  "   + _("Send trace/debug info to debugger") + "\n" +
