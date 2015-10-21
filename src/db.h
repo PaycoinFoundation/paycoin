@@ -37,7 +37,6 @@ private:
     bool fDetachDB;
     bool fDbEnvInit;
     bool fMockDb;
-    boost::filesystem::path pathEnv;
 
     void EnvShutdown();
 
@@ -51,7 +50,7 @@ public:
     ~CDBEnv();
     void MakeMock();
     bool IsMock() { return fMockDb; }
-    bool Open(boost::filesystem::path pathEnv_);
+    bool Open(const boost::filesystem::path &path);
     void Close();
     void Flush(bool fShutdown);
     void CheckpointLSN(std::string strFile);

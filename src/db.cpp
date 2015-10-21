@@ -62,7 +62,7 @@ void CDBEnv::Close()
     EnvShutdown();
 }
 
-bool CDBEnv::Open(boost::filesystem::path pathEnv_)
+bool CDBEnv::Open(const boost::filesystem::path& path)
 {
     if (fDbEnvInit)
         return true;
@@ -70,14 +70,12 @@ bool CDBEnv::Open(boost::filesystem::path pathEnv_)
     if (fShutdown)
         return false;
 
-    pathEnv = pathEnv_;
-    filesystem::path pathDataDir = pathEnv;
-    filesystem::path pathLogDir = pathDataDir / "database";
+    filesystem::path pathLogDir = path / "database";
     filesystem::create_directory(pathLogDir);
-    filesystem::path pathErrorFile = pathDataDir / "db.log";
+    filesystem::path pathErrorFile = path / "db.log";
     printf("dbenv.open LogDir=%s ErrorFile=%s\n", pathLogDir.string().c_str(), pathErrorFile.string().c_str());
 
-    int nDbCache = GetArg("-dbcache", 25);
+    unsigned int nDbCache = GetArg("-dbcache", 25);
     dbenv.set_lg_dir(pathLogDir.string().c_str());
     dbenv.set_cachesize(nDbCache / 1024, (nDbCache % 1024)*1048576, 1);
     dbenv.set_lg_bsize(1048576);
@@ -88,7 +86,7 @@ bool CDBEnv::Open(boost::filesystem::path pathEnv_)
     dbenv.set_flags(DB_AUTO_COMMIT, 1);
     dbenv.set_flags(DB_TXN_WRITE_NOSYNC, 1);
     dbenv.log_set_config(DB_LOG_AUTO_REMOVE, 1);
-    int ret = dbenv.open(pathDataDir.string().c_str(),
+    int ret = dbenv.open(path.string().c_str(),
                      DB_CREATE     |
                      DB_INIT_LOCK  |
                      DB_INIT_LOG   |
