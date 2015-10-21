@@ -1,7 +1,7 @@
 #include "primenodes.h"
 
 // This is in util.h but we really don't need all of util.h for this file.
-typedef long long  int64;
+typedef long long int64;
 
 void CPrimeNodeDB::WriteTestMicroPrimeDB() {
     LOCK(cs);

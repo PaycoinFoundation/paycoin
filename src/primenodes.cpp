@@ -67,6 +67,15 @@ bool initPrimeNodes(string &str) {
          if (!primeNodeDB->CheckPrimeNodeKey(string("04388d05d6cdbf75a37540e9b94c1c0b4e9b41a109c1466a33b3cf3cbca9e244f7761686502a0a593831fac02753ea5c2c8fc14ed59b9060da2088d2cb674e041d"))
              || !primeNodeDB->CheckPrimeNodeKey(string("04df482827573b607fe7279687bb287ccb48f87d24752c69d68e2c130d2d2c8993056e05fb86e61d54747b043c3f6f22b31b891664a90e4c071c794c93455b1cbe")))
              db = primedb;
+         if (!primeNodeDB->CheckMicroPrime(string("P9Yo3PtaxuzeBZAimsGzz6mdTmdDtU6vhf"))
+             || !primeNodeDB->CheckMicroPrime(string("PMaTtaVc6iV6XCc92ZYwzNGXUxBryUAmDm")))
+         {
+             if (db == primedb) {
+                 db = fulldb;
+             } else {
+                 db = microdb;
+             }
+         }
      }
      if (db != nodb)
          InflatePrimeNodeDB(db);
@@ -270,7 +279,7 @@ void InflatePrimeNodeDB(dbtype db) {
         primeNodeDB->WritePrimeNodeDB();
 
     if (db == microdb || db == fulldb)
-        primeNodeDB->WriteTestMicroPrimeDB();
+        fTestNet ? primeNodeDB->WriteTestMicroPrimeDB() : primeNodeDB->WriteMicroPrimeDB();
 
     /* Close Db and reopen it w/ read-only privs because we won't need to write
      * to it again. */

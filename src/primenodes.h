@@ -73,6 +73,7 @@ private:
     bool WriteMicroPrimeAddr(const std::string /*address*/, int64 /*group*/, int /*primeNodeRate*/);
 public:
     void WritePrimeNodeDB();
+    void WriteMicroPrimeDB();
     void WriteTestMicroPrimeDB();
 
     bool IsPrimeNodeKey(CScript /*scriptPubKeyType*/, unsigned int /*nTime*/, CPrimeNodeDBEntry &/*entry*/);
