@@ -254,7 +254,7 @@ bool AppInit2(int argc, char* argv[])
             "  -datadir=<dir>   \t\t  " + _("Specify data directory") + "\n" +
             "  -dbcache=<n>     \t\t  " + _("Set database cache size in megabytes (default: 25)") + "\n" +
             "  -dblogsize=<n>   \t\t  " + _("Set database disk log size in megabytes (default: 100)") + "\n" +
-            "  -timeout=<n>     \t  "   + _("Specify connection timeout (in milliseconds)") + "\n" +
+            "  -timeout=<n>     \t  "   + _("Specify connection timeout in milliseconds (default: 5000)") + "\n" +
             "  -proxy=<ip:port> \t  "   + _("Connect through socks proxy") + "\n" +
             "  -socks=<n>       \t  "   + _("Select the version of socks proxy to use (4 or 5, 5 is default)") + "\n" +
             "  -noproxy=<net>   \t  "   + _("Do not use proxy for connections to network net (ipv4 or ipv6)") + "\n" +
