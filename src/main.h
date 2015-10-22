@@ -93,7 +93,6 @@ extern int64 nTimeBestReceived;
 extern CCriticalSection cs_setpwalletRegistered;
 extern std::set<CWallet*> setpwalletRegistered;
 extern std::map<uint256, CBlock*> mapOrphanBlocks;
-extern unsigned char pchMessageStart[4];
 
 // Settings
 extern int64 nTransactionFee;
@@ -1029,7 +1028,7 @@ public:
 
         // Write index header
         unsigned char pchMessageStart[4];
-        GetMessageStart(pchMessageStart, true);
+        GetMessageStart(pchMessageStart);
         unsigned int nSize = fileout.GetSerializeSize(*this);
         fileout << FLATDATA(pchMessageStart) << nSize;
 

@@ -22,7 +22,7 @@
 
 extern bool fTestNet;
 
-void GetMessageStart(unsigned char pchMessageStart[], bool fPersistent = false);
+void GetMessageStart(unsigned char pchMessageStart[]);
 
 static inline unsigned short GetDefaultPort(const bool testnet = fTestNet)
 {

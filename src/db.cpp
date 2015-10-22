@@ -11,6 +11,7 @@
 #include "util.h"
 #include "main.h"
 #include "kernel.h"
+#include "protocol.h"
 #include <boost/version.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -793,6 +794,8 @@ bool CAddrDB::Write(const CAddrMan& addr)
 
     // serialize addresses, checksum data up to that point, then append csum
     CDataStream ssPeers(SER_DISK, CLIENT_VERSION);
+    unsigned char pchMessageStart[4];
+    GetMessageStart(pchMessageStart);
     ssPeers << FLATDATA(pchMessageStart);
     ssPeers << addr;
     uint256 hash = Hash(ssPeers.begin(), ssPeers.end());
@@ -865,6 +868,8 @@ bool CAddrDB::Read(CAddrMan& addr)
     }
 
     // finally, verify the network matches ours
+    unsigned char pchMessageStart[4];
+    GetMessageStart(pchMessageStart);
     if (memcmp(pchMsgTmp, pchMessageStart, sizeof(pchMsgTmp)))
         return error("CAddrman::Read() : invalid network magic number");
 
