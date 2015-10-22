@@ -32,7 +32,7 @@ using namespace boost;
 
 CWallet* pwalletMain;
 CScrapesDB* scrapesDB;
-int MIN_PROTO_VERSION = 70003;
+int MIN_PROTO_VERSION = 70004;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -419,8 +419,8 @@ bool AppInit2(int argc, char* argv[])
         return InitError(strprintf(_("Cannot obtain a lock on data directory %s.  Paycoin is probably already running."), GetDataDir().string().c_str()));
 
     // Check and update minium version protocol after a given time.
-    if (time(NULL) >= ENABLE_PHASE_TWO_PRIMES)
-        MIN_PROTO_VERSION = 70004;
+    if (time(NULL) >= ENABLE_MICROPRIMES)
+        MIN_PROTO_VERSION = 70005;
 
     std::ostringstream strErrors;
     //
