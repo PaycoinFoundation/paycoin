@@ -7,7 +7,6 @@
 
 #include "main.h"
 #include "wallet.h"
-#include "db.h"
 #include "walletdb.h"
 #include "net.h"
 #include "init.h"
@@ -16,6 +15,7 @@
 #include "base58.h"
 #include "bitcoinrpc.h"
 #include "kernelrecord.h"
+#include "primenodes.h"
 
 
 #undef printf
@@ -2818,6 +2818,38 @@ Value clearorphans(const Array& params, bool fHelp)
     return true;
 }
 
+Value listmicroprimedata(const Array& params, bool fHelp)
+{
+    if (fHelp || params.size() != 1)
+        throw runtime_error(
+            "listmicroprimedata\n"
+            "List the data regarding a given microprime address (only lists\n"
+            "valid addresses found in wallet).");
+
+    string strAddress = params[0].get_str();
+    CBitcoinAddress address(strAddress);
+
+    if (!IsMine(*pwalletMain, address.Get()))
+        throw runtime_error("Address must be in wallet.");
+
+    if (!primeNodeDB->CheckMicroPrime(strAddress))
+        throw runtime_error("Address is not a valid microprime address.");
+
+    int primeNodeRate;
+    int64 group;
+    CScript scriptMPAddress;
+    scriptMPAddress.SetDestination(address.Get());
+    if (!primeNodeDB->IsMicroPrime(scriptMPAddress, primeNodeRate, group))
+        throw runtime_error("Address is not a valid microprime address.");
+
+    Object obj;
+    obj.push_back(Pair("Address", strAddress));
+    obj.push_back(Pair("Stake rate", primeNodeRate));
+    obj.push_back(Pair("Max balance", (int)group));
+
+    return obj;
+}
+
 //
 // Call Table
 //
@@ -2897,7 +2929,8 @@ static const CRPCCommand vRPCCommands[] =
     { "getscrapeaddress",       &getscrapeaddress,       true },
     { "listscrapeaddresses",    &listscrapeaddresses,    true },
     { "setscrapeaddress",       &setscrapeaddress,       true },
-    { "deletescrapeaddress",    &deletescrapeaddress,    true }
+    { "deletescrapeaddress",    &deletescrapeaddress,    true },
+    { "listmicroprimedata",     &listmicroprimedata,     true }
 };
 
 CRPCTable::CRPCTable()
