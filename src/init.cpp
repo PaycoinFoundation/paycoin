@@ -284,7 +284,7 @@ bool AppInit2(int argc, char* argv[])
 #else
             "  -upnp            \t  "   + _("Use Universal Plug and Play to map the listening port (default: 0)") + "\n" +
 #endif
-            "  -detachdb        \t  "   + _("Detach block and address databases. Increases shutdown time (default: 0)") + "\n" +
+            "  -detachdb        \t  "   + _("Detach block database. Increases shutdown time (default: 0)") + "\n" +
 #endif
             "  -paytxfee=<amt>  \t  "   + _("Fee per KB to add to transactions you send") + "\n" +
 #ifdef QT_GUI
