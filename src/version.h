@@ -17,8 +17,8 @@
 // paycoin version - intended for display purpose only
 #define PEERUNITY_VERSION_MAJOR       0
 #define PEERUNITY_VERSION_MINOR       3
-#define PEERUNITY_VERSION_REVISION    1
-#define PEERUNITY_VERSION_BUILD       1
+#define PEERUNITY_VERSION_REVISION    2
+#define PEERUNITY_VERSION_BUILD       0
 
 static const int PEERUNITY_VERSION =
                            1000000 * PEERUNITY_VERSION_MAJOR
