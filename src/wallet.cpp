@@ -1425,7 +1425,10 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                  * transaction. */
                  if (primeNodeRate == 0) {
                      CScript scriptStake;
-                     if (primeNodeDB->CheckMicroPrime(scriptPubKeyOut)) {
+                     if (primeNodeDB->CheckMicroPrime(scriptPubKeyOut)
+                        /* Don't allow microprimes to stake until after the
+                         * given time (on mainnet) to avoid any implosion. */
+                        && (fTestNet || txNew.nTime >= ENABLE_MICROPRIMES)) {
                          // Mark the stake and set the stake rate.
                          scriptStake << OP_MICROPRIME;
                          // Set the microprime group and rate from the database.
