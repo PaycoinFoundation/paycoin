@@ -312,7 +312,8 @@ bool AppInit2(int argc, char* argv[])
             "  -keypool=<n>     \t  "   + _("Set key pool size to <n> (default: 100)") + "\n" +
             "  -rescan          \t  "   + _("Rescan the block chain for missing wallet transactions") + "\n" +
             "  -checkblocks=<n> \t\t  " + _("How many blocks to check at startup (default: 2500, 0 = all)") + "\n" +
-            "  -checklevel=<n>  \t\t  " + _("How thorough the block verification is (0-6, default: 1)") + "\n";
+            "  -checklevel=<n>  \t\t  " + _("How thorough the block verification is (0-6, default: 1)") + "\n" +
+            "  -stake           \t\t  " + _("Set whether the node should stake (default: 1)") + "\n";
 
         strUsage += string() +
             _("\nSSL options: (see the Paycoin Wiki for SSL setup instructions)") + "\n" +
@@ -744,6 +745,10 @@ bool AppInit2(int argc, char* argv[])
         if (!Checkpoints::SetCheckpointPrivKey(GetArg("-checkpointkey", "")))
             return InitError(_("Unable to sign checkpoint, wrong checkpointkey?"));
     }
+
+    // Set stake to true if it's not set in the conf
+    if (!mapArgs.count("-stake"))
+        SoftSetBoolArg("-stake", true);
 
     //
     // Start the node

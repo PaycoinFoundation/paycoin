@@ -2597,6 +2597,12 @@ string GetWarnings(string strFor)
     if (GetBoolArg("-testsafemode"))
         strRPC = "test";
 
+    if (!GetBoolArg("-stake", true))
+    {
+        nPriority = 0;
+        strStatusBar = "Info: Minting is currently disabled.";
+    }
+
     // paycoin: wallet lock warning for minting
     if (strMintWarning != "")
     {
