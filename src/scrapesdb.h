@@ -12,6 +12,8 @@ class CScrapesDB : public CDB
 public:
     CScrapesDB(const char* pszMode="r+") : CDB("scrapes.dat", pszMode) { }
 private:
+    mutable CCriticalSection(cs);
+
     CScrapesDB(const CScrapesDB&);
     void operator=(const CScrapesDB);
 public:
