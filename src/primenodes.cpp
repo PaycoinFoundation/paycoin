@@ -12,16 +12,7 @@ extern void CloseDb(const string& strFile);
 
 CPrimeNodeDB* primeNodeDB;
 
-enum dbtype {
-    nodb,
-    primedb,
-    microdb,
-    fulldb
-};
-
-bool NewScriptPrimeID(CScript &scriptPrimeID, unsigned int nTime) {
-    string strPrivKey = GetArg("-primenodekey", "");
-    vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
+bool NewScriptPrimeID(CScript &scriptPrimeID, vector<unsigned char> vchPrivKey, unsigned int nTime) {
     CKey key;
     key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end()));
     CScript scriptTime;
@@ -35,8 +26,6 @@ bool NewScriptPrimeID(CScript &scriptPrimeID, unsigned int nTime) {
     scriptPrimeID << OP_PRIMENODEP2 << vchSig;
     return true;
 }
-
-void InflatePrimeNodeDB(dbtype); // Prototype
 
 bool initPrimeNodes(string &str) {
     // Create our database if it doesn't exist..
@@ -85,7 +74,9 @@ bool initPrimeNodes(string &str) {
 
         CScript scriptPrimeID;
         unsigned int nTime = GetTime();
-        if (!NewScriptPrimeID(scriptPrimeID, nTime)) {
+        string strPrivKey = GetArg("-primenodekey", "");
+        vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
+        if (!NewScriptPrimeID(scriptPrimeID, vchPrivKey, nTime)) {
             str = "initPrimeNodes() : unable to sign ID script, possible invalid key format.";
             return false;
         }
@@ -106,8 +97,9 @@ bool initPrimeNodes(string &str) {
 bool IsPrimeNodeKey(CScript /*scriptPubKeyType*/, unsigned int /*nTime*/, CPrimeNodeDBEntry &/*entry*/);
 
 // Check if a stake is either a prime or microprime stake.
-bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, uint64 nCoinAge, int64 nStakeReward) {
+bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, int64 nValueOut, uint64 nCoinAge) {
     int primeNodeRate = 0;
+    int64 nStakeReward = nValueOut - nValueIn;
 
     // Process microprime transactions first as these are easier to confirm.
     if (scriptPubKeyType[0] == OP_MICROPRIME) {
@@ -184,10 +176,10 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
     }
 
     // Confirm the stake passes the minimum for a primenode
-    if (nTime >= END_PRIME_PHASE_ONE && GetValueOut() < MINIMUM_FOR_PRIMENODE)
-        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
-    if (GetValueOut() < MINIMUM_FOR_PRIMENODE_OLD)
-        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, GetValueOut()));
+    if (nTime >= END_PRIME_PHASE_ONE && nValueOut < MINIMUM_FOR_PRIMENODE)
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, nValueOut));
+    if (nValueOut < MINIMUM_FOR_PRIMENODE_OLD)
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE_OLD, nValueOut));
 
     /* Reset the primeNodeRate to 100 on the Legacy Phase 1 primenodes after the
      * specified time. Stakes existing prior to that or created after the end of
