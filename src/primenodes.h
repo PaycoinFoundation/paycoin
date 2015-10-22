@@ -8,9 +8,6 @@
 #include "script.h"
 
 bool initPrimeNodes(std::string &/*ret*/);
-void WritePrimeNodeDB();
-void WriteMicroPrimeDB();
-void WriteTestMicroPrimeDB();
 
 enum dbtype {
     nodb,
@@ -58,11 +55,17 @@ class CPrimeNodeDB : public CDB
 public:
     CPrimeNodeDB(const char* pszMode="r+") : CDB("primenodes.dat", pszMode) { }
 private:
+    mutable CCriticalSection cs;
+
     CPrimeNodeDB(const CPrimeNodeDB&);
     void operator=(const CPrimeNodeDB);
-public:
+
     bool WritePrimeNodeKey(const std::string /*key*/, int /*primeNodeRate*/, unsigned int /*valid_starting*/, unsigned int /*valid_until*/);
     bool WriteMicroPrimeAddr(const std::string /*address*/, int64 /*group*/, int /*primeNodeRate*/);
+public:
+    void WritePrimeNodeDB();
+    void WriteTestMicroPrimeDB();
+
     bool IsPrimeNodeKey(CScript /*scriptPubKeyType*/, unsigned int /*nTime*/, CPrimeNodeDBEntry &/*entry*/);
     bool IsMicroPrime(CScript /*scriptPubKeyAddress*/, int &/*primeNodeRate*/, int64 &/*group*/);
     bool CheckPrimeNodeKey(const std::string /*key*/);
