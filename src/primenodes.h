@@ -7,6 +7,15 @@
 #include "db.h"
 #include "script.h"
 
+// Used for stake confirmation
+static const int64 MINIMUM_FOR_PRIMENODE_PHASE1 = 125000 * COIN;
+static const int64 MINIMUM_FOR_PRIMENODE_PHASE2 = 160000 * COIN;
+/* Used ONLY in wallet.cpp for stake generation checks (should always be set
+ * to the CURRENT MINIMUM_FOR_PRIMENODE) */
+static const int64 MINIMUM_FOR_PRIMENODE = MINIMUM_FOR_PRIMENODE_PHASE2;
+
+static const unsigned int END_PRIME_PHASE_ONE = 1435752000; // Wed, 01 Jul 2015 12:00:00 GMT
+
 bool initPrimeNodes(std::string &/*ret*/);
 
 enum dbtype {

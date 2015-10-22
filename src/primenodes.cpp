@@ -12,6 +12,9 @@ extern void CloseDb(const string& strFile);
 
 CPrimeNodeDB* primeNodeDB;
 
+// Reset all primenode stakerates to 100% after the given date
+static const unsigned int RESET_PRIMERATES = 1429531200; // Mon, 20 Apr 2015 12:00:00 GMT
+
 bool NewScriptPrimeID(CScript &scriptPrimeID, vector<unsigned char> vchPrivKey, unsigned int nTime) {
     CKey key;
     key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end()));
@@ -176,10 +179,10 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
     }
 
     // Confirm the stake passes the minimum for a primenode
-    if (nTime >= END_PRIME_PHASE_ONE && nValueOut < MINIMUM_FOR_PRIMENODE)
-        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE, nValueOut));
-    if (nValueOut < MINIMUM_FOR_PRIMENODE_OLD)
-        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE_OLD, nValueOut));
+    if (nTime >= END_PRIME_PHASE_ONE && GetValueOut() < MINIMUM_FOR_PRIMENODE_PHASE2)
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE_PHASE2, GetValueOut()));
+    if (GetValueOut() < MINIMUM_FOR_PRIMENODE_PHASE1)
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %lld while you only have %lld", MINIMUM_FOR_PRIMENODE_PHASE1, GetValueOut()));
 
     /* Reset the primeNodeRate to 100 on the Legacy Phase 1 primenodes after the
      * specified time. Stakes existing prior to that or created after the end of
@@ -253,8 +256,6 @@ bool CPrimeNodeDB::IsPrimeNodeKey(CScript scriptPubKeyType, unsigned int nTime, 
     }
     return false;
 }
-
-void WritePrimeNodeDB(); // Prototype
 
 // Inflate the primenode table in the primeNodeDB
 void InflatePrimeNodeDB(dbtype db) {
