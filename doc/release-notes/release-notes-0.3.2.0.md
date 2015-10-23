@@ -124,6 +124,7 @@ Miscellaneous:
 - `b5f4b94` Remove invalid/unused pchMessageStart declaration
 - `54eef85` Remove unused bool from GetMessageStart
 - `f875138` Update protocol for fork
+- `91ff2e0` Stupid pro file
 
 Credits
 =======
