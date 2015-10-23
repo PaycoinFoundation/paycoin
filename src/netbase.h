@@ -60,7 +60,7 @@ class CNetAddr
         bool IsGarliCat() const;
         bool IsLocal() const;
         bool IsRoutable() const;
-        bool IsValid() const;
+        bool IsValid(bool isinit = false) const;
         bool IsMulticast() const;
         enum Network GetNetwork() const;
         std::string ToString() const;

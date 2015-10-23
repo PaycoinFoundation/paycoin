@@ -695,7 +695,7 @@ bool AppInit2(int argc, char* argv[])
         if (mapArgs.count("-bind")) {
             BOOST_FOREACH(std::string strBind, mapMultiArgs["-bind"]) {
                 CService addrBind(strBind, GetListenPort(), false);
-                if (!addrBind.IsValid())
+                if (!addrBind.IsValid(true))
                     return InitError(strprintf(_("Cannot resolve -bind address: '%s'"), strBind.c_str()));
 
                 fBound |= Bind(addrBind);

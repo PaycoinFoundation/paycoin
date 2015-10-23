@@ -647,7 +647,7 @@ bool CNetAddr::IsMulticast() const
            || (GetByte(15) == 0xFF);
 }
 
-bool CNetAddr::IsValid() const
+bool CNetAddr::IsValid(bool isinit) const
 {
     // Cleanup 3-byte shifted addresses caused by garbage in size field
     // of addr messages from versions before 0.2.9 checksum.
@@ -674,9 +674,15 @@ bool CNetAddr::IsValid() const
         if (memcmp(ip+12, &ipNone, 4) == 0)
             return false;
 
-        // 0
+        /* All 0 addresses (shorter than 0.0.0.0) are automatically corrected by
+         * BindListenPort; IE: 0, 0.0 and 0.0.0 all result in an address of
+         * 0.0.0.0. While anything longer is not considered IPv4 anyway.
+         * Though this is the default there's also no reason to block it
+         * from being used either, except for existing routable/reachable
+         * checks. Check if this is init and if so don't return false as 0 is
+         * valid (default in fact) in such an instance. */
         ipNone = 0;
-        if (memcmp(ip+12, &ipNone, 4) == 0)
+        if (memcmp(ip+12, &ipNone, 4) == 0 && !isinit)
             return false;
     }
 
