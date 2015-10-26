@@ -20,6 +20,9 @@ using namespace std;
 
 extern CScrapesDB* scrapesDB;
 
+// This is only needed to make sure that it is safe to stake microprimes
+static const unsigned int ENABLE_MICROPRIMES = 1445644800; // Sat, 24 Oct 2015 00:00:00 GMT
+
 //////////////////////////////////////////////////////////////////////////////
 //
 // mapWallet
