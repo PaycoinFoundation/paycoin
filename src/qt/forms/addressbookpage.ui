@@ -86,6 +86,20 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="copyScrapeAddrToClipboard">
+       <property name="toolTip">
+        <string>Copy the currently selected scrape address to the system clipboard</string>
+       </property>
+       <property name="text">
+        <string>Copy Scrape &amp;Address</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../bitcoin.qrc">
+         <normaloff>:/icons/editcopy</normaloff>:/icons/editcopy</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="showQRCode">
        <property name="text">
         <string>Show &amp;QR Code</string>
