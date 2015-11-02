@@ -25,7 +25,7 @@ Release Process
 ### Perform gitian builds
 
 From a directory containing the paycoin source, gitian-builder and gitian.sigs
- 
+
 	export SIGNER=(your gitian key, ie bluematt, sipa, etc)
 	export VERSION=(new version, e.g. 0.8.0)
 	cd ~/gitian-builder
@@ -33,7 +33,7 @@ From a directory containing the paycoin source, gitian-builder and gitian.sigs
 ### Fetch and build inputs:
 	mkdir -p inputs; cd inputs/
 	wget 'http://miniupnp.free.fr/files/download.php?file=miniupnpc-1.9.tar.gz' -O miniupnpc-1.9.tar.gz
-	wget 'https://www.openssl.org/source/openssl-1.0.1g.tar.gz'
+	wget 'https://www.openssl.org/source/openssl-1.0.1h.tar.gz'
 	wget 'http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz'
 	wget 'http://zlib.net/zlib-1.2.8.tar.gz'
 	wget 'ftp://ftp.simplesystems.org/pub/png/src/history/libpng16/libpng-1.6.8.tar.gz'
@@ -72,7 +72,7 @@ From a directory containing the paycoin source, gitian-builder and gitian.sigs
 	mv paycoin-${VERSION}-win-gitian.zip ../../
 	popd
 Build output expected:
-  
+
 1. linux 32-bit and 64-bit binaries + source (paycoin-${VERSION}-linux-gitian.zip)
 2. windows 32-bit and 64-bit binaries, installers + source (paycoin-${VERSION}-win-gitian.zip)
 3. Gitian signatures (in gitian.sigs/${VERSION}[-win]/(your gitian key)/
@@ -126,7 +126,7 @@ Build output expected: Paycoin-Qt.dmg
 * Update wiki changelog
 
 * Commit your signature to gitian.sigs:
-  
+
     pushd gitian.sigs
 	git add ${VERSION}/${SIGNER}
 	git add ${VERSION}-win/${SIGNER}

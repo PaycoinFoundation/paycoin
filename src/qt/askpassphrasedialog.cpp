@@ -16,7 +16,6 @@ AskPassphraseDialog::AskPassphraseDialog(Mode mode, QWidget *parent) :
     fCapsLock(false)
 {
     ui->setupUi(this);
-
     ui->passEdit1->setMaxLength(MAX_PASSPHRASE_SIZE);
     ui->passEdit2->setMaxLength(MAX_PASSPHRASE_SIZE);
     ui->passEdit3->setMaxLength(MAX_PASSPHRASE_SIZE);
@@ -26,9 +25,6 @@ AskPassphraseDialog::AskPassphraseDialog(Mode mode, QWidget *parent) :
     ui->passEdit2->installEventFilter(this);
     ui->passEdit3->installEventFilter(this);
 
-    //Setup Keyboard
-    keyboard = new VirtualKeyboard(this);
-    ui->keyboardLayout->addWidget(keyboard);
     switch(mode)
     {
         case Encrypt: // Ask passphrase x2
@@ -63,8 +59,6 @@ AskPassphraseDialog::AskPassphraseDialog(Mode mode, QWidget *parent) :
     connect(ui->passEdit1, SIGNAL(textChanged(QString)), this, SLOT(textChanged()));
     connect(ui->passEdit2, SIGNAL(textChanged(QString)), this, SLOT(textChanged()));
     connect(ui->passEdit3, SIGNAL(textChanged(QString)), this, SLOT(textChanged()));
-
-    connect(ui->keyboardToggle, SIGNAL(clicked()), keyboard, SLOT(toggleKeyboard()));
 }
 
 AskPassphraseDialog::~AskPassphraseDialog()
@@ -218,7 +212,7 @@ bool AskPassphraseDialog::event(QEvent *event)
     return QWidget::event(event);
 }
 
-bool AskPassphraseDialog::eventFilter(QObject *object, QEvent *event)
+bool AskPassphraseDialog::eventFilter(QObject *, QEvent *event)
 {
     /* Detect Caps Lock.
      * There is no good OS-independent way to check a key state in Qt, but we
@@ -239,10 +233,6 @@ bool AskPassphraseDialog::eventFilter(QObject *object, QEvent *event)
                 fCapsLock = false;
                 ui->capsLabel->clear();
             }
-        }
-    } else if (event->type() == QEvent::FocusIn) {
-        if (object->inherits("QLineEdit")) {
-            keyboard->setInput(object);
         }
     }
     return false;

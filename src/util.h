@@ -134,6 +134,7 @@ extern std::string strMiscWarning;
 extern bool fTestNet;
 extern bool fNoListen;
 extern bool fLogTimestamps;
+extern bool fReopenDebugLog;
 
 void RandAddSeed();
 void RandAddSeedPerfmon();
@@ -165,7 +166,9 @@ std::string EncodeBase64(const std::string& str);
 void ParseParameters(int argc, const char*const argv[]);
 bool WildcardMatch(const char* psz, const char* mask);
 bool WildcardMatch(const std::string& str, const std::string& mask);
+void FileCommit(FILE *fileout);
 int GetFilesize(FILE* file);
+bool RenameOver(boost::filesystem::path src, boost::filesystem::path dest);
 boost::filesystem::path GetDefaultDataDir();
 const boost::filesystem::path &GetDataDir(bool fNetSpecific = true);
 boost::filesystem::path GetConfigFile();
@@ -720,65 +723,15 @@ public:
     }
 };
 
+bool NewThread(void(*pfn)(void*), void* parg);
 
-
-
-
-
-
-
-
-
-// Note: It turns out we might have been able to use boost::thread
-// by using TerminateThread(boost::thread.native_handle(), 0);
 #ifdef WIN32
-typedef HANDLE bitcoin_pthread_t;
-
-inline bitcoin_pthread_t CreateThread(void(*pfn)(void*), void* parg, bool fWantHandle=false)
-{
-    DWORD nUnused = 0;
-    HANDLE hthread =
-        CreateThread(
-            NULL,                        // default security
-            0,                           // inherit stack size from parent
-            (LPTHREAD_START_ROUTINE)pfn, // function pointer
-            parg,                        // argument
-            0,                           // creation option, start immediately
-            &nUnused);                   // thread identifier
-    if (hthread == NULL)
-    {
-        printf("Error: CreateThread() returned %d\n", GetLastError());
-        return (bitcoin_pthread_t)0;
-    }
-    if (!fWantHandle)
-    {
-        CloseHandle(hthread);
-        return (bitcoin_pthread_t)-1;
-    }
-    return hthread;
-}
 
 inline void SetThreadPriority(int nPriority)
 {
     SetThreadPriority(GetCurrentThread(), nPriority);
 }
 #else
-inline pthread_t CreateThread(void(*pfn)(void*), void* parg, bool fWantHandle=false)
-{
-    pthread_t hthread = 0;
-    int ret = pthread_create(&hthread, NULL, (void*(*)(void*))pfn, parg);
-    if (ret != 0)
-    {
-        printf("Error: pthread_create() returned %d\n", ret);
-        return (pthread_t)0;
-    }
-    if (!fWantHandle)
-    {
-        pthread_detach(hthread);
-        return (pthread_t)-1;
-    }
-    return hthread;
-}
 
 #define THREAD_PRIORITY_LOWEST          PRIO_MAX
 #define THREAD_PRIORITY_BELOW_NORMAL    2
@@ -813,4 +766,3 @@ inline uint32_t ByteReverse(uint32_t value)
 }
 
 #endif
-

@@ -17,14 +17,10 @@ SendCoinsEntry::SendCoinsEntry(QWidget *parent) :
 {
     ui->setupUi(this);
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     ui->payToLayout->setSpacing(4);
 #endif
 
-#if QT_VERSION >= 0x040700
-    ui->payTo->setPlaceholderText(tr("Enter a Paycoin address"));
-    ui->addAsLabel->setPlaceholderText(tr("Enter a label for this address to add it to your address book"));
-#endif
     setFocusPolicy(Qt::TabFocus);
     setFocusProxy(ui->payTo);
 
@@ -165,4 +161,3 @@ void SendCoinsEntry::setFocus()
 {
     ui->payTo->setFocus();
 }
-

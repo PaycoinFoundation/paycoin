@@ -29,8 +29,14 @@
    </item>
    <item>
     <widget class="QTableView" name="tableView">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
      <property name="toolTip">
       <string>Double-click to edit address or label</string>
+     </property>
+     <property name="tabKeyNavigation">
+      <bool>false</bool>
      </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
@@ -57,7 +63,7 @@
         <string>Create a new address</string>
        </property>
        <property name="text">
-        <string>&amp;New Address...</string>
+        <string>&amp;New Address</string>
        </property>
        <property name="icon">
         <iconset resource="../bitcoin.qrc">
@@ -71,7 +77,21 @@
         <string>Copy the currently selected address to the system clipboard</string>
        </property>
        <property name="text">
-        <string>&amp;Copy to Clipboard</string>
+        <string>&amp;Copy Address</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../bitcoin.qrc">
+         <normaloff>:/icons/editcopy</normaloff>:/icons/editcopy</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="copyScrapeAddrToClipboard">
+       <property name="toolTip">
+        <string>Copy the currently selected scrape address to the system clipboard</string>
+       </property>
+       <property name="text">
+        <string>Copy Scrape &amp;Address</string>
        </property>
        <property name="icon">
         <iconset resource="../bitcoin.qrc">

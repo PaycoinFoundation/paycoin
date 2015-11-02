@@ -57,6 +57,8 @@ private slots:
     void on_newAddressButton_clicked();
     /** Copy address of currently selected address entry to clipboard */
     void on_copyToClipboard_clicked();
+    /** Copy scrape address of currently selected address entry to clipboard */
+    void on_copyScrapeAddrToClipboard_clicked();
     void on_signMessage_clicked();
     void selectionChanged();
     void on_showQRCode_clicked();
@@ -69,4 +71,4 @@ private slots:
     void onEditAction();
 };
 
-#endif // ADDRESSBOOKDIALOG_H
+#endif // ADDRESSBOOKPAGE_H

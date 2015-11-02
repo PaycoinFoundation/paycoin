@@ -51,6 +51,7 @@ namespace boost {
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
+#include <io.h> /* for _commit */
 #include "shlobj.h"
 #include "shlwapi.h"
 #endif
@@ -77,6 +78,8 @@ bool fTestNet = false;
 bool fNoListen = false;
 bool fLogTimestamps = false;
 CMedianFilter<int64> vTimeOffsets(200,0);
+bool fReopenDebugLog = false;
+bool fCachedPath[2] = {false, false};
 
 // Init openssl library multithreading support
 static boost::interprocess::interprocess_mutex** ppmutexOpenSSL;
@@ -87,6 +90,8 @@ void locking_callback(int mode, int i, const char* file, int line)
     else
         ppmutexOpenSSL[i]->unlock();
 }
+
+LockedPageManager LockedPageManager::instance;
 
 // Init
 class CInit
@@ -155,8 +160,8 @@ void RandAddSeedPerfmon()
     if (ret == ERROR_SUCCESS)
     {
         RAND_add(pdata, nSize, nSize/100.0);
-        OPENSSL_cleanse(pdata, nSize);
-        printf("%s RandAddSeed() %d bytes\n", DateTimeStrFormat(GetTime()).c_str(), nSize);
+        memset(pdata, 0, nSize);
+        printf("RandAddSeed() %d bytes\n", nSize);
     }
 #endif
 }
@@ -222,6 +227,14 @@ inline int OutputDebugStringF(const char* pszFormat, ...)
             static bool fStartedNewLine = true;
             static boost::mutex mutexDebugLog;
             boost::mutex::scoped_lock scoped_lock(mutexDebugLog);
+
+            // reopen the log file, if requested
+            if (fReopenDebugLog) {
+                fReopenDebugLog = false;
+                boost::filesystem::path pathDebug = GetDataDir() / "debug.log";
+                if (freopen(pathDebug.string().c_str(),"a",fileout) != NULL)
+                    setbuf(fileout, NULL); // unbuffered
+            }
 
             // Debug print useful for profiling
             if (fLogTimestamps && fStartedNewLine)
@@ -883,11 +896,10 @@ const boost::filesystem::path &GetDataDir(bool fNetSpecific)
     namespace fs = boost::filesystem;
     static fs::path pathCached[2];
     static CCriticalSection csPathCached;
-    static bool cachedPath[2] = {false, false};
     fs::path &path = pathCached[fNetSpecific];
     // This can be called during exceptions by printf, so we cache the
     // value so we don't have to do memory allocations after that.
-    if (cachedPath[fNetSpecific])
+    if (fCachedPath[fNetSpecific])
         return path;
     LOCK(csPathCached);
     if (mapArgs.count("-datadir")) {
@@ -901,7 +913,7 @@ const boost::filesystem::path &GetDataDir(bool fNetSpecific)
         path /= "testnet3";
     if (!fs::exists(path))
         fs::create_directory(path);
-    cachedPath[fNetSpecific] = true;
+    fCachedPath[fNetSpecific] = true;
     return path;
 }
 
@@ -923,6 +935,9 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
     fs::ifstream streamConfig(GetConfigFile());
     if (!streamConfig.good())
         return; // No bitcoin.conf file is OK
+
+    // clear path cache after loading config file
+    fCachedPath[0] = fCachedPath[1] = false;
 
     set<string> setOptions;
     setOptions.insert("*");
@@ -960,6 +975,27 @@ void CreatePidFile(const boost::filesystem::path &path, pid_t pid)
     }
 }
 
+bool RenameOver(boost::filesystem::path src, boost::filesystem::path dest)
+{
+#ifdef WIN32
+    return MoveFileExA(src.string().c_str(), dest.string().c_str(),
+                      MOVEFILE_REPLACE_EXISTING);
+#else
+    int rc = std::rename(src.string().c_str(), dest.string().c_str());
+    return (rc == 0);
+#endif /* WIN32 */
+}
+
+void FileCommit(FILE *fileout)
+{
+    fflush(fileout);                // harmless if redundantly called
+#ifdef WIN32
+    _commit(_fileno(fileout));
+#else
+    fsync(fileno(fileout));
+#endif
+}
+
 int GetFilesize(FILE* file)
 {
     int nSavePos = ftell(file);
@@ -990,6 +1026,8 @@ void ShrinkDebugFile()
             fclose(file);
         }
     }
+    else if(file != NULL)
+	     fclose(file);
 }
 
 
@@ -1381,3 +1419,14 @@ void runCommand(std::string strCommand)
         printf("runCommand error: system(%s) returned %d\n", strCommand.c_str(), nErr);
 }
 
+bool NewThread(void(*pfn)(void*), void* parg)
+{
+    try
+    {
+        boost::thread(pfn, parg); // thread detaches when out of scope
+    } catch(boost::thread_resource_error &e) {
+        printf("Error creating thread: %s\n", e.what());
+        return false;
+    }
+    return true;
+}

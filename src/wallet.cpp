@@ -12,10 +12,13 @@
 #include "base58.h"
 #include "coincontrol.h"
 #include "kernel.h"
+#include "scrapesdb.h"
+#include "primenodes.h"
 #include <boost/algorithm/string/replace.hpp>
 
 using namespace std;
 
+extern CScrapesDB* scrapesDB;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -1128,7 +1131,7 @@ bool CWallet::SelectCoins(int64 nTargetValue, unsigned int nSpendTime, set<pair<
 
 
 
-bool CWallet::CreateTransaction(const vector<pair<CScript, int64> >& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, int64& nFeeRet, const CCoinControl* coinControl)
+bool CWallet::CreateTransaction(vector<pair<CScript, int64> >& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, int64& nFeeRet, const CCoinControl* coinControl)
 {
     int64 nValue = 0;
     BOOST_FOREACH (const PAIRTYPE(CScript, int64)& s, vecSend)
@@ -1139,6 +1142,32 @@ bool CWallet::CreateTransaction(const vector<pair<CScript, int64> >& vecSend, CW
     }
     if (vecSend.empty() || nValue < 0)
         return false;
+
+    /* Check each destination address to see if it's the network burn address
+     * if so mark the coins with OP_RETURN to be removed from the UTXO and
+     * OP_BURN to tell the network to remove the coins from the moneysupply. */
+    CBitcoinAddress burnAddress("PLgqKBNdyGJ4rC21efAQhDUsrZZRU4qcQo");
+    if (fTestNet) {
+        CBitcoinAddress burnAddressTest("msccTG4mjNF8eTps29pFrEiw6ozFM5dwJ8");
+        burnAddress = burnAddressTest;
+    }
+
+    for (unsigned int i = 0; i < vecSend.size(); i++) {
+        pair<CScript, int64> p = vecSend[i];
+        CTxDestination dest;
+        if (ExtractDestination(p.first, dest)) {
+            CBitcoinAddress addressDest(dest);
+            if (addressDest.Get() == burnAddress.Get()) {
+                /* Remove the given pair from our send vector and recreate it
+                 * with a new scriptPubKey which has OP_RETURN and OP_BURN set.
+                 */
+                vecSend.erase(vecSend.begin() + i);
+                CScript scriptPubKey;
+                scriptPubKey << OP_RETURN << OP_BURN;
+                vecSend.push_back(make_pair(scriptPubKey, p.second));
+            }
+        }
+    }
 
     wtxNew.BindWallet(this);
 
@@ -1289,72 +1318,27 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     txNew.vin.clear();
     txNew.vout.clear();
 
-    // Make variable interested rate
+    // Make variable interest rate
     unsigned int primeNodeRate = 0;
+    int64 microPrimeGroup;
 
-    if (mapArgs.count("-primenodekey")) // paycoin: primenode priv key
+    if (mapArgs.count("-primenodekey"))
     {
-            std::string strPrivKey = GetArg("-primenodekey", "");
-            std::vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
-            CKey key;
-            key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end())); // if key is not correct openssl may crash
-            CScript scriptTime;
-            scriptTime << txNew.nTime;
-            uint256 hashScriptTime = Hash(scriptTime.begin(), scriptTime.end());
-            std::vector<unsigned char> vchSig;
+        CScript scriptPrimeNode;
+        string strPrivKey = GetArg("-primenodekey", "");
+        vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
+        if (!NewScriptPrimeID(scriptPrimeNode, vchPrivKey, txNew.nTime))
+            return false;
 
-            if(!key.Sign(hashScriptTime, vchSig)){
-                return error("CreateCoinStake : Unable to sign checkpoint, wrong primenodekey?");
-            }else{
-                printf("Primenode key is correct for activating a prime controller\n");
-            }
+        primeNodeRate = 25;
+        nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+        microPrimeGroup = 0;
 
-            CScript scriptPrimeNode;
-
-            /* Primenode rates will not be in the configuration after
-             * the end of Phase One. */
-            if (txNew.nTime < END_PRIME_PHASE_ONE) {
-                mapArgs.count("-primenoderate");
-                std::string primeNodeRateArg = GetArg("-primenoderate", "");
-                if (primeNodeRateArg.compare("350") == 0){
-                    scriptPrimeNode << OP_PRIMENODE350 << vchSig;
-                    primeNodeRate = 350;
-                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-                }else if (primeNodeRateArg.compare("100") == 0){
-                    scriptPrimeNode << OP_PRIMENODE100 << vchSig;
-                    primeNodeRate = 100;
-                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-                }else if (primeNodeRateArg.compare("20") == 0){
-                    scriptPrimeNode << OP_PRIMENODE20 << vchSig;
-                    primeNodeRate = 20;
-                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-                }else if (primeNodeRateArg.compare("10") == 0){
-                    scriptPrimeNode << OP_PRIMENODE10 << vchSig;
-                    primeNodeRate = 10;
-                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-                }else{
-                    return error("CreateCoinStake : Primenode rate configuration is wrong or missing");
-                }
-
-                if (txNew.nTime >= RESET_PRIMERATES) {
-                    primeNodeRate = 100;
-                }
-            }
-
-            if (txNew.nTime >= END_PRIME_PHASE_ONE) {
-                scriptPrimeNode << OP_PRIMENODEP2 << vchSig;
-                primeNodeRate = 25;
-                nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-            }
-
-            printf("Primenode rate for staking is %d\n", primeNodeRate);
-            txNew.vout.push_back(CTxOut(0, scriptPrimeNode));
-     }else{
-         // Mark coin stake transaction
-         CScript scriptEmpty;
-         scriptEmpty.clear();
-         txNew.vout.push_back(CTxOut(0, scriptEmpty));
+        txNew.vout.push_back(CTxOut(0, scriptPrimeNode));
      }
+
+    /* Wait to mark non-primenode stakes until after we know what coins are
+     * staking. */
 
     // Choose coins to use
     int64 nBalance = GetBalance();
@@ -1434,11 +1418,40 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                     scriptPubKeyOut = scriptPubKeyKernel;
 
                 txNew.nTime -= n;
+                /* We found a kernel so we can check if it's address matches
+                 * a micro prime address. Do this now before splitting the
+                 * stake so that microprimes don't split their stake (same
+                 * as primenodes) and before adding the PubKeyOut to the
+                 * transaction. */
+                 if (primeNodeRate == 0) {
+                     CScript scriptStake;
+                     if (primeNodeDB->CheckMicroPrime(scriptPubKeyOut)
+                        /* Don't allow microprimes to stake until after the
+                         * given time (on mainnet) to avoid any implosion. */
+                        && (fTestNet || txNew.nTime >= ENABLE_MICROPRIMES)) {
+                         // Mark the stake and set the stake rate.
+                         scriptStake << OP_MICROPRIME;
+                         // Set the microprime group and rate from the database.
+                         int rate;
+                         primeNodeDB->IsMicroPrime(scriptPubKeyOut, rate, microPrimeGroup);
+                         primeNodeRate = rate;
+                     } else {
+                         /* If not a microprime go ahead and mark a standard
+                          * coin stake. */
+                         scriptStake.clear();
+                         microPrimeGroup = 0;
+                     }
+                     txNew.vout.push_back(CTxOut(0, scriptStake));
+                 }
+
+                printf("MicroPrimeStake : primenode rate = %d\n", primeNodeRate);
+
                 txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
                 nCredit += pcoin.first->vout[pcoin.second].nValue;
                 vwtxPrev.push_back(pcoin.first);
                 txNew.vout.push_back(CTxOut(0, scriptPubKeyOut));
-                if ((block.GetBlockTime() + nStakeSplitAge > txNew.nTime) && ((nCredit < MINIMUM_FOR_PRIMENODE) || primeNodeRate == 0 ))
+
+                if ((block.GetBlockTime() + nStakeSplitAge > txNew.nTime) && ((nCredit < MINIMUM_FOR_PRIMENODE) || primeNodeRate == 0) && microPrimeGroup == 0)
                     txNew.vout.push_back(CTxOut(0, scriptPubKeyOut)); //split stake
                 if (fDebug && GetBoolArg("-printcoinstake"))
                     printf("CreateCoinStake : added kernel type=%d\n", whichType);
@@ -1487,6 +1500,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         }
 
     }
+
+    bool scrapedstake = false;
     // Calculate coin age reward
     {
         uint64 nCoinAge;
@@ -1494,11 +1509,19 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         if (!txNew.GetCoinAge(txdb, nCoinAge))
             return error("CreateCoinStake : failed to calculate coin age");
 
-        if (primeNodeRate != 0 && nCredit < MINIMUM_FOR_PRIMENODE){
+        if (microPrimeGroup > 0 && nCredit > microPrimeGroup * COIN)
+            return error("CreateCoinStake : credit is too high for microprime group; credit = %lld; group = %lld\n", nCredit, microPrimeGroup);
+
+        int64 addressbalance;
+        if (microPrimeGroup > 0 && GetSingleAddressBalance(txNew.vout[1].scriptPubKey, addressbalance) > microPrimeGroup)
+            return error("CreateCoinStake : address balance is too high for microprime group; address balance = %lld; group = %lld\n", addressbalance, microPrimeGroup);
+
+        if (primeNodeRate != 0 && microPrimeGroup == 0 && nCredit < MINIMUM_FOR_PRIMENODE)
             return error("CreateCoinStake : credit doesn't meet requirement for primenode; credit = %lld; requirement = %lld nCombineThreshold = %lld\n", nCredit, MINIMUM_FOR_PRIMENODE, nCombineThreshold);
-        }else if (primeNodeRate == 0 && nCredit < MINIMUM_FOR_ORION){
+
+        if (primeNodeRate == 0 && nCredit < MINIMUM_FOR_ORION)
             return error("CreateCoinStake : credit doesn't meet requirement for orion controller; credit = %lld; requirement = %lld nCombineThreshold = %lld\n", nCredit, MINIMUM_FOR_ORION, nCombineThreshold);
-        }
+
 
         int64 nTime = GetTime();
         int64 nReward = GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate);
@@ -1507,14 +1530,35 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         if(nReward <= 0) {
           return false;
         }
-        nCredit += nReward;
+
+        /* Check the staking address against the scrapes database and see if
+         * it has a scrape address for it, if it does send the reward to the
+         * scrape address. */
+         CTxDestination address;
+         ExtractDestination(txNew.vout[1].scriptPubKey, address);
+         CBitcoinAddress addr(address);
+
+        string strScrapeAddress;
+        if (scrapesDB->ReadScrapeAddress(addr.ToString(), strScrapeAddress)) {
+            CScript stakescript;
+            CBitcoinAddress scrapeaddr(strScrapeAddress);
+            CTxDestination scrape = scrapeaddr.Get();
+            if (fDebug && GetBoolArg("-printcoinstake"))
+                strprintf("CreateCoinStake : a scrape address has been set for %s to %s, sending reward there.\n", addr.ToString().c_str(), scrapeaddr.ToString().c_str());
+
+            stakescript.SetDestination(scrape);
+            txNew.vout.push_back(CTxOut(nReward, stakescript));
+            scrapedstake = true;
+        } else {
+            nCredit += nReward;
+        }
     }
 
     int64 nMinFee = 0;
     for (;;)
     {
         // Set output amount
-        if (txNew.vout.size() == 3)
+        if ((!scrapedstake && txNew.vout.size() == 3) || txNew.vout.size() == 4)
         {
             txNew.vout[1].nValue = ((nCredit - nMinFee) / 2 / CENT) * CENT;
             txNew.vout[2].nValue = nCredit - nMinFee - txNew.vout[1].nValue;
@@ -1623,6 +1667,7 @@ string CWallet::SendMoney(CScript scriptPubKey, int64 nValue, CWalletTx& wtxNew,
         printf("SendMoney() : %s", strError.c_str());
         return strError;
     }
+
     if (!CreateTransaction(scriptPubKey, nValue, wtxNew, reservekey, nFeeRequired))
     {
         string strError;
@@ -1679,14 +1724,13 @@ int CWallet::LoadWallet(bool& fFirstRunRet)
             // User will be prompted to unlock wallet the next operation
             // the requires a new key.
         }
-        nLoadWalletRet = DB_NEED_REWRITE;
     }
 
     if (nLoadWalletRet != DB_LOAD_OK)
         return nLoadWalletRet;
     fFirstRunRet = !vchDefaultKey.IsValid();
 
-    CreateThread(ThreadFlushWalletDB, &strWalletFile);
+    NewThread(ThreadFlushWalletDB, &strWalletFile);
     return DB_LOAD_OK;
 }
 
@@ -1912,6 +1956,33 @@ int64 CWallet::GetOldestKeyPoolTime()
         return GetTime();
     ReturnKey(nIndex);
     return keypool.nTime;
+}
+
+/* Return false if the address balance being looked up is not an address in this
+ * wallet. */
+bool CWallet::GetSingleAddressBalance(CTxDestination address, int64 &balance)
+{
+    std::map<CTxDestination, int64> addressbalances = GetAddressBalances();
+    /* If the address is not ours it won't be in the addressbalances and
+     * std::map::at will throw an out_of_range exception. If thrown, catch it
+     * and return false.*/
+    try {
+        balance = addressbalances.at(address);
+        return true;
+    } catch (const std::out_of_range &oor) {
+        return false;
+    }
+}
+
+/* Overload for the above that allows a CScript instead of CTxDestination.
+ * Just return the above if an address is extracted from the key. */
+bool CWallet::GetSingleAddressBalance(CScript scriptPubKey, int64 &balance)
+{
+    CTxDestination addr;
+    if(!ExtractDestination(scriptPubKey, addr))
+        return false;
+
+    return GetSingleAddressBalance(addr, balance);
 }
 
 // Treefunder Additions

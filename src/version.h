@@ -17,8 +17,8 @@
 // paycoin version - intended for display purpose only
 #define PEERUNITY_VERSION_MAJOR       0
 #define PEERUNITY_VERSION_MINOR       3
-#define PEERUNITY_VERSION_REVISION    0
-#define PEERUNITY_VERSION_BUILD       2
+#define PEERUNITY_VERSION_REVISION    2
+#define PEERUNITY_VERSION_BUILD       0
 
 static const int PEERUNITY_VERSION =
                            1000000 * PEERUNITY_VERSION_MAJOR
@@ -61,7 +61,7 @@ extern const std::string CLIENT_DATE;
 // network protocol versioning
 //
 
-static const int PROTOCOL_VERSION = 70003;
+static const int PROTOCOL_VERSION = 70005;
 
 /* As of Paycoin protocol 70002 the MIN_PROTO_VERSION is initialized
  * and determined in init to allow for a pseudo dynamic change of minimum

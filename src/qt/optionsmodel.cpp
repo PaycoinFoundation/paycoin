@@ -22,6 +22,7 @@ void OptionsModel::Init()
     fMinimizeOnClose = settings.value("fMinimizeOnClose", false).toBool();
     nTransactionFee = settings.value("nTransactionFee").toLongLong();
     fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
+    language = settings.value("language", "").toString();
 
     // These are shared with core bitcoin; we want
     // command-line options to override the GUI settings:
@@ -31,6 +32,8 @@ void OptionsModel::Init()
         SoftSetArg("-proxy", settings.value("addrProxy").toString().toStdString());
     if (settings.contains("detachDB"))
         SoftSetBoolArg("-detachdb", settings.value("detachDB").toBool());
+    if (!language.isEmpty())
+        SoftSetArg("-lang", language.toStdString());
 }
 
 bool OptionsModel::Upgrade()
@@ -125,9 +128,11 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
         case DisplayAddresses:
             return QVariant(bDisplayAddresses);
         case DetachDatabases:
-            return QVariant(fDetachDB);
+            return QVariant(bitdb.GetDetached());
         case CoinControlFeatures:
             return QVariant(fCoinControlFeatures);
+        case Language:
+            return settings.value("language", "");
         default:
             return QVariant();
         }
@@ -213,14 +218,18 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             }
             break;
         case DetachDatabases: {
-            fDetachDB = value.toBool();
-            settings.setValue("detachDB", fDetachDB);
+            bitdb.SetDetach(value.toBool());
+            settings.setValue("detachDB", bitdb.GetDetached());
             }
             break;
         case CoinControlFeatures: {
             fCoinControlFeatures = value.toBool();
             settings.setValue("fCoinControlFeatures", fCoinControlFeatures);
             emit coinControlFeaturesChanged(fCoinControlFeatures);
+            }
+            break;
+        case Language: {
+            settings.setValue("language", value);
             }
             break;
         default:
@@ -240,24 +249,4 @@ qint64 OptionsModel::getTransactionFee()
 bool OptionsModel::getCoinControlFeatures()
 {
     return fCoinControlFeatures;
-}
-
-bool OptionsModel::getMinimizeToTray()
-{
-    return fMinimizeToTray;
-}
-
-bool OptionsModel::getMinimizeOnClose()
-{
-    return fMinimizeOnClose;
-}
-
-int OptionsModel::getDisplayUnit()
-{
-    return nDisplayUnit;
-}
-
-bool OptionsModel::getDisplayAddresses()
-{
-    return bDisplayAddresses;
 }

@@ -27,13 +27,54 @@ class CWallet;
 class CWalletTx;
 
 extern unsigned int nWalletDBUpdated;
-extern bool fDetachDB;
-extern DbEnv dbenv;
 
-extern void DBFlush(bool fShutdown);
 void ThreadFlushWalletDB(void* parg);
 bool BackupWallet(const CWallet& wallet, const std::string& strDest);
 
+class CDBEnv
+{
+private:
+    bool fDetachDB;
+    bool fDbEnvInit;
+    bool fMockDb;
+
+    void EnvShutdown();
+
+public:
+    mutable CCriticalSection cs_db;
+    DbEnv dbenv;
+    std::map<std::string, int> mapFileUseCount;
+    std::map<std::string, Db*> mapDb;
+
+    CDBEnv();
+    ~CDBEnv();
+    void MakeMock();
+    bool IsMock() { return fMockDb; }
+    bool Open(const boost::filesystem::path &path);
+    void Close();
+    void Flush(bool fShutdown);
+    void CheckpointLSN(std::string strFile);
+    void SetDetach(bool fDetachDB_) { fDetachDB = fDetachDB_; }
+    /* For whatever reason the QT code (for Bitcoin) still uses fDetachDB after
+     * implementing it as a private variable in CDBEnv (above), I see no valid
+     * fix for this (almost as if the QT shouldn't even work). Allow fDetachDB
+     * to be checked outside of CDBEnv as a wortkaround until a more proper
+     * solution is determined. */
+    bool GetDetached() { return fDetachDB; }
+
+    void CloseDb(const std::string& strFile);
+
+    DbTxn *TxnBegin(int flags=DB_TXN_WRITE_NOSYNC)
+    {
+        DbTxn* ptxn = NULL;
+        int ret = dbenv.txn_begin(NULL, &ptxn, flags);
+        if (!ptxn || ret != 0)
+            return NULL;
+        return ptxn;
+    }
+};
+
+extern CDBEnv bitdb;
 
 /** RAII class that provides access to a Berkeley database */
 class CDB
@@ -41,7 +82,7 @@ class CDB
 protected:
     Db* pdb;
     std::string strFile;
-    std::vector<DbTxn*> vTxn;
+    DbTxn *activeTxn;
     bool fReadOnly;
 
     explicit CDB(const char* pszFile, const char* pszMode="r+");
@@ -68,7 +109,7 @@ protected:
         // Read
         Dbt datValue;
         datValue.set_flags(DB_DBT_MALLOC);
-        int ret = pdb->get(GetTxn(), &datKey, &datValue, 0);
+        int ret = pdb->get(activeTxn, &datKey, &datValue, 0);
         memset(datKey.get_data(), 0, datKey.get_size());
         if (datValue.get_data() == NULL)
             return false;
@@ -109,7 +150,7 @@ protected:
         Dbt datValue(&ssValue[0], ssValue.size());
 
         // Write
-        int ret = pdb->put(GetTxn(), &datKey, &datValue, (fOverwrite ? 0 : DB_NOOVERWRITE));
+        int ret = pdb->put(activeTxn, &datKey, &datValue, (fOverwrite ? 0 : DB_NOOVERWRITE));
 
         // Clear memory in case it was a private key
         memset(datKey.get_data(), 0, datKey.get_size());
@@ -132,7 +173,7 @@ protected:
         Dbt datKey(&ssKey[0], ssKey.size());
 
         // Erase
-        int ret = pdb->del(GetTxn(), &datKey, 0);
+        int ret = pdb->del(activeTxn, &datKey, 0);
 
         // Clear memory
         memset(datKey.get_data(), 0, datKey.get_size());
@@ -152,7 +193,7 @@ protected:
         Dbt datKey(&ssKey[0], ssKey.size());
 
         // Exists
-        int ret = pdb->exists(GetTxn(), &datKey, 0);
+        int ret = pdb->exists(activeTxn, &datKey, 0);
 
         // Clear memory
         memset(datKey.get_data(), 0, datKey.get_size());
@@ -209,46 +250,33 @@ protected:
         return 0;
     }
 
-    DbTxn* GetTxn()
-    {
-        if (!vTxn.empty())
-            return vTxn.back();
-        else
-            return NULL;
-    }
-
 public:
     bool TxnBegin()
     {
-        if (!pdb)
+        if (!pdb || activeTxn)
             return false;
-        DbTxn* ptxn = NULL;
-        int ret = dbenv.txn_begin(GetTxn(), &ptxn, DB_TXN_WRITE_NOSYNC);
-        if (!ptxn || ret != 0)
+        DbTxn* ptxn = bitdb.TxnBegin();
+        if (!ptxn)
             return false;
-        vTxn.push_back(ptxn);
+        activeTxn = ptxn;
         return true;
     }
 
     bool TxnCommit()
     {
-        if (!pdb)
+        if (!pdb || !activeTxn)
             return false;
-        if (vTxn.empty())
-            return false;
-        int ret = vTxn.back()->commit(0);
-        vTxn.pop_back();
+        int ret = activeTxn->commit(0);
+        activeTxn = NULL;
         return (ret == 0);
     }
 
     bool TxnAbort()
     {
-        if (!pdb)
+        if (!pdb || !activeTxn)
             return false;
-        if (vTxn.empty())
-            return false;
-        int ret = vTxn.back()->abort();
-        vTxn.pop_back();
+        int ret = activeTxn->abort();
+        activeTxn = NULL;
         return (ret == 0);
     }
 
@@ -286,13 +314,11 @@ public:
     bool AddTxIndex(const CTransaction& tx, const CDiskTxPos& pos, int nHeight);
     bool EraseTxIndex(const CTransaction& tx);
     bool ContainsTx(uint256 hash);
-    bool ReadOwnerTxes(uint160 hash160, int nHeight, std::vector<CTransaction>& vtx);
     bool ReadDiskTx(uint256 hash, CTransaction& tx, CTxIndex& txindex);
     bool ReadDiskTx(uint256 hash, CTransaction& tx);
     bool ReadDiskTx(COutPoint outpoint, CTransaction& tx, CTxIndex& txindex);
     bool ReadDiskTx(COutPoint outpoint, CTransaction& tx);
     bool WriteBlockIndex(const CDiskBlockIndex& blockindex);
-    bool EraseBlockIndex(uint256 hash);
     bool ReadHashBestChain(uint256& hashBestChain);
     bool WriteHashBestChain(uint256 hashBestChain);
     bool ReadBestInvalidTrust(CBigNum& bnBestInvalidTrust);
@@ -301,28 +327,19 @@ public:
     bool WriteSyncCheckpoint(uint256 hashCheckpoint);
     bool ReadCheckpointPubKey(std::string& strPubKey);
     bool WriteCheckpointPubKey(const std::string& strPubKey);
-    bool ReadV04UpgradeTime(unsigned int& nUpgradeTime);
-    bool WriteV04UpgradeTime(const unsigned int& nUpgradeTime);
     bool LoadBlockIndex();
 };
 
-
-
-
-/** Access to the (IP) address database (addr.dat) */
-class CAddrDB : public CDB
+/** Access to the (IP) address database (peers.dat) */
+class CAddrDB
 {
-public:
-    CAddrDB(const char* pszMode="r+") : CDB("addr.dat", pszMode) { }
 private:
-    CAddrDB(const CAddrDB&);
-    void operator=(const CAddrDB&);
+    boost::filesystem::path pathAddr;
+
 public:
-    bool WriteAddrman(const CAddrMan& addr);
-    bool LoadAddresses();
+    CAddrDB();
+    bool Write(const CAddrMan& addr);
+    bool Read(CAddrMan& addr);
 };
-
-bool LoadAddresses();
-
 
 #endif // BITCOIN_DB_H

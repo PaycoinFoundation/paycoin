@@ -1,37 +1,49 @@
-# Paycoin Official Development Repository
+Paycoin Core integration/staging tree
+=====================================
 
-## What is Paycoin?
+https://www.paycoin.com
 
-Paycoin is a Paycoin network-compatible, community-developed wallet client.
+What is Paycoin?
+----------------
 
-The project has been designed to provide people with a stable, secure, and feature-rich alternative to the Paycoin reference wallet (https://github.com/PaycoinFoundation/paycoin).
+Paycoin is an experimental new digital currency that enables instant payments to
+anyone, anywhere in the world. Paycoin uses a proof-of-stake method in order for
+the Paycoin blockchain network to achieve distributed consensus. Paycoin Core is
+the name of open source software which enables the use of this currency.
 
-To help faciliate broad community cooperation, a number of trusted Paycoin/Peershares community leaders have write permissions to the project's codebase, allowing for decentralization and continuity. Community members, old and new, are encouraged to find ways to contribute to the success of the project. If you have experience with programming, product design, QA engineering, translation, or have a different set of skills that you want to bring to the project, your involvement is appreciated!
+For more information, as well as an immediately useable, binary version of the
+Paycoin Core software, see https://www.paycoin.com/#wallet.
 
+License
+-------
 
-### Paycoin Resources
-* Source: [Source Code](https://github.com/PaycoinFoundation/paycoin)
-* Documentation: [Build Instructions](https://github.com/PaycoinFoundation/paycoin/tree/master/doc)
-* Support: [Talk Paycoin](http://talk.paycoin.com/categories/coin-code), [Issue Tracker](https://github.com/PaycoinFoundation/paycoin/issues)
+Paycoin Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
+information or see http://opensource.org/licenses/MIT.
 
+Development process
+-------------------
 
-### About Paycoin
-[Paycoin](https://paycoin.com/) (abbreviated XPY), also known as Paycoin and Peer-to-Peer Coin is the first [cryptocurrency](https://en.wikipedia.org/wiki/Cryptocurrency) design introducing [proof-of-stake consensus](https://paycoin.com) as a security model, with a combined [proof-of-stake](https://paycoin.com)/[proof-of-work](https://en.wikipedia.org/wiki/Proof-of-work_system) minting system. Paycoin is based on [Peercoin](http://www.peercoin.net/), while introducing many important innovations to cryptocurrency field including new security model, energy efficiency, better minting model and more adaptive response to rapid change in network computation power.
+Developers work in their own trees, then submit pull requests when they think
+their feature or bug fix is ready.
 
+If it is a simple/trivial/non-controversial change, then one of the Paycoin
+development team members simply pulls it.
 
-## Repo Guidelines
+If it is a *more complicated or potentially controversial* change, then the patch
+submitter will be asked to start a discussion (if they haven't already) on the
+[PaycoinTalk forum](https://www.paycointalk.org/category/8/paycoin-coincode)
 
-* Developers work in their own forks, then submit pull requests when they think their feature or bug fix is ready.
-* If it is a simple/trivial/non-controversial change, then one of the development team members simply pulls it.
-* If it is a more complicated or potentially controversial change, then the change may be discussed in the pull request, or the requester may be asked to start a discussion at [Talk Paycoin](http://talk.paycoin.com/categories/coin-code) for a broader community discussion.
-* The patch will be accepted if there is broad consensus that it is a good thing. Developers should expect to rework and resubmit patches if they don't match the project's coding conventions (see coding.md) or are controversial.
-* From time to time a pull request will become outdated. If this occurs, and the pull is no longer automatically mergeable; a comment on the pull will be used to issue a warning of closure.  Pull requests closed in this manner will have their corresponding issue labeled 'stagnant'.
-* For development ideas and help see [here](http://talk.paycoin.com/categories/coin-code).
+The patch will be accepted if there is broad consensus that it is a good thing.
+Developers should expect to rework and resubmit patches if the code doesn't
+match the project's coding conventions (see [doc/coding.md](doc/coding.md)) or are
+controversial.
 
+The `master` branch is regularly built and tested, but is not guaranteed to be
+completely stable. [Tags](https://github.com/PaycoinFoundation/paycoin/tags) are created
+regularly to indicate new official, stable release versions of Paycoin.
 
-## Translation Guidelines
+Translations
+------------
 
-Translations are periodically pulled from Get Localization and merged into the git repository.
-
-Important: We do not accept translation changes as GitHub pull requests because the next
-pull from Get Localization would automatically overwrite them again.
+We currently accept translation changes as GitHub pull requests but this may
+change in the future when we start to use Transifex.

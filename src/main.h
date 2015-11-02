@@ -11,10 +11,6 @@
 #include "net.h"
 #include "script.h"
 
-#ifdef WIN32
-#include <io.h> /* for _commit */
-#endif
-
 #include <list>
 
 class CWallet;
@@ -26,11 +22,9 @@ class COutPoint;
 
 class CAddress;
 class CInv;
-class CRequestTracker;
 class CNode;
 
 static const unsigned int MAX_BLOCK_SIZE = 1000000;
-//static const unsigned int MAX_BLOCK_SIZE = 100000000;
 static const unsigned int MAX_BLOCK_SIZE_GEN = MAX_BLOCK_SIZE/2;
 static const unsigned int MAX_BLOCK_SIGOPS = MAX_BLOCK_SIZE/50;
 static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100;
@@ -44,28 +38,19 @@ static const int COINBASE_MATURITY_PPC = 100;
 // Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp.
 static const int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 static const int STAKE_TARGET_SPACING = 1 * 60; // 1-minute block
-//static const int STAKE_TARGET_SPACING = 1; // 1 second block spacing
 static const int STAKE_MIN_AGE = 60 * 60; // minimum age for coin age
-//static const int STAKE_MIN_AGE = 60; // minimum age for coin age
 static const int STAKE_MAX_AGE = 60 * 60 * 24 * 5; // stake age of full weight
-//static const int STAKE_MAX_AGE = 60 * 2; // stake age of full weight
 static const int STAKE_START_TIME = 1418470264; // Sat 13 Dec 2014 06:31:04 AM EST
-//static const int STAKE_START_TIME = 1418345400; // Thu 11 Dec 2014 05:30:00 PM EST
 static const unsigned int POW_START_TIME = 1418403600; // Fri 12 Dec 2014 12:00:00 PM EST
-//static const unsigned int POW_START_TIME = 1418345100; // Thu 11 Dec 2014 05:00:00 PM EST
 static const unsigned int POW_END_TIME = 1419181200; // Sun 21 Dec 2014 12:00:00 PM EST
-//static const unsigned int POW_END_TIME = 1418345700; // Thu 11 Dec 2014 05:40:00 PM EST
 // MODIFIER_INTERVAL: time to elapse before new modifier is computed
-//static const unsigned int MODIFIER_INTERVAL = 6 * 60 * 60;
 static const unsigned int MODIFIER_INTERVAL = 10 * 60;
-//static const unsigned int MODIFIER_INTERVAL = 10;
-static const int64 NUMBER_OF_PRIMENODE = 50;
 static const int64 MINIMUM_FOR_ORION = 50 * COIN;
-static const int64 MINIMUM_FOR_PRIMENODE = 125000 * COIN;
 static const int MAX_TIME_SINCE_BEST_BLOCK = 10; // how many seconds to wait before sending next PushGetBlocks()
-// Reset all primenode stakerates to 100% after the given date
-static const unsigned int RESET_PRIMERATES = 1429531200; // Mon, 20 Apr 2015 12:00:00 GMT
-static const unsigned int END_PRIME_PHASE_ONE = 1435752000; // Wed, 01 Jul 2015 12:00:00 GMT
+
+// Enable phase 2 primenodes because of issue w/ IsProofOfStake check in previous update
+static const unsigned int ENABLE_PHASE_TWO_PRIMES = 1442318400; // Tue, 15 Sep 2015 12:00:00 GMT
+static const unsigned int ENABLE_MICROPRIMES = 1445644800; // Sat, 24 Oct 2015 00:00:00 GMT
 
 #ifdef USE_UPNP
 static const int fHaveUPnP = true;
@@ -113,8 +98,8 @@ extern std::map<uint256, CBlock*> mapOrphanBlocks;
 // Settings
 extern int64 nTransactionFee;
 
-
-
+// Minimum disk space required - used in CheckDiskSpace()
+static const uint64 nMinDiskSpace = 52428800;
 
 
 class CReserveKey;
@@ -559,11 +544,21 @@ public:
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODE20);
         }else if(!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODE10){
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODE10);
+        }else if(!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_PRIMENODEP2) {
+            return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_PRIMENODEP2);
+        }else if(!vout[0].IsEmpty() && vout[0].scriptPubKey[0] == OP_MICROPRIME) {
+            return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].scriptPubKey[0] == OP_MICROPRIME);
         }else{
             return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].IsEmpty());
         }
 
     }
+
+    /** Check if a stake transaction is a prime or microprime stake
+        this is defined in primekeys.cpp and is utilized in ConnectInputs.
+        @ return True for either and DoS for anything else.
+    */
+    bool IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, int64 nValoueOut, uint64 nCoinAge);
 
     /** Check for standard transaction types
         @return True if all outputs (scriptPubKeys) use only standard transaction forms
@@ -731,7 +726,8 @@ public:
      */
     bool ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                        std::map<uint256, CTxIndex>& mapTestPool, const CDiskTxPos& posThisTx,
-                       const CBlockIndex* pindexBlock, bool fBlock, bool fMiner, bool fStrictPayToScriptHash=true);
+                       const CBlockIndex* pindexBlock, int64 &nBurnCoins, bool fBlock,
+                       bool fMiner, bool fStrictPayToScriptHash=true);
     bool ClientConnectInputs();
     bool CheckTransaction() const;
     bool AcceptToMemoryPool(CTxDB& txdb, bool fCheckInputs=true, bool* pfMissingInputs=NULL);
@@ -1033,7 +1029,7 @@ public:
 
         // Write index header
         unsigned char pchMessageStart[4];
-        GetMessageStart(pchMessageStart, true);
+        GetMessageStart(pchMessageStart);
         unsigned int nSize = fileout.GetSerializeSize(*this);
         fileout << FLATDATA(pchMessageStart) << nSize;
 
@@ -1047,13 +1043,7 @@ public:
         // Flush stdio buffers and commit to disk before returning
         fflush(fileout);
         if (!IsInitialBlockDownload() || (nBestHeight+1) % 500 == 0)
-        {
-#ifdef WIN32
-            _commit(_fileno(fileout));
-#else
-            fsync(fileno(fileout));
-#endif
-        }
+            FileCommit(fileout);
 
         return true;
     }
@@ -1298,21 +1288,6 @@ public:
     bool CheckIndex() const
     {
         return IsProofOfWork() ? CheckProofOfWork(GetBlockHash(), nBits) : true;
-    }
-
-    bool EraseBlockFromDisk()
-    {
-        // Open history file
-        CAutoFile fileout = CAutoFile(OpenBlockFile(nFile, nBlockPos, "rb+"), SER_DISK, CLIENT_VERSION);
-        if (!fileout)
-            return false;
-
-        // Overwrite with empty null block
-        CBlock block;
-        block.SetNull();
-        fileout << block;
-
-        return true;
     }
 
     enum { nMedianTimeSpan=11 };
@@ -1767,7 +1742,7 @@ public:
 
     uint256 GetHash() const
     {
-        return SerializeHash(*this);
+        return Hash(this->vchMsg.begin(), this->vchMsg.end());
     }
 
     bool IsInEffect() const
@@ -1816,7 +1791,7 @@ public:
     bool CheckSignature()
     {
         CKey key;
-        if (!key.SetPubKey(ParseHex("045dc635516bcd6c75152473bef99e700f364f4aac8fd1951c35e4696c9be8487e750e5efcc67e6e3f71a17696a6d9bd12e97c239bd00cd3fdea8296905c9b7dcf")))
+        if (!key.SetPubKey(ParseHex("04eb0313f4945567ad9d71c49fb11ede4cd75e6716658613c8f0305d09bc21a00dbe2792b4217518ae0407aac8c749a9b29d3b7b1d91007a09a340e1dc326248a2")))
             return error("CAlert::CheckSignature() : SetPubKey failed");
         if (!key.Verify(Hash(vchMsg.begin(), vchMsg.end()), vchSig))
             return error("CAlert::CheckSignature() : verify signature failed");
@@ -1839,7 +1814,7 @@ public:
 
     bool accept(CTxDB& txdb, CTransaction &tx,
                 bool fCheckInputs, bool* pfMissingInputs);
-    bool addUnchecked(CTransaction &tx);
+    bool addUnchecked(const uint256& hash, CTransaction &tx);
     bool remove(CTransaction &tx);
     void queryHashes(std::vector<uint256>& vtxid);
 

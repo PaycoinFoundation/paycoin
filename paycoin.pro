@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = paycoin-qt
-VERSION = 0.3.0.2
+VERSION = 0.3.2.0
 INCLUDEPATH += src src/json src/qt
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE USE_IPV6
 CONFIG += no_include_pwd
@@ -129,7 +129,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/script.h \
     src/init.h \
     src/mruset.h \
-    src/primekeys.h \
+    src/scrapesdb.h \
+    src/primenodes.h \
     src/json/json_spirit_writer_template.h \
     src/json/json_spirit_writer.h \
     src/json/json_spirit_value.h \
@@ -168,15 +169,17 @@ HEADERS += src/qt/bitcoingui.h \
     src/allocators.h \
     src/ui_interface.h \
     src/qt/rpcconsole.h \
+    src/version.h \
+    src/netbase.h \
     src/kernel.h \
     src/qt/mintingview.h \
     src/qt/mintingtablemodel.h \
     src/qt/mintingfilterproxy.h \
     src/kernelrecord.h \
-    src/qt/virtualkeyboard.h \
     src/qt/multisigaddressentry.h \
     src/qt/multisiginputentry.h \
-    src/qt/multisigdialog.h
+    src/qt/multisigdialog.h \
+    src/qt/splashscreen.h
 
 SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
@@ -202,7 +205,11 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/addrman.cpp \
     src/db.cpp \
     src/walletdb.cpp \
+    src/scrapesdb.cpp \
+    src/primenodes.cpp \
     src/primekeys.cpp \
+    src/mpkeys.cpp \
+    src/mpkeys_test.cpp \
     src/json/json_spirit_writer.cpp \
     src/json/json_spirit_value.cpp \
     src/json/json_spirit_reader.cpp \
@@ -223,6 +230,7 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/bitcoinrpc.cpp \
     src/rpcdump.cpp \
     src/rpcnet.cpp \
+    src/rpcrawtransaction.cpp \
     src/qt/overviewpage.cpp \
     src/qt/csvmodelwriter.cpp \
     src/crypter.cpp \
@@ -240,10 +248,10 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/mintingtablemodel.cpp \
     src/qt/mintingfilterproxy.cpp \
     src/kernelrecord.cpp \
-    src/qt/virtualkeyboard.cpp \
     src/qt/multisigaddressentry.cpp \
     src/qt/multisiginputentry.cpp \
-    src/qt/multisigdialog.cpp
+    src/qt/multisigdialog.cpp \
+    src/qt/splashscreen.cpp
 
 RESOURCES += \
     src/qt/bitcoin.qrc

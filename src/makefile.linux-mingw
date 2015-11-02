@@ -62,13 +62,18 @@ OBJS= \
     obj/bitcoinrpc.o \
     obj/rpcdump.o \
     obj/rpcnet.o \
+    obj/rpcrawtransaction.o \
     obj/script.o \
     obj/util.o \
     obj/wallet.o \
     obj/walletdb.o \
     obj/noui.o \
     obj/kernel.o \
-    obj/primekeys.o
+    obj/primenodes.o \
+    obj/primekeys.o \
+    obj/mpkeys.o \
+    obj/mpkeys_test.o \
+    obj/scrapesdb.o
 
 all: paycoind.exe
 
@@ -97,6 +102,6 @@ clean:
 	-rm -f paycoind.exe
 	-rm -f obj-test/*.o
 	-rm -f test_paycoin.exe
-	-rm -f src/build.h
+	-rm -f obj/build.h
 
 FORCE:

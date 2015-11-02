@@ -12,12 +12,7 @@
 using namespace std;
 using namespace boost;
 
-
 static uint64 nAccountingEntryNumber = 0;
-
-extern CCriticalSection cs_db;
-extern map<string, int> mapFileUseCount;
-extern void CloseDb(const string& strFile);
 
 //
 // CWalletDB
@@ -50,7 +45,11 @@ bool CWalletDB::WriteAccount(const string& strAccount, const CAccount& account)
 
 bool CWalletDB::WriteAccountingEntry(const CAccountingEntry& acentry)
 {
-    return Write(boost::make_tuple(string("acentry"), acentry.strAccount, ++nAccountingEntryNumber), acentry);
+    uint64 nEntry = ++nAccountingEntryNumber;
+    if(fDebug && GetBoolArg("-printaccounting"))
+        printf("WriteAccountingEntry : strAccount %s, entry number %llu, nCreditDebit %lld, nTime %lld\n", acentry.strAccount.c_str(), nEntry, acentry.nCreditDebit, acentry.nTime);
+
+    return Write(boost::make_tuple(string("acentry"), acentry.strAccount, nEntry), acentry);
 }
 
 int64 CWalletDB::GetAccountCreditDebit(const string& strAccount)
@@ -352,13 +351,13 @@ void ThreadFlushWalletDB(void* parg)
 
         if (nLastFlushed != nWalletDBUpdated && GetTime() - nLastWalletUpdate >= 2)
         {
-            TRY_LOCK(cs_db,lockDb);
+            TRY_LOCK(bitdb.cs_db,lockDb);
             if (lockDb)
             {
                 // Don't do this if any databases are in use
                 int nRefCount = 0;
-                map<string, int>::iterator mi = mapFileUseCount.begin();
-                while (mi != mapFileUseCount.end())
+                map<string, int>::iterator mi = bitdb.mapFileUseCount.begin();
+                while (mi != bitdb.mapFileUseCount.end())
                 {
                     nRefCount += (*mi).second;
                     mi++;
@@ -366,20 +365,18 @@ void ThreadFlushWalletDB(void* parg)
 
                 if (nRefCount == 0 && !fShutdown)
                 {
-                    map<string, int>::iterator mi = mapFileUseCount.find(strFile);
-                    if (mi != mapFileUseCount.end())
+                    map<string, int>::iterator mi = bitdb.mapFileUseCount.find(strFile);
+                    if (mi != bitdb.mapFileUseCount.end())
                     {
-                        printf("%s ", DateTimeStrFormat(GetTime()).c_str());
                         printf("Flushing wallet.dat\n");
                         nLastFlushed = nWalletDBUpdated;
                         int64 nStart = GetTimeMillis();
 
                         // Flush wallet.dat so it's self contained
-                        CloseDb(strFile);
-                        dbenv.txn_checkpoint(0, 0, 0);
-                        dbenv.lsn_reset(strFile.c_str(), 0);
+                        bitdb.CloseDb(strFile);
+                        bitdb.CheckpointLSN(strFile);
 
-                        mapFileUseCount.erase(mi++);
+                        bitdb.mapFileUseCount.erase(mi++);
                         printf("Flushed wallet.dat %"PRI64d"ms\n", GetTimeMillis() - nStart);
                     }
                 }
@@ -395,14 +392,13 @@ bool BackupWallet(const CWallet& wallet, const string& strDest)
     while (!fShutdown)
     {
         {
-            LOCK(cs_db);
-            if (!mapFileUseCount.count(wallet.strWalletFile) || mapFileUseCount[wallet.strWalletFile] == 0)
+            LOCK(bitdb.cs_db);
+            if (!bitdb.mapFileUseCount.count(wallet.strWalletFile) || bitdb.mapFileUseCount[wallet.strWalletFile] == 0)
             {
                 // Flush log data to the dat file
-                CloseDb(wallet.strWalletFile);
-                dbenv.txn_checkpoint(0, 0, 0);
-                dbenv.lsn_reset(wallet.strWalletFile.c_str(), 0);
-                mapFileUseCount.erase(wallet.strWalletFile);
+                bitdb.CloseDb(wallet.strWalletFile);
+                bitdb.CheckpointLSN(wallet.strWalletFile);
+                bitdb.mapFileUseCount.erase(wallet.strWalletFile);
 
                 // Copy wallet.dat
                 filesystem::path pathSrc = GetDataDir() / wallet.strWalletFile;

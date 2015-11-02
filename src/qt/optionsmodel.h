@@ -28,6 +28,7 @@ public:
         DisplayAddresses, // bool
         DetachDatabases, // bool
         CoinControlFeatures, // bool
+        Language, // QString
         OptionIDRowCount,
     };
 
@@ -42,19 +43,19 @@ public:
 
     /* Explicit getters */
     qint64 getTransactionFee();
-    bool getMinimizeToTray();
-    bool getMinimizeOnClose();
-    int getDisplayUnit();
-    bool getDisplayAddresses();
+    bool getMinimizeToTray() { return fMinimizeToTray; }
+    bool getMinimizeOnClose() { return fMinimizeOnClose; }
+    int getDisplayUnit() { return nDisplayUnit; }
+    bool getDisplayAddresses() { return bDisplayAddresses; }
     bool getCoinControlFeatures();
-
+    QString getLanguage() { return language; }
 private:
     int nDisplayUnit;
     bool bDisplayAddresses;
     bool fMinimizeToTray;
     bool fMinimizeOnClose;
     bool fCoinControlFeatures;
-
+    QString language;
 signals:
     void displayUnitChanged(int unit);
     void transactionFeeChanged(qint64);

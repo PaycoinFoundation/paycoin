@@ -1,26 +1,29 @@
 /*
  * W.J. van der Laan 2011-2012
- * The Paycoin Developers 2013
+ * The PPCoin Developers 2013
+ * The Paycoin Developers 2014-2015
  */
 #include "bitcoingui.h"
 #include "clientmodel.h"
 #include "walletmodel.h"
 #include "optionsmodel.h"
 #include "guiutil.h"
+#include "guiconstants.h"
 
 #include "init.h"
 #include "ui_interface.h"
 #include "qtipcserver.h"
+#include "splashscreen.h"
 
 #include <QApplication>
 #include <QMessageBox>
 #include <QTextCodec>
 #include <QLocale>
 #include <QTranslator>
-#include <QSplashScreen>
 #include <QLibraryInfo>
 
 #include <boost/interprocess/ipc/message_queue.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 #if defined(BITCOIN_NEED_QT_PLUGINS) && !defined(_BITCOIN_QT_PLUGINS_INCLUDED)
 #define _BITCOIN_QT_PLUGINS_INCLUDED
@@ -35,7 +38,7 @@ Q_IMPORT_PLUGIN(qtaccessiblewidgets)
 
 // Need a global reference for the notifications to find the GUI
 static BitcoinGUI *guiref;
-static QSplashScreen *splashref;
+static SplashScreen *splashref;
 static WalletModel *walletmodel;
 static ClientModel *clientmodel;
 
@@ -102,7 +105,7 @@ void InitMessage(const std::string &message)
 {
     if(splashref)
     {
-        splashref->showMessage(QString::fromStdString(message), Qt::AlignBottom|Qt::AlignHCenter, QColor(255,255,255));
+        splashref->showMessage(QString::fromStdString(message), Qt::AlignBottom|Qt::AlignHCenter, QColor(55,55,55));
         QApplication::instance()->processEvents();
     }
 }
@@ -129,9 +132,6 @@ static void handleRunawayException(std::exception *e)
     exit(1);
 }
 
-#ifdef WIN32
-#define strncasecmp strnicmp
-#endif
 #ifndef BITCOIN_QT_TEST
 int main(int argc, char *argv[])
 {
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
     // Do this early as we don't want to bother initializing if we are just calling IPC
     for (int i = 1; i < argc; i++)
     {
-        if (strlen(argv[i]) >= 7 && strncasecmp(argv[i], "paycoin:", 7) == 0)
+        if (boost::algorithm::istarts_with(argv[i], "paycoin:"))
         {
             const char *strURI = argv[i];
             try {
@@ -164,6 +164,9 @@ int main(int argc, char *argv[])
 
     Q_INIT_RESOURCE(bitcoin);
     QApplication app(argc, argv);
+
+    // Install global event filter that makes sure that long tooltips can be word-wrapped
+    app.installEventFilter(new GUIUtil::ToolTipToRichTextFilter(TOOLTIP_WRAP_THRESHOLD, &app));
 
     // Command-line options take precedence:
     ParseParameters(argc, argv);
@@ -188,33 +191,34 @@ int main(int argc, char *argv[])
     // ... then GUI settings:
     OptionsModel optionsModel;
 
-    // Get desired locale ("en_US") from command line or system locale
+    // Get desired locale (e.g. "de_DE") from command line or use system locale
     QString lang_territory = QString::fromStdString(GetArg("-lang", QLocale::system().name().toStdString()));
+    QString lang = lang_territory;
+    // Convert to "de" only by truncating "_DE"
+    lang.truncate(lang_territory.lastIndexOf('_'));
+
+    QTranslator qtTranslatorBase, qtTranslator, translatorBase, translator;
     // Load language files for configured locale:
     // - First load the translator for the base language, without territory
     // - Then load the more specific locale translator
-    QString lang = lang_territory;
 
-    lang.truncate(lang_territory.lastIndexOf('_')); // "en"
-    QTranslator qtTranslatorBase, qtTranslator, translatorBase, translator;
-
-    qtTranslatorBase.load(QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_" + lang);
-    if (!qtTranslatorBase.isEmpty())
+    // Load e.g. qt_de.qm
+    if (qtTranslatorBase.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
         app.installTranslator(&qtTranslatorBase);
 
-    qtTranslator.load(QLibraryInfo::location(QLibraryInfo::TranslationsPath) + "/qt_" + lang_territory);
-    if (!qtTranslator.isEmpty())
+    // Load e.g. qt_de_DE.qm
+    if (qtTranslator.load("qt_" + lang_territory, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
         app.installTranslator(&qtTranslator);
 
-    translatorBase.load(":/translations/"+lang);
-    if (!translatorBase.isEmpty())
+    // Load e.g. bitcoin_de.qm (shortcut "de" needs to be defined in bitcoin.qrc)
+    if (translatorBase.load(lang, ":/translations/"))
         app.installTranslator(&translatorBase);
 
-    translator.load(":/translations/"+lang_territory);
-    if (!translator.isEmpty())
+    // Load e.g. bitcoin_de_DE.qm (shortcut "de_DE" needs to be defined in bitcoin.qrc)
+    if (translator.load(lang_territory, ":/translations/"))
         app.installTranslator(&translator);
 
-    QSplashScreen splash(QPixmap(":/images/splash"), 0);
+    SplashScreen splash(QPixmap(), 0);
     if (GetBoolArg("-splash", true) && !GetBoolArg("-min"))
     {
         splash.show();
@@ -258,17 +262,16 @@ int main(int argc, char *argv[])
                 {
                     window.show();
                 }
+#if !defined(MAC_OSX) && !defined(WIN32)
+// TODO: implement qtipcserver.cpp for Mac and Windows
 
                 // Place this here as guiref has to be defined if we don't want to lose URIs
                 ipcInit();
 
-#if !defined(MAC_OSX) && !defined(WIN32)
-// TODO: implement qtipcserver.cpp for Mac and Windows
-
                 // Check for URI in argv
                 for (int i = 1; i < argc; i++)
                 {
-                    if (strlen(argv[i]) >= 7 && strncasecmp(argv[i], "paycoin:", 7) == 0)
+                    if (boost::algorithm::istarts_with(argv[i], "paycoin:"))
                     {
                         const char *strURI = argv[i];
                         try {

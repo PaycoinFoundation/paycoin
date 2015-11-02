@@ -10,23 +10,15 @@
         <translation>Tentang Paycoin</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="75"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <location filename="../forms/aboutdialog.ui" line="53"/>
+        <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="113"/>
-        <source>Copyright © 2014 Paycoin Developers</source>
-        <translation>Copyright © 2014 Paycoin Developers</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Peercoin Developers</source>
-        <translation>Copyright © 2011-2014 Peercoin Developers</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="133"/>
-        <source>Copyright © 2009-2014 Bitcoin Developers
+        <location filename="../forms/aboutdialog.ui" line="97"/>
+        <source>Copyright © 2009-2012 Bitcoin Developers
+Copyright © 2011-2014 Peercoin Developers
+Copyright © 2014-2015 Paycoin Developers
 
 This is experimental software.
 
@@ -34,6 +26,9 @@ Distributed under the MIT software license, see the accompanying file COPYING or
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
         <translation>Copyright © 2009-2014 Bitcoin Developers
+Copyright © 2011-2014 Peercoin Developers
+Copyright © 2014-2015 Paycoin Developers
+
 Ini adalah perangkat lunak eksperimental.
 Didistribusikan di bawah lisensi software MIT, melihat file terlampir COPYING or http://www.opensource.org/licenses/mit-license.php.
 Produk ini berisi software yang dikembangkan oleh OpenSSL Project untuk digunakan dalam OpenSSL Toolkit (https://www.openssl.org/) dan software kriptografi yang ditulis oleh Eric Young (eay@cryptsoft.com) dan software UPnP yang ditulis oleh Thomas Bernard.</translation>
@@ -261,7 +256,7 @@ Produk ini berisi software yang dikembangkan oleh OpenSSL Project untuk digunaka
         <location filename="../askpassphrasedialog.cpp" line="107"/>
         <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
-        <translation>PERINGATAN: Jika Anda mengenkripsi dompet Anda dan kehilangan passphrase, Anda akan &lt;b&gt;KEHILANGAN SEMUA PAYCOINS ANDA&lt;/b&gt;! 
+        <translation>PERINGATAN: Jika Anda mengenkripsi dompet Anda dan kehilangan passphrase, Anda akan &lt;b&gt;KEHILANGAN SEMUA PAYCOINS ANDA&lt;/b&gt;!
 Apakah Anda yakin ingin mengenkripsi dompet Anda?</translation>
     </message>
     <message>
@@ -900,8 +895,8 @@ Alamat: %4</translation>
  This means a fee of at least %1 per kb is required.
 
  Can vary +/- 1 Byte per input.</source>
-        <translation>Label ini berubah merah, jika ukuran transaksi lebih besar dari 10000 bytes. 
-Ini berarti diperlukan biaya minimal %1  per kb. 
+        <translation>Label ini berubah merah, jika ukuran transaksi lebih besar dari 10000 bytes.
+Ini berarti diperlukan biaya minimal %1  per kb.
 Dapat bervariasi +/- 1 Byte per input.</translation>
     </message>
     <message>
@@ -911,19 +906,19 @@ Dapat bervariasi +/- 1 Byte per input.</translation>
 This label turns red, if the priority is smaller than &quot;medium&quot;.
 
  This means a fee of at least %1 per kb is required.</source>
-        <translation>Transaksi dengan prioritas yang lebih tinggi lebih mungkin mendapatkan ke dalam blok. 
-Label ini berubah merah, jika prioritas lebih kecil dari &quot;menengah&quot;. 
+        <translation>Transaksi dengan prioritas yang lebih tinggi lebih mungkin mendapatkan ke dalam blok.
+Label ini berubah merah, jika prioritas lebih kecil dari &quot;menengah&quot;.
 Ini berarti diperlukan biaya minimal %1 per kb.</translation>
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="584"/>
         <source>This label turns red, if any recipient receives an amount smaller than %1.
 
- This means a fee of at least %2 is required. 
+ This means a fee of at least %2 is required.
 
  Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
-        <translation>Label ini berubah merah, jika penerima menerima jumlah yang lebih kecil dari %1. 
-Ini berarti diperlukan biaya minimal %2. 
+        <translation>Label ini berubah merah, jika penerima menerima jumlah yang lebih kecil dari %1.
+Ini berarti diperlukan biaya minimal %2.
 Jumlah di bawah 0.546 kali biayat minimum relay ditampilkan sebagai DEBU.</translation>
     </message>
     <message>
@@ -2971,8 +2966,8 @@ If the file does not exist, create it with owner-readable-only file permissions.
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="101"/>
-        <source>Error: CreateThread(StartNode) failed</source>
-        <translation>Error: CreateThread (StartNode) gagal</translation>
+        <source>Error: NewThread(StartNode) failed</source>
+        <translation>Error: NewThread (StartNode) gagal</translation>
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="102"/>
@@ -2994,8 +2989,8 @@ If the file does not exist, create it with owner-readable-only file permissions.
         <source>You must set rpcpassword=&lt;password&gt; in the configuration file:
 %s
 If the file does not exist, create it with owner-readable-only file permissions.</source>
-        <translation>Anda harus mengatur rpcpassword = &lt;password&gt; di file konfigurasi: 
-%s 
+        <translation>Anda harus mengatur rpcpassword = &lt;password&gt; di file konfigurasi:
+%s
 Jika file tidak ada, buatlah dengan file hak akses file owner-readable-only.</translation>
     </message>
     <message>

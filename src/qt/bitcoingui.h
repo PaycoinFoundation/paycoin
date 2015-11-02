@@ -103,7 +103,7 @@ private:
     MintingView *mintingView;
     RPCConsole *rpcConsole;
 
-    QMovie *syncIconMovie;
+    int spinnerFrame;
 
     /** Create the main UI actions. */
     void createActions();
@@ -159,7 +159,7 @@ private slots:
     void optionsClicked();
     /** Show about dialog */
     void aboutClicked();
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     /** Handle tray icon clicked */
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 #endif
@@ -185,4 +185,4 @@ private slots:
     void toggleHidden();
 };
 
-#endif
+#endif // BITCOINGUI_H

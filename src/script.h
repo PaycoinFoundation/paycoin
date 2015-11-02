@@ -197,7 +197,10 @@ enum opcodetype
     OP_PRIMENODE20 = 0xc3,
     OP_PRIMENODE10 = 0xc4,
     OP_PRIMENODEP2 = 0xc5,
+    OP_MICROPRIME = 0xc6,
 
+    // extra control function
+    OP_BURN = 0xd0,
 
     // template matching params
     OP_SMALLINTEGER = 0xfa,
@@ -462,7 +465,7 @@ public:
                 memcpy(&nSize, &pc[0], 4);
                 pc += 4;
             }
-            if (end() - pc < nSize)
+            if (end() - pc < 0 || (unsigned int)(end() - pc) < nSize)
                 return false;
             if (pvchRet)
                 pvchRet->assign(pc, pc + nSize);

@@ -10,30 +10,24 @@
         <translation>关于Paycoin</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="75"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <location filename="../forms/aboutdialog.ui" line="53"/>
+        <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="113"/>
-        <source>Copyright © 2014 Paycoin Developers</source>
-        <translation>版权归Paycoin开发者所有 © 2014 Paycoin Developers</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Peercoin Developers</source>
-        <translation>版权归Paycoin开发者所有  © 2011-2014 Paycoin Developers</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="133"/>
-        <source>Copyright © 2009-2014 Bitcoin Developers
+        <location filename="../forms/aboutdialog.ui" line="97"/>
+        <source>Copyright © 2009-2012 Bitcoin Developers
+Copyright © 2011-2014 Peercoin Developers
+Copyright © 2014-2015 Paycoin Developers
 
 This is experimental software.
 
 Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>版权归比特币开发者所有  © 2009-2013 Paycoin Developers
+        <translation>版权归比特币开发者所有  © 2009-2013 Bitcoin Developers
+版权归Peercoin开发者所有  © 2011-2014 Peercoin Developers
+版权归Paycoin开发者所有 © 2014 Paycoin Developers
 
 这是一个实验性软件。
 
@@ -927,7 +921,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <location filename="../coincontroldialog.cpp" line="584"/>
         <source>This label turns red, if any recipient receives an amount smaller than %1.
 
- This means a fee of at least %2 is required. 
+ This means a fee of at least %2 is required.
 
  Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
         <translation>如果收款地址收到小于%1的比特币，标签将变成红色。
@@ -2996,8 +2990,8 @@ If the file does not exist, create it with owner-readable-only file permissions.
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="101"/>
-        <source>Error: CreateThread(StartNode) failed</source>
-        <translation>错误：CreateThread(StartNode)失败</translation>
+        <source>Error: NewThread(StartNode) failed</source>
+        <translation>错误：NewThread(StartNode)失败</translation>
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="102"/>

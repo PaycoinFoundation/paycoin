@@ -106,14 +106,24 @@ OBJS= \
     obj/bitcoinrpc.o \
     obj/rpcdump.o \
     obj/rpcnet.o \
+    obj/rpcrawtransaction.o \
     obj/script.o \
     obj/util.o \
     obj/wallet.o \
     obj/walletdb.o \
     obj/noui.o \
     obj/kernel.o \
-    obj/primekeys.o
+    obj/primenodes.o \
+    obj/primekeys.o \
+    obj/mpkeys.o \
+    obj/mpkeys_test.o \
+    obj/scrapesdb.o
 
+# This isn't present in Clang but without it in GCC the key files are compiled
+# twice (once with var-tracking-assignments which fails then again without).
+ifeq ($(CXX), g++)
+    obj/mpkeys.o obj/mpkeys_test.o : xCXXFLAGS += -fno-var-tracking-assignments
+endif
 
 all: paycoind
 
@@ -154,6 +164,6 @@ clean:
 	-rm -f obj-test/*.o
 	-rm -f obj/*.P
 	-rm -f obj-test/*.P
-	-rm -f src/build.h
+	-rm -f obj/build.h
 
 FORCE:

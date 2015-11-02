@@ -10,32 +10,29 @@
         <translation>Über Paycoin</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="75"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../forms/aboutdialog.ui" line="53"/>
+        <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
+        <translation>&lt;b&gt;Paycoin&lt;/b&gt; version</translation>
     </message>
     <message>
-        <location filename="../forms/aboutdialog.ui" line="113"/>
-        <source>Copyright © 2014 Paycoin Developers</source>
-        <translation>Copyright © 2014 Die Paycoin-Entwickler</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="120"/>
-        <source>Copyright © 2011-2014 Peercoin Developers</source>
-        <translation>Copyright © 2011-2014 Die PPcoin-Entwickler</translation>
-    </message>
-    <message>
-        <location filename="../forms/aboutdialog.ui" line="133"/>
-        <source>Copyright © 2009-2014 Bitcoin Developers
+        <location filename="../forms/aboutdialog.ui" line="97"/>
+        <source>Copyright © 2009-2012 Bitcoin Developers
+Copyright © 2011-2014 Peercoin Developers
+Copyright © 2014-2015 Paycoin Developers
 
 This is experimental software.
 
 Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>Copyright © 2009-2014 Die Bitcoin-Entwickler
+        <translation>Copyright © 2009-2012 Die Bitcoin-Entwickler
+Copyright © 2011-2014 Die Peercoin-Entwickler
+Copyright © 2014-2015 Die Paycoin-Entwickler
+
 Dies ist experimentelle Software.
+
 Veröffentlicht unter der MIT-Softwarelizenz, siehe beiligende Datei  COPYING oder http://www.opensource.org/licenses/mit-license.php.
+
 Dieses Produkt enthält Software, die vom OpenSSL-Projekt zur Verwendung im OpenSSL-Toolkit (https://www.openssl.org/) entwickelt wird, sowie von Eric Young (eay@cryptsoft.com) geschriebene kryptographische Software und von Thomas Bernard geschriebene UPnP-Software.</translation>
     </message>
 </context>
@@ -925,7 +922,7 @@ Das bedeutet, dass eine Gebühr von mindestens %1 pro kB erforderlich ist.</tran
         <location filename="../coincontroldialog.cpp" line="584"/>
         <source>This label turns red, if any recipient receives an amount smaller than %1.
 
- This means a fee of at least %2 is required. 
+ This means a fee of at least %2 is required.
 
  Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
         <translation>Diese Bezeichnung wird rot, wenn irgendein Empfänger einen Betrag kleiner als %1 erhält.
@@ -2979,8 +2976,8 @@ If the file does not exist, create it with owner-readable-only file permissions.
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="101"/>
-        <source>Error: CreateThread(StartNode) failed</source>
-        <translation>Fehler: CreateThread(StartNode) fehlgeschlagen</translation>
+        <source>Error: NewThread(StartNode) failed</source>
+        <translation>Fehler: NewThread(StartNode) fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../bitcoinstrings.cpp" line="102"/>

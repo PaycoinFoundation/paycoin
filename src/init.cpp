@@ -13,11 +13,15 @@
 #include "ui_interface.h"
 #include "checkpoints.h"
 #include "version.h"
+#include "scrapesdb.h"
+#include "primenodes.h"
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/convenience.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #include <ctime>
+#include <openssl/crypto.h>
 
 #ifndef WIN32
 #include <signal.h>
@@ -27,7 +31,8 @@ using namespace std;
 using namespace boost;
 
 CWallet* pwalletMain;
-int MIN_PROTO_VERSION = 70002;
+CScrapesDB* scrapesDB;
+int MIN_PROTO_VERSION = 70004;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -49,7 +54,7 @@ void StartShutdown()
     QueueShutdown();
 #else
     // Without UI, Shutdown() can simply be started in a new thread
-    CreateThread(Shutdown, NULL);
+    NewThread(Shutdown, NULL);
 #endif
 }
 
@@ -71,13 +76,21 @@ void Shutdown(void* parg)
     {
         fShutdown = true;
         nTransactionsUpdated++;
-        DBFlush(false);
+        if (primeNodeDB)
+            primeNodeDB->Close();
+        if (scrapesDB)
+            scrapesDB->Close();
+        bitdb.Flush(false);
         StopNode();
-        DBFlush(true);
+        bitdb.Flush(true);
         boost::filesystem::remove(GetPidFile());
         UnregisterWallet(pwalletMain);
         delete pwalletMain;
-        CreateThread(ExitTimeout, NULL);
+        if (primeNodeDB)
+            delete primeNodeDB;
+        if (scrapesDB)
+            delete scrapesDB;
+        NewThread(ExitTimeout, NULL);
         Sleep(50);
         printf("Paycoin exiting\n\n");
         fExit = true;
@@ -100,6 +113,10 @@ void HandleSIGTERM(int)
     fRequestShutdown = true;
 }
 
+void HandleSIGHUP(int)
+{
+    fReopenDebugLog = true;
+}
 
 
 
@@ -139,15 +156,25 @@ bool AppInit(int argc, char* argv[])
     return fRet;
 }
 
+bool static InitError(const std::string &str)
+{
+    ThreadSafeMessageBox(str, _("Paycoin"), wxOK | wxMODAL);
+    return false;
+}
+
+bool static InitWarning(const std::string &str)
+{
+    ThreadSafeMessageBox(str, _("Paycoin"), wxOK | wxICON_EXCLAMATION | wxMODAL);
+    return true;
+}
+
 bool static Bind(const CService &addr) {
     if (IsLimited(addr))
         return false;
     std::string strError;
     if (!BindListenPort(addr, strError))
-    {
-        ThreadSafeMessageBox(strError, _("Paycoin"), wxOK | wxMODAL);
-        return false;
-    }
+        return InitError(strError);
+
     return true;
 }
 
@@ -162,10 +189,22 @@ bool AppInit2(int argc, char* argv[])
     // Disable confusing "helpful" text message on abort, Ctrl+C
     _set_abort_behavior(0, _WRITE_ABORT_MSG | _CALL_REPORTFAULT);
 #endif
-#ifndef WIN32
-    umask(077);
+#ifdef WIN32
+    // Enable Data Execution Prevention (DEP)
+    // Minimum supported OS versions: WinXP SP3, WinVista >= SP1, Win Server 2008
+    // A failure is non-critical and needs no further attention!
+#ifndef PROCESS_DEP_ENABLE
+// We define this here, because GCCs winbase.h limits this to _WIN32_WINNT >= 0x0601 (Windows 7),
+// which is not correct. Can be removed, when GCCs winbase.h is fixed!
+#define PROCESS_DEP_ENABLE 0x00000001
+#endif
+    typedef BOOL (WINAPI *PSETPROCDEPPOL)(DWORD);
+    PSETPROCDEPPOL setProcDEPPol = (PSETPROCDEPPOL)GetProcAddress(GetModuleHandleA("Kernel32.dll"), "SetProcessDEPPolicy");
+    if (setProcDEPPol != NULL) setProcDEPPol(PROCESS_DEP_ENABLE);
 #endif
 #ifndef WIN32
+    umask(077);
+
     // Clean shutdown on SIGTERM
     struct sigaction sa;
     sa.sa_handler = HandleSIGTERM;
@@ -173,7 +212,13 @@ bool AppInit2(int argc, char* argv[])
     sa.sa_flags = 0;
     sigaction(SIGTERM, &sa, NULL);
     sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGHUP, &sa, NULL);
+
+    // Reopen debug.log on SIGHUP
+    struct sigaction sa_hup;
+    sa_hup.sa_handler = HandleSIGHUP;
+    sigemptyset(&sa_hup.sa_mask);
+    sa_hup.sa_flags = 0;
+    sigaction(SIGHUP, &sa_hup, NULL);
 #endif
 
     //
@@ -209,7 +254,7 @@ bool AppInit2(int argc, char* argv[])
             "  -datadir=<dir>   \t\t  " + _("Specify data directory") + "\n" +
             "  -dbcache=<n>     \t\t  " + _("Set database cache size in megabytes (default: 25)") + "\n" +
             "  -dblogsize=<n>   \t\t  " + _("Set database disk log size in megabytes (default: 100)") + "\n" +
-            "  -timeout=<n>     \t  "   + _("Specify connection timeout (in milliseconds)") + "\n" +
+            "  -timeout=<n>     \t  "   + _("Specify connection timeout in milliseconds (default: 5000)") + "\n" +
             "  -proxy=<ip:port> \t  "   + _("Connect through socks proxy") + "\n" +
             "  -socks=<n>       \t  "   + _("Select the version of socks proxy to use (4 or 5, 5 is default)") + "\n" +
             "  -noproxy=<net>   \t  "   + _("Do not use proxy for connections to network net (ipv4 or ipv6)") + "\n" +
@@ -231,15 +276,15 @@ bool AppInit2(int argc, char* argv[])
             "  -dnsseed         \t  "   + _("Find peers using DNS lookup (default: 1)") + "\n" +
             "  -banscore=<n>    \t  "   + _("Threshold for disconnecting misbehaving peers (default: 100)") + "\n" +
             "  -bantime=<n>     \t  "   + _("Number of seconds to keep misbehaving peers from reconnecting (default: 86400)") + "\n" +
-            "  -maxreceivebuffer=<n>\t  " + _("Maximum per-connection receive buffer, <n>*1000 bytes (default: 10000)") + "\n" +
-            "  -maxsendbuffer=<n>\t  "   + _("Maximum per-connection send buffer, <n>*1000 bytes (default: 10000)") + "\n" +
+            "  -maxreceivebuffer=<n>\t  " + _("Maximum per-connection receive buffer, <n>*1000 bytes (default: 5000)") + "\n" +
+            "  -maxsendbuffer=<n>\t  "   + _("Maximum per-connection send buffer, <n>*1000 bytes (default: 1000)") + "\n" +
 #ifdef USE_UPNP
 #if USE_UPNP
             "  -upnp            \t  "   + _("Use Universal Plug and Play to map the listening port (default: 1)") + "\n" +
 #else
             "  -upnp            \t  "   + _("Use Universal Plug and Play to map the listening port (default: 0)") + "\n" +
 #endif
-            "  -detachdb        \t  "   + _("Detach block and address databases. Increases shutdown time (default: 0)") + "\n" +
+            "  -detachdb        \t  "   + _("Detach block database. Increases shutdown time (default: 0)") + "\n" +
 #endif
             "  -paytxfee=<amt>  \t  "   + _("Fee per KB to add to transactions you send") + "\n" +
 #ifdef QT_GUI
@@ -251,6 +296,7 @@ bool AppInit2(int argc, char* argv[])
             "  -testnet         \t\t  " + _("Use the test network") + "\n" +
             "  -debug           \t\t  " + _("Output extra debugging information") + "\n" +
             "  -logtimestamps   \t  "   + _("Prepend debug output with timestamp") + "\n" +
+            "  -shrinkdebugfile \t  "   + _("Shrink debug.log file on client startup (default: 1 when no -debug)") + "\n" +
             "  -printtoconsole  \t  "   + _("Send trace/debug info to console instead of debug.log file") + "\n" +
 #ifdef WIN32
             "  -printtodebugger \t  "   + _("Send trace/debug info to debugger") + "\n" +
@@ -266,7 +312,8 @@ bool AppInit2(int argc, char* argv[])
             "  -keypool=<n>     \t  "   + _("Set key pool size to <n> (default: 100)") + "\n" +
             "  -rescan          \t  "   + _("Rescan the block chain for missing wallet transactions") + "\n" +
             "  -checkblocks=<n> \t\t  " + _("How many blocks to check at startup (default: 2500, 0 = all)") + "\n" +
-            "  -checklevel=<n>  \t\t  " + _("How thorough the block verification is (0-6, default: 1)") + "\n";
+            "  -checklevel=<n>  \t\t  " + _("How thorough the block verification is (0-6, default: 1)") + "\n" +
+            "  -stake           \t\t  " + _("Set whether the node should stake (default: 1)") + "\n";
 
         strUsage += string() +
             _("\nSSL options: (see the Paycoin Wiki for SSL setup instructions)") + "\n" +
@@ -292,7 +339,7 @@ bool AppInit2(int argc, char* argv[])
     fTestNet = GetBoolArg("-testnet");
 
     fDebug = GetBoolArg("-debug");
-    fDetachDB = GetBoolArg("-detachdb", false);
+    bitdb.SetDetach(GetBoolArg("-detachdb", false));
 
 #if !defined(WIN32) && !defined(QT_GUI)
     fDaemon = GetBoolArg("-daemon");
@@ -315,7 +362,7 @@ bool AppInit2(int argc, char* argv[])
 
 #ifndef QT_GUI
     for (int i = 1; i < argc; i++)
-        if (!IsSwitchChar(argv[i][0]) && !(strlen(argv[i]) >= 7 && strncasecmp(argv[i], "paycoin:", 7) == 0))
+        if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "paycoin:"))
             fCommandLine = true;
 
     if (fCommandLine)
@@ -347,11 +394,13 @@ bool AppInit2(int argc, char* argv[])
     }
 #endif
 
-    if (!fDebug)
+    if (GetBoolArg("-shrinkdebugfile", !fDebug))
         ShrinkDebugFile();
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     printf("Paycoin version %s (%s)\n", FormatFullVersion().c_str(), CLIENT_DATE.c_str());
+    printf("Using OpenSSL version %s\n", SSLeay_version(SSLEAY_VERSION));
     printf("Default data directory %s\n", GetDefaultDataDir().string().c_str());
+    printf("Used data directory %s\n", GetDataDir().string().c_str());
 
     if (GetBoolArg("-loadblockindextest"))
     {
@@ -367,17 +416,11 @@ bool AppInit2(int argc, char* argv[])
     if (file) fclose(file);
     static boost::interprocess::file_lock lock(pathLockFile.string().c_str());
     if (!lock.try_lock())
-    {
-        ThreadSafeMessageBox(strprintf(_("Cannot obtain a lock on data directory %s.  Paycoin is probably already running."), GetDataDir().string().c_str()), _("Paycoin"), wxOK|wxMODAL);
-        return false;
-    }
+        return InitError(strprintf(_("Cannot obtain a lock on data directory %s.  Paycoin is probably already running."), GetDataDir().string().c_str()));
 
-    /* Check and update minium version protocol after a given time (same time
-     * as resetting the primenode stake rates; do this here to insure that it's
-     * done before attempting to load the blockchain, etc (this is also why we
-     * use a time instead of a block number). */
-    if (time(NULL) >= END_PRIME_PHASE_ONE)
-        MIN_PROTO_VERSION = 70003;
+    // Check and update minium version protocol after a given time.
+    if (time(NULL) >= ENABLE_MICROPRIMES)
+        MIN_PROTO_VERSION = 70005;
 
     std::ostringstream strErrors;
     //
@@ -390,9 +433,15 @@ bool AppInit2(int argc, char* argv[])
     InitMessage(_("Loading addresses..."));
     printf("Loading addresses...\n");
     nStart = GetTimeMillis();
-    if (!LoadAddresses())
-        strErrors << _("Error loading addr.dat") << "\n";
-    printf(" addresses   %15"PRI64d"ms\n", GetTimeMillis() - nStart);
+
+    {
+        CAddrDB adb;
+        if (!adb.Read(addrman))
+            printf("Invalid or missing peers.dat; recreating\n");
+    }
+
+    printf("Loaded %i addresses from peers.dat %"PRI64d"ms\n",
+           addrman.size(), GetTimeMillis() - nStart);
 
     InitMessage(_("Loading block index..."));
     printf("Loading block index...\n");
@@ -426,8 +475,7 @@ bool AppInit2(int argc, char* argv[])
         {
             strErrors << _("Wallet needed to be rewritten: restart Paycoin to complete") << "\n";
             printf("%s", strErrors.str().c_str());
-            ThreadSafeMessageBox(strErrors.str(), _("Paycoin"), wxOK | wxICON_ERROR | wxMODAL);
-            return false;
+            return InitError(strErrors.str());
         }
         else
             strErrors << _("Error loading wallet.dat") << "\n";
@@ -486,6 +534,26 @@ bool AppInit2(int argc, char* argv[])
         printf(" rescan      %15"PRI64d"ms\n", GetTimeMillis() - nStart);
     }
 
+    InitMessage(_("Loading prime nodes..."));
+    printf("Loading prime nodes...");
+    nStart = GetTimeMillis();
+    /* Handle primenode keys on start to confirm their validity.
+     * If it fails for any reason prompt with a QT friendly message. */
+    string ret;
+    if (!initPrimeNodes(ret)) {
+        strErrors << ret << "\n";
+    } else if (!ret.empty()) {
+        InitMessage(ret);
+        printf("%s\n", ret.c_str());
+    }
+    printf(" prime nodes %15"PRI64d"ms\n", GetTimeMillis() - nStart);
+
+    InitMessage(_("Loading scrapes..."));
+    printf("Loading scrapes...\n");
+    nStart = GetTimeMillis();
+    scrapesDB = new CScrapesDB("cw");
+    printf(" scrapes     %15"PRI64d"ms\n", GetTimeMillis() - nStart);
+
     InitMessage(_("Done loading"));
     printf("Done loading\n");
 
@@ -497,10 +565,7 @@ bool AppInit2(int argc, char* argv[])
     printf("mapAddressBook.size() = %d\n",  pwalletMain->mapAddressBook.size());
 
     if (!strErrors.str().empty())
-    {
-        ThreadSafeMessageBox(strErrors.str(), _("Paycoin"), wxOK | wxICON_ERROR | wxMODAL);
-        return false;
-    }
+        return InitError(strErrors.str());
 
     // Add wallet transactions that aren't already in a block to mapTransactions
     pwalletMain->ReacceptWalletTransactions();
@@ -553,20 +618,16 @@ bool AppInit2(int argc, char* argv[])
         fUseProxy = true;
         addrProxy = CService(mapArgs["-proxy"], 9050);
         if (!addrProxy.IsValid())
-        {
-            ThreadSafeMessageBox(_("Invalid -proxy address"), _("Paycoin"), wxOK | wxMODAL);
-            return false;
-        }
+            return InitError(strprintf(_("Invalid -proxy address: '%s'"), mapArgs["-proxy"].c_str()));
     }
 
     if (mapArgs.count("-noproxy"))
     {
         BOOST_FOREACH(std::string snet, mapMultiArgs["-noproxy"]) {
             enum Network net = ParseNetwork(snet);
-            if (net == NET_UNROUTABLE) {
-                ThreadSafeMessageBox(_("Unknown network specified in -noproxy"), _("Paycoin"), wxOK | wxMODAL);
-                return false;
-            }
+            if (net == NET_UNROUTABLE)
+                return InitError(strprintf(_("Unknown network specified in -noproxy: '%s'"), snet.c_str()));
+
             SetNoProxy(net);
         }
     }
@@ -615,6 +676,8 @@ bool AppInit2(int argc, char* argv[])
         fNameLookup = true;
     fNoListen = !GetBoolArg("-listen", true);
     nSocksVersion = GetArg("-socks", 5);
+    if (nSocksVersion != 4 && nSocksVersion != 5)
+        return InitError(strprintf(_("Unknown -socks proxy version requested: %i"), nSocksVersion));
 
     BOOST_FOREACH(string strDest, mapMultiArgs["-seednode"])
         AddOneShot(strDest);
@@ -631,7 +694,11 @@ bool AppInit2(int argc, char* argv[])
         std::string strError;
         if (mapArgs.count("-bind")) {
             BOOST_FOREACH(std::string strBind, mapMultiArgs["-bind"]) {
-                fBound |= Bind(CService(strBind, GetListenPort(), false));
+                CService addrBind(strBind, GetListenPort(), false);
+                if (!addrBind.IsValid())
+                    return InitError(strprintf(_("Cannot resolve -bind address: '%s'"), strBind.c_str()));
+
+                fBound |= Bind(addrBind);
             }
         } else {
             struct in_addr inaddr_any;
@@ -647,36 +714,41 @@ bool AppInit2(int argc, char* argv[])
 
     if (mapArgs.count("-externalip"))
     {
-        BOOST_FOREACH(string strAddr, mapMultiArgs["-externalip"])
+        BOOST_FOREACH(string strAddr, mapMultiArgs["-externalip"]) {
+            CService addrLocal(strAddr, GetListenPort(), fNameLookup);
+            if (!addrLocal.IsValid())
+                return InitError(strprintf(_("Cannot resolve -externalip address: '%s'"), strAddr.c_str()));
+
             AddLocal(CNetAddr(strAddr, fNameLookup), LOCAL_MANUAL);
+        }
     }
 
     if (mapArgs.count("-paytxfee"))
     {
         if (!ParseMoney(mapArgs["-paytxfee"], nTransactionFee) || nTransactionFee < MIN_TX_FEE)
-        {
-            ThreadSafeMessageBox(_("Invalid amount for -paytxfee=<amount>"), _("Paycoin"), wxOK | wxMODAL);
-            return false;
-        }
+            return InitError(strprintf(_("Invalid amount for -paytxfee=<amount>: '%s'"), mapArgs["-paytxfee"].c_str()));
+
         if (nTransactionFee > 0.25 * COIN)
-            ThreadSafeMessageBox(_("Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction."), _("Paycoin"), wxOK | wxICON_EXCLAMATION | wxMODAL);
+            InitWarning(_("Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction."));
     }
 
     if (mapArgs.count("-reservebalance")) // paycoin: reserve balance amount
     {
         int64 nReserveBalance = 0;
         if (!ParseMoney(mapArgs["-reservebalance"], nReserveBalance))
-        {
-            ThreadSafeMessageBox(_("Invalid amount for -reservebalance=<amount>"), _("Paycoin"), wxOK | wxMODAL);
-            return false;
-        }
+            return InitError(_("Invalid amount for -reservebalance=<amount>"));
     }
 
+    // Not used, semi-depricated; debating removal....
     if (mapArgs.count("-checkpointkey")) // paycoin: checkpoint master priv key
     {
         if (!Checkpoints::SetCheckpointPrivKey(GetArg("-checkpointkey", "")))
-            ThreadSafeMessageBox(_("Unable to sign checkpoint, wrong checkpointkey?\n"), _("Paycoin"), wxOK | wxMODAL);
+            return InitError(_("Unable to sign checkpoint, wrong checkpointkey?"));
     }
+
+    // Set stake to true if it's not set in the conf
+    if (!mapArgs.count("-stake"))
+        SoftSetBoolArg("-stake", true);
 
     //
     // Start the node
@@ -686,11 +758,11 @@ bool AppInit2(int argc, char* argv[])
 
     RandAddSeedPerfmon();
 
-    if (!CreateThread(StartNode, NULL))
-        ThreadSafeMessageBox(_("Error: CreateThread(StartNode) failed"), _("Paycoin"), wxOK | wxMODAL);
+    if (!NewThread(StartNode, NULL))
+        InitError(_("Error: could not start node"));
 
     if (fServer)
-        CreateThread(ThreadRPCServer, NULL);
+        NewThread(ThreadRPCServer, NULL);
 
 #ifdef QT_GUI
     if (GetStartOnSystemStartup())

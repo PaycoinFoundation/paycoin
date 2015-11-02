@@ -25,9 +25,10 @@ AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
 {
     ui->setupUi(this);
 
-#ifdef Q_WS_MAC // Icons on push buttons are very uncommon on Mac
+#ifdef Q_OS_MAC // Icons on push buttons are very uncommon on Mac
     ui->newAddressButton->setIcon(QIcon());
     ui->copyToClipboard->setIcon(QIcon());
+    ui->copyScrapeAddrToClipboard->setIcon(QIcon());
     ui->deleteButton->setIcon(QIcon());
 #endif
 
@@ -58,25 +59,38 @@ AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
         ui->signMessage->setVisible(true);
         break;
     }
-    ui->tableView->setTabKeyNavigation(false);
-    ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
 
     // Context menu actions
-    QAction *copyAddressAction = new QAction(tr("Copy address"), this);
-    QAction *copyLabelAction = new QAction(tr("Copy label"), this);
-    QAction *editAction = new QAction(tr("Edit"), this);
-    deleteAction = new QAction(tr("Delete"), this);
+    QAction *copyLabelAction = new QAction(tr("Copy &Label"), this);
+    QAction *copyAddressAction = new QAction(ui->copyToClipboard->text(), this);
+    QAction *copyScrapeAddrAction = new QAction(ui->copyScrapeAddrToClipboard->text(), this);
+    QAction *editAction = new QAction(tr("&Edit"), this);
+    QAction *showQRCodeAction = new QAction(ui->showQRCode->text(), this);
+    QAction *signMessageAction = new QAction(ui->signMessage->text(), this);
+    deleteAction = new QAction(ui->deleteButton->text(), this);
 
+    // Build context menu
     contextMenu = new QMenu();
     contextMenu->addAction(copyAddressAction);
     contextMenu->addAction(copyLabelAction);
+    if(tab == ReceivingTab)
+        contextMenu->addAction(copyScrapeAddrAction);
     contextMenu->addAction(editAction);
-    contextMenu->addAction(deleteAction);
+    if(tab == SendingTab)
+        contextMenu->addAction(deleteAction);
+    contextMenu->addSeparator();
+    contextMenu->addAction(showQRCodeAction);
+    if(tab == ReceivingTab)
+        contextMenu->addAction(signMessageAction);
 
+    // Connect signals for context menu actions
     connect(copyAddressAction, SIGNAL(triggered()), this, SLOT(on_copyToClipboard_clicked()));
     connect(copyLabelAction, SIGNAL(triggered()), this, SLOT(onCopyLabelAction()));
+    connect(copyScrapeAddrAction, SIGNAL(triggered()), this, SLOT(on_copyScrapeAddrToClipboard_clicked()));
     connect(editAction, SIGNAL(triggered()), this, SLOT(onEditAction()));
     connect(deleteAction, SIGNAL(triggered()), this, SLOT(on_deleteButton_clicked()));
+    connect(showQRCodeAction, SIGNAL(triggered()), this, SLOT(on_showQRCode_clicked()));
+    connect(signMessageAction, SIGNAL(triggered()), this, SLOT(on_signMessage_clicked()));
 
     connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextualMenu(QPoint)));
 
@@ -104,14 +118,23 @@ void AddressBookPage::setModel(AddressTableModel *model)
         // Receive filter
         proxyModel->setFilterRole(AddressTableModel::TypeRole);
         proxyModel->setFilterFixedString(AddressTableModel::Receive);
+        // Set this slightly earlier so that we can adjust our columns by tab.
+        ui->tableView->setModel(proxyModel);
+        // Only display the scrape address for the receiving tab (cheap hack)
+        ui->tableView->horizontalHeader()->resizeSection(
+                AddressTableModel::ScrapeAddress, 320);
         break;
     case SendingTab:
         // Send filter
         proxyModel->setFilterRole(AddressTableModel::TypeRole);
         proxyModel->setFilterFixedString(AddressTableModel::Send);
+        // Set this slightly earlier so that we can adjust our columns by tab.
+        ui->tableView->setModel(proxyModel);
+        // Do not display the scrape address on the send tab (cheap hack)
+        ui->tableView->horizontalHeader()->resizeSection(
+                AddressTableModel::ScrapeAddress, 0);
         break;
     }
-    ui->tableView->setModel(proxyModel);
     ui->tableView->sortByColumn(0, Qt::AscendingOrder);
 
     // Set column widths
@@ -134,6 +157,11 @@ void AddressBookPage::on_copyToClipboard_clicked()
 void AddressBookPage::onCopyLabelAction()
 {
     GUIUtil::copyEntryData(ui->tableView, AddressTableModel::Label);
+}
+
+void AddressBookPage::on_copyScrapeAddrToClipboard_clicked()
+{
+    GUIUtil::copyEntryData(ui->tableView, AddressTableModel::ScrapeAddress);
 }
 
 void AddressBookPage::onEditAction()
@@ -227,6 +255,7 @@ void AddressBookPage::selectionChanged()
             break;
         }
         ui->copyToClipboard->setEnabled(true);
+        ui->copyScrapeAddrToClipboard->setEnabled(true);
         ui->showQRCode->setEnabled(true);
     }
     else
@@ -234,6 +263,7 @@ void AddressBookPage::selectionChanged()
         ui->deleteButton->setEnabled(false);
         ui->showQRCode->setEnabled(false);
         ui->copyToClipboard->setEnabled(false);
+        ui->copyScrapeAddrToClipboard->setEnabled(false);
         ui->signMessage->setEnabled(false);
     }
 }

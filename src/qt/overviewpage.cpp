@@ -99,32 +99,20 @@ OverviewPage::OverviewPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // Balance: <balance>
-    ui->labelBalance->setFont(QFont("Monospace", -1, QFont::Bold));
-    ui->labelBalance->setToolTip(tr("Your current balance"));
-    ui->labelBalance->setTextInteractionFlags(Qt::TextSelectableByMouse|Qt::TextSelectableByKeyboard);
-
-    // paycoin: stake: <stake>
-    ui->labelStake->setFont(QFont("Monospace", -1, QFont::Bold));
-    ui->labelStake->setToolTip(tr("Your current stake"));
-    ui->labelStake->setTextInteractionFlags(Qt::TextSelectableByMouse|Qt::TextSelectableByKeyboard);
-
-    // Unconfirmed balance: <balance>
-    ui->labelUnconfirmed->setFont(QFont("Monospace", -1, QFont::Bold));
-    ui->labelUnconfirmed->setToolTip(tr("Total of transactions that have yet to be confirmed, and do not yet count toward the current balance"));
-    ui->labelUnconfirmed->setTextInteractionFlags(Qt::TextSelectableByMouse|Qt::TextSelectableByKeyboard);
-
-    ui->labelNumTransactions->setToolTip(tr("Total number of transactions in wallet"));
-
     // Recent transactions
-    ui->listTransactions->setStyleSheet("QListView { background:transparent }");
     ui->listTransactions->setItemDelegate(txdelegate);
     ui->listTransactions->setIconSize(QSize(DECORATION_SIZE, DECORATION_SIZE));
-    ui->listTransactions->setSelectionMode(QAbstractItemView::NoSelection);
     ui->listTransactions->setMinimumHeight(NUM_ITEMS * (DECORATION_SIZE + 2));
     ui->listTransactions->setAttribute(Qt::WA_MacShowFocusRect, false);
 
     connect(ui->listTransactions, SIGNAL(clicked(QModelIndex)), this, SIGNAL(transactionClicked(QModelIndex)));
+
+    // init "out of sync" warning labels
+    ui->labelWalletStatus->setText("(" + tr("out of sync") + ")");
+    ui->labelTransactionsStatus->setText("(" + tr("out of sync") + ")");
+
+    // start with displaying the "out of sync" warnings
+    showOutOfSyncWarning(true);
 }
 
 OverviewPage::~OverviewPage()
@@ -184,4 +172,10 @@ void OverviewPage::displayUnitChanged()
 
     txdelegate->unit = model->getOptionsModel()->getDisplayUnit();
     ui->listTransactions->update();
+}
+
+void OverviewPage::showOutOfSyncWarning(bool fShow)
+{
+    ui->labelWalletStatus->setVisible(fShow);
+    ui->labelTransactionsStatus->setVisible(fShow);
 }

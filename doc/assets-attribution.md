@@ -79,23 +79,23 @@ md2k7
 
 Everaldo (Everaldo Coelho)
 --------------------------
+
 ### Info
 * Icon Pack: Kids
 * Designer: Everaldo (Everaldo Coelho)
-* License: GNU/GPL 
+* License: GNU/GPL
 * Site: [http://findicons.com/icon/17102/reload?id=17102](http://findicons.com/icon/17102/reload?id=17102)
-### Assets Used
-	scripts/img/reload.xcf (modified)
-	src/qt/res/movies/update_spinner.mng
 
-Crobbo (forum)
---------------
+### Assets Used
+	scripts/img/reload.xcf (modified), src/qt/res/movies/*.png
+
+[Vignoni David](http://www.oxygen-icons.org/)
+-----------------------
+
 ### Info
-* License: Public domain
-* Site: [https://bitcointalk.org/index.php?topic=32273.0](https://bitcointalk.org/index.php?topic=32273.0)
+* Designer: Vignoni David
+* Site: http://www.oxygen-icons.org/
+* License: Oxygen icon theme is dual licensed. You may copy it under the Creative Common Attribution-ShareAlike 3.0 License or the GNU Library General Public License.
 
 ### Assets Used
-	src/qt/res/images/splash2.jpg (Wallet image)
-
-
-
+	src/qt/res/icons/debugwindow.png
