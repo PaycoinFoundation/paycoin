@@ -10,9 +10,6 @@ BOOST_AUTO_TEST_SUITE(accounting_tests)
 
 BOOST_AUTO_TEST_CASE(acc_basics)
 {
-    fDebug = true;
-    SoftSetBoolArg("-printaccounting", true);
-
     CWalletDB walletdb(pwalletMain->strWalletFile);
     vector<CWalletTx*> vpwtx;
     CWalletTx wtx;
@@ -84,8 +81,6 @@ BOOST_AUTO_TEST_CASE(acc_basics)
     BOOST_CHECK_EQUAL(entries[0].nTime, 1443808862);
     BOOST_CHECK_EQUAL(entries[4].nTime, 1444240862);
     BOOST_CHECK_EQUAL(entries[10].nTime, 1446400862);
-
-    fDebug = false;
 }
 
 BOOST_AUTO_TEST_SUITE_END()
