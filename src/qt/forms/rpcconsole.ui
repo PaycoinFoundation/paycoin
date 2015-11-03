@@ -338,6 +338,20 @@
          </item>
         </layout>
        </item>
+       <item>
+        <layout class="QHBoxLayout" name="bottomLayout">
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="notice">
+           <property name="text">
+            <string>For more information on these commands, see the Wiki</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
     </widget>
