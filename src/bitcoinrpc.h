@@ -26,6 +26,9 @@ json_spirit::Object JSONRPCError(int code, const std::string& message);
 /** Convert parameter values for RPC call from strings to command-specific JSON objects. */
 json_spirit::Array RPCConvertValues(const std::string &strMethod, const std::vector<std::string> &strParams);
 
+/** Call the RPC service directly (placed here to allow for more in depth tests.) */
+json_spirit::Object CallRPC(const std::string& strMethod, const json_spirit::Array& params);
+
 /** Convert unsigned integer/s to hex string */
 std::string HexBits(unsigned int nBits);
 

@@ -21,6 +21,7 @@ struct TestingSetup {
         pwalletMain = new CWallet("wallet.dat");
         pwalletMain->LoadWallet(fFirstRun);
         RegisterWallet(pwalletMain);
+        scrapesDB = new CScrapesDB("cw");
     }
     ~TestingSetup()
     {

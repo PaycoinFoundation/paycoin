@@ -220,6 +220,12 @@ bool AddressTableModel::setData(const QModelIndex & index, const QVariant & valu
             if (rec->type == AddressTableEntry::Sending)
                 break;
 
+            /* Require authentication when modifying a scrape address on an
+             * encrypted wallet. */
+            WalletModel::UnlockContext ctx(walletModel->requestUnlock());
+            if (!ctx.isValid())
+                return false;
+
             /* If passing an empty string delete the current scrape address
              * if one exists. */
             if (value.toString().toStdString().empty()) {

@@ -4,6 +4,7 @@
 #include "base58.h"
 #include "util.h"
 #include "bitcoinrpc.h"
+#include "scrapesdb.h"
 
 using namespace std;
 using namespace json_spirit;
@@ -22,14 +23,7 @@ createArgs(int nRequired, const char* address1=NULL, const char* address2=NULL)
     return result;
 }
 
-// This can be removed this when addmultisigaddress is enabled on main net:
-struct TestNetFixture
-{
-    TestNetFixture() { fTestNet = true; }
-    ~TestNetFixture() { fTestNet = false; }
-};
-
-BOOST_FIXTURE_TEST_CASE(rpc_addmultisig, TestNetFixture)
+BOOST_AUTO_TEST_CASE(rpc_addmultisig)
 {
     rpcfn_type addmultisig = tableRPC["addmultisigaddress"]->actor;
 
@@ -64,6 +58,180 @@ BOOST_FIXTURE_TEST_CASE(rpc_addmultisig, TestNetFixture)
 
     string short2(address1Hex+2, address1Hex+sizeof(address1Hex)); // first byte missing
     BOOST_CHECK_THROW(addmultisig(createArgs(2, short2.c_str()), false), runtime_error);
+}
+
+// Run RPC tests over RPC...
+struct RPCServerFixture
+{
+    RPCServerFixture() {
+        SoftSetArg("-rpcuser", "paycoin_tests");
+        SoftSetArg("-rpcpassword", "PAjArWaTwv8P32b13iTn1bL7aN25Y9pMmJ");
+        NewThread(ThreadRPCServer, NULL);
+    }
+
+    ~RPCServerFixture() {  }
+};
+
+// Read a response object and return false if there is an error found
+bool readResponse(Object obj, int &error_code) {
+    // Initialize our error code as 0 because otherwise it may not have a value.
+    error_code = 0;
+
+    const Value &error = find_value(obj, "error");
+
+    if (error.type() != null_type)
+    {
+        error_code = find_value(error.get_obj(), "code").get_int();
+        return false;
+    }
+
+    return true;
+}
+
+Object callRPC(string strMethod, vector<string> strParams) {
+    Array params = RPCConvertValues(strMethod, strParams);
+    return CallRPC(strMethod, params);
+}
+
+BOOST_FIXTURE_TEST_CASE(rpc_scrapes, RPCServerFixture)
+{
+    // Wait a little bit to try to make sure the thread is fully started
+    Sleep(100);
+
+    /* This is a valid private key and address, do NOT use this key in a real
+     * wallet, your coins will not be secure! */
+    string strValidAddress = "PBMJh8s5cFzYGH6SzKJsmgrf43NcLgH47v";
+    string strValidPrivKey = "U9nhhCCbFfY64wozUZ6ScrNNvBqhGtoi8cNHXmaLm3wi1VHtjhr8";
+    string strValidAddress2 = "PAjArWaTwv8P32b13iTn1bL7aN25Y9pMmJ";
+
+    // error: {"code":-1,"message":"Staking address must be in wallet."}
+    string strMethod = "setscrapeaddress";
+    vector<string> strParams;
+    strParams.push_back(strValidAddress);
+    strParams.push_back(strValidAddress2);
+
+    Object obj = callRPC(strMethod, strParams);
+
+    int error_code;
+    BOOST_CHECK(!readResponse(obj, error_code));
+    BOOST_CHECK_EQUAL(error_code, -1);
+
+    strMethod = "getscrapeaddress";
+    strParams.clear();
+    strParams.push_back(strValidAddress);
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(!readResponse(obj, error_code));
+    BOOST_CHECK_EQUAL(error_code, -1);
+
+    strMethod = "deletescrapeaddress";
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(!readResponse(obj, error_code));
+    BOOST_CHECK_EQUAL(error_code, -1);
+
+    // Import a valid private key for testing on.
+    strMethod = "importprivkey";
+    strParams.clear();
+    strParams.push_back(strValidPrivKey);
+    strParams.push_back("test");
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(readResponse(obj, error_code));
+
+    // error: {"code":-5,"message":"Invalid Paycoin address."}
+    strMethod = "setscrapeaddress";
+    strParams.clear();
+    strParams.push_back("PBMJh8s5cFz");
+    strParams.push_back("PAjArWaTwv8");
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(!readResponse(obj, error_code));
+    BOOST_CHECK_EQUAL(error_code, -5);
+
+    strMethod = "getscrapeaddress";
+    strParams.clear();
+    strParams.push_back("PBMJh8s5cFz");
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(!readResponse(obj, error_code));
+    BOOST_CHECK_EQUAL(error_code, -5);
+
+    strMethod = "deletescrapeaddress";
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(!readResponse(obj, error_code));
+    BOOST_CHECK_EQUAL(error_code, -5);
+
+    // error: {"code":-5,"message":"Invalid scrape address."}
+    strMethod = "setscrapeaddress";
+    strParams.clear();
+    strParams.push_back(strValidAddress);
+    strParams.push_back("PAjArWaTwv8");
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(!readResponse(obj, error_code));
+    BOOST_CHECK_EQUAL(error_code, -5);
+
+    // error: {"code":-1,"message":"Cannot set scrape address to the same as staking address."}
+    strParams.clear();
+    strParams.push_back(strValidAddress);
+    strParams.push_back(strValidAddress);
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(!readResponse(obj, error_code));
+    BOOST_CHECK_EQUAL(error_code, -1);
+
+    // error: ("code":-1,"message":"No scrape address set for address <staking address>")
+    strMethod = "getscrapeaddress";
+    strParams.clear();
+    strParams.push_back(strValidAddress);
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(!readResponse(obj, error_code));
+    BOOST_CHECK_EQUAL(error_code, -1);
+
+    strMethod = "deletescrapeaddress";
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(!readResponse(obj, error_code));
+    BOOST_CHECK_EQUAL(error_code, -1);
+
+    // Valid setscrapeaddress
+    strMethod = "setscrapeaddress";
+    strParams.clear();
+    strParams.push_back(strValidAddress);
+    strParams.push_back(strValidAddress2);
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(readResponse(obj, error_code));
+
+    // Valid getscrapeaddress
+    strMethod = "getscrapeaddress";
+    strParams.clear();
+    strParams.push_back(strValidAddress);
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(readResponse(obj, error_code));
+
+    // Valid deletescrapeaddress
+    strMethod = "deletescrapeaddress";
+
+    obj = callRPC(strMethod, strParams);
+
+    BOOST_CHECK(readResponse(obj, error_code));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
