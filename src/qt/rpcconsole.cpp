@@ -202,6 +202,11 @@ RPCConsole::RPCConsole(QWidget *parent) :
     ui->lineEdit->installEventFilter(this);
     ui->messagesWidget->installEventFilter(this);
 
+    ui->notice->setTextFormat(Qt::RichText);
+    ui->notice->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+    ui->notice->setOpenExternalLinks(true);
+    ui->notice->setText("For more information on these commands, see the <a href='http://xpy.wiki/index.php?title=Paycoin_client/API_calls_list'>Wiki</a>");
+
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
 
     startExecutor();
