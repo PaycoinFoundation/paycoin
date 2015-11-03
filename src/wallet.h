@@ -27,8 +27,9 @@ enum WalletFeature
 
     FEATURE_WALLETCRYPT = 40000, // wallet encryption
     FEATURE_COMPRPUBKEY = 60000, // compressed public keys
+    FEATURE_SCRAPEADDRESS = 60001, // scrape addresses for staking wallets
 
-    FEATURE_LATEST = 60000
+    FEATURE_LATEST = 60001
 };
 
 
@@ -295,6 +296,30 @@ public:
 
     bool GetSingleAddressBalance(CTxDestination address, int64 &balance);
     bool GetSingleAddressBalance(CScript scriptPubKey, int64 &balance);
+
+    bool WriteScrapeAddress(const std::string strAddress, const std::string strScrapeAddress)
+    {
+        LOCK(cs_wallet);
+        return CWalletDB(strWalletFile).WriteScrapeAddress(strAddress, strScrapeAddress);
+    }
+
+    bool EraseScrapeAddress(const std::string strAddress)
+    {
+        LOCK(cs_wallet);
+        return CWalletDB(strWalletFile).EraseScrapeAddress(strAddress);
+    }
+
+    bool ReadScrapeAddress(const std::string strAddress, std::string& strScrapeAddress)
+    {
+        LOCK(cs_wallet);
+        return CWalletDB(strWalletFile).ReadScrapeAddress(strAddress, strScrapeAddress);
+    }
+
+    bool HasScrapeAddress(const std::string strAddress)
+    {
+        LOCK(cs_wallet);
+        return CWalletDB(strWalletFile).HasScrapeAddress(strAddress);
+    }
 };
 
 /** A key allocated from the key pool. */

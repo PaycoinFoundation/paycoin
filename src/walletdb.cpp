@@ -8,9 +8,11 @@
 #include "walletdb.h"
 #include "wallet.h"
 #include <boost/filesystem.hpp>
+#include "json/json_spirit_value.h"
 
 using namespace std;
 using namespace boost;
+using namespace json_spirit;
 
 static uint64 nAccountingEntryNumber = 0;
 
@@ -106,6 +108,64 @@ void CWalletDB::ListAccountCreditDebit(const string& strAccount, list<CAccountin
     pcursor->close();
 }
 
+bool CWalletDB::WriteScrapeAddress(const string strAddress, const string strScrapeAddress)
+{
+    nWalletDBUpdated++;
+    return Write(make_pair(string("scrapeaddress"), strAddress), strScrapeAddress);
+}
+
+bool CWalletDB::EraseScrapeAddress(const string strAddress)
+{
+    nWalletDBUpdated++;
+    return Erase(make_pair(string("scrapeaddress"), strAddress));
+}
+
+bool CWalletDB::ReadScrapeAddress(const string strAddress, string &strScrapeAddress)
+{
+    return Read(make_pair(string("scrapeaddress"), strAddress), strScrapeAddress);
+}
+
+bool CWalletDB::HasScrapeAddress(const string strAddress)
+{
+    return Exists(make_pair(string("scrapeaddress"), strAddress));
+}
+
+bool CWalletDB::DumpScrapeAddresses(Object &ScrapeAddresses)
+{
+    Dbc* pcursor = GetCursor();
+    if (!pcursor)
+        throw runtime_error("DumpScrapeAddresses() : cannot create DB cursor");
+    unsigned int fFlags = DB_SET_RANGE;
+
+    for (;;)
+    {
+        CDataStream ssKey(SER_DISK, CLIENT_VERSION);
+        if (fFlags == DB_SET_RANGE)
+            ssKey << make_pair(std::string("scrapeaddress"), string(""));
+        CDataStream ssValue(SER_DISK, CLIENT_VERSION);
+        int ret = ReadAtCursor(pcursor, ssKey, ssValue, fFlags);
+        fFlags = DB_NEXT;
+        if (ret == DB_NOTFOUND)
+            break;
+
+        else if (ret != 0)
+        {
+            pcursor->close();
+            throw runtime_error("DumpScrapeAddresses() : error scanning DB");
+        }
+        // Unserialize
+        string strType, address, scrape_address;
+        ssKey >> strType;
+        if (strType != "scrapeaddress")
+            break;
+        ssKey >> address;
+        ssValue >> scrape_address;
+        ScrapeAddresses.push_back(Pair(address, scrape_address));
+    }
+
+    pcursor->close();
+    return true;
+}
 
 int CWalletDB::LoadWallet(CWallet* pwallet)
 {

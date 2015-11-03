@@ -233,8 +233,6 @@ void CDB::Close()
         nMinutes = 2;
     if (strFile == "primenodes.dat")
         nMinutes = 2;
-    if (strFile == "scrapes.dat")
-        nMinutes = 2;
     if (IsChainFile(strFile) && IsInitialBlockDownload())
         nMinutes = 5;
 
