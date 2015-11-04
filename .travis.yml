@@ -2,6 +2,8 @@ language: cpp
 
 cache: apt
 
+sudo: false
+
 compiler:
   - gcc
 
