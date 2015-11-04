@@ -92,12 +92,12 @@ BOOST_AUTO_TEST_CASE(primenode_validity)
      * from IsPrimeNodeKey with the nTime being so far off from something real. */
 
     // Returns false at MINIMUM_FOR_PRIMENODE check
-    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, 0, MINIMUM_FOR_PRIMENODE - 1, 0));
-    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeOld, scriptPubKeyAddress, END_PRIME_PHASE_ONE - 1000, 0, MINIMUM_FOR_PRIMENODE_OLD - 1, 0));
+    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, 0, MINIMUM_FOR_PRIMENODE_PHASE2 - 1, 0));
+    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeOld, scriptPubKeyAddress, END_PRIME_PHASE_ONE - 1000, 0, MINIMUM_FOR_PRIMENODE_PHASE1 - 1, 0));
     // Return false at coin age / reward check
-    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, 0, MINIMUM_FOR_PRIMENODE, 0));
+    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, 0, MINIMUM_FOR_PRIMENODE_PHASE2, 0));
     // Pass
-    BOOST_CHECK(tx.IsPrimeStake(scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, MINIMUM_FOR_PRIMENODE - 10000, MINIMUM_FOR_PRIMENODE, 500));
+    BOOST_CHECK(tx.IsPrimeStake(scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, MINIMUM_FOR_PRIMENODE_PHASE2 - 10000, MINIMUM_FOR_PRIMENODE_PHASE2, 500));
 
     fTestNet = false;
 }
