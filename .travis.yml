@@ -1,0 +1,29 @@
+language: cpp
+
+cache: apt
+
+sudo: false
+
+compiler:
+  - gcc
+
+addons:
+  apt:
+    packages:
+      - libboost-all-dev
+      - libssl-dev
+      - libminiupnpc-dev
+      - libdb++-dev
+      - qt4-qmake
+      - libqt4-dev
+      - libqrencode-dev
+
+script:
+  - qmake USE_QRCODE=1
+  - make clean
+  - make
+  - cd src
+  - make -f makefile.unix clean
+  - make -f makefile.unix
+  - make -f makefile.unix test_paycoin
+  - ./test_paycoin
