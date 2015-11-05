@@ -71,10 +71,13 @@ private:
 
     bool WritePrimeNodeKey(const std::string /*key*/, int /*primeNodeRate*/, unsigned int /*valid_starting*/, unsigned int /*valid_until*/);
     bool WriteMicroPrimeAddr(const std::string /*address*/, int64 /*group*/, int /*primeNodeRate*/);
+    bool WritePrimeNodeDBVersion(int /*version*/);
 public:
     void WritePrimeNodeDB();
     void WriteMicroPrimeDB();
     void WriteTestMicroPrimeDB();
+
+    bool CheckPrimeNodeDBVersion(int &/*version*/);
 
     bool IsPrimeNodeKey(CScript /*scriptPubKeyType*/, unsigned int /*nTime*/, CPrimeNodeDBEntry &/*entry*/);
     bool IsMicroPrime(CScript /*scriptPubKeyAddress*/, int &/*primeNodeRate*/, int64 &/*group*/);

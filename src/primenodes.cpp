@@ -30,6 +30,25 @@ bool NewScriptPrimeID(CScript &scriptPrimeID, vector<unsigned char> vchPrivKey, 
     return true;
 }
 
+bool maybeWipePrimeDB() {
+    int dbversion;
+    if (primeNodeDB->CheckPrimeNodeDBVersion(dbversion)) {
+        if (dbversion == 3)
+            return false;
+    }
+
+    // No version set or version is invalid, wipe the DB.
+    printf("maybeWipePrimeDB() : primenode database is outdated, removing for recreation\n");
+    primeNodeDB->Close();
+    bitdb.CloseDb("primenodes.dat");
+    delete primeNodeDB;
+    boost::filesystem::remove(GetDataDir() / "primenodes.dat");
+    // This will be re-opened with write credentials during inflate.
+    primeNodeDB = new CPrimeNodeDB("cr");
+    // Return true so we know to re-inflate the DB.
+    return true;
+}
+
 bool initPrimeNodes(string &str) {
     // Create our database if it doesn't exist..
     primeNodeDB = new CPrimeNodeDB("cr");
@@ -49,7 +68,9 @@ bool initPrimeNodes(string &str) {
      * total_hours_wasted_here = 5
      */
      dbtype db = nodb;
-     if (fTestNet) {
+     if (maybeWipePrimeDB()) {
+         db = fulldb;
+     } else if (fTestNet) {
          if (!primeNodeDB->CheckPrimeNodeKey(string("04d445518d115243639d0dfd057a99da588e8334039ce674f177943d4c660957c810f924a5371a352b1e827121846500a588a4dc47dc6d5d9e5317dfa48c562aa7"))
              || !primeNodeDB->CheckPrimeNodeKey(string("0443e5bf72234d77a591ca2132c5995cccdba377a7022eb014d25e27ebe6ffaf85cd3a214588612186ee1771cfb905d1ec2137193bc01563dbc36d1e28f013e00d")))
              db = primedb;
@@ -289,6 +310,11 @@ void InflatePrimeNodeDB(dbtype db) {
     primeNodeDB = new CPrimeNodeDB("r");
 }
 
+bool CPrimeNodeDB::WritePrimeNodeDBVersion(int version)
+{
+    return Write(string("dbversion"), version);
+}
+
 bool CPrimeNodeDB::WritePrimeNodeKey(const string key, int primeNodeRate, unsigned int valid_starting, unsigned int valid_until)
 {
     return Write(make_pair(string("primenode"), key), boost::make_tuple(primeNodeRate, valid_starting, valid_until));
@@ -297,6 +323,15 @@ bool CPrimeNodeDB::WritePrimeNodeKey(const string key, int primeNodeRate, unsign
 bool CPrimeNodeDB::WriteMicroPrimeAddr(const string address, int64 group, int primeNodeRate)
 {
     return Write(make_pair(string("microprime"), address), make_pair(primeNodeRate, group));
+}
+
+bool CPrimeNodeDB::CheckPrimeNodeDBVersion(int &version)
+{
+    if (!Exists(string("dbversion")))
+        return false;
+
+    Read(string("dbversion"), version);
+    return true;
 }
 
 bool CPrimeNodeDB::CheckPrimeNodeKey(const string key)
