@@ -1,6 +1,8 @@
 Paycoin Core integration/staging tree
 =====================================
 
+[![Build Status](https://travis-ci.org/PaycoinFoundation/paycoin.svg?branch=master)](https://travis-ci.org/PaycoinFoundation/paycoin)
+
 https://www.paycoin.com
 
 What is Paycoin?
