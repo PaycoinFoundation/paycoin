@@ -33,7 +33,7 @@ bool NewScriptPrimeID(CScript &scriptPrimeID, vector<unsigned char> vchPrivKey, 
 bool maybeWipePrimeDB() {
     int dbversion;
     if (primeNodeDB->CheckPrimeNodeDBVersion(dbversion)) {
-        if (dbversion == 3)
+        if (dbversion == 4)
             return false;
     }
 

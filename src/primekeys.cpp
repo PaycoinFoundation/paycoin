@@ -6,9 +6,7 @@ typedef long long  int64;
 void CPrimeNodeDB::WritePrimeNodeDB() {
     LOCK(cs);
 
-    /* Version 1 was Primekeys only, 2 should have been when we added
-     * microprimes so we'll start with version 3. */
-    WritePrimeNodeDBVersion(3);
+    WritePrimeNodeDBVersion(4);
 
     if (fTestNet) {
         WritePrimeNodeKey(
@@ -364,6 +362,21 @@ void CPrimeNodeDB::WritePrimeNodeDB() {
 
     WritePrimeNodeKey(
         "04df482827573b607fe7279687bb287ccb48f87d24752c69d68e2c130d2d2c8993056e05fb86e61d54747b043c3f6f22b31b891664a90e4c071c794c93455b1cbe",
+        25,
+        END_PRIME_PHASE_ONE + 15120000, // 25 weeks
+        -1
+    );
+
+    // New keys to replace the invalidated ones from week 15 and 16...
+    WritePrimeNodeKey(
+        "049f525f2ab7d8491873b7c63f41a60e2d2762966815d7a7995976f695df0ff3a8d70812f5191c381eb8d6bfc171937abc729f2d940673660ecfe6b8e2c82d4d08",
+        25,
+        END_PRIME_PHASE_ONE + 15120000, // 25 weeks
+        -1
+    );
+
+    WritePrimeNodeKey(
+        "049bee18cacc1d51282633a0d269f53bfc4366342c3043e229f3c5534b9184bce83440e4d3164ceb158515c6af8867091e0b1045f53c5b3756fc4413265266e759",
         25,
         END_PRIME_PHASE_ONE + 15120000, // 25 weeks
         -1
