@@ -1,0 +1,7 @@
+[main]
+host = https://www.transifex.com
+
+[paycoin.qt-translation-03x]
+file_filter = src/qt/locale/paycoin_<lang>.ts
+source_file = src/qt/locale/paycoin_en.ts
+source_lang = en
