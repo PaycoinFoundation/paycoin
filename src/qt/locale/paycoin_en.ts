@@ -41,92 +41,92 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="33"/>
+        <location filename="../forms/addressbookpage.ui" line="36"/>
         <source>Double-click to edit address or label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="57"/>
+        <location filename="../forms/addressbookpage.ui" line="63"/>
         <source>Create a new address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="60"/>
-        <source>&amp;New Address...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../forms/addressbookpage.ui" line="71"/>
+        <location filename="../forms/addressbookpage.ui" line="77"/>
         <source>Copy the currently selected address to the system clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="74"/>
-        <source>&amp;Copy to Clipboard</source>
+        <location filename="../forms/addressbookpage.ui" line="66"/>
+        <source>&amp;New Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="85"/>
+        <location filename="../forms/addressbookpage.ui" line="80"/>
+        <source>&amp;Copy Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/addressbookpage.ui" line="91"/>
+        <source>Copy the currently selected scrape address to the system clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/addressbookpage.ui" line="94"/>
+        <source>Copy Scrape &amp;Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/addressbookpage.ui" line="105"/>
         <source>Show &amp;QR Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="96"/>
+        <location filename="../forms/addressbookpage.ui" line="116"/>
         <source>Sign a message to prove you own this address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="99"/>
+        <location filename="../forms/addressbookpage.ui" line="119"/>
         <source>&amp;Sign Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="110"/>
+        <location filename="../forms/addressbookpage.ui" line="130"/>
         <source>Delete the currently selected address from the list. Only sending addresses can be deleted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/addressbookpage.ui" line="113"/>
+        <location filename="../forms/addressbookpage.ui" line="133"/>
         <source>&amp;Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="65"/>
-        <source>Copy address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../addressbookpage.cpp" line="66"/>
-        <source>Copy label</source>
+        <location filename="../addressbookpage.cpp" line="64"/>
+        <source>Copy &amp;Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="67"/>
-        <source>Edit</source>
+        <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="68"/>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../addressbookpage.cpp" line="273"/>
+        <location filename="../addressbookpage.cpp" line="303"/>
         <source>Export Address Book Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="274"/>
+        <location filename="../addressbookpage.cpp" line="304"/>
         <source>Comma separated file (*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="287"/>
+        <location filename="../addressbookpage.cpp" line="317"/>
         <source>Error exporting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../addressbookpage.cpp" line="287"/>
+        <location filename="../addressbookpage.cpp" line="317"/>
         <source>Could not write to file %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -134,18 +134,28 @@ This product includes software developed by the OpenSSL Project for use in the O
 <context>
     <name>AddressTableModel</name>
     <message>
-        <location filename="../addresstablemodel.cpp" line="79"/>
+        <location filename="../addresstablemodel.cpp" line="97"/>
         <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../addresstablemodel.cpp" line="79"/>
+        <location filename="../addresstablemodel.cpp" line="97"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../addresstablemodel.cpp" line="115"/>
+        <location filename="../addresstablemodel.cpp" line="97"/>
+        <source>Scrape Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../addresstablemodel.cpp" line="134"/>
         <source>(no label)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../addresstablemodel.cpp" line="150"/>
+        <source>(no scrape address)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -153,12 +163,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <name>AskPassphraseDialog</name>
     <message>
         <location filename="../forms/askpassphrasedialog.ui" line="26"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../forms/askpassphrasedialog.ui" line="94"/>
-        <source>TextLabel</source>
+        <source>Passphrase Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -177,116 +182,111 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/askpassphrasedialog.ui" line="114"/>
-        <source>Toggle Keyboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../askpassphrasedialog.cpp" line="37"/>
+        <location filename="../askpassphrasedialog.cpp" line="33"/>
         <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="38"/>
+        <location filename="../askpassphrasedialog.cpp" line="34"/>
         <source>Encrypt wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="41"/>
+        <location filename="../askpassphrasedialog.cpp" line="37"/>
         <source>This operation needs your wallet passphrase to unlock the wallet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="46"/>
+        <location filename="../askpassphrasedialog.cpp" line="42"/>
         <source>Unlock wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="49"/>
+        <location filename="../askpassphrasedialog.cpp" line="45"/>
         <source>This operation needs your wallet passphrase to decrypt the wallet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="54"/>
+        <location filename="../askpassphrasedialog.cpp" line="50"/>
         <source>Decrypt wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="57"/>
+        <location filename="../askpassphrasedialog.cpp" line="53"/>
         <source>Change passphrase</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="58"/>
-        <source>Enter the old and new passphrase to the wallet.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../askpassphrasedialog.cpp" line="106"/>
+        <location filename="../askpassphrasedialog.cpp" line="100"/>
         <source>Confirm wallet encryption</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="116"/>
-        <location filename="../askpassphrasedialog.cpp" line="165"/>
+        <location filename="../askpassphrasedialog.cpp" line="110"/>
+        <location filename="../askpassphrasedialog.cpp" line="159"/>
         <source>Wallet encrypted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="213"/>
-        <location filename="../askpassphrasedialog.cpp" line="237"/>
+        <location filename="../askpassphrasedialog.cpp" line="207"/>
+        <location filename="../askpassphrasedialog.cpp" line="231"/>
         <source>Warning: The Caps Lock key is on.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="122"/>
-        <location filename="../askpassphrasedialog.cpp" line="129"/>
+        <location filename="../askpassphrasedialog.cpp" line="116"/>
+        <location filename="../askpassphrasedialog.cpp" line="123"/>
+        <location filename="../askpassphrasedialog.cpp" line="165"/>
         <location filename="../askpassphrasedialog.cpp" line="171"/>
-        <location filename="../askpassphrasedialog.cpp" line="177"/>
         <source>Wallet encryption failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="107"/>
+        <location filename="../askpassphrasedialog.cpp" line="54"/>
+        <source>Enter the old passphrase and new passphrase to the wallet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../askpassphrasedialog.cpp" line="101"/>
         <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="117"/>
+        <location filename="../askpassphrasedialog.cpp" line="111"/>
         <source>Paycoin will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Paycoins from being stolen by malware infecting your computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="123"/>
+        <location filename="../askpassphrasedialog.cpp" line="117"/>
         <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="130"/>
-        <location filename="../askpassphrasedialog.cpp" line="178"/>
+        <location filename="../askpassphrasedialog.cpp" line="124"/>
+        <location filename="../askpassphrasedialog.cpp" line="172"/>
         <source>The supplied passphrases do not match.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="141"/>
+        <location filename="../askpassphrasedialog.cpp" line="135"/>
         <source>Wallet unlock failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="142"/>
-        <location filename="../askpassphrasedialog.cpp" line="153"/>
-        <location filename="../askpassphrasedialog.cpp" line="172"/>
+        <location filename="../askpassphrasedialog.cpp" line="136"/>
+        <location filename="../askpassphrasedialog.cpp" line="147"/>
+        <location filename="../askpassphrasedialog.cpp" line="166"/>
         <source>The passphrase entered for the wallet decryption was incorrect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="152"/>
+        <location filename="../askpassphrasedialog.cpp" line="146"/>
         <source>Wallet decryption failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="166"/>
+        <location filename="../askpassphrasedialog.cpp" line="160"/>
         <source>Wallet passphrase was successfully changed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -294,237 +294,247 @@ Are you sure you wish to encrypt your wallet?</source>
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="191"/>
+        <location filename="../bitcoingui.cpp" line="202"/>
         <source>&amp;Overview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="192"/>
+        <location filename="../bitcoingui.cpp" line="203"/>
         <source>Show general overview of wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="197"/>
+        <location filename="../bitcoingui.cpp" line="208"/>
         <source>&amp;Transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="198"/>
+        <location filename="../bitcoingui.cpp" line="209"/>
         <source>Browse transaction history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="203"/>
+        <location filename="../bitcoingui.cpp" line="214"/>
         <source>&amp;Minting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="204"/>
+        <location filename="../bitcoingui.cpp" line="215"/>
         <source>Show your minting capacity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="209"/>
+        <location filename="../bitcoingui.cpp" line="220"/>
         <source>&amp;Address Book</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="210"/>
+        <location filename="../bitcoingui.cpp" line="221"/>
         <source>Edit the list of stored addresses and labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="215"/>
+        <location filename="../bitcoingui.cpp" line="226"/>
         <source>&amp;Receive coins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="216"/>
+        <location filename="../bitcoingui.cpp" line="227"/>
         <source>Show the list of addresses for receiving payments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="221"/>
+        <location filename="../bitcoingui.cpp" line="232"/>
         <source>&amp;Send coins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="227"/>
-        <source>Sign/Verify &amp;message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../bitcoingui.cpp" line="228"/>
+        <location filename="../bitcoingui.cpp" line="239"/>
         <source>Prove you control an address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="249"/>
+        <location filename="../bitcoingui.cpp" line="265"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="250"/>
+        <location filename="../bitcoingui.cpp" line="266"/>
         <source>Quit application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="254"/>
+        <location filename="../bitcoingui.cpp" line="270"/>
         <source>Show information about Paycoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="256"/>
+        <location filename="../bitcoingui.cpp" line="272"/>
         <source>About &amp;Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="257"/>
+        <location filename="../bitcoingui.cpp" line="273"/>
         <source>Show information about Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="259"/>
+        <location filename="../bitcoingui.cpp" line="275"/>
         <source>&amp;Options...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="264"/>
+        <location filename="../bitcoingui.cpp" line="280"/>
         <source>&amp;Export...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="265"/>
+        <location filename="../bitcoingui.cpp" line="281"/>
         <source>Export the data in the current tab to a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="266"/>
-        <source>&amp;Encrypt Wallet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../bitcoingui.cpp" line="267"/>
+        <location filename="../bitcoingui.cpp" line="283"/>
         <source>Encrypt or decrypt wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="269"/>
+        <location filename="../bitcoingui.cpp" line="285"/>
         <source>&amp;Unlock Wallet for Minting Only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="270"/>
+        <location filename="../bitcoingui.cpp" line="286"/>
         <source>Unlock wallet only for minting. Sending coins will still require the passphrase.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="272"/>
-        <source>&amp;Backup Wallet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../bitcoingui.cpp" line="273"/>
+        <location filename="../bitcoingui.cpp" line="289"/>
         <source>Backup wallet to another location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="274"/>
-        <source>&amp;Change Passphrase</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../bitcoingui.cpp" line="275"/>
+        <location filename="../bitcoingui.cpp" line="291"/>
         <source>Change the passphrase used for wallet encryption</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="276"/>
+        <location filename="../bitcoingui.cpp" line="292"/>
         <source>&amp;Debug window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="277"/>
+        <location filename="../bitcoingui.cpp" line="293"/>
         <source>Open debugging and diagnostic console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="301"/>
+        <location filename="../bitcoingui.cpp" line="317"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="310"/>
+        <location filename="../bitcoingui.cpp" line="327"/>
         <source>&amp;Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="317"/>
+        <location filename="../bitcoingui.cpp" line="334"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="326"/>
+        <location filename="../bitcoingui.cpp" line="343"/>
         <source>Tabs toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="338"/>
+        <location filename="../bitcoingui.cpp" line="355"/>
         <source>Actions toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="350"/>
+        <location filename="../bitcoingui.cpp" line="367"/>
         <source>[testnet]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="658"/>
+        <location filename="../bitcoingui.cpp" line="563"/>
+        <source>Downloaded %1 of %2 blocks of transaction history (%3 percent done).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../bitcoingui.cpp" line="686"/>
         <source>This transaction is over the size limit. You can still send it for a fee of %1. Do you want to pay the fee?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="76"/>
+        <location filename="../bitcoingui.cpp" line="78"/>
         <source>Paycoin Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="222"/>
+        <location filename="../bitcoingui.cpp" line="233"/>
         <source>Send coins to a Paycoin address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="253"/>
+        <location filename="../bitcoingui.cpp" line="238"/>
+        <source>Sign &amp;message...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../bitcoingui.cpp" line="245"/>
+        <source>Multisig</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../bitcoingui.cpp" line="269"/>
         <source>&amp;About Paycoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="260"/>
+        <location filename="../bitcoingui.cpp" line="276"/>
         <source>Modify configuration options for Paycoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="262"/>
+        <location filename="../bitcoingui.cpp" line="278"/>
         <source>Show/Hide &amp;Paycoin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="263"/>
+        <location filename="../bitcoingui.cpp" line="279"/>
         <source>Show or hide the Paycoin window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="415"/>
+        <location filename="../bitcoingui.cpp" line="282"/>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../bitcoingui.cpp" line="288"/>
+        <source>&amp;Backup Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../bitcoingui.cpp" line="290"/>
+        <source>&amp;Change Passphrase...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../bitcoingui.cpp" line="433"/>
         <source>Paycoin client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="443"/>
+        <location filename="../bitcoingui.cpp" line="462"/>
         <source>p-qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../bitcoingui.cpp" line="507"/>
+        <location filename="../bitcoingui.cpp" line="526"/>
         <source>%n active connection(s) to Paycoin network</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -532,12 +542,12 @@ Are you sure you wish to encrypt your wallet?</source>
         </translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="531"/>
+        <location filename="../bitcoingui.cpp" line="550"/>
         <source>Synchronizing with network...</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../bitcoingui.cpp" line="533"/>
+        <location filename="../bitcoingui.cpp" line="552"/>
         <source>~%n block(s) remaining</source>
         <translation type="unfinished">
             <numerusform>~%n block remaining</numerusform>
@@ -545,17 +555,17 @@ Are you sure you wish to encrypt your wallet?</source>
         </translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="544"/>
-        <source>Downloaded %1 of %2 blocks of transaction history (%3% done).</source>
+        <location filename="../bitcoingui.cpp" line="689"/>
+        <source>Confirm transaction fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="556"/>
+        <location filename="../bitcoingui.cpp" line="575"/>
         <source>Downloaded %1 blocks of transaction history.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../bitcoingui.cpp" line="571"/>
+        <location filename="../bitcoingui.cpp" line="590"/>
         <source>%n second(s) ago</source>
         <translation type="unfinished">
             <numerusform>%n second ago</numerusform>
@@ -563,7 +573,7 @@ Are you sure you wish to encrypt your wallet?</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../bitcoingui.cpp" line="575"/>
+        <location filename="../bitcoingui.cpp" line="594"/>
         <source>%n minute(s) ago</source>
         <translation type="unfinished">
             <numerusform>%n minute ago</numerusform>
@@ -571,7 +581,7 @@ Are you sure you wish to encrypt your wallet?</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../bitcoingui.cpp" line="579"/>
+        <location filename="../bitcoingui.cpp" line="598"/>
         <source>%n hour(s) ago</source>
         <translation type="unfinished">
             <numerusform>%n hour ago</numerusform>
@@ -579,7 +589,7 @@ Are you sure you wish to encrypt your wallet?</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../bitcoingui.cpp" line="583"/>
+        <location filename="../bitcoingui.cpp" line="602"/>
         <source>%n day(s) ago</source>
         <translation type="unfinished">
             <numerusform>%n day ago</numerusform>
@@ -587,37 +597,32 @@ Are you sure you wish to encrypt your wallet?</source>
         </translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="589"/>
+        <location filename="../bitcoingui.cpp" line="608"/>
         <source>Up to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="594"/>
+        <location filename="../bitcoingui.cpp" line="615"/>
         <source>Catching up...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="602"/>
+        <location filename="../bitcoingui.cpp" line="627"/>
         <source>Last received block was generated %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="661"/>
-        <source>Sending...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../bitcoingui.cpp" line="688"/>
+        <location filename="../bitcoingui.cpp" line="716"/>
         <source>Sent transaction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="689"/>
+        <location filename="../bitcoingui.cpp" line="717"/>
         <source>Incoming transaction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="690"/>
+        <location filename="../bitcoingui.cpp" line="718"/>
         <source>Date: %1
 Amount: %2
 Type: %3
@@ -626,42 +631,42 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="821"/>
+        <location filename="../bitcoingui.cpp" line="855"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked for block minting only&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="821"/>
+        <location filename="../bitcoingui.cpp" line="855"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="831"/>
+        <location filename="../bitcoingui.cpp" line="865"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="888"/>
+        <location filename="../bitcoingui.cpp" line="922"/>
         <source>Backup Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="888"/>
+        <location filename="../bitcoingui.cpp" line="922"/>
         <source>Wallet Data (*.dat)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="891"/>
+        <location filename="../bitcoingui.cpp" line="925"/>
         <source>Backup Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoingui.cpp" line="891"/>
+        <location filename="../bitcoingui.cpp" line="925"/>
         <source>There was an error trying to save the wallet data to the new location.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../bitcoin.cpp" line="128"/>
+        <location filename="../bitcoin.cpp" line="131"/>
         <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -886,7 +891,7 @@ Address: %4
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="582"/>
-        <source>This label turns red, if the transaction size is bigger than 10000 bytes.
+        <source>This label turns red if the transaction size is bigger than 10000 bytes.
 
  This means a fee of at least %1 per kb is required.
 
@@ -897,23 +902,23 @@ Address: %4
         <location filename="../coincontroldialog.cpp" line="583"/>
         <source>Transactions with higher priority get more likely into a block.
 
-This label turns red, if the priority is smaller than &quot;medium&quot;.
+This label turns red if the priority is smaller than &quot;medium&quot;.
 
  This means a fee of at least %1 per kb is required.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="584"/>
-        <source>This label turns red, if any recipient receives an amount smaller than %1.
+        <source>This label turns red if any recipient receives an amount smaller than %1.
 
- This means a fee of at least %2 is required.
+ This means a fee of at least %2 is required. 
 
  Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="585"/>
-        <source>This label turns red, if the change is smaller than %1.
+        <source>This label turns red if the change is smaller than %1.
 
  This means a fee of at least %2 is required.</source>
         <translation type="unfinished"></translation>
@@ -938,33 +943,58 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
 <context>
     <name>DisplayOptionsPage</name>
     <message>
-        <location filename="../optionsdialog.cpp" line="275"/>
+        <location filename="../optionsdialog.cpp" line="241"/>
+        <source>Display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="247"/>
+        <source>User Interface &amp;Language: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="258"/>
+        <source>The user interface language can be set here. This setting will only take effect after restarting Paycoin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="268"/>
         <source>&amp;Unit to show amounts in: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="279"/>
+        <location filename="../optionsdialog.cpp" line="272"/>
         <source>Choose the default subdivision unit to show in the interface, and when sending coins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="286"/>
+        <location filename="../optionsdialog.cpp" line="279"/>
         <source>&amp;Display addresses in transaction list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="287"/>
+        <location filename="../optionsdialog.cpp" line="280"/>
         <source>Whether to show Paycoin addresses in the transaction list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="290"/>
+        <location filename="../optionsdialog.cpp" line="283"/>
         <source>Display coin control features (experts only!)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="291"/>
+        <location filename="../optionsdialog.cpp" line="284"/>
         <source>Whether to show coin control features or not</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="303"/>
+        <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="303"/>
+        <source>This setting will take effect after restarting Paycoin.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1039,175 +1069,110 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
 <context>
     <name>MainOptionsPage</name>
     <message>
-        <location filename="../optionsdialog.cpp" line="177"/>
-        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <location filename="../optionsdialog.cpp" line="204"/>
+        <source>Main</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="178"/>
-        <source>Show only a tray icon after minimizing the window</source>
+        <location filename="../optionsdialog.cpp" line="206"/>
+        <source>Optional transaction fee per kB that helps make sure your transactions are processed quickly. Most transactions are 1 kB. Fee 0.01 recommended.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="186"/>
-        <source>Map port using &amp;UPnP</source>
+        <location filename="../optionsdialog.cpp" line="212"/>
+        <source>Pay transaction &amp;fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="181"/>
-        <source>M&amp;inimize on close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="182"/>
-        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Quit in the menu.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="187"/>
-        <source>Automatically open the Paycoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="190"/>
-        <source>&amp;Connect through SOCKS4 proxy:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="191"/>
-        <source>Connect to the Bitcon network through a SOCKS4 proxy (e.g. when connecting through Tor)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="196"/>
-        <source>Proxy &amp;IP: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="202"/>
-        <source>IP address of the proxy (e.g. 127.0.0.1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="205"/>
-        <source>&amp;Port: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="211"/>
-        <source>Port of the proxy (e.g. 1234)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="217"/>
-        <source>Mandatory network transaction fee per kB transferred. Most transactions are 1 kB and incur a 0.01 PPC fee. Note: transfer size may increase depending on the number of input transactions required to be added together to fund the payment.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="223"/>
-        <source>Additional network &amp;fee:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="234"/>
+        <location filename="../optionsdialog.cpp" line="222"/>
         <source>Detach databases at shutdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../optionsdialog.cpp" line="235"/>
+        <location filename="../optionsdialog.cpp" line="223"/>
         <source>Detach block and address databases at shutdown. This means they can be moved to another data directory, but it slows down shutdown. The wallet is always detached.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="172"/>
-        <source>&amp;Start Paycoin on window system startup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="173"/>
-        <source>Automatically start Paycoin after the computer is turned on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MintingTableModel</name>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="203"/>
+        <location filename="../mintingtablemodel.cpp" line="215"/>
         <source>Transaction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="203"/>
+        <location filename="../mintingtablemodel.cpp" line="215"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="203"/>
+        <location filename="../mintingtablemodel.cpp" line="215"/>
         <source>Age</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="203"/>
+        <location filename="../mintingtablemodel.cpp" line="215"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="203"/>
+        <location filename="../mintingtablemodel.cpp" line="215"/>
         <source>CoinDay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="203"/>
+        <location filename="../mintingtablemodel.cpp" line="215"/>
         <source>MintProbability</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="284"/>
+        <location filename="../mintingtablemodel.cpp" line="296"/>
         <source>minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="291"/>
+        <location filename="../mintingtablemodel.cpp" line="303"/>
         <source>hours</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="295"/>
+        <location filename="../mintingtablemodel.cpp" line="307"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="298"/>
+        <location filename="../mintingtablemodel.cpp" line="310"/>
         <source>You have %1 chance to find a POS block if you mint %2 %3 at current difficulty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="418"/>
+        <location filename="../mintingtablemodel.cpp" line="430"/>
         <source>Destination address of the output.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="420"/>
+        <location filename="../mintingtablemodel.cpp" line="432"/>
         <source>Original transaction id.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="422"/>
+        <location filename="../mintingtablemodel.cpp" line="434"/>
         <source>Age of the transaction in days.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="424"/>
+        <location filename="../mintingtablemodel.cpp" line="436"/>
         <source>Balance of the output.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="426"/>
+        <location filename="../mintingtablemodel.cpp" line="438"/>
         <source>Coin age in the output.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mintingtablemodel.cpp" line="428"/>
+        <location filename="../mintingtablemodel.cpp" line="440"/>
         <source>Chance to mint a block within given time interval.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1306,19 +1271,372 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     </message>
 </context>
 <context>
+    <name>MultisigAddressEntry</name>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="26"/>
+        <source>Public &amp;key:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="44"/>
+        <source>The public key of an address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="47"/>
+        <source>Enter a public key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="54"/>
+        <source>Paste public key from clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="64"/>
+        <source>Alt+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="71"/>
+        <source>Remove this public key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="87"/>
+        <source>&amp;Address:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="108"/>
+        <location filename="../forms/multisigaddressentry.ui" line="150"/>
+        <source>Address associated to the public key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="111"/>
+        <source>Enter one of your addresses to get its public key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="118"/>
+        <source>Choose address from address book</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="128"/>
+        <source>Alt+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigaddressentry.ui" line="137"/>
+        <source>Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MultisigDialog</name>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="14"/>
+        <source>Multisig</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="24"/>
+        <source>&amp;Create Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="67"/>
+        <source>Add a member to the signing pool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="70"/>
+        <source>&amp;Add public key...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="87"/>
+        <source>Remove all public key fields</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="90"/>
+        <source>Clear all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="121"/>
+        <source>Required signatures:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="152"/>
+        <source>Enter a number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="159"/>
+        <source>/ 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="183"/>
+        <source>Create multisig address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="207"/>
+        <source>Multisig address:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="221"/>
+        <source>Copy the multisig address to the system clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="242"/>
+        <source>Redeem script:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="256"/>
+        <source>Copy the redeem script to the system clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="290"/>
+        <source>The redeem script will be required to spend the funds sent to the multisig address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="293"/>
+        <source>Save redeem script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="300"/>
+        <source>Add the multisig address to your personal addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="303"/>
+        <source>Add address to wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="313"/>
+        <source>&amp;Spend Funds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="323"/>
+        <source>Inputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="385"/>
+        <source>Inputs amount:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="392"/>
+        <location filename="../forms/multisigdialog.ui" line="511"/>
+        <location filename="../forms/multisigdialog.ui" line="552"/>
+        <source>123.456</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="402"/>
+        <location filename="../forms/multisigdialog.ui" line="521"/>
+        <location filename="../forms/multisigdialog.ui" line="559"/>
+        <source>XPY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="413"/>
+        <source>Add input...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="442"/>
+        <source>Outputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="504"/>
+        <source>Outputs amount:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="545"/>
+        <source>Fee:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="570"/>
+        <source>Add output...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="603"/>
+        <source>Create transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="637"/>
+        <source>Enter a raw transaction or create a new one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="661"/>
+        <source>Paste address from clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="671"/>
+        <source>Alt+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="685"/>
+        <source>Sign transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisigdialog.ui" line="771"/>
+        <source>Send transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../multisigdialog.cpp" line="450"/>
+        <source>Transaction signature is complete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../multisigdialog.cpp" line="455"/>
+        <source>Transaction is NOT completely signed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../multisigdialog.cpp" line="476"/>
+        <location filename="../multisigdialog.cpp" line="482"/>
+        <source>Confirm send transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../multisigdialog.cpp" line="476"/>
+        <source>The fee of the transaction (%1 XPY) is smaller than the expected fee (%2 XPY). Do you want to send the transaction anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../multisigdialog.cpp" line="482"/>
+        <source>The fee of the transaction (%1 XPY) is bigger than the expected fee (%2 XPY). Do you want to send the transaction anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MultisigInputEntry</name>
+    <message>
+        <location filename="../forms/multisiginputentry.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisiginputentry.ui" line="34"/>
+        <source>Enter a transaction id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisiginputentry.ui" line="51"/>
+        <source>Alt+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisiginputentry.ui" line="74"/>
+        <source>Transaction id:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisiginputentry.ui" line="87"/>
+        <source>Transaction output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisiginputentry.ui" line="97"/>
+        <source>Redeem script:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisiginputentry.ui" line="121"/>
+        <source>Enter the redeem script of the address in the transaction output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/multisiginputentry.ui" line="138"/>
+        <source>Alt+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NetworkOptionsPage</name>
+    <message>
+        <location filename="../optionsdialog.cpp" line="350"/>
+        <source>Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="352"/>
+        <source>Map port using &amp;UPnP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="353"/>
+        <source>Automatically open the Paycoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="356"/>
+        <source>&amp;Connect through SOCKS4 proxy:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="357"/>
+        <source>Connect to the Bitcon network through a SOCKS4 proxy (e.g. when connecting through Tor)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="362"/>
+        <source>Proxy &amp;IP: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="368"/>
+        <source>IP address of the proxy (e.g. 127.0.0.1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="371"/>
+        <source>&amp;Port: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="377"/>
+        <source>Port of the proxy (e.g. 1234)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>OptionsDialog</name>
     <message>
-        <location filename="../optionsdialog.cpp" line="81"/>
-        <source>Main</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="86"/>
-        <source>Display</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../optionsdialog.cpp" line="106"/>
+        <location filename="../optionsdialog.cpp" line="135"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1331,58 +1649,65 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/overviewpage.ui" line="40"/>
+        <location filename="../forms/overviewpage.ui" line="89"/>
         <source>Balance:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/overviewpage.ui" line="54"/>
+        <location filename="../forms/overviewpage.ui" line="177"/>
         <source>Number of transactions:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/overviewpage.ui" line="61"/>
-        <source>0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../forms/overviewpage.ui" line="68"/>
+        <location filename="../forms/overviewpage.ui" line="148"/>
         <source>Unconfirmed:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/overviewpage.ui" line="82"/>
+        <location filename="../forms/overviewpage.ui" line="118"/>
         <source>Stake:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/overviewpage.ui" line="102"/>
+        <location filename="../forms/overviewpage.ui" line="40"/>
         <source>Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/overviewpage.ui" line="138"/>
+        <location filename="../forms/overviewpage.ui" line="227"/>
         <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../overviewpage.cpp" line="104"/>
+        <location filename="../forms/overviewpage.ui" line="105"/>
         <source>Your current balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../overviewpage.cpp" line="109"/>
+        <location filename="../forms/overviewpage.ui" line="47"/>
+        <location filename="../forms/overviewpage.ui" line="234"/>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Paycoin network after a connection is established, but this process has not completed yet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/overviewpage.ui" line="134"/>
         <source>Your current stake</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../overviewpage.cpp" line="114"/>
+        <location filename="../forms/overviewpage.ui" line="164"/>
         <source>Total of transactions that have yet to be confirmed, and do not yet count toward the current balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../overviewpage.cpp" line="117"/>
+        <location filename="../forms/overviewpage.ui" line="184"/>
         <source>Total number of transactions in wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../overviewpage.cpp" line="111"/>
+        <location filename="../overviewpage.cpp" line="112"/>
+        <source>out of sync</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1390,7 +1715,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <name>QRCodeDialog</name>
     <message>
         <location filename="../forms/qrcodedialog.ui" line="14"/>
-        <source>Dialog</source>
+        <source>QR Code Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1410,7 +1735,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     </message>
     <message>
         <location filename="../forms/qrcodedialog.ui" line="105"/>
-        <source>PPC</source>
+        <source>XPY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1440,7 +1765,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     </message>
     <message>
         <location filename="../qrcodedialog.cpp" line="121"/>
-        <source>Save Image...</source>
+        <source>Save QR Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1453,12 +1778,12 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <name>RPCConsole</name>
     <message>
         <location filename="../forms/rpcconsole.ui" line="14"/>
-        <source>Paycoin (Paycoin) debug window</source>
+        <source>Paycoin debug window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../forms/rpcconsole.ui" line="24"/>
-        <source>Information</source>
+        <source>&amp;Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1473,8 +1798,8 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <location filename="../forms/rpcconsole.ui" line="156"/>
         <location filename="../forms/rpcconsole.ui" line="176"/>
         <location filename="../forms/rpcconsole.ui" line="196"/>
-        <location filename="../forms/rpcconsole.ui" line="229"/>
-        <location filename="../rpcconsole.cpp" line="338"/>
+        <location filename="../forms/rpcconsole.ui" line="265"/>
+        <location filename="../rpcconsole.cpp" line="351"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1524,27 +1849,47 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/rpcconsole.ui" line="222"/>
+        <location filename="../forms/rpcconsole.ui" line="228"/>
+        <source>Debug logfile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/rpcconsole.ui" line="235"/>
+        <source>Open the Paycoin debug logfile from the current data directory. This can take a few seconds for large logfiles.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/rpcconsole.ui" line="238"/>
+        <source>&amp;Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/rpcconsole.ui" line="258"/>
         <source>Build date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/rpcconsole.ui" line="237"/>
-        <source>Console</source>
+        <location filename="../forms/rpcconsole.ui" line="273"/>
+        <source>&amp;Console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/rpcconsole.ui" line="270"/>
+        <location filename="../forms/rpcconsole.ui" line="349"/>
+        <source>For more information on these commands, see the Wiki</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/rpcconsole.ui" line="306"/>
         <source>&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/rpcconsole.ui" line="286"/>
+        <location filename="../forms/rpcconsole.ui" line="322"/>
         <source>Clear console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../rpcconsole.cpp" line="306"/>
+        <location filename="../rpcconsole.cpp" line="319"/>
         <source>Welcome to the Paycoin RPC console.&lt;br&gt;Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.&lt;br&gt;Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1659,7 +2004,7 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     </message>
     <message>
         <location filename="../forms/sendcoinsdialog.ui" line="668"/>
-        <source>&amp;Add recipient...</source>
+        <source>&amp;Add Recipient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1753,8 +2098,23 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../sendcoinsdialog.cpp" line="177"/>
+        <source>The recipient address is not valid. Please recheck.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../sendcoinsdialog.cpp" line="182"/>
         <source>The amount to pay must be at least one cent (0.01).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sendcoinsdialog.cpp" line="192"/>
+        <source>Total exceeds your balance when the %1 transaction fee is included.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sendcoinsdialog.cpp" line="198"/>
+        <source>Duplicate address found: can only send to each address once per send operation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1780,21 +2140,6 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../sendcoinsdialog.cpp" line="36"/>
         <source>Enter a Paycoin address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../sendcoinsdialog.cpp" line="177"/>
-        <source>The recipient address is not valid, please recheck.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../sendcoinsdialog.cpp" line="192"/>
-        <source>Total exceeds your balance when the %1 transaction fee is included</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../sendcoinsdialog.cpp" line="198"/>
-        <source>Duplicate address found, can only send to each address once in one send operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1827,48 +2172,48 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     </message>
     <message>
         <location filename="../forms/sendcoinsentry.ui" line="66"/>
-        <location filename="../sendcoinsentry.cpp" line="26"/>
+        <location filename="../forms/sendcoinsentry.ui" line="69"/>
         <source>Enter a label for this address to add it to your address book</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/sendcoinsentry.ui" line="75"/>
+        <location filename="../forms/sendcoinsentry.ui" line="78"/>
         <source>&amp;Label:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/sendcoinsentry.ui" line="93"/>
+        <location filename="../forms/sendcoinsentry.ui" line="96"/>
         <source>The address to send the payment to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/sendcoinsentry.ui" line="103"/>
+        <location filename="../forms/sendcoinsentry.ui" line="102"/>
+        <source>Enter a Paycoin address (e.g. PNS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../forms/sendcoinsentry.ui" line="109"/>
         <source>Choose address from address book</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/sendcoinsentry.ui" line="113"/>
+        <location filename="../forms/sendcoinsentry.ui" line="119"/>
         <source>Alt+A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/sendcoinsentry.ui" line="120"/>
+        <location filename="../forms/sendcoinsentry.ui" line="126"/>
         <source>Paste address from clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/sendcoinsentry.ui" line="130"/>
+        <location filename="../forms/sendcoinsentry.ui" line="136"/>
         <source>Alt+P</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/sendcoinsentry.ui" line="137"/>
+        <location filename="../forms/sendcoinsentry.ui" line="143"/>
         <source>Remove this recipient</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../sendcoinsentry.cpp" line="25"/>
-        <source>Enter a Paycoin address</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2066,153 +2411,203 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     </message>
 </context>
 <context>
-    <name>TransactionDesc</name>
+    <name>SplashScreen</name>
     <message>
-        <location filename="../transactiondesc.cpp" line="21"/>
-        <source>Open for %1 blocks</source>
+        <location filename="../splashscreen.cpp" line="22"/>
+        <source>The Paycoin developers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="23"/>
+        <location filename="../splashscreen.cpp" line="23"/>
+        <source>[testnet]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <location filename="../transactiondesc.cpp" line="19"/>
         <source>Open until %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location filename="../transactiondesc.cpp" line="17"/>
+        <source>Open for %n block(s)</source>
+        <translation type="unfinished">
+            <numerusform>Open for %n block</numerusform>
+            <numerusform>Open for %n blocks</numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="29"/>
-        <source>%1/offline?</source>
+        <location filename="../transactiondesc.cpp" line="25"/>
+        <source>%1/offline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="31"/>
+        <location filename="../transactiondesc.cpp" line="27"/>
         <source>%1/unconfirmed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="33"/>
+        <location filename="../transactiondesc.cpp" line="29"/>
         <source>%1 confirmations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="51"/>
-        <source>&lt;b&gt;Status:&lt;/b&gt; </source>
+        <location filename="../transactiondesc.cpp" line="47"/>
+        <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../transactiondesc.cpp" line="56"/>
-        <source>, has not been successfully broadcast yet</source>
-        <translation type="unfinished"></translation>
+    <message numerus="yes">
+        <location filename="../transactiondesc.cpp" line="54"/>
+        <source>, broadcast through %n node(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../transactiondesc.cpp" line="58"/>
-        <source>, broadcast through %1 node</source>
+        <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="60"/>
-        <source>, broadcast through %1 nodes</source>
+        <location filename="../transactiondesc.cpp" line="65"/>
+        <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="64"/>
-        <source>&lt;b&gt;Date:&lt;/b&gt; </source>
+        <location filename="../transactiondesc.cpp" line="65"/>
+        <source>Generated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../transactiondesc.cpp" line="71"/>
-        <source>&lt;b&gt;Source:&lt;/b&gt; Generated&lt;br&gt;</source>
+        <location filename="../transactiondesc.cpp" line="88"/>
+        <source>From</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="77"/>
+        <location filename="../transactiondesc.cpp" line="89"/>
+        <location filename="../transactiondesc.cpp" line="111"/>
+        <location filename="../transactiondesc.cpp" line="169"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactiondesc.cpp" line="92"/>
         <location filename="../transactiondesc.cpp" line="94"/>
-        <source>&lt;b&gt;From:&lt;/b&gt; </source>
+        <source>own address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="94"/>
-        <source>unknown</source>
+        <location filename="../transactiondesc.cpp" line="92"/>
+        <source>label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="95"/>
-        <location filename="../transactiondesc.cpp" line="118"/>
-        <location filename="../transactiondesc.cpp" line="178"/>
-        <source>&lt;b&gt;To:&lt;/b&gt; </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../transactiondesc.cpp" line="98"/>
-        <source> (yours, label: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../transactiondesc.cpp" line="100"/>
-        <source> (yours)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../transactiondesc.cpp" line="136"/>
-        <location filename="../transactiondesc.cpp" line="150"/>
-        <location filename="../transactiondesc.cpp" line="195"/>
-        <location filename="../transactiondesc.cpp" line="212"/>
-        <source>&lt;b&gt;Credit:&lt;/b&gt; </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../transactiondesc.cpp" line="138"/>
-        <source>(%1 matures in %2 more blocks)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../transactiondesc.cpp" line="142"/>
-        <source>(not accepted)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../transactiondesc.cpp" line="129"/>
+        <location filename="../transactiondesc.cpp" line="141"/>
         <location filename="../transactiondesc.cpp" line="186"/>
-        <location filename="../transactiondesc.cpp" line="194"/>
-        <location filename="../transactiondesc.cpp" line="209"/>
-        <source>&lt;b&gt;Debit:&lt;/b&gt; </source>
+        <location filename="../transactiondesc.cpp" line="203"/>
+        <location filename="../transactiondesc.cpp" line="235"/>
+        <source>Credit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../transactiondesc.cpp" line="131"/>
+        <source>matures in %n more block(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../transactiondesc.cpp" line="133"/>
+        <source>not accepted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../transactiondesc.cpp" line="177"/>
+        <location filename="../transactiondesc.cpp" line="185"/>
         <location filename="../transactiondesc.cpp" line="200"/>
-        <source>&lt;b&gt;Transaction fee:&lt;/b&gt; </source>
+        <location filename="../transactiondesc.cpp" line="232"/>
+        <source>Debit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="218"/>
-        <source>&lt;b&gt;Net amount:&lt;/b&gt; </source>
+        <location filename="../transactiondesc.cpp" line="191"/>
+        <source>Transaction fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactiondesc.cpp" line="207"/>
+        <source>Net amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactiondesc.cpp" line="213"/>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactiondesc.cpp" line="215"/>
+        <source>Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactiondesc.cpp" line="217"/>
+        <source>Transaction ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../transactiondesc.cpp" line="220"/>
-        <source>&lt;b&gt;Retained amount:&lt;/b&gt; %1 until %2 more blocks&lt;br&gt;</source>
+        <source>Generated coins must mature 120 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="227"/>
-        <source>Message:</source>
+        <location filename="../transactiondesc.cpp" line="222"/>
+        <source>Staked coins must mature 120 blocks before they can be spent. When you generated this Proof-of-Stake block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a Proof-of-Stake block within a few seconds of yours.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../transactiondesc.cpp" line="229"/>
-        <source>Comment:</source>
+        <source>Debug information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="231"/>
-        <source>Transaction ID:</source>
+        <location filename="../transactiondesc.cpp" line="237"/>
+        <source>Transaction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="234"/>
-        <source>Generated coins must wait 520 blocks before they can be spent.  When you generated this block, it was broadcast to the network to be added to the block chain.  If it fails to get into the chain, it will change to &quot;not accepted&quot; and not be spendable.  This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <location filename="../transactiondesc.cpp" line="242"/>
+        <source>Inputs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactiondesc.cpp" line="236"/>
-        <source>Staked coins must wait 520 blocks before they can return to balance and be spent.  When you generated this proof-of-stake block, it was broadcast to the network to be added to the block chain.  If it fails to get into the chain, it will change to &quot;not accepted&quot; and not be a valid stake.  This may occasionally happen if another node generates a proof-of-stake block within a few seconds of yours.</source>
+        <location filename="../transactiondesc.cpp" line="265"/>
+        <source>Amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactiondesc.cpp" line="266"/>
+        <source>true</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactiondesc.cpp" line="266"/>
+        <source>false</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactiondesc.cpp" line="52"/>
+        <source>, has not been successfully broadcast yet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactiondesc.cpp" line="88"/>
+        <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2361,173 +2756,183 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
 <context>
     <name>TransactionView</name>
     <message>
-        <location filename="../transactionview.cpp" line="55"/>
-        <location filename="../transactionview.cpp" line="71"/>
+        <location filename="../transactionview.cpp" line="57"/>
+        <location filename="../transactionview.cpp" line="73"/>
         <source>All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="56"/>
+        <location filename="../transactionview.cpp" line="58"/>
         <source>Today</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="57"/>
+        <location filename="../transactionview.cpp" line="59"/>
         <source>This week</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="58"/>
+        <location filename="../transactionview.cpp" line="60"/>
         <source>This month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="59"/>
+        <location filename="../transactionview.cpp" line="61"/>
         <source>Last month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="60"/>
+        <location filename="../transactionview.cpp" line="62"/>
         <source>This year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="61"/>
+        <location filename="../transactionview.cpp" line="63"/>
         <source>Range...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="72"/>
+        <location filename="../transactionview.cpp" line="74"/>
         <source>Received with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="74"/>
+        <location filename="../transactionview.cpp" line="76"/>
         <source>Sent to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="76"/>
+        <location filename="../transactionview.cpp" line="78"/>
         <source>To yourself</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="77"/>
+        <location filename="../transactionview.cpp" line="79"/>
         <source>Mined</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="78"/>
+        <location filename="../transactionview.cpp" line="80"/>
         <source>Mint by stake</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="79"/>
+        <location filename="../transactionview.cpp" line="81"/>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="85"/>
+        <location filename="../transactionview.cpp" line="87"/>
         <source>Enter address or label to search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="91"/>
+        <location filename="../transactionview.cpp" line="93"/>
         <source>Min amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="125"/>
+        <location filename="../transactionview.cpp" line="127"/>
         <source>Copy address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="126"/>
+        <location filename="../transactionview.cpp" line="128"/>
         <source>Copy label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="127"/>
+        <location filename="../transactionview.cpp" line="129"/>
         <source>Copy amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="128"/>
+        <location filename="../transactionview.cpp" line="130"/>
+        <source>Copy transaction id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactionview.cpp" line="131"/>
+        <source>Open transaction in ledger</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../transactionview.cpp" line="132"/>
         <source>Edit label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="129"/>
-        <source>Show details...</source>
+        <location filename="../transactionview.cpp" line="133"/>
+        <source>Show transaction details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="130"/>
+        <location filename="../transactionview.cpp" line="134"/>
         <source>Clear orphans</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="273"/>
+        <location filename="../transactionview.cpp" line="281"/>
         <source>Export Transaction Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="274"/>
+        <location filename="../transactionview.cpp" line="282"/>
         <source>Comma separated file (*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="282"/>
+        <location filename="../transactionview.cpp" line="290"/>
         <source>Confirmed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="283"/>
+        <location filename="../transactionview.cpp" line="291"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="284"/>
+        <location filename="../transactionview.cpp" line="292"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="285"/>
+        <location filename="../transactionview.cpp" line="293"/>
         <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="286"/>
+        <location filename="../transactionview.cpp" line="294"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="287"/>
+        <location filename="../transactionview.cpp" line="295"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="288"/>
+        <location filename="../transactionview.cpp" line="296"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="292"/>
+        <location filename="../transactionview.cpp" line="300"/>
         <source>Error exporting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="292"/>
+        <location filename="../transactionview.cpp" line="300"/>
         <source>Could not write to file %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="400"/>
+        <location filename="../transactionview.cpp" line="434"/>
         <source>Range:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../transactionview.cpp" line="408"/>
+        <location filename="../transactionview.cpp" line="442"/>
         <source>to</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2537,6 +2942,44 @@ This label turns red, if the priority is smaller than &quot;medium&quot;.
     <message>
         <location filename="../walletmodel.cpp" line="164"/>
         <source>Sending...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WindowOptionsPage</name>
+    <message>
+        <location filename="../optionsdialog.cpp" line="313"/>
+        <source>Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="315"/>
+        <source>&amp;Start Paycoin on window system startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="316"/>
+        <source>Automatically start Paycoin after the computer is turned on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="320"/>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="321"/>
+        <source>Show only a tray icon after minimizing the window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="324"/>
+        <source>M&amp;inimize on close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="325"/>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Quit in the menu.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
