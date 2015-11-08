@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en">
-<defaultcodec>UTF-8</defaultcodec>
+<TS version="2.1" language="en">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -911,7 +910,7 @@ This label turns red if the priority is smaller than &quot;medium&quot;.
         <location filename="../coincontroldialog.cpp" line="584"/>
         <source>This label turns red if any recipient receives an amount smaller than %1.
 
- This means a fee of at least %2 is required. 
+ This means a fee of at least %2 is required.
 
  Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
         <translation type="unfinished"></translation>
