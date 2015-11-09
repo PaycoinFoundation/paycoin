@@ -61,13 +61,17 @@ Versions used in this release:
 
 Dependency Build Instructions: Ubuntu & Debian
 ----------------------------------------------
-sudo apt-get install build-essential
-sudo apt-get install libssl-dev
-sudo apt-get install libdb4.8-dev
-sudo apt-get install libdb4.8++-dev
- Boost 1.40+: sudo apt-get install libboost-all-dev
- or Boost 1.37: sudo apt-get install libboost1.37-dev
-sudo apt-get install libqrencode-dev
+- sudo apt-get install build-essential
+- sudo apt-get install libssl-dev
+- sudo apt-get install libdb4.8-dev
+- sudo apt-get install libdb4.8++-dev
+
+Boost 1.40+: 
+- sudo apt-get install libboost-all-dev
+
+Or Boost 1.37: 
+- sudo apt-get install libboost1.37-dev
+- sudo apt-get install libqrencode-dev
 
 If using Boost 1.37, append -mt to the boost libraries in the makefile.
 
