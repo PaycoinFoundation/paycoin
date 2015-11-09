@@ -1388,7 +1388,7 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
                 return IsPrimeStake(vout[0].scriptPubKey, vout[1].scriptPubKey, nTime, nValueIn, nValueOut, nCoinAge);
             } else {
                 if(GetValueOut() <= MINIMUM_FOR_ORION){
-                    return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for orion controller = %lld while you only have %lld", MINIMUM_FOR_ORION, GetValueOut()));
+                    return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for orion controller = %"PRI64d" while you only have %"PRI64d, MINIMUM_FOR_ORION, GetValueOut()));
                 }
                 int64 nStakeReward = nValueOut - nValueIn;
                 if(nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, 0) - GetMinFee() + MIN_TX_FEE){
