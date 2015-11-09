@@ -5,6 +5,11 @@ typedef long long  int64;
 
 void CPrimeNodeDB::WritePrimeNodeDB() {
     LOCK(cs);
+
+    /* Version 1 was Primekeys only, 2 should have been when we added
+     * microprimes so we'll start with version 3. */
+    WritePrimeNodeDBVersion(3);
+
     if (fTestNet) {
         WritePrimeNodeKey(
             "04d445518d115243639d0dfd057a99da588e8334039ce674f177943d4c660957c810f924a5371a352b1e827121846500a588a4dc47dc6d5d9e5317dfa48c562aa7",
