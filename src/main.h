@@ -48,8 +48,8 @@ static const unsigned int MODIFIER_INTERVAL = 10 * 60;
 static const int64 MINIMUM_FOR_ORION = 50 * COIN;
 static const int MAX_TIME_SINCE_BEST_BLOCK = 10; // how many seconds to wait before sending next PushGetBlocks()
 
-// Fork the coin at a given time to fix microprime maxes.
-static const unsigned int FIX_MICROPRIME_MAXES = 1600000000; // Force the build (REPLACE ME!)
+// Fork the coin at a given time to fix microprime maxes and stagger down stake rate.
+static const unsigned int MICROPRIMES_STAGGER_DOWN = 1448064000; // Sat, 21 Nov 2015 00:00:00 GMT
 
 #ifdef USE_UPNP
 static const int fHaveUPnP = true;

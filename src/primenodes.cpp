@@ -146,12 +146,15 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
         if (!primeNodeDB->CheckMicroPrime(scriptPubKeyAddress))
             return DoS(100, error("IsPrimeStake() : invalid microprime address, HAXORS!!!"));
 
-        primeNodeDB->IsMicroPrime(scriptPubKeyAddress, primeNodeRate, group);
+        primeNodeDB->IsMicroPrime(scriptPubKeyAddress, primeNodeRate, group, nTime);
         /* Confirm the nValueIn is not greater than the balance allowed per
          * microPrimeGroup. This should not occur and will only happen if
          * someone attempts to hack the stake rate. */
         if (nValueIn > group * COIN)
             return DoS(100, error("IsPrimeStake() : nValueIn %"PRI64d" exceeds max balance for microprime group %"PRI64d, nValueIn, group));
+
+        if (nTime >= MICROPRIMES_STAGGER_DOWN && nValueIn < group * COIN)
+            return DoS(100, error("IsPrimeStake() : nValueIn %"PRI64d" is below required amount for microprime group %"PRI64d, nValueIn, group));
 
         if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
             return DoS(100, error("IsPrimeStake() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
@@ -169,7 +172,6 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
     if (nTime >= END_PRIME_PHASE_ONE && scriptPubKeyType[0] != OP_PRIMENODEP2)
         return DoS(100, error("IsPrimeStake() : prime node staking has ended for the given keypair"));
 
-    // Set legacy primeNodeRates.
     switch (scriptPubKeyType[0]) {
         case OP_PRIMENODE350:
             primeNodeRate = 350;
@@ -183,6 +185,8 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
         case OP_PRIMENODE10:
             primeNodeRate = 10;
             break;
+        case OP_PRIMENODEP2:
+            primeNodeRate = PRIME_NODE_RATE;
     }
 
     /* Check the script signature to confirm it came from a valid prime node key
@@ -204,8 +208,6 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
          * and the real end date is unknown at the time of updating the keys. */
         if (entry.valid_until != -1 && nTime >= entry.valid_until)
             return DoS(100, error("IsPrimeStake() : prime node staking has ended for the given keypair"));
-
-        primeNodeRate = entry.primeNodeRate;
     }
 
     // Confirm the stake passes the minimum for a primenode
@@ -315,14 +317,14 @@ bool CPrimeNodeDB::WritePrimeNodeDBVersion(int version)
     return Write(string("dbversion"), version);
 }
 
-bool CPrimeNodeDB::WritePrimeNodeKey(const string key, int primeNodeRate, unsigned int valid_starting, unsigned int valid_until)
+bool CPrimeNodeDB::WritePrimeNodeKey(const string key, unsigned int valid_starting, unsigned int valid_until)
 {
-    return Write(make_pair(string("primenode"), key), boost::make_tuple(primeNodeRate, valid_starting, valid_until));
+    return Write(make_pair(string("primenode"), key), make_pair(valid_starting, valid_until));
 }
 
-bool CPrimeNodeDB::WriteMicroPrimeAddr(const string address, int64 group, int primeNodeRate)
+bool CPrimeNodeDB::WriteMicroPrimeAddr(const string address, int64 group)
 {
-    return Write(make_pair(string("microprime"), address), make_pair(primeNodeRate, group));
+    return Write(make_pair(string("microprime"), address), group);
 }
 
 bool CPrimeNodeDB::CheckPrimeNodeDBVersion(int &version)
@@ -339,16 +341,30 @@ bool CPrimeNodeDB::CheckPrimeNodeKey(const string key)
     return Exists(make_pair(string("primenode"), key));
 }
 
-bool CPrimeNodeDB::IsMicroPrime(CScript scriptPubKeyAddress, int &primeNodeRate, int64 &group)
+bool CPrimeNodeDB::IsMicroPrime(CScript scriptPubKeyAddress, int &primeNodeRate, int64 &group, unsigned int nTime)
 {
     CTxDestination address;
     ExtractDestination(scriptPubKeyAddress, address);
     CBitcoinAddress addr(address);
 
-    pair<int, int64> p;
-    Read(make_pair(string("microprime"), addr.ToString()), p);
-    primeNodeRate = p.first;
-    group = p.second;
+    Read(make_pair(string("microprime"), addr.ToString()), group);
+
+    /* All microprimes have the same rate so no need to store that in the
+     * database. Stagger those rates down from the original 25% rate to 10%
+     * over the defined time frame. */
+    primeNodeRate = 25;
+
+    if (nTime >= MICROPRIMES_STAGGER_DOWN + (60 * 60 * 24 * 30))
+        primeNodeRate = 20;
+    if (nTime >= MICROPRIMES_STAGGER_DOWN + (60 * 60 * 24 * 30 * 2))
+        primeNodeRate = 15;
+    if (nTime >= MICROPRIMES_STAGGER_DOWN + (60 * 60 * 24 * 30 * 3))
+        primeNodeRate = 10;
+
+    // Final stage, reset microprime rate to 40% of the PRIME_NODE_RATE
+    if (nTime >= MICROPRIMES_STAGGER_DOWN + (60 * 60 * 24 * 30 * 4))
+        primeNodeRate = PRIME_NODE_RATE * .40;
+
     return true;
 }
 

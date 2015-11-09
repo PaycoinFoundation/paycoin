@@ -1436,7 +1436,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                          scriptStake << OP_MICROPRIME;
                          // Set the microprime group and rate from the database.
                          int rate;
-                         primeNodeDB->IsMicroPrime(scriptPubKeyOut, rate, microPrimeGroup);
+                         primeNodeDB->IsMicroPrime(scriptPubKeyOut, rate, microPrimeGroup, txNew.nTime);
                          primeNodeRate = rate;
                      } else {
                          /* If not a microprime go ahead and mark a standard
@@ -1501,7 +1501,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             printf("CreateCoinStake : nCombineThreshold = %"PRI64d" pcoin.first->vout[pcoin.second].nValue = %"PRI64d"\n", nCombineThreshold, pcoin.first->vout[pcoin.second].nValue);
             vwtxPrev.push_back(pcoin.first);
         }
-
     }
 
     bool scrapedstake = false;
@@ -1516,15 +1515,17 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             return error("CreateCoinStake : credit is too high for microprime group; credit = %"PRI64d"; group = %"PRI64d"\n", nCredit, microPrimeGroup);
 
         int64 addressbalance;
-        if (microPrimeGroup > 0 && GetSingleAddressBalance(txNew.vout[1].scriptPubKey, addressbalance) > microPrimeGroup)
+        if (microPrimeGroup > 0 && GetSingleAddressBalance(txNew.vout[1].scriptPubKey, addressbalance) > microPrimeGroup * COIN)
             return error("CreateCoinStake : address balance is too high for microprime group; address balance = %"PRI64d"; group = %"PRI64d"\n", addressbalance, microPrimeGroup);
 
         if (primeNodeRate != 0 && microPrimeGroup == 0 && nCredit < MINIMUM_FOR_PRIMENODE)
             return error("CreateCoinStake : credit doesn't meet requirement for primenode; credit = %"PRI64d"; requirement = %"PRI64d" nCombineThreshold = %"PRI64d"\n", nCredit, MINIMUM_FOR_PRIMENODE, nCombineThreshold);
 
+        if (txNew.nTime >= MICROPRIMES_STAGGER_DOWN && microPrimeGroup > 0 && nCredit != microPrimeGroup * COIN)
+            return error("CreateCoinStake : credit should match microprime group; credit = %"PRI64d"; group = %"PRI64d"\n", nCredit, microPrimeGroup);
+
         if (primeNodeRate == 0 && nCredit < MINIMUM_FOR_ORION)
             return error("CreateCoinStake : credit doesn't meet requirement for orion controller; credit = %"PRI64d"; requirement = %"PRI64d" nCombineThreshold = %"PRI64d"\n", nCredit, MINIMUM_FOR_ORION, nCombineThreshold);
-
 
         int64 nTime = GetTime();
         int64 nReward = GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate);

@@ -2839,12 +2839,12 @@ Value listmicroprimedata(const Array& params, bool fHelp)
     int64 group;
     CScript scriptMPAddress;
     scriptMPAddress.SetDestination(address.Get());
-    if (!primeNodeDB->IsMicroPrime(scriptMPAddress, primeNodeRate, group))
+    if (!primeNodeDB->IsMicroPrime(scriptMPAddress, primeNodeRate, group, GetTime()))
         throw runtime_error("Address is not a valid microprime address.");
 
     Object obj;
     obj.push_back(Pair("Address", strAddress));
-    obj.push_back(Pair("Stake rate", primeNodeRate));
+    obj.push_back(Pair("Current stake rate", primeNodeRate));
     obj.push_back(Pair("Max balance", (int)group));
 
     return obj;
