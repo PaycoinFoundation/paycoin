@@ -218,23 +218,16 @@ void CPrimeNodeDB::WritePrimeNodeDB() {
     );
 
     WritePrimeNodeKey(
-        "04bc6f36a02c5aece8bf67b09f8bffd4d61ea0214e289afcfebf44e531086304a9cc1601368e261db0da40a0199ad90334e81a802dcfd6a47647b948239db391f7",
+        "04f639a33908c6d8d2980d90906caa04a595d8e8b5c183b925b90f6dbfbab33f3906da2bca7baa75d7c3903eb1c683d3afeacdeefa8ed034120050adbb51a3f22f",
         25,
         END_PRIME_PHASE_ONE + 9072000, // 15 weeks
-        -1
+        1445380000 // Invalidated shortly after only stake for this key
     );
 
     WritePrimeNodeKey(
         "04e9aa4df6296ffd5041efaa9ea66928b7bd061ea29266c32282fe8f321ad083fc137c14f9684bfddbec4f4b0488a739eebe9b9542645f4acef6a00ccac761b8b6",
         25,
         END_PRIME_PHASE_ONE + 9072000, // 15 weeks
-        -1
-    );
-
-    WritePrimeNodeKey(
-        "04e9aa4df6296ffd5041efaa9ea66928b7bd061ea29266c32282fe8f321ad083fc137c14f9684bfddbec4f4b0488a739eebe9b9542645f4acef6a00ccac761b8b6",
-        25,
-        END_PRIME_PHASE_ONE + 9676800, // 16 weeks
         -1
     );
 
