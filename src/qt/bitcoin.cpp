@@ -132,6 +132,16 @@ static void handleRunawayException(std::exception *e)
     exit(1);
 }
 
+/* Allow RPC clear orphans to work properly in QT as well
+ */
+void QTClearOrphans()
+{
+    /* This is actually stored in bitcoingui.cpp because otherwise we have to
+     * instantiate multiple TransactionView classes which we really don't want
+     * to do (for obvious reasons). */
+    GUIClearOrphans();
+}
+
 #ifndef BITCOIN_QT_TEST
 int main(int argc, char *argv[])
 {

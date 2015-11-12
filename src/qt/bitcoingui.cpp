@@ -60,6 +60,9 @@
 
 #include <iostream>
 
+// Global pointer to TransactionView so that we can clear orphans from RPC
+static TransactionView *transactionview;
+
 BitcoinGUI::BitcoinGUI(QWidget *parent):
     QMainWindow(parent),
     clientModel(0),
@@ -102,6 +105,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     transactionsPage = new QWidget(this);
     QVBoxLayout *vbox = new QVBoxLayout();
     transactionView = new TransactionView(this);
+    // Set our global pointer for RPC clear orphans support.
+    transactionview = transactionView;
     vbox->addWidget(transactionView);
     transactionsPage->setLayout(vbox);
 
@@ -962,4 +967,8 @@ void BitcoinGUI::editConfig()
     mb.setText(tr("Any changes made to the configuration will require restarting the application."));
     mb.exec();
     QDesktopServices::openUrl(QUrl::fromLocalFile(QString::fromStdString(GetConfigFile().string())));
+}
+
+void GUIClearOrphans() {
+    QMetaObject::invokeMethod(transactionview, "clearOrphans", Qt::QueuedConnection);
 }
