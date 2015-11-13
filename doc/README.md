@@ -1,4 +1,4 @@
-Paycoin 0.3.2.0
+Paycoin 0.3.3.0
 ===============
 
 Copyright (c) 2014-2015 Paycoin developers
