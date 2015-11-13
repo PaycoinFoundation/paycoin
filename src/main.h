@@ -48,9 +48,8 @@ static const unsigned int MODIFIER_INTERVAL = 10 * 60;
 static const int64 MINIMUM_FOR_ORION = 50 * COIN;
 static const int MAX_TIME_SINCE_BEST_BLOCK = 10; // how many seconds to wait before sending next PushGetBlocks()
 
-// Enable phase 2 primenodes because of issue w/ IsProofOfStake check in previous update
-static const unsigned int ENABLE_PHASE_TWO_PRIMES = 1442318400; // Tue, 15 Sep 2015 12:00:00 GMT
-static const unsigned int ENABLE_MICROPRIMES = 1445644800; // Sat, 24 Oct 2015 00:00:00 GMT
+// Fork the coin at a given time to fix microprime maxes.
+static const unsigned int FIX_MICROPRIME_MAXES = 1600000000; // Force the build (REPLACE ME!)
 
 #ifdef USE_UPNP
 static const int fHaveUPnP = true;
