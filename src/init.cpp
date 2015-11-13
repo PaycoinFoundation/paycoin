@@ -419,7 +419,7 @@ bool AppInit2(int argc, char* argv[])
         return InitError(strprintf(_("Cannot obtain a lock on data directory %s.  Paycoin is probably already running."), GetDataDir().string().c_str()));
 
     // Check and update minium version protocol after a given time.
-    if (time(NULL) >= FIX_MICROPRIME_MAXES)
+    if (time(NULL) >= MICROPRIMES_STAGGER_DOWN)
         MIN_PROTO_VERSION = 70006;
 
     std::ostringstream strErrors;

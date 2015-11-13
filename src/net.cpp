@@ -663,7 +663,7 @@ void ThreadSocketHandler2(void* parg)
 
     for (;;)
     {
-        if (MIN_PROTO_VERSION != 70006 && !droppedPostVersionChange && time(NULL) >= FIX_MICROPRIME_MAXES)
+        if (MIN_PROTO_VERSION != 70006 && !droppedPostVersionChange && time(NULL) >= MICROPRIMES_STAGGER_DOWN)
         {
             droppedPostVersionChange = true;
             droppingPostVersionChange = true;

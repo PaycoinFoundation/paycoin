@@ -64,6 +64,8 @@ BOOST_AUTO_TEST_CASE(primenode_validity)
     BOOST_CHECK(tx.IsPrimeStake(scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 5000 * COIN, 0, 0));
     // Value in exceeds max stakeable balance of address (microPrimeGroup)
     BOOST_CHECK(!tx.IsPrimeStake(scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 5000 * COIN + 1, 0, 0));
+    // Value in is too low for microprime after given date.
+    BOOST_CHECK(!tx.IsPrimeStake(scriptMicroPrimeOP, scriptPubKeyAddress, MICROPRIMES_STAGGER_DOWN, 5000 * COIN - 1, 0, 0));
     // Excessive reward.
     BOOST_CHECK(!tx.IsPrimeStake(scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 4000 * COIN, 6000 * COIN, 0));
 

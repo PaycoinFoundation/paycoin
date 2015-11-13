@@ -16,6 +16,8 @@ static const int64 MINIMUM_FOR_PRIMENODE = MINIMUM_FOR_PRIMENODE_PHASE2;
 
 static const unsigned int END_PRIME_PHASE_ONE = 1435752000; // Wed, 01 Jul 2015 12:00:00 GMT
 
+static const int PRIME_NODE_RATE = 25;
+
 bool initPrimeNodes(std::string &/*ret*/);
 
 enum dbtype {
@@ -34,7 +36,6 @@ class CPrimeNodeDBEntry
 {
 public:
     std::string key;
-    int primeNodeRate;
     unsigned int valid_starting;
     unsigned int valid_until;
 
@@ -46,14 +47,12 @@ public:
     void SetNull()
     {
         key.clear();
-        primeNodeRate = 0;
         valid_starting = 0;
         valid_until = 0;
     }
 
     IMPLEMENT_SERIALIZE
     (
-        READWRITE(primeNodeRate);
         READWRITE(valid_starting);
         READWRITE(valid_until);
     )
@@ -69,8 +68,8 @@ private:
     CPrimeNodeDB(const CPrimeNodeDB&);
     void operator=(const CPrimeNodeDB);
 
-    bool WritePrimeNodeKey(const std::string /*key*/, int /*primeNodeRate*/, unsigned int /*valid_starting*/, unsigned int /*valid_until*/);
-    bool WriteMicroPrimeAddr(const std::string /*address*/, int64 /*group*/, int /*primeNodeRate*/);
+    bool WritePrimeNodeKey(const std::string /*key*/, unsigned int /*valid_starting*/, unsigned int /*valid_until*/);
+    bool WriteMicroPrimeAddr(const std::string /*address*/, int64 /*group*/);
     bool WritePrimeNodeDBVersion(int /*version*/);
 public:
     void WritePrimeNodeDB();
@@ -80,7 +79,7 @@ public:
     bool CheckPrimeNodeDBVersion(int &/*version*/);
 
     bool IsPrimeNodeKey(CScript /*scriptPubKeyType*/, unsigned int /*nTime*/, CPrimeNodeDBEntry &/*entry*/);
-    bool IsMicroPrime(CScript /*scriptPubKeyAddress*/, int &/*primeNodeRate*/, int64 &/*group*/);
+    bool IsMicroPrime(CScript /*scriptPubKeyAddress*/, int &/*primeNodeRate*/, int64 &/*group*/, unsigned int /*nTime*/);
     bool CheckPrimeNodeKey(const std::string /*key*/);
     bool CheckMicroPrime(const std::string /*address*/);
     bool CheckMicroPrime(CScript /*scriptPubKeyAddress*/);
