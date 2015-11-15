@@ -878,7 +878,7 @@ Value listminting(const Array& params, bool fHelp)
                 "listminting [count=-1] [from=0]\n"
                 "Return all mintable outputs and provide details for each of them.");
 
-    int count = -1;
+    unsigned int count = -1;
 
     if(params.size() > 0)
         count = params[0].get_int();
@@ -2741,7 +2741,7 @@ Value gettxout(const Array& params, bool fHelp)
         if (mempool.exists(hash))
         {
             tx = mempool.lookup(hash);
-            if (n >= tx.vout.size())
+            if (n >= (int)tx.vout.size())
                 return Value::null;
             fFound = true;
             fInMempool = true;
@@ -2754,7 +2754,7 @@ Value gettxout(const Array& params, bool fHelp)
         CTxIndex txindex;
         if (!txdb.ReadTxIndex(hash, txindex))
             return Value::null;
-        if (n >= txindex.vSpent.size())
+        if (n >= (int)txindex.vSpent.size())
             return Value::null;
         if (!txindex.vSpent[n].IsNull())
             return Value::null;

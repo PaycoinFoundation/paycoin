@@ -21,6 +21,7 @@
 #define TESTNET_RPC_PORT 9001
 
 extern bool fTestNet;
+extern unsigned char pchMessageStart[4];
 
 void GetMessageStart(unsigned char pchMessageStart[]);
 
@@ -55,8 +56,16 @@ class CMessageHeader
 
     // TODO: make private (improves encapsulation)
     public:
-        enum { COMMAND_SIZE=12 };
-        unsigned char pchMessageStart[4];
+        enum {
+            MESSAGE_START_SIZE=sizeof(::pchMessageStart),
+            COMMAND_SIZE=12,
+            MESSAGE_SIZE_SIZE=sizeof(int),
+            CHECKSUM_SIZE=sizeof(int),
+
+            MESSAGE_SIZE_OFFSET=MESSAGE_START_SIZE+COMMAND_SIZE,
+            CHECKSUM_OFFSET=MESSAGE_SIZE_OFFSET+MESSAGE_SIZE_SIZE
+        };
+        unsigned char pchMessageStart[MESSAGE_START_SIZE];
         char pchCommand[COMMAND_SIZE];
         unsigned int nMessageSize;
         unsigned int nChecksum;

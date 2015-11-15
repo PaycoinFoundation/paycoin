@@ -2142,7 +2142,7 @@ void CWallet::FixSpentCoins(int& nMismatchFound, int64& nBalanceInQuestion, bool
         CTxIndex txindex;
         if (!txdb.ReadTxIndex(pcoin->GetHash(), txindex))
             continue;
-        for (int n=0; n < pcoin->vout.size(); n++)
+        for (unsigned int n = 0; n < pcoin->vout.size(); n++)
         {
             if (IsMine(pcoin->vout[n]) && pcoin->IsSpent(n) && (txindex.vSpent.size() <= n || txindex.vSpent[n].IsNull()))
             {

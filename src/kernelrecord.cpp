@@ -36,7 +36,7 @@ vector<KernelRecord> KernelRecord::decomposeOutput(const CWallet *wallet, const 
 
     if (showTransaction(wtx))
     {
-        for (int nOut = 0; nOut < wtx.vout.size(); nOut++)
+        for (unsigned int nOut = 0; nOut < wtx.vout.size(); nOut++)
         {
             CTxOut txOut = wtx.vout[nOut];
             if( wallet->IsMine(txOut) ) {

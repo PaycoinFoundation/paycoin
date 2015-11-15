@@ -206,7 +206,7 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
          * may be set temperately when it's known that a release will be done
          * that ensures people update before the real valid_until time occurs
          * and the real end date is unknown at the time of updating the keys. */
-        if (entry.valid_until != -1 && nTime >= entry.valid_until)
+        if (entry.valid_until != (unsigned int)-1 && nTime >= entry.valid_until)
             return DoS(100, error("IsPrimeStake() : prime node staking has ended for the given keypair"));
     }
 
