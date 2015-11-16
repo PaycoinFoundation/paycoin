@@ -92,7 +92,7 @@ void Shutdown(void* parg)
             delete scrapesDB;
         NewThread(ExitTimeout, NULL);
         Sleep(50);
-        printf("Paycoin exiting\n\n");
+        printf("Paycoin exited\n\n");
         fExit = true;
 #ifndef QT_GUI
         // ensure non-UI client get's exited here, but let Bitcoin-Qt reach return 0; in bitcoin.cpp
