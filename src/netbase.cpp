@@ -230,9 +230,9 @@ bool static Socks5(string strDest, int port, SOCKET& hSocket)
     }
     char pszSocks5Init[] = "\5\1\0";
     char *pszSocks5 = pszSocks5Init;
-    int nSize = sizeof(pszSocks5Init) - 1;
+    ssize_t nSize = sizeof(pszSocks5Init) - 1;
 
-    int ret = send(hSocket, pszSocks5, nSize, MSG_NOSIGNAL);
+    ssize_t ret = send(hSocket, pszSocks5, nSize, MSG_NOSIGNAL);
     if (ret != nSize)
     {
         closesocket(hSocket);
@@ -256,7 +256,7 @@ bool static Socks5(string strDest, int port, SOCKET& hSocket)
     strSocks5 += static_cast<char>((port >> 8) & 0xFF);
     strSocks5 += static_cast<char>((port >> 0) & 0xFF);
     ret = send(hSocket, strSocks5.c_str(), strSocks5.size(), MSG_NOSIGNAL);
-    if (ret != strSocks5.size())
+    if (ret != (ssize_t)strSocks5.size())
     {
         closesocket(hSocket);
         return error("Error sending to proxy");
@@ -982,7 +982,7 @@ bool operator<(const CService& a, const CService& b)
 bool CService::GetSockAddr(struct sockaddr* paddr, socklen_t *addrlen) const
 {
     if (IsIPv4()) {
-        if (*addrlen < sizeof(struct sockaddr_in))
+        if (*addrlen < (socklen_t)sizeof(struct sockaddr_in))
             return false;
         *addrlen = sizeof(struct sockaddr_in);
         struct sockaddr_in *paddrin = (struct sockaddr_in*)paddr;
@@ -995,7 +995,7 @@ bool CService::GetSockAddr(struct sockaddr* paddr, socklen_t *addrlen) const
     }
 #ifdef USE_IPV6
     if (IsIPv6()) {
-        if (*addrlen < sizeof(struct sockaddr_in6))
+        if (*addrlen < (socklen_t)sizeof(struct sockaddr_in6))
             return false;
         *addrlen = sizeof(struct sockaddr_in6);
         struct sockaddr_in6 *paddrin6 = (struct sockaddr_in6*)paddr;
