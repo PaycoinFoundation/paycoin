@@ -11,6 +11,10 @@
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
+// Unset FD size if already set before trying to set it again.
+#ifdef FD_SETSIZE
+#undef FD_SETSIZE
+#endif
 #define FD_SETSIZE 1024 // max number of fds in fd_set
 #include <winsock2.h>
 #include <mswsock.h>
