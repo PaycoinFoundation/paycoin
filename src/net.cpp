@@ -1229,7 +1229,8 @@ void ThreadDNSAddressSeed2(void* parg)
 // Physical IP seeds: 32-bit IPv4 addresses: e.g. 178.33.22.32 = 0x201621b2
 unsigned int pnSeed[] =
 {
-    0xb68b8268, 0x65018268,
+    // Hard Code DNS Seed IPS for Paycoin, paycoinfoundation, xpydev
+    0xAB10202D, 0x69D1EFD5, 0x98539A68
 };
 
 void DumpAddresses()
