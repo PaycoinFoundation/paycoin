@@ -137,14 +137,55 @@ int main(int argc, char* argv[])
 
     return 1;
 }
-#endif
 
 bool AppInit(int argc, char* argv[])
 {
     bool fRet = false;
     try
     {
-        fRet = AppInit2(argc, argv);
+        //
+        // Parameters
+        //
+        // If Qt is used, parameters/paycoin.conf are parsed in qt/bitcoin.cpp's main()
+        ParseParameters(argc, argv);
+        if (!boost::filesystem::is_directory(GetDataDir(false)))
+        {
+            fprintf(stderr, "Error: Specified directory does not exist\n");
+            Shutdown(NULL);
+        }
+        ReadConfigFile(mapArgs, mapMultiArgs);
+
+        if (mapArgs.count("-?") || mapArgs.count("--help"))
+        {
+            // First part of help message is specified in paycoind / RPC client
+            std::string strUsage = _("Paycoin version") + " " + FormatFullVersion() + "\n\n" +
+                _("Usage:") + "\n" +
+                  "  paycoind [options]                     " + "\n" +
+                  "  paycoind [options] <command> [params]  " + _("Send command to server or paycoind") + "\n" +
+                  "  paycoind [options] help                " + _("List commands") + "\n" +
+                  "  paycoind [options] help <command>      " + _("Get help for a command") + "\n";
+
+            strUsage += "\n" + HelpMessage();
+
+            fprintf(stderr, "%s", strUsage.c_str());
+            return false;
+        }
+
+        // Do this early so that daemon commands are processed properly
+        fTestNet = GetBoolArg("-testnet");
+
+        // Command-line RPC
+        for (int i = 1; i < argc; i++)
+            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "paycoin:"))
+                fCommandLine = true;
+
+        if (fCommandLine)
+        {
+            int ret = CommandLineRPC(argc, argv);
+            exit(ret);
+        }
+
+        fRet = AppInit2();
     }
     catch (std::exception& e) {
         PrintException(&e, "AppInit()");
@@ -155,6 +196,7 @@ bool AppInit(int argc, char* argv[])
         Shutdown(NULL);
     return fRet;
 }
+#endif
 
 bool static InitError(const std::string &str)
 {
@@ -178,7 +220,84 @@ bool static Bind(const CService &addr) {
     return true;
 }
 
-bool AppInit2(int argc, char* argv[])
+// Core-specific options shared between UI and daemon
+std::string HelpMessage()
+{
+    string strUsage = _("Options:") + "\n" +
+        "  -conf=<file>          "   + _("Specify configuration file (default: paycoin.conf)") + "\n" +
+        "  -pid=<file>           "   + _("Specify pid file (default: paycoind.pid)") + "\n" +
+        "  -gen                  "   + _("Generate coins") + "\n" +
+        "  -gen=0                "   + _("Don't generate coins") + "\n" +
+        "  -datadir=<dir>        "   + _("Specify data directory") + "\n" +
+        "  -dbcache=<n>          "   + _("Set database cache size in megabytes (default: 25)") + "\n" +
+        "  -dblogsize=<n>        "   + _("Set database disk log size in megabytes (default: 100)") + "\n" +
+        "  -timeout=<n>          "   + _("Specify connection timeout (in milliseconds)") + "\n" +
+        "  -proxy=<ip:port>      "   + _("Connect through socks proxy") + "\n" +
+        "  -socks=<n>            "   + _("Select the version of socks proxy to use (4 or 5, 5 is default)") + "\n" +
+        "  -noproxy=<net>        "   + _("Do not use proxy for connections to network net (ipv4 or ipv6)") + "\n" +
+        "  -dns                  "   + _("Allow DNS lookups for -addnode, -seednode and -connect") + "\n" +
+        "  -proxydns             "   + _("Pass DNS requests to (SOCKS5) proxy") + "\n" +
+        "  -port=<port>          "   + _("Listen for connections on <port> (default: 8998 or testnet: 9000)") + "\n" +
+        "  -maxconnections=<n>   "   + _("Maintain at most <n> connections to peers (default: 125)") + "\n" +
+        "  -addnode=<ip>         "   + _("Add a node to connect to and attempt to keep the connection open") + "\n" +
+        "  -connect=<ip>         "   + _("Connect only to the specified node") + "\n" +
+        "  -seednode=<ip>        "   + _("Connect to a node to retrieve peer addresses, and disconnect") + "\n" +
+        "  -externalip=<ip>      "   + _("Specify your own public address") + "\n" +
+        "  -onlynet=<net>        "   + _("Only connect to nodes in network <net> (IPv4 or IPv6)") + "\n" +
+        "  -discover             "   + _("Try to discover public IP address (default: 1)") + "\n" +
+        "  -listen               "   + _("Accept connections from outside (default: 1)") + "\n" +
+        "  -bind=<addr>          "   + _("Bind to given address. Use [host]:port notation for IPv6") + "\n" +
+        "  -dnsseed              "   + _("Find peers using DNS lookup (default: 1)") + "\n" +
+        "  -banscore=<n>         "   + _("Threshold for disconnecting misbehaving peers (default: 100)") + "\n" +
+        "  -bantime=<n>          "   + _("Number of seconds to keep misbehaving peers from reconnecting (default: 86400)") + "\n" +
+        "  -maxreceivebuffer=<n> "   + _("Maximum per-connection receive buffer, <n>*1000 bytes (default: 10000)") + "\n" +
+        "  -maxsendbuffer=<n>    "   + _("Maximum per-connection send buffer, <n>*1000 bytes (default: 10000)") + "\n" +
+#ifdef USE_UPNP
+#if USE_UPNP
+        "  -upnp                 "   + _("Use Universal Plug and Play to map the listening port (default: 1)") + "\n" +
+#else
+        "  -upnp                 "   + _("Use Universal Plug and Play to map the listening port (default: 0)") + "\n" +
+#endif
+#endif
+        "  -detachdb             "   + _("Detach block databases. Increases shutdown time (default: 0)") + "\n" +
+        "  -paytxfee=<amt>       "   + _("Fee per KB to add to transactions you send") + "\n" +
+#ifdef QT_GUI
+        "  -server               "   + _("Accept command line and JSON-RPC commands (enabled on daemon by default)") + "\n" +
+#endif
+#if !defined(WIN32) && !defined(QT_GUI)
+        "  -daemon               "   + _("Run in the background as a daemon and accept commands") + "\n" +
+#endif
+        "  -testnet              "   + _("Use the test network") + "\n" +
+        "  -debug                "   + _("Output extra debugging information") + "\n" +
+        "  -logtimestamps        "   + _("Prepend debug output with timestamp") + "\n" +
+        "  -printtoconsole       "   + _("Send trace/debug info to console instead of debug.log file") + "\n" +
+#ifdef WIN32
+        "  -printtodebugger      "   + _("Send trace/debug info to debugger") + "\n" +
+#endif
+        "  -rpcuser=<user>       "   + _("Username for JSON-RPC connections") + "\n" +
+        "  -rpcpassword=<pw>     "   + _("Password for JSON-RPC connections") + "\n" +
+        "  -rpcport=<port>       "   + _("Listen for JSON-RPC connections on <port> (default: 8999)") + "\n" +
+        "  -rpcallowip=<ip>      "   + _("Allow JSON-RPC connections from specified IP address") + "\n" +
+        "  -rpcconnect=<ip>      "   + _("Send commands to node running on <ip> (default: 127.0.0.1)") + "\n" +
+        "  -blocknotify=<cmd>    "   + _("Execute command when the best block changes (%s in cmd is replaced by block hash)") + "\n" +
+        "  -walletnotify=<cmd>   "   + _("Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)") + "\n" +
+        "  -upgradewallet        "   + _("Upgrade wallet to latest format") + "\n" +
+        "  -keypool=<n>          "   + _("Set key pool size to <n> (default: 100)") + "\n" +
+        "  -rescan               "   + _("Rescan the block chain for missing wallet transactions") + "\n" +
+        "  -checkblocks=<n>      "   + _("How many blocks to check at startup (default: 2500, 0 = all)") + "\n" +
+        "  -checklevel=<n>       "   + _("How thorough the block verification is (0-6, default: 1)") + "\n";
+
+    strUsage += string() +
+        _("\nSSL options: (see the Paycoin Wiki for SSL setup instructions)") + "\n" +
+        "  -rpcssl                                  " + _("Use OpenSSL (https) for JSON-RPC connections") + "\n" +
+        "  -rpcsslcertificatechainfile=<file.cert>  " + _("Server certificate file (default: server.cert)") + "\n" +
+        "  -rpcsslprivatekeyfile=<file.pem>         " + _("Server private key (default: server.pem)") + "\n" +
+        "  -rpcsslciphers=<ciphers>                 " + _("Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)") + "\n";
+
+    return strUsage;
+}
+
+bool AppInit2()
 {
 #ifdef _MSC_VER
     // Turn off Microsoft heap dump noise
@@ -221,123 +340,6 @@ bool AppInit2(int argc, char* argv[])
     sigaction(SIGHUP, &sa_hup, NULL);
 #endif
 
-    //
-    // Parameters
-    //
-    // If Qt is used, parameters/bitcoin.conf are parsed in qt/bitcoin.cpp's main()
-#if !defined(QT_GUI)
-    ParseParameters(argc, argv);
-    if (!boost::filesystem::is_directory(GetDataDir(false)))
-    {
-        fprintf(stderr, "Error: Specified directory does not exist\n");
-        Shutdown(NULL);
-    }
-    ReadConfigFile(mapArgs, mapMultiArgs);
-#endif
-
-    if (mapArgs.count("-?") || mapArgs.count("--help"))
-    {
-        string strUsage = string() +
-          _("Paycoin version") + " " + FormatFullVersion() + "\n\n" +
-          _("Usage:") + "\t\t\t\t\t\t\t\t\t\t\n" +
-            "  paycoind [options]                   \t  " + "\n" +
-            "  paycoind [options] <command> [params]\t  " + _("Send command to -server or paycoind") + "\n" +
-            "  paycoind [options] help              \t\t  " + _("List commands") + "\n" +
-            "  paycoind [options] help <command>    \t\t  " + _("Get help for a command") + "\n" +
-          _("Options:") + "\n" +
-            "  -conf=<file>     \t\t  " + _("Specify configuration file (default: paycoin.conf)") + "\n" +
-            "  -pid=<file>      \t\t  " + _("Specify pid file (default: paycoind.pid)") + "\n" +
-            "  -gen             \t\t  " + _("Generate coins") + "\n" +
-            "  -gen=0           \t\t  " + _("Don't generate coins") + "\n" +
-            "  -min             \t\t  " + _("Start minimized") + "\n" +
-            "  -splash          \t\t  " + _("Show splash screen on startup (default: 1)") + "\n" +
-            "  -datadir=<dir>   \t\t  " + _("Specify data directory") + "\n" +
-            "  -dbcache=<n>     \t\t  " + _("Set database cache size in megabytes (default: 25)") + "\n" +
-            "  -dblogsize=<n>   \t\t  " + _("Set database disk log size in megabytes (default: 100)") + "\n" +
-            "  -timeout=<n>     \t  "   + _("Specify connection timeout in milliseconds (default: 5000)") + "\n" +
-            "  -proxy=<ip:port> \t  "   + _("Connect through socks proxy") + "\n" +
-            "  -socks=<n>       \t  "   + _("Select the version of socks proxy to use (4 or 5, 5 is default)") + "\n" +
-            "  -noproxy=<net>   \t  "   + _("Do not use proxy for connections to network net (ipv4 or ipv6)") + "\n" +
-            "  -dns             \t  "   + _("Allow DNS lookups for -addnode, -seednode and -connect") + "\n" +
-            "  -proxydns        \t  "   + _("Pass DNS requests to (SOCKS5) proxy") + "\n" +
-            "  -port=<port>     \t\t  " + _("Listen for connections on <port> (default: 8998 or testnet: 9000)") + "\n" +
-            "  -maxconnections=<n>\t  " + _("Maintain at most <n> connections to peers (default: 125)") + "\n" +
-            "  -addnode=<ip>    \t  "   + _("Add a node to connect to and attempt to keep the connection open") + "\n" +
-            "  -connect=<ip>    \t\t  " + _("Connect only to the specified node") + "\n" +
-            "  -seednode=<ip>   \t\t  " + _("Connect to a node to retrieve peer addresses, and disconnect") + "\n" +
-            "  -externalip=<ip> \t  "   + _("Specify your own public address") + "\n" +
-            "  -onlynet=<net>   \t  "   + _("Only connect to nodes in network <net> (IPv4 or IPv6)") + "\n" +
-            "  -discover        \t  "   + _("Try to discover public IP address (default: 1)") + "\n" +
-            "  -listen          \t  "   + _("Accept connections from outside (default: 1)") + "\n" +
-            "  -bind=<addr>     \t  "   + _("Bind to given address. Use [host]:port notation for IPv6") + "\n" +
-#ifdef QT_GUI
-            "  -lang=<lang>     \t\t  " + _("Set language, for example \"de_DE\" (default: system locale)") + "\n" +
-#endif
-            "  -dnsseed         \t  "   + _("Find peers using DNS lookup (default: 1)") + "\n" +
-            "  -banscore=<n>    \t  "   + _("Threshold for disconnecting misbehaving peers (default: 100)") + "\n" +
-            "  -bantime=<n>     \t  "   + _("Number of seconds to keep misbehaving peers from reconnecting (default: 86400)") + "\n" +
-            "  -maxreceivebuffer=<n>\t  " + _("Maximum per-connection receive buffer, <n>*1000 bytes (default: 5000)") + "\n" +
-            "  -maxsendbuffer=<n>\t  "   + _("Maximum per-connection send buffer, <n>*1000 bytes (default: 1000)") + "\n" +
-#ifdef USE_UPNP
-#if USE_UPNP
-            "  -upnp            \t  "   + _("Use Universal Plug and Play to map the listening port (default: 1)") + "\n" +
-#else
-            "  -upnp            \t  "   + _("Use Universal Plug and Play to map the listening port (default: 0)") + "\n" +
-#endif
-            "  -detachdb        \t  "   + _("Detach block database. Increases shutdown time (default: 0)") + "\n" +
-#endif
-            "  -paytxfee=<amt>  \t  "   + _("Fee per KB to add to transactions you send") + "\n" +
-#ifdef QT_GUI
-            "  -server          \t\t  " + _("Accept command line and JSON-RPC commands") + "\n" +
-#endif
-#if !defined(WIN32) && !defined(QT_GUI)
-            "  -daemon          \t\t  " + _("Run in the background as a daemon and accept commands") + "\n" +
-#endif
-            "  -testnet         \t\t  " + _("Use the test network") + "\n" +
-            "  -debug           \t\t  " + _("Output extra debugging information") + "\n" +
-            "  -logtimestamps   \t  "   + _("Prepend debug output with timestamp") + "\n" +
-            "  -shrinkdebugfile \t  "   + _("Shrink debug.log file on client startup (default: 1 when no -debug)") + "\n" +
-            "  -printtoconsole  \t  "   + _("Send trace/debug info to console instead of debug.log file") + "\n" +
-#ifdef WIN32
-            "  -printtodebugger \t  "   + _("Send trace/debug info to debugger") + "\n" +
-#endif
-            "  -rpcuser=<user>  \t  "   + _("Username for JSON-RPC connections") + "\n" +
-            "  -rpcpassword=<pw>\t  "   + _("Password for JSON-RPC connections") + "\n" +
-            "  -rpcport=<port>  \t\t  " + _("Listen for JSON-RPC connections on <port> (default: 8999)") + "\n" +
-            "  -rpcallowip=<ip> \t\t  " + _("Allow JSON-RPC connections from specified IP address") + "\n" +
-            "  -rpcconnect=<ip> \t  "   + _("Send commands to node running on <ip> (default: 127.0.0.1)") + "\n" +
-            "  -blocknotify=<cmd> "     + _("Execute command when the best block changes (%s in cmd is replaced by block hash)") + "\n" +
-            "  -walletnotify=<cmd> "    + _("Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)") + "\n" +
-            "  -upgradewallet   \t  "   + _("Upgrade wallet to latest format") + "\n" +
-            "  -keypool=<n>     \t  "   + _("Set key pool size to <n> (default: 100)") + "\n" +
-            "  -rescan          \t  "   + _("Rescan the block chain for missing wallet transactions") + "\n" +
-            "  -checkblocks=<n> \t\t  " + _("How many blocks to check at startup (default: 2500, 0 = all)") + "\n" +
-            "  -checklevel=<n>  \t\t  " + _("How thorough the block verification is (0-6, default: 1)") + "\n" +
-            "  -stake           \t\t  " + _("Set whether the node should stake (default: 1)") + "\n";
-
-        strUsage += string() +
-            _("\nSSL options: (see the Paycoin Wiki for SSL setup instructions)") + "\n" +
-            "  -rpcssl                                \t  " + _("Use OpenSSL (https) for JSON-RPC connections") + "\n" +
-            "  -rpcsslcertificatechainfile=<file.cert>\t  " + _("Server certificate file (default: server.cert)") + "\n" +
-            "  -rpcsslprivatekeyfile=<file.pem>       \t  " + _("Server private key (default: server.pem)") + "\n" +
-            "  -rpcsslciphers=<ciphers>               \t  " + _("Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)") + "\n";
-
-        strUsage += string() +
-            "  -?               \t\t  " + _("This help message") + "\n";
-
-        // Remove tabs
-        strUsage.erase(std::remove(strUsage.begin(), strUsage.end(), '\t'), strUsage.end());
-#if defined(QT_GUI) && defined(WIN32)
-        // On windows, show a message box, as there is no stderr
-        ThreadSafeMessageBox(strUsage, _("Usage"), wxOK | wxMODAL);
-#else
-        fprintf(stderr, "%s", strUsage.c_str());
-#endif
-        return false;
-    }
-
-    fTestNet = GetBoolArg("-testnet");
-
     fDebug = GetBoolArg("-debug");
     bitdb.SetDetach(GetBoolArg("-detachdb", false));
 
@@ -359,18 +361,6 @@ bool AppInit2(int argc, char* argv[])
     fPrintToConsole = GetBoolArg("-printtoconsole");
     fPrintToDebugger = GetBoolArg("-printtodebugger");
     fLogTimestamps = GetBoolArg("-logtimestamps");
-
-#ifndef QT_GUI
-    for (int i = 1; i < argc; i++)
-        if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "paycoin:"))
-            fCommandLine = true;
-
-    if (fCommandLine)
-    {
-        int ret = CommandLineRPC(argc, argv);
-        exit(ret);
-    }
-#endif
 
 #if !defined(WIN32) && !defined(QT_GUI)
     if (fDaemon)
@@ -770,6 +760,8 @@ bool AppInit2(int argc, char* argv[])
 #endif
 
 #if !defined(QT_GUI)
+    // Loop until process is exit()ed from shutdown() function,
+    // called from ThreadRPCServer thread when a "stop command is received."
     while (1)
         Sleep(5000);
 #endif
