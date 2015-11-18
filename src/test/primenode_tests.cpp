@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(primenode_validity)
     BOOST_CHECK(!primeNodeDB->CheckMicroPrime(strMicroPrimeInvalid));
 
     // Inflate just the microprime database.
-    InflatePrimeNodeDB(microdb);
+    InflatePrimeNodeDB(CPrimeNodeDB::microdb);
     // Database is only inflated with microprime keys, still return false.
     BOOST_CHECK(!primeNodeDB->IsPrimeNodeKey(scriptPubKeyTypeValid, nTime, entry));
 
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(primenode_validity)
     BOOST_CHECK(!primeNodeDB->CheckMicroPrime(strMicroPrimeInvalid));
 
     // Inflate the primenode side of the database.
-    InflatePrimeNodeDB(primedb);
+    InflatePrimeNodeDB(CPrimeNodeDB::primedb);
     BOOST_CHECK(primeNodeDB->IsPrimeNodeKey(scriptPubKeyTypeValid, nTime, entry));
     BOOST_CHECK(!primeNodeDB->IsPrimeNodeKey(scriptPubKeyTypeInvalid, nTime, entry));
 

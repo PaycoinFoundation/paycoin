@@ -67,38 +67,38 @@ bool initPrimeNodes(string &str) {
      *
      * total_hours_wasted_here = 5
      */
-     dbtype db = nodb;
+     CPrimeNodeDB::dbtype db = CPrimeNodeDB::nodb;
      if (maybeWipePrimeDB()) {
-         db = fulldb;
+         db = CPrimeNodeDB::fulldb;
      } else if (fTestNet) {
          if (!primeNodeDB->CheckPrimeNodeKey(string("04d445518d115243639d0dfd057a99da588e8334039ce674f177943d4c660957c810f924a5371a352b1e827121846500a588a4dc47dc6d5d9e5317dfa48c562aa7"))
              || !primeNodeDB->CheckPrimeNodeKey(string("0443e5bf72234d77a591ca2132c5995cccdba377a7022eb014d25e27ebe6ffaf85cd3a214588612186ee1771cfb905d1ec2137193bc01563dbc36d1e28f013e00d")))
-             db = primedb;
+             db = CPrimeNodeDB::primedb;
 
          if (!primeNodeDB->CheckMicroPrime(string("muVEJW5YZpZc4QxUaDMJVxcy1vQcMrPhmQ"))
              || !primeNodeDB->CheckMicroPrime(string("mpCYzc3XqcLYGBHtJxAFQQ1nz7YZwecE3v")))
          {
-             if (db == primedb) {
-                 db = fulldb;
+             if (db == CPrimeNodeDB::primedb) {
+                 db = CPrimeNodeDB::fulldb;
              } else {
-                 db = microdb;
+                 db = CPrimeNodeDB::microdb;
              }
          }
      } else {
          if (!primeNodeDB->CheckPrimeNodeKey(string("04388d05d6cdbf75a37540e9b94c1c0b4e9b41a109c1466a33b3cf3cbca9e244f7761686502a0a593831fac02753ea5c2c8fc14ed59b9060da2088d2cb674e041d"))
              || !primeNodeDB->CheckPrimeNodeKey(string("04df482827573b607fe7279687bb287ccb48f87d24752c69d68e2c130d2d2c8993056e05fb86e61d54747b043c3f6f22b31b891664a90e4c071c794c93455b1cbe")))
-             db = primedb;
+             db = CPrimeNodeDB::primedb;
          if (!primeNodeDB->CheckMicroPrime(string("P9Yo3PtaxuzeBZAimsGzz6mdTmdDtU6vhf"))
              || !primeNodeDB->CheckMicroPrime(string("PMaTtaVc6iV6XCc92ZYwzNGXUxBryUAmDm")))
          {
-             if (db == primedb) {
-                 db = fulldb;
+             if (db == CPrimeNodeDB::primedb) {
+                 db = CPrimeNodeDB::fulldb;
              } else {
-                 db = microdb;
+                 db = CPrimeNodeDB::microdb;
              }
          }
      }
-     if (db != nodb)
+     if (db != CPrimeNodeDB::nodb)
          InflatePrimeNodeDB(db);
 
     // If there is a primenode key in the conf file, confirm it's valid.
@@ -290,7 +290,7 @@ bool CPrimeNodeDB::IsPrimeNodeKey(CScript scriptPubKeyType, unsigned int nTime, 
 }
 
 // Inflate the primenode table in the primeNodeDB
-void InflatePrimeNodeDB(dbtype db) {
+void InflatePrimeNodeDB(CPrimeNodeDB::dbtype db) {
     printf("InflatePrimeNodeDB() : Primenode database is inconsistent, inflating database.\n");
     // Db is open in read-only mode, close and reopen it with write privs.
     primeNodeDB->Close();
@@ -298,10 +298,10 @@ void InflatePrimeNodeDB(dbtype db) {
     delete primeNodeDB;
     primeNodeDB = new CPrimeNodeDB("w+");
 
-    if (db == primedb || db == fulldb)
+    if (db == CPrimeNodeDB::primedb || db == CPrimeNodeDB::fulldb)
         primeNodeDB->WritePrimeNodeDB();
 
-    if (db == microdb || db == fulldb)
+    if (db == CPrimeNodeDB::microdb || db == CPrimeNodeDB::fulldb)
         fTestNet ? primeNodeDB->WriteTestMicroPrimeDB() : primeNodeDB->WriteMicroPrimeDB();
 
     /* Close Db and reopen it w/ read-only privs because we won't need to write
