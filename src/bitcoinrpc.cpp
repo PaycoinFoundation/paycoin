@@ -114,6 +114,21 @@ HexBits(unsigned int nBits)
     return HexStr(BEGIN(uBits.cBits), END(uBits.cBits));
 }
 
+static std::string
+HelpRequiringPassphrase()
+{
+    return pwalletMain->IsCrypted()
+        ? "\nrequires wallet passphrase to be set with walletpassphrase first"
+        : "";
+}
+
+static inline void
+EnsureWalletIsUnlocked()
+{
+    if (pwalletMain->IsLocked())
+        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+}
+
 void WalletTxToJSON(const CWalletTx& wtx, Object& entry)
 {
     int confirms = wtx.GetDepthInMainChain();
@@ -712,15 +727,11 @@ Value settxfee(const Array& params, bool fHelp)
 
 Value sendtoaddress(const Array& params, bool fHelp)
 {
-    if (pwalletMain->IsCrypted() && (fHelp || params.size() < 2 || params.size() > 4))
+    if (fHelp || params.size() < 2 || params.size() > 4)
         throw runtime_error(
             "sendtoaddress <paycoinaddress> <amount> [comment] [comment-to]\n"
-            "<amount> is a real and is rounded to the nearest 0.000001\n"
-            "requires wallet passphrase to be set with walletpassphrase first");
-    if (!pwalletMain->IsCrypted() && (fHelp || params.size() < 2 || params.size() > 4))
-        throw runtime_error(
-            "sendtoaddress <paycoinaddress> <amount> [comment] [comment-to]\n"
-            "<amount> is a real and is rounded to the nearest 0.000001");
+            "<amount> is a real and is rounded to the nearest 0.00000001"
+            + HelpRequiringPassphrase());
 
     CBitcoinAddress address(params[0].get_str());
     if (!address.IsValid())
@@ -755,8 +766,7 @@ Value signmessage(const Array& params, bool fHelp)
             "signmessage <paycoinaddress> <message>\n"
             "Sign a message with the private key of an address");
 
-    if (pwalletMain->IsLocked())
-        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+    EnsureWalletIsUnlocked();
 
     string strAddress = params[0].get_str();
     string strMessage = params[1].get_str();
@@ -1121,15 +1131,11 @@ Value movecmd(const Array& params, bool fHelp)
 
 Value sendfrom(const Array& params, bool fHelp)
 {
-    if (pwalletMain->IsCrypted() && (fHelp || params.size() < 3 || params.size() > 6))
+    if (fHelp || params.size() < 3 || params.size() > 6)
         throw runtime_error(
             "sendfrom <fromaccount> <topaycoinaddress> <amount> [minconf=1] [comment] [comment-to]\n"
-            "<amount> is a real and is rounded to the nearest 0.000001\n"
-            "requires wallet passphrase to be set with walletpassphrase first");
-    if (!pwalletMain->IsCrypted() && (fHelp || params.size() < 3 || params.size() > 6))
-        throw runtime_error(
-            "sendfrom <fromaccount> <topaycoinaddress> <amount> [minconf=1] [comment] [comment-to]\n"
-            "<amount> is a real and is rounded to the nearest 0.000001");
+            "<amount> is a real and is rounded to the nearest 0.00000001"
+            + HelpRequiringPassphrase());
 
     string strAccount = AccountFromValue(params[0]);
     CBitcoinAddress address(params[1].get_str());
@@ -1149,8 +1155,7 @@ Value sendfrom(const Array& params, bool fHelp)
     if (params.size() > 5 && params[5].type() != null_type && !params[5].get_str().empty())
         wtx.mapValue["to"]      = params[5].get_str();
 
-    if (pwalletMain->IsLocked())
-        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+    EnsureWalletIsUnlocked();
 
     // Check funds
     int64 nBalance = GetAccountBalance(strAccount, nMinDepth);
@@ -1168,15 +1173,11 @@ Value sendfrom(const Array& params, bool fHelp)
 
 Value sendmany(const Array& params, bool fHelp)
 {
-    if (pwalletMain->IsCrypted() && (fHelp || params.size() < 2 || params.size() > 4))
+    if (fHelp || params.size() < 2 || params.size() > 4)
         throw runtime_error(
             "sendmany <fromaccount> {address:amount,...} [minconf=1] [comment]\n"
-            "amounts are double-precision floating point numbers\n"
-            "requires wallet passphrase to be set with walletpassphrase first");
-    if (!pwalletMain->IsCrypted() && (fHelp || params.size() < 2 || params.size() > 4))
-        throw runtime_error(
-            "sendmany <fromaccount> {address:amount,...} [minconf=1] [comment]\n"
-            "amounts are double-precision floating point numbers");
+            "amounts are double-precision floating point numbers"
+            + HelpRequiringPassphrase());
 
     string strAccount = params[0].get_str();
 
@@ -1221,8 +1222,8 @@ Value sendmany(const Array& params, bool fHelp)
         vecSend.push_back(make_pair(scriptPubKey, nAmount));
     }
 
-    if (pwalletMain->IsLocked())
-        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+    EnsureWalletIsUnlocked();
+
     if (fWalletUnlockMintOnly)
         throw JSONRPCError(-13, "Error: Wallet unlocked for block minting only.");
 
@@ -1752,17 +1753,13 @@ Value backupwallet(const Array& params, bool fHelp)
 
 Value keypoolrefill(const Array& params, bool fHelp)
 {
-    if (pwalletMain->IsCrypted() && (fHelp || params.size() > 0))
+    if (fHelp || params.size() > 0)
         throw runtime_error(
             "keypoolrefill\n"
-            "Fills the keypool, requires wallet passphrase to be set.");
-    if (!pwalletMain->IsCrypted() && (fHelp || params.size() > 0))
-        throw runtime_error(
-            "keypoolrefill\n"
-            "Fills the keypool.");
+            "Fills the keypool."
+            + HelpRequiringPassphrase());
 
-    if (pwalletMain->IsLocked())
-        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+    EnsureWalletIsUnlocked();
 
     pwalletMain->TopUpKeyPool();
 
