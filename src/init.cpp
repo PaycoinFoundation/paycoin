@@ -118,10 +118,6 @@ void HandleSIGHUP(int)
     fReopenDebugLog = true;
 }
 
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////
 //
 // Start
@@ -300,6 +296,7 @@ std::string HelpMessage()
 
 bool AppInit2()
 {
+    // ********************************************************* Step 1: setup
 #ifdef _MSC_VER
     // Turn off Microsoft heap dump noise
     _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
@@ -341,6 +338,45 @@ bool AppInit2()
     sigaction(SIGHUP, &sa_hup, NULL);
 #endif
 
+    // ********************************************************* Step 2: parameter interactions
+
+    if (mapArgs.count("-connect") && mapMultiArgs["-connect"].size() > 0) {
+        SoftSetBoolArg("-dnsseed", false);
+        SoftSetBoolArg("-listen", false);
+    }
+
+    // even in Tor mode, if -bind is specified, you really want -listen
+    if (mapArgs.count("-bind"))
+        SoftSetBoolArg("-listen", true);
+
+    bool fTor = (fUseProxy && addrProxy.GetPort() == 9050);
+    if (fTor)
+    {
+        // Use SoftSetBoolArg here so user can override any of these if they wish.
+        // Note: the GetBoolArg() calls for all of these must happen later.
+        SoftSetBoolArg("-listen", false);
+        SoftSetBoolArg("-irc", false);
+        SoftSetBoolArg("-proxydns", true);
+        SoftSetBoolArg("-upnp", false);
+        SoftSetBoolArg("-discover", false);
+    }
+
+    if (mapArgs.count("-reservebalance")) // paycoin: reserve balance amount
+    {
+        int64 nReserveBalance = 0;
+        if (!ParseMoney(mapArgs["-reservebalance"], nReserveBalance))
+            return InitError(_("Invalid amount for -reservebalance=<amount>"));
+    }
+
+    // Not used, semi-depricated; debating removal....
+    if (mapArgs.count("-checkpointkey")) // paycoin: checkpoint master priv key
+    {
+        if (!Checkpoints::SetCheckpointPrivKey(GetArg("-checkpointkey", "")))
+            return InitError(_("Unable to sign checkpoint, wrong checkpointkey?"));
+    }
+
+    // ********************************************************* Step 3: parameter-to-internal-flags
+
     fDebug = GetBoolArg("-debug");
     bitdb.SetDetach(GetBoolArg("-detachdb", false));
 
@@ -362,6 +398,38 @@ bool AppInit2()
     fPrintToConsole = GetBoolArg("-printtoconsole");
     fPrintToDebugger = GetBoolArg("-printtodebugger");
     fLogTimestamps = GetBoolArg("-logtimestamps");
+
+    if (mapArgs.count("-timeout"))
+    {
+        int nNewTimeout = GetArg("-timeout", 5000);
+        if (nNewTimeout > 0 && nNewTimeout < 600000)
+            nConnectTimeout = nNewTimeout;
+    }
+
+    // Continue to put "/P2SH/" in the coinbase to monitor
+    // BIP16 support.
+    // This can be removed eventually...
+    const char* pszP2SH = "/P2SH/";
+    COINBASE_FLAGS << std::vector<unsigned char>(pszP2SH, pszP2SH+strlen(pszP2SH));
+
+    if (mapArgs.count("-paytxfee"))
+    {
+        if (!ParseMoney(mapArgs["-paytxfee"], nTransactionFee) || nTransactionFee < MIN_TX_FEE)
+            return InitError(strprintf(_("Invalid amount for -paytxfee=<amount>: '%s'"), mapArgs["-paytxfee"].c_str()));
+
+        if (nTransactionFee > 0.25 * COIN)
+            InitWarning(_("Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction."));
+    }
+
+    // ********************************************************* Step 4: application initialization: dir lock, daemonize, pidfile, debug log
+
+    // Make sure only a single paycoin process is using the data directory.
+    boost::filesystem::path pathLockFile = GetDataDir() / ".lock";
+    FILE* file = fopen(pathLockFile.string().c_str(), "a"); // empty lock file; created if it doesn't exist.
+    if (file) fclose(file);
+    static boost::interprocess::file_lock lock(pathLockFile.string().c_str());
+    if (!lock.try_lock())
+        return InitError(strprintf(_("Cannot obtain a lock on data directory %s.  Paycoin is probably already running."), GetDataDir().string().c_str()));
 
 #if !defined(WIN32) && !defined(QT_GUI)
     if (fDaemon)
@@ -393,22 +461,6 @@ bool AppInit2()
     printf("Default data directory %s\n", GetDefaultDataDir().string().c_str());
     printf("Used data directory %s\n", GetDataDir().string().c_str());
 
-    if (GetBoolArg("-loadblockindextest"))
-    {
-        CTxDB txdb("r");
-        txdb.LoadBlockIndex();
-        PrintBlockTree();
-        return false;
-    }
-
-    // Make sure only a single bitcoin process is using the data directory.
-    boost::filesystem::path pathLockFile = GetDataDir() / ".lock";
-    FILE* file = fopen(pathLockFile.string().c_str(), "a"); // empty lock file; created if it doesn't exist.
-    if (file) fclose(file);
-    static boost::interprocess::file_lock lock(pathLockFile.string().c_str());
-    if (!lock.try_lock())
-        return InitError(strprintf(_("Cannot obtain a lock on data directory %s.  Paycoin is probably already running."), GetDataDir().string().c_str()));
-
     // Check and update minium version protocol after a given time.
     if (time(NULL) >= MICROPRIMES_STAGGER_DOWN)
         MIN_PROTO_VERSION = 70006;
@@ -421,6 +473,101 @@ bool AppInit2()
         fprintf(stdout, "Paycoin server starting\n");
     int64 nStart;
 
+    // ********************************************************* Step 5: network initialization
+
+    if (mapArgs.count("-proxy"))
+    {
+        fUseProxy = true;
+        addrProxy = CService(mapArgs["-proxy"], 9050);
+        if (!addrProxy.IsValid())
+            return InitError(strprintf(_("Invalid -proxy address: '%s'"), mapArgs["-proxy"].c_str()));
+    }
+
+    if (mapArgs.count("-noproxy"))
+    {
+        BOOST_FOREACH(std::string snet, mapMultiArgs["-noproxy"]) {
+            enum Network net = ParseNetwork(snet);
+            if (net == NET_UNROUTABLE)
+                return InitError(strprintf(_("Unknown network specified in -noproxy: '%s'"), snet.c_str()));
+
+            SetNoProxy(net);
+        }
+    }
+
+    fNameLookup = GetBoolArg("-dns");
+    fProxyNameLookup = GetBoolArg("-proxydns");
+    if (fProxyNameLookup)
+        fNameLookup = true;
+    fNoListen = !GetBoolArg("-listen", true);
+    nSocksVersion = GetArg("-socks", 5);
+    if (nSocksVersion != 4 && nSocksVersion != 5)
+        return InitError(strprintf(_("Unknown -socks proxy version requested: %i"), nSocksVersion));
+
+    if (mapArgs.count("-onlynet")) {
+        std::set<enum Network> nets;
+        BOOST_FOREACH(std::string snet, mapMultiArgs["-onlynet"]) {
+            enum Network net = ParseNetwork(snet);
+            if (net == NET_UNROUTABLE) {
+                ThreadSafeMessageBox(_("Unknown network specified in -onlynet"), _("Paycoin"), wxOK | wxMODAL);
+                return false;
+            }
+            nets.insert(net);
+        }
+        for (int n = 0; n < NET_MAX; n++) {
+            enum Network net = (enum Network)n;
+            if (!nets.count(net))
+                SetLimited(net);
+        }
+    }
+
+    BOOST_FOREACH(string strDest, mapMultiArgs["-seednode"])
+        AddOneShot(strDest);
+
+    bool fBound = false;
+    if (!fNoListen)
+    {
+        std::string strError;
+        if (mapArgs.count("-bind")) {
+            BOOST_FOREACH(std::string strBind, mapMultiArgs["-bind"]) {
+                CService addrBind(strBind, GetListenPort(), false);
+                if (!addrBind.IsValid())
+                    return InitError(strprintf(_("Cannot resolve -bind address: '%s'"), strBind.c_str()));
+
+                fBound |= Bind(addrBind);
+            }
+        } else {
+            struct in_addr inaddr_any;
+            inaddr_any.s_addr = INADDR_ANY;
+            fBound |= Bind(CService(inaddr_any, GetListenPort()));
+#ifdef USE_IPV6
+            fBound |= Bind(CService(in6addr_any, GetListenPort()));
+#endif
+        }
+        if (!fBound)
+            return false;
+    }
+
+    if (mapArgs.count("-externalip"))
+    {
+        BOOST_FOREACH(string strAddr, mapMultiArgs["-externalip"]) {
+            CService addrLocal(strAddr, GetListenPort(), fNameLookup);
+            if (!addrLocal.IsValid())
+                return InitError(strprintf(_("Cannot resolve -externalip address: '%s'"), strAddr.c_str()));
+
+            AddLocal(CNetAddr(strAddr, fNameLookup), LOCAL_MANUAL);
+        }
+    }
+
+    // ********************************************************* Step 6: load blockchain
+
+    if (GetBoolArg("-loadblockindextest"))
+    {
+        CTxDB txdb("r");
+        txdb.LoadBlockIndex();
+        PrintBlockTree();
+        return false;
+    }
+
     InitMessage(_("Loading addresses..."));
     printf("Loading addresses...\n");
     nStart = GetTimeMillis();
@@ -430,9 +577,6 @@ bool AppInit2()
         if (!adb.Read(addrman))
             printf("Invalid or missing peers.dat; recreating\n");
     }
-
-    printf("Loaded %i addresses from peers.dat %"PRI64d"ms\n",
-           addrman.size(), GetTimeMillis() - nStart);
 
     InitMessage(_("Loading block index..."));
     printf("Loading block index...\n");
@@ -449,6 +593,37 @@ bool AppInit2()
         return false;
     }
     printf(" block index %15"PRI64d"ms\n", GetTimeMillis() - nStart);
+
+    if (GetBoolArg("-printblockindex") || GetBoolArg("-printblocktree"))
+    {
+        PrintBlockTree();
+        return false;
+    }
+
+    if (mapArgs.count("-printblock"))
+    {
+        string strMatch = mapArgs["-printblock"];
+        int nFound = 0;
+        for (map<uint256, CBlockIndex*>::iterator mi = mapBlockIndex.begin(); mi != mapBlockIndex.end(); ++mi)
+        {
+            uint256 hash = (*mi).first;
+            if (strncmp(hash.ToString().c_str(), strMatch.c_str(), strMatch.size()) == 0)
+            {
+                CBlockIndex* pindex = (*mi).second;
+                CBlock block;
+                block.ReadFromDisk(pindex);
+                block.BuildMerkleTree();
+                block.print();
+                printf("\n");
+                nFound++;
+            }
+        }
+        if (nFound == 0)
+            printf("No blocks matching %s were found\n", strMatch.c_str());
+        return false;
+    }
+
+    // ********************************************************* Step 7: load wallet
 
     InitMessage(_("Loading wallet..."));
     printf("Loading wallet...\n");
@@ -525,6 +700,13 @@ bool AppInit2()
         printf(" rescan      %15"PRI64d"ms\n", GetTimeMillis() - nStart);
     }
 
+    // ********************************************************* Step 8: load peers
+
+    printf("Loaded %i addresses from peers.dat %"PRI64d"ms\n",
+           addrman.size(), GetTimeMillis() - nStart);
+
+    // ********************************************************* Step 9: load primenode and scrape databases
+
     InitMessage(_("Loading prime nodes..."));
     printf("Loading prime nodes...");
     nStart = GetTimeMillis();
@@ -545,8 +727,12 @@ bool AppInit2()
     scrapesDB = new CScrapesDB("cw");
     printf(" scrapes     %15"PRI64d"ms\n", GetTimeMillis() - nStart);
 
-    InitMessage(_("Done loading"));
-    printf("Done loading\n");
+    // ********************************************************* Step 10: start node
+
+    if (!CheckDiskSpace())
+        return false;
+
+    RandAddSeedPerfmon();
 
     //// debug print
     printf("mapBlockIndex.size() = %d\n",   mapBlockIndex.size());
@@ -558,202 +744,19 @@ bool AppInit2()
     if (!strErrors.str().empty())
         return InitError(strErrors.str());
 
-    // Add wallet transactions that aren't already in a block to mapTransactions
-    pwalletMain->ReacceptWalletTransactions();
-
-    // Note: Bitcoin-QT stores several settings in the wallet, so we want
-    // to load the wallet BEFORE parsing command-line arguments, so
-    // the command-line/bitcoin.conf settings override GUI setting.
-
-    //
-    // Parameters
-    //
-    if (GetBoolArg("-printblockindex") || GetBoolArg("-printblocktree"))
-    {
-        PrintBlockTree();
-        return false;
-    }
-
-    if (mapArgs.count("-timeout"))
-    {
-        int nNewTimeout = GetArg("-timeout", 5000);
-        if (nNewTimeout > 0 && nNewTimeout < 600000)
-            nConnectTimeout = nNewTimeout;
-    }
-
-    if (mapArgs.count("-printblock"))
-    {
-        string strMatch = mapArgs["-printblock"];
-        int nFound = 0;
-        for (map<uint256, CBlockIndex*>::iterator mi = mapBlockIndex.begin(); mi != mapBlockIndex.end(); ++mi)
-        {
-            uint256 hash = (*mi).first;
-            if (strncmp(hash.ToString().c_str(), strMatch.c_str(), strMatch.size()) == 0)
-            {
-                CBlockIndex* pindex = (*mi).second;
-                CBlock block;
-                block.ReadFromDisk(pindex);
-                block.BuildMerkleTree();
-                block.print();
-                printf("\n");
-                nFound++;
-            }
-        }
-        if (nFound == 0)
-            printf("No blocks matching %s were found\n", strMatch.c_str());
-        return false;
-    }
-
-    if (mapArgs.count("-proxy"))
-    {
-        fUseProxy = true;
-        addrProxy = CService(mapArgs["-proxy"], 9050);
-        if (!addrProxy.IsValid())
-            return InitError(strprintf(_("Invalid -proxy address: '%s'"), mapArgs["-proxy"].c_str()));
-    }
-
-    if (mapArgs.count("-noproxy"))
-    {
-        BOOST_FOREACH(std::string snet, mapMultiArgs["-noproxy"]) {
-            enum Network net = ParseNetwork(snet);
-            if (net == NET_UNROUTABLE)
-                return InitError(strprintf(_("Unknown network specified in -noproxy: '%s'"), snet.c_str()));
-
-            SetNoProxy(net);
-        }
-    }
-
-    if (mapArgs.count("-connect") && mapMultiArgs["-connect"].size() > 0) {
-        SoftSetBoolArg("-dnsseed", false);
-        SoftSetBoolArg("-listen", false);
-    }
-
-    // even in Tor mode, if -bind is specified, you really want -listen
-    if (mapArgs.count("-bind"))
-        SoftSetBoolArg("-listen", true);
-
-    bool fTor = (fUseProxy && addrProxy.GetPort() == 9050);
-    if (fTor)
-    {
-        // Use SoftSetBoolArg here so user can override any of these if they wish.
-        // Note: the GetBoolArg() calls for all of these must happen later.
-        SoftSetBoolArg("-listen", false);
-        SoftSetBoolArg("-irc", false);
-        SoftSetBoolArg("-proxydns", true);
-        SoftSetBoolArg("-upnp", false);
-        SoftSetBoolArg("-discover", false);
-    }
-
-    if (mapArgs.count("-onlynet")) {
-        std::set<enum Network> nets;
-        BOOST_FOREACH(std::string snet, mapMultiArgs["-onlynet"]) {
-            enum Network net = ParseNetwork(snet);
-            if (net == NET_UNROUTABLE) {
-                ThreadSafeMessageBox(_("Unknown network specified in -onlynet"), _("Paycoin"), wxOK | wxMODAL);
-                return false;
-            }
-            nets.insert(net);
-        }
-        for (int n = 0; n < NET_MAX; n++) {
-            enum Network net = (enum Network)n;
-            if (!nets.count(net))
-                SetLimited(net);
-        }
-    }
-
-    fNameLookup = GetBoolArg("-dns");
-    fProxyNameLookup = GetBoolArg("-proxydns");
-    if (fProxyNameLookup)
-        fNameLookup = true;
-    fNoListen = !GetBoolArg("-listen", true);
-    nSocksVersion = GetArg("-socks", 5);
-    if (nSocksVersion != 4 && nSocksVersion != 5)
-        return InitError(strprintf(_("Unknown -socks proxy version requested: %i"), nSocksVersion));
-
-    BOOST_FOREACH(string strDest, mapMultiArgs["-seednode"])
-        AddOneShot(strDest);
-
-    // Continue to put "/P2SH/" in the coinbase to monitor
-    // BIP16 support.
-    // This can be removed eventually...
-    const char* pszP2SH = "/P2SH/";
-    COINBASE_FLAGS << std::vector<unsigned char>(pszP2SH, pszP2SH+strlen(pszP2SH));
-
-    bool fBound = false;
-    if (!fNoListen)
-    {
-        std::string strError;
-        if (mapArgs.count("-bind")) {
-            BOOST_FOREACH(std::string strBind, mapMultiArgs["-bind"]) {
-                CService addrBind(strBind, GetListenPort(), false);
-                if (!addrBind.IsValid(true))
-                    return InitError(strprintf(_("Cannot resolve -bind address: '%s'"), strBind.c_str()));
-
-                fBound |= Bind(addrBind);
-            }
-        } else {
-            struct in_addr inaddr_any;
-            inaddr_any.s_addr = INADDR_ANY;
-            fBound |= Bind(CService(inaddr_any, GetListenPort()));
-#ifdef USE_IPV6
-            fBound |= Bind(CService(in6addr_any, GetListenPort()));
-#endif
-        }
-        if (!fBound)
-            return false;
-    }
-
-    if (mapArgs.count("-externalip"))
-    {
-        BOOST_FOREACH(string strAddr, mapMultiArgs["-externalip"]) {
-            CService addrLocal(strAddr, GetListenPort(), fNameLookup);
-            if (!addrLocal.IsValid())
-                return InitError(strprintf(_("Cannot resolve -externalip address: '%s'"), strAddr.c_str()));
-
-            AddLocal(CNetAddr(strAddr, fNameLookup), LOCAL_MANUAL);
-        }
-    }
-
-    if (mapArgs.count("-paytxfee"))
-    {
-        if (!ParseMoney(mapArgs["-paytxfee"], nTransactionFee) || nTransactionFee < MIN_TX_FEE)
-            return InitError(strprintf(_("Invalid amount for -paytxfee=<amount>: '%s'"), mapArgs["-paytxfee"].c_str()));
-
-        if (nTransactionFee > 0.25 * COIN)
-            InitWarning(_("Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction."));
-    }
-
-    if (mapArgs.count("-reservebalance")) // paycoin: reserve balance amount
-    {
-        int64 nReserveBalance = 0;
-        if (!ParseMoney(mapArgs["-reservebalance"], nReserveBalance))
-            return InitError(_("Invalid amount for -reservebalance=<amount>"));
-    }
-
-    // Not used, semi-depricated; debating removal....
-    if (mapArgs.count("-checkpointkey")) // paycoin: checkpoint master priv key
-    {
-        if (!Checkpoints::SetCheckpointPrivKey(GetArg("-checkpointkey", "")))
-            return InitError(_("Unable to sign checkpoint, wrong checkpointkey?"));
-    }
-
-    // Set stake to true if it's not set in the conf
-    if (!mapArgs.count("-stake"))
-        SoftSetBoolArg("-stake", true);
-
-    //
-    // Start the node
-    //
-    if (!CheckDiskSpace())
-        return false;
-
-    RandAddSeedPerfmon();
-
     if (!NewThread(StartNode, NULL))
         InitError(_("Error: could not start node"));
 
     if (fServer)
         NewThread(ThreadRPCServer, NULL);
+
+    // ********************************************************* Step 11: finished
+
+    InitMessage(_("Done loading"));
+    printf("Done loading\n");
+
+    // Add wallet transactions that aren't already in a block to mapTransactions
+    pwalletMain->ReacceptWalletTransactions();
 
 #ifdef QT_GUI
     if (GetStartOnSystemStartup())
