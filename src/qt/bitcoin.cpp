@@ -290,6 +290,8 @@ int main(int argc, char *argv[])
     {
         BitcoinGUI window;
         guiref = &window;
+        // Set in AppInit for daemon so that RPC works properly
+        fTestNet = GetBoolArg("-testnet");
         if(AppInit2())
         {
             {
