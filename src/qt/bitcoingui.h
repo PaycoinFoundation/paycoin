@@ -179,9 +179,9 @@ private slots:
     /** Ask for passphrase to unlock wallet temporarily */
     void unlockWallet();
 
-    /** Show window if hidden, unminimize when minimized */
-    void showNormalIfMinimized();
-    /** Hide window if visible, show if hidden */
+    /** Show window if hidden, unminimize when minimized, rise when obscured or show if hidden and fToggleHidden is true */
+    void showNormalIfMinimized(bool fToggleHidden = false);
+    /** simply calls showNormalIfMinimized(true) for use in SLOT() macro */
     void toggleHidden();
 };
 
