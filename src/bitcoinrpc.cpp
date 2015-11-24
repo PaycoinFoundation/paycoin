@@ -212,10 +212,7 @@ string CRPCTable::help(string strCommand) const
         const CRPCCommand *pcmd = mi->second;
         string strMethod = mi->first;
         // We already filter duplicates, but these deprecated screw up the sort order
-        if (strMethod == "getamountreceived" ||
-            strMethod == "getallreceived" ||
-            strMethod == "getblocknumber" || // deprecated
-            (strMethod.find("label") != string::npos))
+        if (strMethod.find("label") != string::npos)
             continue;
         if (strCommand != "" && strMethod != strCommand)
             continue;
@@ -275,18 +272,6 @@ Value getblockcount(const Array& params, bool fHelp)
         throw runtime_error(
             "getblockcount\n"
             "Returns the number of blocks in the longest block chain.");
-
-    return nBestHeight;
-}
-
-
-// deprecated
-Value getblocknumber(const Array& params, bool fHelp)
-{
-    if (fHelp || params.size() != 0)
-        throw runtime_error(
-            "getblocknumber\n"
-            "Deprecated.  Use getblockcount.");
 
     return nBestHeight;
 }
@@ -2858,7 +2843,6 @@ static const CRPCCommand vRPCCommands[] =
     { "help",                   &help,                   true },
     { "stop",                   &stop,                   true },
     { "getblockcount",          &getblockcount,          true },
-    { "getblocknumber",         &getblocknumber,         true },
     { "listaddressbook",        &listaddressbook,        false },
     { "getconnectioncount",     &getconnectioncount,     true },
     { "getpeerinfo",            &getpeerinfo,            true },
