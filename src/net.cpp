@@ -636,7 +636,6 @@ void CNode::copyStats(CNodeStats &stats)
 
 void ThreadSocketHandler(void* parg)
 {
-    IMPLEMENT_RANDOMIZE_STACK(ThreadSocketHandler(parg));
     try
     {
         vnThreadsRunning[THREAD_SOCKETHANDLER]++;
@@ -998,7 +997,6 @@ void ThreadSocketHandler2(void* parg)
 #ifdef USE_UPNP
 void ThreadMapPort(void* parg)
 {
-    IMPLEMENT_RANDOMIZE_STACK(ThreadMapPort(parg));
     try
     {
         vnThreadsRunning[THREAD_UPNP]++;
@@ -1165,7 +1163,6 @@ static const char *strDNSSeed[][2] = {
 
 void ThreadDNSAddressSeed(void* parg)
 {
-    IMPLEMENT_RANDOMIZE_STACK(ThreadDNSAddressSeed(parg));
     try
     {
         vnThreadsRunning[THREAD_DNSSEED]++;
@@ -1259,7 +1256,6 @@ void ThreadDumpAddress2(void* parg)
 
 void ThreadDumpAddress(void* parg)
 {
-    IMPLEMENT_RANDOMIZE_STACK(ThreadDumpAddress(parg));
     try
     {
         ThreadDumpAddress2(parg);
@@ -1272,7 +1268,6 @@ void ThreadDumpAddress(void* parg)
 
 void ThreadOpenConnections(void* parg)
 {
-    IMPLEMENT_RANDOMIZE_STACK(ThreadOpenConnections(parg));
     try
     {
         vnThreadsRunning[THREAD_OPENCONNECTIONS]++;
@@ -1432,7 +1427,6 @@ void ThreadOpenConnections2(void* parg)
 
 void ThreadOpenAddedConnections(void* parg)
 {
-    IMPLEMENT_RANDOMIZE_STACK(ThreadOpenAddedConnections(parg));
     try
     {
         vnThreadsRunning[THREAD_ADDEDCONNECTIONS]++;
@@ -1576,7 +1570,6 @@ bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOu
 
 void ThreadMessageHandler(void* parg)
 {
-    IMPLEMENT_RANDOMIZE_STACK(ThreadMessageHandler(parg));
     try
     {
         vnThreadsRunning[THREAD_MESSAGEHANDLER]++;
