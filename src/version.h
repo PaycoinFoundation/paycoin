@@ -26,7 +26,7 @@ static const int PEERUNITY_VERSION =
                          +     100 * PEERUNITY_VERSION_REVISION
                          +       1 * PEERUNITY_VERSION_BUILD;
 
-// paycoin version - reference for code tracking
+// peercoin version - reference for code tracking
 #define PPCOIN_VERSION_MAJOR       0
 #define PPCOIN_VERSION_MINOR       4
 #define PPCOIN_VERSION_REVISION    0
