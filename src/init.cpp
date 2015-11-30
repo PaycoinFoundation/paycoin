@@ -230,7 +230,7 @@ std::string HelpMessage()
         "  -timeout=<n>          "   + _("Specify connection timeout (in milliseconds)") + "\n" +
         "  -proxy=<ip:port>      "   + _("Connect through socks proxy") + "\n" +
         "  -socks=<n>            "   + _("Select the version of socks proxy to use (4 or 5, 5 is default)") + "\n" +
-        "  -noproxy=<net>        "   + _("Do not use proxy for connections to network net (ipv4 or ipv6)") + "\n" +
+        "  -noproxy=<net>        "   + _("Do not use proxy for connections to network <net> (IPv4 or IPv6)") + "\n" +
         "  -dns                  "   + _("Allow DNS lookups for -addnode, -seednode and -connect") + "\n" +
         "  -proxydns             "   + _("Pass DNS requests to (SOCKS5) proxy") + "\n" +
         "  -port=<port>          "   + _("Listen for connections on <port> (default: 8998 or testnet: 9000)") + "\n" +
