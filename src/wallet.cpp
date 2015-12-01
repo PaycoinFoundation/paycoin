@@ -1703,7 +1703,7 @@ string CWallet::SendMoneyToDestination(const CTxDestination& address, int64 nVal
     if (nValue + nTransactionFee > GetBalance())
         return _("Insufficient funds");
 
-    // Parse bitcoin address
+    // Parse Paycoin address
     CScript scriptPubKey;
     scriptPubKey.SetDestination(address);
 
