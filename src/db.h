@@ -328,6 +328,8 @@ public:
     bool ReadCheckpointPubKey(std::string& strPubKey);
     bool WriteCheckpointPubKey(const std::string& strPubKey);
     bool LoadBlockIndex();
+private:
+    bool LoadBlockIndexGuts();
 };
 
 /** Access to the (IP) address database (peers.dat) */
