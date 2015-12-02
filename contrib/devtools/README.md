@@ -9,3 +9,15 @@ For example a file changed in 2015 (with 2015 being the current year):
 
 would be changed to:
 ```// Copyright (c) 2013-2015 The Paycoin developers```
+
+update-translations.py
+=======================
+
+Run this script from the root of the repository to update all translations from transifex.
+It will do the following automatically:
+
+- fetch all translations
+- post-process them into valid and committable format
+- add missing translations to the build system (TODO)
+
+See doc/translation-process.md for more information.
