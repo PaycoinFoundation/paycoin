@@ -292,6 +292,8 @@ void BitcoinGUI::createActions()
     changePassphraseAction->setToolTip(tr("Change the passphrase used for wallet encryption"));
     openRPCConsoleAction = new QAction(QIcon(":/icons/debugwindow"), tr("&Debug window"), this);
     openRPCConsoleAction->setToolTip(tr("Open debugging and diagnostic console"));
+    editConfigAction = new QAction(QIcon(":/icons/options"), tr("&Edit config..."), this);
+    editConfigAction->setToolTip(tr("Edit the paycoin.conf file in the default text editor"));
 
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(optionsClicked()));
@@ -302,6 +304,7 @@ void BitcoinGUI::createActions()
     connect(unlockForMintingAction, SIGNAL(triggered(bool)), this, SLOT(unlockForMinting(bool)));
     connect(backupWalletAction, SIGNAL(triggered()), this, SLOT(backupWallet()));
     connect(changePassphraseAction, SIGNAL(triggered()), this, SLOT(changePassphrase()));
+    connect(editConfigAction, SIGNAL(triggered()), this, SLOT(editConfig()));
 }
 
 void BitcoinGUI::createMenuBar()
@@ -331,6 +334,7 @@ void BitcoinGUI::createMenuBar()
     settings->addAction(changePassphraseAction);
     settings->addSeparator();
     settings->addAction(optionsAction);
+    settings->addAction(editConfigAction);
 
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
     help->addAction(openRPCConsoleAction);
@@ -456,6 +460,7 @@ void BitcoinGUI::createTrayIcon()
     trayIconMenu->addAction(multisigAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(optionsAction);
+    trayIconMenu->addAction(editConfigAction);
 #ifndef Q_OS_MAC // This is built-in on Mac
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(quitAction);
@@ -949,4 +954,9 @@ void BitcoinGUI::showNormalIfMinimized(bool fToggleHidden)
 void BitcoinGUI::toggleHidden()
 {
     showNormalIfMinimized(true);
+}
+
+void BitcoinGUI::editConfig()
+{
+    QDesktopServices::openUrl(QUrl(QString::fromStdString(GetConfigFile().string())));
 }
