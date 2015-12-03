@@ -1,4 +1,9 @@
-## fix-copyright-headers.py
+Contents
+========
+This directory contains tools for developers working on this repository.
+
+fix-copyright-headers.py
+========================
 
 Every year newly updated files need to have its copyright headers updated to reflect the current year.
 If you run this script from src/ it will automatically update the year on the copyright header for all
