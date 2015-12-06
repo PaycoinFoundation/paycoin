@@ -50,7 +50,7 @@ public:
     ~CDBEnv();
     void MakeMock();
     bool IsMock() { return fMockDb; }
-    bool Open(const boost::filesystem::path &path);
+    bool Open(const boost::filesystem::path& path);
     void Close();
     void Flush(bool fShutdown);
     void CheckpointLSN(std::string strFile);
@@ -61,10 +61,9 @@ public:
      * to be checked outside of CDBEnv as a wortkaround until a more proper
      * solution is determined. */
     bool GetDetached() { return fDetachDB; }
-
     void CloseDb(const std::string& strFile);
 
-    DbTxn *TxnBegin(int flags=DB_TXN_WRITE_NOSYNC)
+    DbTxn* TxnBegin(int flags = DB_TXN_WRITE_NOSYNC)
     {
         DbTxn* ptxn = NULL;
         int ret = dbenv.txn_begin(NULL, &ptxn, flags);
@@ -82,19 +81,20 @@ class CDB
 protected:
     Db* pdb;
     std::string strFile;
-    DbTxn *activeTxn;
+    DbTxn* activeTxn;
     bool fReadOnly;
 
-    explicit CDB(const char* pszFile, const char* pszMode="r+");
+    explicit CDB(const char* pszFile, const char* pszMode = "r+");
     ~CDB() { Close(); }
 public:
     void Close();
+
 private:
     CDB(const CDB&);
     void operator=(const CDB&);
 
 protected:
-    template<typename K, typename T>
+    template <typename K, typename T>
     bool Read(const K& key, T& value)
     {
         if (!pdb)
@@ -118,8 +118,7 @@ protected:
         try {
             CDataStream ssValue((char*)datValue.get_data(), (char*)datValue.get_data() + datValue.get_size(), SER_DISK, CLIENT_VERSION);
             ssValue >> value;
-        }
-        catch (std::exception &e) {
+        } catch (std::exception& e) {
             return false;
         }
 
@@ -129,8 +128,8 @@ protected:
         return (ret == 0);
     }
 
-    template<typename K, typename T>
-    bool Write(const K& key, const T& value, bool fOverwrite=true)
+    template <typename K, typename T>
+    bool Write(const K& key, const T& value, bool fOverwrite = true)
     {
         if (!pdb)
             return false;
@@ -158,7 +157,7 @@ protected:
         return (ret == 0);
     }
 
-    template<typename K>
+    template <typename K>
     bool Erase(const K& key)
     {
         if (!pdb)
@@ -180,7 +179,7 @@ protected:
         return (ret == 0 || ret == DB_NOTFOUND);
     }
 
-    template<typename K>
+    template <typename K>
     bool Exists(const K& key)
     {
         if (!pdb)
@@ -211,18 +210,16 @@ protected:
         return pcursor;
     }
 
-    int ReadAtCursor(Dbc* pcursor, CDataStream& ssKey, CDataStream& ssValue, unsigned int fFlags=DB_NEXT)
+    int ReadAtCursor(Dbc* pcursor, CDataStream& ssKey, CDataStream& ssValue, unsigned int fFlags = DB_NEXT)
     {
         // Read at cursor
         Dbt datKey;
-        if (fFlags == DB_SET || fFlags == DB_SET_RANGE || fFlags == DB_GET_BOTH || fFlags == DB_GET_BOTH_RANGE)
-        {
+        if (fFlags == DB_SET || fFlags == DB_SET_RANGE || fFlags == DB_GET_BOTH || fFlags == DB_GET_BOTH_RANGE) {
             datKey.set_data(&ssKey[0]);
             datKey.set_size(ssKey.size());
         }
         Dbt datValue;
-        if (fFlags == DB_GET_BOTH || fFlags == DB_GET_BOTH_RANGE)
-        {
+        if (fFlags == DB_GET_BOTH || fFlags == DB_GET_BOTH_RANGE) {
             datValue.set_data(&ssValue[0]);
             datValue.set_size(ssValue.size());
         }
@@ -295,19 +292,15 @@ public:
 };
 
 
-
-
-
-
-
 /** Access to the transaction database (blkindex.dat) */
 class CTxDB : public CDB
 {
 public:
-    CTxDB(const char* pszMode="r+") : CDB("blkindex.dat", pszMode) { }
+    CTxDB(const char* pszMode = "r+") : CDB("blkindex.dat", pszMode) {}
 private:
     CTxDB(const CTxDB&);
     void operator=(const CTxDB&);
+
 public:
     bool ReadTxIndex(uint256 hash, CTxIndex& txindex);
     bool UpdateTxIndex(uint256 hash, const CTxIndex& txindex);
@@ -328,6 +321,7 @@ public:
     bool ReadCheckpointPubKey(std::string& strPubKey);
     bool WriteCheckpointPubKey(const std::string& strPubKey);
     bool LoadBlockIndex();
+
 private:
     bool LoadBlockIndexGuts();
 };

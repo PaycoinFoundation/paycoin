@@ -27,7 +27,7 @@ void AddressBookRepaint()
 {
 }
 
-void InitMessage(const std::string &message)
+void InitMessage(const std::string& message)
 {
 }
 

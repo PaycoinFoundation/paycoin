@@ -37,12 +37,9 @@ void CDBEnv::EnvShutdown()
         return;
 
     fDbEnvInit = false;
-    try
-    {
+    try {
         dbenv.close(0);
-    }
-    catch (const DbException& e)
-    {
+    } catch (const DbException& e) {
         printf("EnvShutdown exception: %s (%d)\n", e.what(), e.get_errno());
     }
     if (!fMockDb)
@@ -78,7 +75,7 @@ bool CDBEnv::Open(const boost::filesystem::path& path)
 
     unsigned int nDbCache = GetArg("-dbcache", 25);
     dbenv.set_lg_dir(pathLogDir.string().c_str());
-    dbenv.set_cachesize(nDbCache / 1024, (nDbCache % 1024)*1048576, 1);
+    dbenv.set_cachesize(nDbCache / 1024, (nDbCache % 1024) * 1048576, 1);
     dbenv.set_lg_bsize(1048576);
     dbenv.set_lg_max(10485760);
     dbenv.set_lk_max_locks(10000);
@@ -88,14 +85,14 @@ bool CDBEnv::Open(const boost::filesystem::path& path)
     dbenv.set_flags(DB_TXN_WRITE_NOSYNC, 1);
     dbenv.log_set_config(DB_LOG_AUTO_REMOVE, 1);
     int ret = dbenv.open(path.string().c_str(),
-                     DB_CREATE     |
-                     DB_INIT_LOCK  |
-                     DB_INIT_LOG   |
-                     DB_INIT_MPOOL |
-                     DB_INIT_TXN   |
-                     DB_THREAD     |
-                     DB_RECOVER,
-                     S_IRUSR | S_IWUSR);
+        DB_CREATE |
+            DB_INIT_LOCK |
+            DB_INIT_LOG |
+            DB_INIT_MPOOL |
+            DB_INIT_TXN |
+            DB_THREAD |
+            DB_RECOVER,
+        S_IRUSR | S_IWUSR);
     if (ret > 0)
         return error("CDB() : error %d opening database environment", ret);
 
@@ -115,21 +112,21 @@ void CDBEnv::MakeMock()
     printf("CDBEnv::MakeMock()\n");
 
     dbenv.set_cachesize(1, 0, 1);
-    dbenv.set_lg_bsize(10485760*4);
+    dbenv.set_lg_bsize(10485760 * 4);
     dbenv.set_lg_max(10485760);
     dbenv.set_lk_max_locks(10000);
     dbenv.set_lk_max_objects(10000);
     dbenv.set_flags(DB_AUTO_COMMIT, 1);
     dbenv.log_set_config(DB_LOG_IN_MEMORY, 1);
     int ret = dbenv.open(NULL,
-                     DB_CREATE     |
-                     DB_INIT_LOCK  |
-                     DB_INIT_LOG   |
-                     DB_INIT_MPOOL |
-                     DB_INIT_TXN   |
-                     DB_THREAD     |
-                     DB_PRIVATE,
-                     S_IRUSR | S_IWUSR);
+        DB_CREATE |
+            DB_INIT_LOCK |
+            DB_INIT_LOG |
+            DB_INIT_MPOOL |
+            DB_INIT_TXN |
+            DB_THREAD |
+            DB_PRIVATE,
+        S_IRUSR | S_IWUSR);
     if (ret > 0)
         throw runtime_error(strprintf("CDBEnv::MakeMock(): error %d opening database environment", ret));
 
@@ -145,8 +142,7 @@ void CDBEnv::CheckpointLSN(std::string strFile)
     dbenv.lsn_reset(strFile.c_str(), 0);
 }
 
-CDB::CDB(const char *pszFile, const char* pszMode) :
-    pdb(NULL), activeTxn(NULL)
+CDB::CDB(const char* pszFile, const char* pszMode) : pdb(NULL), activeTxn(NULL)
 {
     int ret;
     if (pszFile == NULL)
@@ -166,28 +162,25 @@ CDB::CDB(const char *pszFile, const char* pszMode) :
         strFile = pszFile;
         ++bitdb.mapFileUseCount[strFile];
         pdb = bitdb.mapDb[strFile];
-        if (pdb == NULL)
-        {
+        if (pdb == NULL) {
             pdb = new Db(&bitdb.dbenv, 0);
 
             bool fMockDb = bitdb.IsMock();
-            if (fMockDb)
-            {
-                DbMpoolFile*mpf = pdb->get_mpf();
+            if (fMockDb) {
+                DbMpoolFile* mpf = pdb->get_mpf();
                 ret = mpf->set_flags(DB_MPOOL_NOFILE, 1);
                 if (ret != 0)
                     throw runtime_error(strprintf("CDB() : failed to configure for no temp file backing for database %s", pszFile));
             }
 
-            ret = pdb->open(NULL,      // Txn pointer
-                            fMockDb ? NULL : pszFile,   // Filename
-                            "main",    // Logical db name
-                            DB_BTREE,  // Database type
-                            nFlags,    // Flags
-                            0);
+            ret = pdb->open(NULL,         // Txn pointer
+                fMockDb ? NULL : pszFile, // Filename
+                "main",                   // Logical db name
+                DB_BTREE,                 // Database type
+                nFlags,                   // Flags
+                0);
 
-            if (ret > 0)
-            {
+            if (ret > 0) {
                 delete pdb;
                 pdb = NULL;
                 --bitdb.mapFileUseCount[strFile];
@@ -195,8 +188,7 @@ CDB::CDB(const char *pszFile, const char* pszMode) :
                 throw runtime_error(strprintf("CDB() : can't open database file %s, error %d", pszFile, ret));
             }
 
-            if (fCreate && !Exists(string("version")))
-            {
+            if (fCreate && !Exists(string("version"))) {
                 bool fTmp = fReadOnly;
                 fReadOnly = false;
                 WriteVersion(CLIENT_VERSION);
@@ -238,7 +230,7 @@ void CDB::Close()
     if (IsChainFile(strFile) && IsInitialBlockDownload())
         nMinutes = 5;
 
-    bitdb.dbenv.txn_checkpoint(nMinutes ? GetArg("-dblogsize", 100)*1024 : 0, nMinutes, 0);
+    bitdb.dbenv.txn_checkpoint(nMinutes ? GetArg("-dblogsize", 100) * 1024 : 0, nMinutes, 0);
 
     {
         LOCK(bitdb.cs_db);
@@ -250,8 +242,7 @@ void CDBEnv::CloseDb(const string& strFile)
 {
     {
         LOCK(cs_db);
-        if (mapDb[strFile] != NULL)
-        {
+        if (mapDb[strFile] != NULL) {
             // Close the database handle
             Db* pdb = mapDb[strFile];
             pdb->close(0);
@@ -263,12 +254,10 @@ void CDBEnv::CloseDb(const string& strFile)
 
 bool CDB::Rewrite(const string& strFile, const char* pszSkip)
 {
-    while (!fShutdown)
-    {
+    while (!fShutdown) {
         {
             LOCK(bitdb.cs_db);
-            if (!bitdb.mapFileUseCount.count(strFile) || bitdb.mapFileUseCount[strFile] == 0)
-            {
+            if (!bitdb.mapFileUseCount.count(strFile) || bitdb.mapFileUseCount[strFile] == 0) {
                 // Flush log data to the dat file
                 bitdb.CloseDb(strFile);
                 bitdb.CheckpointLSN(strFile);
@@ -281,32 +270,27 @@ bool CDB::Rewrite(const string& strFile, const char* pszSkip)
                     CDB db(strFile.c_str(), "r");
                     Db* pdbCopy = new Db(&bitdb.dbenv, 0);
 
-                    int ret = pdbCopy->open(NULL,                 // Txn pointer
-                                            strFileRes.c_str(),   // Filename
-                                            "main",    // Logical db name
-                                            DB_BTREE,  // Database type
-                                            DB_CREATE,    // Flags
-                                            0);
-                    if (ret > 0)
-                    {
+                    int ret = pdbCopy->open(NULL, // Txn pointer
+                        strFileRes.c_str(),       // Filename
+                        "main",                   // Logical db name
+                        DB_BTREE,                 // Database type
+                        DB_CREATE,                // Flags
+                        0);
+                    if (ret > 0) {
                         printf("Cannot create database file %s\n", strFileRes.c_str());
                         fSuccess = false;
                     }
 
                     Dbc* pcursor = db.GetCursor();
                     if (pcursor)
-                        while (fSuccess)
-                        {
+                        while (fSuccess) {
                             CDataStream ssKey(SER_DISK, CLIENT_VERSION);
                             CDataStream ssValue(SER_DISK, CLIENT_VERSION);
                             int ret = db.ReadAtCursor(pcursor, ssKey, ssValue, DB_NEXT);
-                            if (ret == DB_NOTFOUND)
-                            {
+                            if (ret == DB_NOTFOUND) {
                                 pcursor->close();
                                 break;
-                            }
-                            else if (ret != 0)
-                            {
+                            } else if (ret != 0) {
                                 pcursor->close();
                                 fSuccess = false;
                                 break;
@@ -314,8 +298,7 @@ bool CDB::Rewrite(const string& strFile, const char* pszSkip)
                             if (pszSkip &&
                                 strncmp(&ssKey[0], pszSkip, std::min(ssKey.size(), strlen(pszSkip))) == 0)
                                 continue;
-                            if (strncmp(&ssKey[0], "\x07version", 8) == 0)
-                            {
+                            if (strncmp(&ssKey[0], "\x07version", 8) == 0) {
                                 // Update version:
                                 ssValue.clear();
                                 ssValue << CLIENT_VERSION;
@@ -326,8 +309,7 @@ bool CDB::Rewrite(const string& strFile, const char* pszSkip)
                             if (ret2 > 0)
                                 fSuccess = false;
                         }
-                    if (fSuccess)
-                    {
+                    if (fSuccess) {
                         db.Close();
                         bitdb.CloseDb(strFile);
                         if (pdbCopy->close(0))
@@ -335,8 +317,7 @@ bool CDB::Rewrite(const string& strFile, const char* pszSkip)
                         delete pdbCopy;
                     }
                 }
-                if (fSuccess)
-                {
+                if (fSuccess) {
                     Db dbA(&bitdb.dbenv, 0);
                     if (dbA.remove(strFile.c_str(), NULL, 0))
                         fSuccess = false;
@@ -365,13 +346,11 @@ void CDBEnv::Flush(bool fShutdown)
     {
         LOCK(cs_db);
         map<string, int>::iterator mi = mapFileUseCount.begin();
-        while (mi != mapFileUseCount.end())
-        {
+        while (mi != mapFileUseCount.end()) {
             string strFile = (*mi).first;
             int nRefCount = (*mi).second;
             printf("%s refcount=%d\n", strFile.c_str(), nRefCount);
-            if (nRefCount == 0)
-            {
+            if (nRefCount == 0) {
                 // Move log data to the dat file
                 CloseDb(strFile);
                 printf("%s checkpoint\n", strFile.c_str());
@@ -383,25 +362,18 @@ void CDBEnv::Flush(bool fShutdown)
                 }
                 printf("%s closed\n", strFile.c_str());
                 mapFileUseCount.erase(mi++);
-            }
-            else
+            } else
                 mi++;
         }
-        if (fShutdown)
-        {
+        if (fShutdown) {
             char** listp;
-            if (mapFileUseCount.empty())
-            {
+            if (mapFileUseCount.empty()) {
                 dbenv.log_archive(&listp, DB_ARCH_REMOVE);
                 Close();
             }
         }
     }
 }
-
-
-
-
 
 
 //
@@ -516,7 +488,7 @@ bool CTxDB::WriteCheckpointPubKey(const string& strPubKey)
     return Write(string("strCheckpointPubKey"), strPubKey);
 }
 
-CBlockIndex static * InsertBlockIndex(uint256 hash)
+CBlockIndex static* InsertBlockIndex(uint256 hash)
 {
     if (hash == 0)
         return NULL;
@@ -547,26 +519,23 @@ bool CTxDB::LoadBlockIndex()
     // Calculate bnChainTrust
     vector<pair<int, CBlockIndex*> > vSortedByHeight;
     vSortedByHeight.reserve(mapBlockIndex.size());
-    BOOST_FOREACH(const PAIRTYPE(uint256, CBlockIndex*)& item, mapBlockIndex)
-    {
+    BOOST_FOREACH (const PAIRTYPE(uint256, CBlockIndex*)&item, mapBlockIndex) {
         CBlockIndex* pindex = item.second;
         vSortedByHeight.push_back(make_pair(pindex->nHeight, pindex));
     }
     sort(vSortedByHeight.begin(), vSortedByHeight.end());
-    BOOST_FOREACH(const PAIRTYPE(int, CBlockIndex*)& item, vSortedByHeight)
-    {
+    BOOST_FOREACH (const PAIRTYPE(int, CBlockIndex*)&item, vSortedByHeight) {
         CBlockIndex* pindex = item.second;
         pindex->bnChainTrust = (pindex->pprev ? pindex->pprev->bnChainTrust : 0) + pindex->GetBlockTrust();
         // paycoin: calculate stake modifier checksum
         pindex->nStakeModifierChecksum = GetStakeModifierChecksum(pindex);
         // printf("pindex->nStakeModifierChecksum = %x height = %d\n", pindex->nStakeModifierChecksum, pindex->nHeight);
         if (!CheckStakeModifierCheckpoints(pindex->nHeight, pindex->nStakeModifierChecksum))
-            return error("CTxDB::LoadBlockIndex() : Failed stake modifier checkpoint height=%d, modifier=0x%016"PRI64x, pindex->nHeight, pindex->nStakeModifier);
+            return error("CTxDB::LoadBlockIndex() : Failed stake modifier checkpoint height=%d, modifier=0x%016" PRI64x, pindex->nHeight, pindex->nStakeModifier);
     }
 
     // Load hashBestChain pointer to end of best chain
-    if (!ReadHashBestChain(hashBestChain))
-    {
+    if (!ReadHashBestChain(hashBestChain)) {
         if (pindexGenesisBlock == NULL)
             return true;
         return error("CTxDB::LoadBlockIndex() : hashBestChain not loaded");
@@ -576,7 +545,7 @@ bool CTxDB::LoadBlockIndex()
     pindexBest = mapBlockIndex[hashBestChain];
     nBestHeight = pindexBest->nHeight;
     bnBestChainTrust = pindexBest->bnChainTrust;
-    printf("LoadBlockIndex(): hashBestChain=%s  height=%d  trust=%s\n", hashBestChain.ToString().substr(0,20).c_str(), nBestHeight, bnBestChainTrust.ToString().c_str());
+    printf("LoadBlockIndex(): hashBestChain=%s  height=%d  trust=%s\n", hashBestChain.ToString().substr(0, 20).c_str(), nBestHeight, bnBestChainTrust.ToString().c_str());
 
     // paycoin: load hashSyncCheckpoint
     if (!ReadSyncCheckpoint(Checkpoints::hashSyncCheckpoint))
@@ -588,7 +557,7 @@ bool CTxDB::LoadBlockIndex()
 
     // Verify blocks in the best chain
     int nCheckLevel = GetArg("-checklevel", 1);
-    int nCheckDepth = GetArg( "-checkblocks", 2500);
+    int nCheckDepth = GetArg("-checkblocks", 2500);
     if (nCheckDepth == 0)
         nCheckDepth = 1000000000; // suffices until the year 19000
     if (nCheckDepth > nBestHeight)
@@ -596,83 +565,63 @@ bool CTxDB::LoadBlockIndex()
     printf("Verifying last %i blocks at level %i\n", nCheckDepth, nCheckLevel);
     CBlockIndex* pindexFork = NULL;
     map<pair<unsigned int, unsigned int>, CBlockIndex*> mapBlockPos;
-    for (CBlockIndex* pindex = pindexBest; pindex && pindex->pprev; pindex = pindex->pprev)
-    {
-        if (pindex->nHeight < nBestHeight-nCheckDepth)
+    for (CBlockIndex* pindex = pindexBest; pindex && pindex->pprev; pindex = pindex->pprev) {
+        if (pindex->nHeight < nBestHeight - nCheckDepth)
             break;
         CBlock block;
         if (!block.ReadFromDisk(pindex))
             return error("LoadBlockIndex() : block.ReadFromDisk failed");
         // check level 1: verify block validity
-        if (nCheckLevel>0 && !block.CheckBlock(pindex->nHeight))
-        {
+        if (nCheckLevel > 0 && !block.CheckBlock(pindex->nHeight)) {
             printf("LoadBlockIndex() : *** found bad block at %d, hash=%s\n", pindex->nHeight, pindex->GetBlockHash().ToString().c_str());
             pindexFork = pindex->pprev;
         }
         // check level 2: verify transaction index validity
-        if (nCheckLevel>1)
-        {
+        if (nCheckLevel > 1) {
             pair<unsigned int, unsigned int> pos = make_pair(pindex->nFile, pindex->nBlockPos);
             mapBlockPos[pos] = pindex;
-            BOOST_FOREACH(const CTransaction &tx, block.vtx)
-            {
+            BOOST_FOREACH (const CTransaction& tx, block.vtx) {
                 uint256 hashTx = tx.GetHash();
                 CTxIndex txindex;
-                if (ReadTxIndex(hashTx, txindex))
-                {
+                if (ReadTxIndex(hashTx, txindex)) {
                     // check level 3: checker transaction hashes
-                    if (nCheckLevel>2 || pindex->nFile != txindex.pos.nFile || pindex->nBlockPos != txindex.pos.nBlockPos)
-                    {
+                    if (nCheckLevel > 2 || pindex->nFile != txindex.pos.nFile || pindex->nBlockPos != txindex.pos.nBlockPos) {
                         // either an error or a duplicate transaction
                         CTransaction txFound;
-                        if (!txFound.ReadFromDisk(txindex.pos))
-                        {
+                        if (!txFound.ReadFromDisk(txindex.pos)) {
                             printf("LoadBlockIndex() : *** cannot read mislocated transaction %s\n", hashTx.ToString().c_str());
                             pindexFork = pindex->pprev;
+                        } else if (txFound.GetHash() != hashTx) // not a duplicate tx
+                        {
+                            printf("LoadBlockIndex(): *** invalid tx position for %s\n", hashTx.ToString().c_str());
+                            pindexFork = pindex->pprev;
                         }
-                        else
-                            if (txFound.GetHash() != hashTx) // not a duplicate tx
-                            {
-                                printf("LoadBlockIndex(): *** invalid tx position for %s\n", hashTx.ToString().c_str());
-                                pindexFork = pindex->pprev;
-                            }
                     }
                     // check level 4: check whether spent txouts were spent within the main chain
                     unsigned int nOutput = 0;
-                    if (nCheckLevel>3)
-                    {
-                        BOOST_FOREACH(const CDiskTxPos &txpos, txindex.vSpent)
-                        {
-                            if (!txpos.IsNull())
-                            {
+                    if (nCheckLevel > 3) {
+                        BOOST_FOREACH (const CDiskTxPos& txpos, txindex.vSpent) {
+                            if (!txpos.IsNull()) {
                                 pair<unsigned int, unsigned int> posFind = make_pair(txpos.nFile, txpos.nBlockPos);
-                                if (!mapBlockPos.count(posFind))
-                                {
+                                if (!mapBlockPos.count(posFind)) {
                                     printf("LoadBlockIndex(): *** found bad spend at %d, hashBlock=%s, hashTx=%s\n", pindex->nHeight, pindex->GetBlockHash().ToString().c_str(), hashTx.ToString().c_str());
                                     pindexFork = pindex->pprev;
                                 }
                                 // check level 6: check whether spent txouts were spent by a valid transaction that consume them
-                                if (nCheckLevel>5)
-                                {
+                                if (nCheckLevel > 5) {
                                     CTransaction txSpend;
-                                    if (!txSpend.ReadFromDisk(txpos))
-                                    {
+                                    if (!txSpend.ReadFromDisk(txpos)) {
                                         printf("LoadBlockIndex(): *** cannot read spending transaction of %s:%i from disk\n", hashTx.ToString().c_str(), nOutput);
                                         pindexFork = pindex->pprev;
-                                    }
-                                    else if (!txSpend.CheckTransaction())
-                                    {
+                                    } else if (!txSpend.CheckTransaction()) {
                                         printf("LoadBlockIndex(): *** spending transaction of %s:%i is invalid\n", hashTx.ToString().c_str(), nOutput);
                                         pindexFork = pindex->pprev;
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         bool fFound = false;
-                                        BOOST_FOREACH(const CTxIn &txin, txSpend.vin)
+                                        BOOST_FOREACH (const CTxIn& txin, txSpend.vin)
                                             if (txin.prevout.hash == hashTx && txin.prevout.n == nOutput)
                                                 fFound = true;
-                                        if (!fFound)
-                                        {
+                                        if (!fFound) {
                                             printf("LoadBlockIndex(): *** spending transaction of %s:%i does not spend it\n", hashTx.ToString().c_str(), nOutput);
                                             pindexFork = pindex->pprev;
                                         }
@@ -684,24 +633,20 @@ bool CTxDB::LoadBlockIndex()
                     }
                 }
                 // check level 5: check whether all prevouts are marked spent
-                if (nCheckLevel>4)
-                {
-                     BOOST_FOREACH(const CTxIn &txin, tx.vin)
-                     {
-                          CTxIndex txindex;
-                          if (ReadTxIndex(txin.prevout.hash, txindex))
-                              if (txindex.vSpent.size()-1 < txin.prevout.n || txindex.vSpent[txin.prevout.n].IsNull())
-                              {
-                                  printf("LoadBlockIndex(): *** found unspent prevout %s:%i in %s\n", txin.prevout.hash.ToString().c_str(), txin.prevout.n, hashTx.ToString().c_str());
-                                  pindexFork = pindex->pprev;
-                              }
-                     }
+                if (nCheckLevel > 4) {
+                    BOOST_FOREACH (const CTxIn& txin, tx.vin) {
+                        CTxIndex txindex;
+                        if (ReadTxIndex(txin.prevout.hash, txindex))
+                            if (txindex.vSpent.size() - 1 < txin.prevout.n || txindex.vSpent[txin.prevout.n].IsNull()) {
+                                printf("LoadBlockIndex(): *** found unspent prevout %s:%i in %s\n", txin.prevout.hash.ToString().c_str(), txin.prevout.n, hashTx.ToString().c_str());
+                                pindexFork = pindex->pprev;
+                            }
+                    }
                 }
             }
         }
     }
-    if (pindexFork)
-    {
+    if (pindexFork) {
         // Reorg back to the fork
         printf("LoadBlockIndex() : *** moving best chain pointer back to block %d\n", pindexFork->nHeight);
         CBlock block;
@@ -723,8 +668,7 @@ bool CTxDB::LoadBlockIndexGuts()
 
     // Load mapBlockIndex
     unsigned int fFlags = DB_SET_RANGE;
-    for (;;)
-    {
+    for (;;) {
         // Read next record
         CDataStream ssKey(SER_DISK, CLIENT_VERSION);
         if (fFlags == DB_SET_RANGE)
@@ -740,50 +684,47 @@ bool CTxDB::LoadBlockIndexGuts()
         // Unserialize
 
         try {
-        string strType;
-        ssKey >> strType;
-        if (strType == "blockindex" && !fRequestShutdown)
-        {
-            CDiskBlockIndex diskindex;
-            ssValue >> diskindex;
+            string strType;
+            ssKey >> strType;
+            if (strType == "blockindex" && !fRequestShutdown) {
+                CDiskBlockIndex diskindex;
+                ssValue >> diskindex;
 
-            // Construct block index object
-            CBlockIndex* pindexNew = InsertBlockIndex(diskindex.GetBlockHash());
-            pindexNew->pprev          = InsertBlockIndex(diskindex.hashPrev);
-            pindexNew->pnext          = InsertBlockIndex(diskindex.hashNext);
-            pindexNew->nFile          = diskindex.nFile;
-            pindexNew->nBlockPos      = diskindex.nBlockPos;
-            pindexNew->nHeight        = diskindex.nHeight;
-            pindexNew->nMint          = diskindex.nMint;
-            pindexNew->nMoneySupply   = diskindex.nMoneySupply;
-            pindexNew->nFlags         = diskindex.nFlags;
-            pindexNew->nStakeModifier = diskindex.nStakeModifier;
-            pindexNew->prevoutStake   = diskindex.prevoutStake;
-            pindexNew->nStakeTime     = diskindex.nStakeTime;
-            pindexNew->hashProofOfStake = diskindex.hashProofOfStake;
-            pindexNew->nVersion       = diskindex.nVersion;
-            pindexNew->hashMerkleRoot = diskindex.hashMerkleRoot;
-            pindexNew->nTime          = diskindex.nTime;
-            pindexNew->nBits          = diskindex.nBits;
-            pindexNew->nNonce         = diskindex.nNonce;
+                // Construct block index object
+                CBlockIndex* pindexNew = InsertBlockIndex(diskindex.GetBlockHash());
+                pindexNew->pprev = InsertBlockIndex(diskindex.hashPrev);
+                pindexNew->pnext = InsertBlockIndex(diskindex.hashNext);
+                pindexNew->nFile = diskindex.nFile;
+                pindexNew->nBlockPos = diskindex.nBlockPos;
+                pindexNew->nHeight = diskindex.nHeight;
+                pindexNew->nMint = diskindex.nMint;
+                pindexNew->nMoneySupply = diskindex.nMoneySupply;
+                pindexNew->nFlags = diskindex.nFlags;
+                pindexNew->nStakeModifier = diskindex.nStakeModifier;
+                pindexNew->prevoutStake = diskindex.prevoutStake;
+                pindexNew->nStakeTime = diskindex.nStakeTime;
+                pindexNew->hashProofOfStake = diskindex.hashProofOfStake;
+                pindexNew->nVersion = diskindex.nVersion;
+                pindexNew->hashMerkleRoot = diskindex.hashMerkleRoot;
+                pindexNew->nTime = diskindex.nTime;
+                pindexNew->nBits = diskindex.nBits;
+                pindexNew->nNonce = diskindex.nNonce;
 
-            // Watch for genesis block
-            if (pindexGenesisBlock == NULL && diskindex.GetBlockHash() == hashGenesisBlock)
-                pindexGenesisBlock = pindexNew;
+                // Watch for genesis block
+                if (pindexGenesisBlock == NULL && diskindex.GetBlockHash() == hashGenesisBlock)
+                    pindexGenesisBlock = pindexNew;
 
-            if (!pindexNew->CheckIndex())
-                return error("LoadBlockIndex() : CheckIndex failed at %d", pindexNew->nHeight);
+                if (!pindexNew->CheckIndex())
+                    return error("LoadBlockIndex() : CheckIndex failed at %d", pindexNew->nHeight);
 
-            // paycoin: build setStakeSeen
-            if (pindexNew->IsProofOfStake())
-                setStakeSeen.insert(make_pair(pindexNew->prevoutStake, pindexNew->nStakeTime));
-        }
-        else
-        {
-            break; // if shutdown requested or finished loading block index
-        }
-        }    // try
-        catch (std::exception &e) {
+                // paycoin: build setStakeSeen
+                if (pindexNew->IsProofOfStake())
+                    setStakeSeen.insert(make_pair(pindexNew->prevoutStake, pindexNew->nStakeTime));
+            } else {
+                break; // if shutdown requested or finished loading block index
+            }
+        } // try
+        catch (std::exception& e) {
             return error("%s() : deserialize error", __PRETTY_FUNCTION__);
         }
     }
@@ -805,7 +746,7 @@ bool CAddrDB::Write(const CAddrMan& addr)
 {
     // Generate random temporary filename
     unsigned short randv = 0;
-    RAND_bytes((unsigned char *)&randv, sizeof(randv));
+    RAND_bytes((unsigned char*)&randv, sizeof(randv));
     std::string tmpfn = strprintf("peers.dat.%04x", randv);
 
     // serialize addresses, checksum data up to that point, then append csum
@@ -819,7 +760,7 @@ bool CAddrDB::Write(const CAddrMan& addr)
 
     // open temp output file, and associate with CAutoFile
     boost::filesystem::path pathTmp = GetDataDir() / tmpfn;
-    FILE *file = fopen(pathTmp.string().c_str(), "wb");
+    FILE* file = fopen(pathTmp.string().c_str(), "wb");
     CAutoFile fileout = CAutoFile(file, SER_DISK, CLIENT_VERSION);
     if (!fileout)
         return error("CAddrman::Write() : open failed");
@@ -827,8 +768,7 @@ bool CAddrDB::Write(const CAddrMan& addr)
     // Write and commit header, data
     try {
         fileout << ssPeers;
-    }
-    catch (std::exception &e) {
+    } catch (std::exception& e) {
         return error("CAddrman::Write() : I/O error");
     }
     FileCommit(fileout);
@@ -844,7 +784,7 @@ bool CAddrDB::Write(const CAddrMan& addr)
 bool CAddrDB::Read(CAddrMan& addr)
 {
     // open input file, and associate with CAutoFile
-    FILE *file = fopen(pathAddr.string().c_str(), "rb");
+    FILE* file = fopen(pathAddr.string().c_str(), "rb");
     CAutoFile filein = CAutoFile(file, SER_DISK, CLIENT_VERSION);
     if (!filein)
         return error("CAddrman::Read() : open failed");
@@ -858,10 +798,9 @@ bool CAddrDB::Read(CAddrMan& addr)
 
     // read data and checksum from file
     try {
-        filein.read((char *)&vchData[0], dataSize);
+        filein.read((char*)&vchData[0], dataSize);
         filein >> hashIn;
-    }
-    catch (std::exception &e) {
+    } catch (std::exception& e) {
         return error("CAddrman::Read() 2 : I/O error or stream data corrupted");
     }
     filein.fclose();
@@ -878,8 +817,7 @@ bool CAddrDB::Read(CAddrMan& addr)
     try {
         ssPeers >> FLATDATA(pchMsgTmp);
         ssPeers >> addr;
-    }
-    catch (std::exception &e) {
+    } catch (std::exception& e) {
         return error("CAddrman::Read() : I/O error or stream data corrupted");
     }
 
