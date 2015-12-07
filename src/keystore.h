@@ -6,6 +6,7 @@
 #define BITCOIN_KEYSTORE_H
 
 #include "crypter.h"
+#include "util.h"
 #include <boost/signals2/signal.hpp>
 
 class CScript;
