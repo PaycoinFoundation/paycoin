@@ -12,6 +12,7 @@
 class CBlockIndex;
 class CReserveKey;
 
+#include "util.h"
 #include "json/json_spirit_reader_template.h"
 #include "json/json_spirit_writer_template.h"
 #include "json/json_spirit_utils.h"
@@ -63,6 +64,8 @@ extern CReserveKey* pMiningKey;
 extern double GetDifficulty(const CBlockIndex* blockindex = NULL);
 // In rpcnet.cpp
 extern json_spirit::Value getconnectioncount(const json_spirit::Array& params, bool fHelp);
+extern json_spirit::Value getpeerinfo(const json_spirit::Array& params, bool fHelp);
+extern json_spirit::Value sendalert(const json_spirit::Array& params, bool fHelp);
 // In rpcdump.cpp
 extern json_spirit::Value dumpprivkey(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value importprivkey(const json_spirit::Array& params, bool fHelp);
