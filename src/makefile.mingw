@@ -113,6 +113,7 @@ OBJS= \
     obj/protocol.o \
     obj/kernelrecord.o \
     obj/bitcoinrpc.o \
+    obj/rpcblockchain.o \
     obj/rpcdump.o \
     obj/rpcnet.o \
     obj/rpcwallet.o \
