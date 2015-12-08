@@ -14,13 +14,7 @@
 #include "wallet.h"
 
 using namespace std;
-using namespace boost;
-using namespace boost::assign;
 using namespace json_spirit;
-
-extern Object JSONRPCError(int code, const string& message);
-extern int64 AmountFromValue(const Value& value);
-extern Value ValueFromAmount(int64 amount);
 
 void ScriptPubKeyToJSON(const CScript& scriptPubKey, Object& out)
 {
