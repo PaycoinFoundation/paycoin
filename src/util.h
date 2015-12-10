@@ -22,6 +22,7 @@ typedef int pid_t; /* define for windows compatibility */
 #include <vector>
 #include <string>
 
+#ifndef Q_MOC_RUN
 #include <boost/thread.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
@@ -31,6 +32,7 @@ typedef int pid_t; /* define for windows compatibility */
 #include <boost/interprocess/sync/lock_options.hpp>
 #include <boost/date_time/gregorian/gregorian_types.hpp>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
+#endif
 
 #include "netbase.h" // for AddTimeData
 
