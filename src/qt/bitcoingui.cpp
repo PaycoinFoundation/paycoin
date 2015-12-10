@@ -962,5 +962,5 @@ void BitcoinGUI::editConfig()
     mb.setWindowTitle(tr("Notice"));
     mb.setText(tr("Any changes made to the configuration will require restarting the application."));
     mb.exec();
-    QDesktopServices::openUrl(QUrl(QString::fromStdString(GetConfigFile().string())));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QString::fromStdString(GetConfigFile().string())));
 }
