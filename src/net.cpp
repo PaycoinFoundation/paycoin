@@ -349,7 +349,8 @@ bool GetMyExternalIP(CNetAddr& ipRet)
     if (fNoListen||fUseProxy)
         return false;
 
-    for (int nLookup = 0; nLookup <= 1; nLookup++)
+    // Reverse logic, try URL before IP address
+    for (int nLookup = 1; nLookup >= 0; nLookup--)
     for (int nHost = 1; nHost <= 2; nHost++)
     {
         // We should be phasing out our use of sites like these.  If we need
@@ -358,11 +359,46 @@ bool GetMyExternalIP(CNetAddr& ipRet)
         //  <?php echo $_SERVER["REMOTE_ADDR"]; ?>
         if (nHost == 1)
         {
+            /* Previously only the first host worked properly, replace bad host
+             * with a valid one, unfortunately this does not have IP access so
+             * this will fail if nLookup is false. Considering that only one
+             * host worked before I think this is better than nothing.
+             * We check this before dyndns because it will return the ipv6
+             * address if enabeled whereas dyndns.org will only return the ipv4
+             * address (obviously we query specifically for ipv4 if USE_IPV6 is
+             * false). */
+            if (nLookup == 0)
+                break;
+#ifdef USE_IPV6
+            CService addrIP("myexternalip.com", 80, true);
+#else
+            CService addrIP("ipv4.myexternalip.com", 80, true);
+#endif
+            /* If the IP is not valid break rather than attempting to connect to
+             * it. */
+            if (addrIP.IsValid()) {
+                addrConnect = addrIP;
+            } else {
+                break;
+            }
+
+            pszGet = "GET /raw HTTP/1.1\r\n"
+                     "Host: myexternalip.com\r\n"
+                     "User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)\r\n"
+                     "Connection: close\r\n"
+                     "\r\n";
+
+            pszKeyword = ""; // returns raw address
+        }
+        else if (nHost == 2)
+        {
             addrConnect = CService("91.198.22.70",80); // checkip.dyndns.org
 
             if (nLookup == 1)
             {
                 CService addrIP("checkip.dyndns.org", 80, true);
+                /* IF the IP is not valid we'll just use the existing one from
+                 * above as always. */
                 if (addrIP.IsValid())
                     addrConnect = addrIP;
             }
@@ -374,25 +410,6 @@ bool GetMyExternalIP(CNetAddr& ipRet)
                      "\r\n";
 
             pszKeyword = "Address:";
-        }
-        else if (nHost == 2)
-        {
-            addrConnect = CService("74.208.43.192", 80); // www.showmyip.com
-
-            if (nLookup == 1)
-            {
-                CService addrIP("www.showmyip.com", 80, true);
-                if (addrIP.IsValid())
-                    addrConnect = addrIP;
-            }
-
-            pszGet = "GET /simple/ HTTP/1.1\r\n"
-                     "Host: www.showmyip.com\r\n"
-                     "User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)\r\n"
-                     "Connection: close\r\n"
-                     "\r\n";
-
-            pszKeyword = NULL; // Returns just IP address
         }
 
         if (GetMyExternalIP2(addrConnect, pszGet, pszKeyword, ipRet))
