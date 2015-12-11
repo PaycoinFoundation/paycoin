@@ -8,7 +8,6 @@
 using namespace json_spirit;
 using namespace std;
 
-extern Object JSONRPCError(int code, const string& message);
 extern CScrapesDB* scrapesDB;
 
 Value setscrapeaddress(const Array& params, bool fHelp)
