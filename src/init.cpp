@@ -167,9 +167,6 @@ bool AppInit(int argc, char* argv[])
             return false;
         }
 
-        // Do this early so that daemon commands are processed properly
-        fTestNet = GetBoolArg("-testnet");
-
         // Command-line RPC
         for (int i = 1; i < argc; i++)
             if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "paycoin:"))
@@ -339,6 +336,8 @@ bool AppInit2()
 #endif
 
     // ********************************************************* Step 2: parameter interactions
+
+    fTestNet = GetBoolArg("-testnet");
 
     if (mapArgs.count("-connect") && mapMultiArgs["-connect"].size() > 0) {
         SoftSetBoolArg("-dnsseed", false);
