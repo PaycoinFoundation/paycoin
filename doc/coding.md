@@ -74,7 +74,7 @@ Threads
 
 * ThreadGetMyExternalIP : Determines outside-the-firewall IP address, sends addr message to connected peers when it determines it.
 
-* ThreadSocketHandler : Sends/Receives data from peers on port 8333.
+* ThreadSocketHandler : Sends/Receives data from peers on port 8998.
 
 * ThreadMessageHandler : Higher-level message handling (sending and receiving).
 
@@ -84,13 +84,9 @@ Threads
 
 * ThreadCleanWalletPassphrase : re-locks an encrypted wallet after user has unlocked it for a period of time.
 
-* SendingDialogStartTransfer : used by pay-via-ip-address code (obsolete)
-
-* ThreadDelayedRepaint : repaint the gui
-
 * ThreadFlushWalletDB : Close the wallet.dat file if it hasn't been used in 500ms.
 
-* ThreadRPCServer : Remote procedure call handler, listens on port 8332 for connections and services them.
+* ThreadRPCServer : Remote procedure call handler, listens on port 8999 for connections and services them.
 
 * ThreadBitcoinMiner : Generates bitcoins
 
