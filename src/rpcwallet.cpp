@@ -398,7 +398,7 @@ Value listminting(const Array& params, bool fHelp)
                 "listminting [count=-1] [from=0]\n"
                 "Return all mintable outputs and provide details for each of them.");
 
-    int count = -1;
+    unsigned int count = -1;
 
     if(params.size() > 0)
         count = params[0].get_int();
