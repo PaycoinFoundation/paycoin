@@ -16,7 +16,7 @@ Value setscrapeaddress(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 2)
         throw runtime_error(
-            "setscrapeaddress <staking address>, <address to stake to>\n"
+            "setscrapeaddress <staking address> <address to stake to>\n"
             "Set an auto scrape address to send stake rewards to from a given address."
         );
 
