@@ -5,8 +5,6 @@
 #include "bitcoinrpc.h"
 #include "scrapesdb.h"
 
-#define printf OutputDebugStringF
-
 using namespace json_spirit;
 using namespace std;
 
@@ -14,31 +12,33 @@ extern CScrapesDB* scrapesDB;
 
 Value setscrapeaddress(const Array& params, bool fHelp)
 {
-    if (fHelp || params.size() != 2)
-        throw runtime_error(
-            "setscrapeaddress <staking address> <address to stake to>\n"
-            "Set an auto scrape address to send stake rewards to from a given address."
-        );
+    if (fHelp || params.size() != 2) {
+        string ret = "setscrapeaddress <staking address> <address to stake to>\nSet an auto scrape address to send stake rewards to from a given address.";
+        if (pwalletMain->IsCrypted())
+            ret += "requires wallet passphrase to be set with walletpassphrase first";
+
+        throw runtime_error(ret);
+    }
+
+    if (pwalletMain->IsLocked())
+        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
 
     string strAddress = params[0].get_str();
     CBitcoinAddress address(strAddress);
     string strScrapeAddress = params[1].get_str();
     CBitcoinAddress scrapeAddress(strScrapeAddress);
 
+    if (!address.IsValid())
+        throw JSONRPCError(-5, "Invalid Paycoin address.");
+
     if (address.Get() == scrapeAddress.Get())
-        throw runtime_error(
-            "Cannot set scrape address to the same as staking address."
-        );
+        throw JSONRPCError(-1, "Cannot set scrape address to the same as staking address.");
 
     if (!IsMine(*pwalletMain, address.Get()))
-        throw runtime_error(
-            "Staking address must be in wallet."
-        );
+        throw JSONRPCError(-1, "Staking address must be in wallet.");
 
     if (!scrapeAddress.IsValid())
-        throw runtime_error(
-            "Invalid scrape address."
-        );
+        throw JSONRPCError(-5, "Invalid scrape address.");
 
     string oldScrapeAddress;
     bool warn = false;
@@ -59,9 +59,7 @@ Value setscrapeaddress(const Array& params, bool fHelp)
     }
 
     // This should never happen.
-    throw runtime_error(
-        "setscrapeaddress: unknown error"
-    );
+    throw JSONRPCError(-1, "setscrapeaddress: unknown error");
 }
 
 Value getscrapeaddress(const Array& params, bool fHelp)
@@ -75,16 +73,17 @@ Value getscrapeaddress(const Array& params, bool fHelp)
     string strAddress = params[0].get_str();
     CBitcoinAddress address(strAddress);
 
+    if (!address.IsValid())
+        throw JSONRPCError(-5, "Invalid Paycoin address.");
+
     if (!IsMine(*pwalletMain, address.Get()))
-        throw runtime_error(
-            "Staking address must be in wallet."
-        );
+        throw JSONRPCError(-1, "Staking address must be in wallet.");
 
     string strScrapeAddress;
     if (!scrapesDB->ReadScrapeAddress(strAddress, strScrapeAddress)) {
         string ret = "No scrape address set for address ";
         ret += strAddress;
-        throw runtime_error(ret);
+        throw JSONRPCError(-1, ret);
     }
 
     Object obj;
@@ -108,24 +107,30 @@ Value listscrapeaddresses(const Array& params, bool fHelp)
 
 Value deletescrapeaddress(const Array& params, bool fHelp)
 {
-    if (fHelp || params.size() != 1)
-        throw runtime_error(
-            "deletescrapeaddress <staking address>\n"
-            "Delete the auto scrape address for a given address."
-        );
+    if (fHelp || params.size() != 1) {
+        string ret = "deletescrapeaddress <staking address>\nDelete the auto scrape address for a given address.";
+        if (pwalletMain->IsCrypted())
+            ret += "requires wallet passphrase to be set with walletpassphrase first";
+
+        throw runtime_error(ret);
+    }
+
+    if (pwalletMain->IsLocked())
+        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
 
     string strAddress = params[0].get_str();
     CBitcoinAddress address(strAddress);
 
+    if (!address.IsValid())
+        throw JSONRPCError(-5, "Invalid Paycoin address.");
+
     if (!IsMine(*pwalletMain, address.Get()))
-        throw runtime_error(
-            "Staking address must be in wallet."
-        );
+        throw JSONRPCError(-1, "Staking address must be in wallet.");
 
     if (!scrapesDB->HasScrapeAddress(strAddress)) {
         string ret = "No scrape address set for address ";
         ret += strAddress;
-        throw runtime_error(ret);
+        throw JSONRPCError(-1, ret);
     }
 
     return scrapesDB->EraseScrapeAddress(strAddress);
