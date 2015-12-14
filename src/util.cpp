@@ -53,6 +53,8 @@ namespace boost {
 #endif
 #include <io.h> /* for _commit */
 #include "shlobj.h"
+#elif defined(__linux__)
+#include <sys/prctl.h>
 #endif
 
 #ifndef WIN32
@@ -1145,4 +1147,15 @@ bool NewThread(void(*pfn)(void*), void* parg)
         return false;
     }
     return true;
+}
+
+void RenameThread(const char* name)
+{
+#if defined(__linux__) && defined(PR_SET_NAME)
+    // Only the first 15 characters are used (16 - NUL terminator)
+    ::prctl(PR_SET_NAME, name, 0, 0, 0);
+#else
+    // Prevent warnings for unused parameters
+    (void)name;
+#endif
 }

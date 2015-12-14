@@ -428,6 +428,9 @@ bool GetMyExternalIP(CNetAddr& ipRet)
 
 void ThreadGetMyExternalIP(void* parg)
 {
+    // Make this thread recognisable as the message handling thread
+    RenameThread("paycoin-ext-ip");
+
     CNetAddr addrLocalHost;
     if (GetMyExternalIP(addrLocalHost))
     {
@@ -660,6 +663,9 @@ void CNode::copyStats(CNodeStats &stats)
 
 void ThreadSocketHandler(void* parg)
 {
+    // Make this thread recognisable as the networking thread
+    RenameThread("paycoin [net]");
+
     try
     {
         vnThreadsRunning[THREAD_SOCKETHANDLER]++;
@@ -1021,6 +1027,9 @@ void ThreadSocketHandler2(void* parg)
 #ifdef USE_UPNP
 void ThreadMapPort(void* parg)
 {
+    // Make this thread recognisable as the UPnP thread
+    RenameThread("paycoin [UPnP]");
+
     try
     {
         vnThreadsRunning[THREAD_UPNP]++;
@@ -1187,6 +1196,9 @@ static const char *strDNSSeed[][2] = {
 
 void ThreadDNSAddressSeed(void* parg)
 {
+    // Make this thread recognisable as the DNS seeding thread
+    RenameThread("paycoin-dnsseed");
+
     try
     {
         vnThreadsRunning[THREAD_DNSSEED]++;
@@ -1280,6 +1292,9 @@ void ThreadDumpAddress2(void* parg)
 
 void ThreadDumpAddress(void* parg)
 {
+    // Make this thread recognisable as the address dumping thread
+    RenameThread("paycoin-adrdump");
+
     try
     {
         ThreadDumpAddress2(parg);
@@ -1292,6 +1307,9 @@ void ThreadDumpAddress(void* parg)
 
 void ThreadOpenConnections(void* parg)
 {
+    // Make this thread recognisable as the connection opening thread
+    RenameThread("paycoin-opencon");
+
     try
     {
         vnThreadsRunning[THREAD_OPENCONNECTIONS]++;
@@ -1451,6 +1469,9 @@ void ThreadOpenConnections2(void* parg)
 
 void ThreadOpenAddedConnections(void* parg)
 {
+    // Make this thread recognisable as the connection opening thread
+    RenameThread("paycoin-opencon");
+
     try
     {
         vnThreadsRunning[THREAD_ADDEDCONNECTIONS]++;
@@ -1594,6 +1615,9 @@ bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOu
 
 void ThreadMessageHandler(void* parg)
 {
+    // Make this thread recognisable as the message handling thread
+    RenameThread("paycoin-msghand");
+
     try
     {
         vnThreadsRunning[THREAD_MESSAGEHANDLER]++;
@@ -1864,6 +1888,9 @@ void static Discover()
 
 void StartNode(void* parg)
 {
+    // Make this thread recognisable as the startup Thread
+    RenameThread("paycoin [start]");
+
 #ifdef USE_UPNP
 #if USE_UPNP
     fUseUPnP = GetBoolArg("-upnp", true);

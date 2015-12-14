@@ -1128,6 +1128,9 @@ static string JSONRPCExecBatch(const Array& vReq)
 
 void ThreadRPCServer2(void* parg)
 {
+    // Make this thread recognisable as the RPC server
+    RenameThread("paycoin-rpcserv");
+
     printf("ThreadRPCServer started\n");
 
     strRPCUserColonPass = mapArgs["-rpcuser"] + ":" + mapArgs["-rpcpassword"];
