@@ -1833,8 +1833,7 @@ Value setscrapeaddress(const Array& params, bool fHelp)
         throw runtime_error(ret);
     }
 
-    if (pwalletMain->IsLocked())
-        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+    EnsureWalletIsUnlocked();
 
     string strAddress = params[0].get_str();
     CBitcoinAddress address(strAddress);
@@ -1929,8 +1928,7 @@ Value deletescrapeaddress(const Array& params, bool fHelp)
         throw runtime_error(ret);
     }
 
-    if (pwalletMain->IsLocked())
-        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+    EnsureWalletIsUnlocked();
 
     string strAddress = params[0].get_str();
     CBitcoinAddress address(strAddress);
