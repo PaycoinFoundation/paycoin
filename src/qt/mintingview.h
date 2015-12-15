@@ -19,8 +19,7 @@ public:
     explicit MintingView(QWidget *parent = 0);
     void setModel(WalletModel *model);
 
-    enum MintingEnum
-    {
+    enum MintingEnum {
         Minting10min,
         Minting1day,
         Minting30days,

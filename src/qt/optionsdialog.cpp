@@ -22,35 +22,36 @@
 #include <QDir>
 #include <QMessageBox>
 
-class OptionsPage: public QWidget
+class OptionsPage : public QWidget
 {
     Q_OBJECT
 public:
-    explicit OptionsPage(QWidget *parent=0): QWidget(parent) {}
-
+    explicit OptionsPage(QWidget *parent = 0) : QWidget(parent) {}
     virtual void setMapper(MonitoredDataMapper *mapper) = 0;
 };
 
-class MainOptionsPage: public OptionsPage
+class MainOptionsPage : public OptionsPage
 {
     Q_OBJECT
 public:
-    explicit MainOptionsPage(QWidget *parent=0);
+    explicit MainOptionsPage(QWidget *parent = 0);
 
     virtual void setMapper(MonitoredDataMapper *mapper);
+
 private:
     BitcoinAmountField *fee_edit;
     QCheckBox *bitcoin_at_startup;
     QCheckBox *detach_database;
 };
 
-class WindowOptionsPage: public OptionsPage
+class WindowOptionsPage : public OptionsPage
 {
     Q_OBJECT
 public:
-    explicit WindowOptionsPage(QWidget *parent=0);
+    explicit WindowOptionsPage(QWidget *parent = 0);
 
     virtual void setMapper(MonitoredDataMapper *mapper);
+
 private:
 #ifndef Q_OS_MAC
     QCheckBox *minimize_to_tray;
@@ -58,13 +59,14 @@ private:
 #endif
 };
 
-class DisplayOptionsPage: public OptionsPage
+class DisplayOptionsPage : public OptionsPage
 {
     Q_OBJECT
 public:
-    explicit DisplayOptionsPage(QWidget *parent=0);
+    explicit DisplayOptionsPage(QWidget *parent = 0);
 
     virtual void setMapper(MonitoredDataMapper *mapper);
+
 private:
     QValueComboBox *lang;
     QValueComboBox *unit;
@@ -75,13 +77,14 @@ private slots:
     void showRestartWarning();
 };
 
-class NetworkOptionsPage: public OptionsPage
+class NetworkOptionsPage : public OptionsPage
 {
     Q_OBJECT
 public:
-    explicit NetworkOptionsPage(QWidget *parent=0);
+    explicit NetworkOptionsPage(QWidget *parent = 0);
 
     virtual void setMapper(MonitoredDataMapper *mapper);
+
 private:
     QCheckBox *map_port_upnp;
     QCheckBox *connect_socks4;
@@ -92,9 +95,8 @@ private:
 
 #include "optionsdialog.moc"
 
-OptionsDialog::OptionsDialog(QWidget *parent):
-    QDialog(parent), contents_widget(0), pages_widget(0),
-    model(0)
+OptionsDialog::OptionsDialog(QWidget *parent) : QDialog(parent), contents_widget(0), pages_widget(0),
+                                                model(0)
 {
     contents_widget = new QListWidget();
     contents_widget->setMaximumWidth(128);
@@ -111,11 +113,10 @@ OptionsDialog::OptionsDialog(QWidget *parent):
 #endif
     pages.append(new DisplayOptionsPage(this));
 
-    foreach(OptionsPage *page, pages)
-    {
-       QListWidgetItem *item = new QListWidgetItem(page->windowTitle());
-       contents_widget->addItem(item);
-       pages_widget->addWidget(page);
+    foreach (OptionsPage *page, pages) {
+        QListWidgetItem *item = new QListWidgetItem(page->windowTitle());
+        contents_widget->addItem(item);
+        pages_widget->addWidget(page);
     }
 
     contents_widget->setCurrentRow(0);
@@ -128,7 +129,7 @@ OptionsDialog::OptionsDialog(QWidget *parent):
     layout->addLayout(main_layout);
 
     QDialogButtonBox *buttonbox = new QDialogButtonBox();
-    buttonbox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+    buttonbox->setStandardButtons(QDialogButtonBox::Apply | QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     apply_button = buttonbox->button(QDialogButtonBox::Apply);
     layout->addWidget(buttonbox);
 
@@ -157,9 +158,8 @@ void OptionsDialog::setModel(OptionsModel *model)
 
     mapper->setModel(model);
 
-    foreach(OptionsPage *page, pages)
-    {
-       page->setMapper(mapper);
+    foreach (OptionsPage *page, pages) {
+        page->setMapper(mapper);
     }
 
     mapper->toFirst();
@@ -198,8 +198,7 @@ void OptionsDialog::disableApply()
 }
 
 /* Main options */
-MainOptionsPage::MainOptionsPage(QWidget *parent):
-       OptionsPage(parent)
+MainOptionsPage::MainOptionsPage(QWidget *parent) : OptionsPage(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout();
     setWindowTitle(tr("Main"));
@@ -241,8 +240,7 @@ void MainOptionsPage::setMapper(MonitoredDataMapper *mapper)
 }
 
 /* Display options */
-DisplayOptionsPage::DisplayOptionsPage(QWidget *parent):
-    OptionsPage(parent), restart_warning_displayed(false)
+DisplayOptionsPage::DisplayOptionsPage(QWidget *parent) : OptionsPage(parent), restart_warning_displayed(false)
 {
     setWindowTitle(tr("Display"));
 
@@ -256,9 +254,8 @@ DisplayOptionsPage::DisplayOptionsPage(QWidget *parent):
     // Make list of languages
     QDir translations(":translations");
     lang->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
-    foreach(const QString &langStr, translations.entryList())
-    {
-       lang->addItem(langStr, QVariant(langStr));
+    foreach (const QString &langStr, translations.entryList()) {
+        lang->addItem(langStr, QVariant(langStr));
     }
 
     lang->setToolTip(tr("The user interface language can be set here. This setting will only take effect after restarting Paycoin."));
@@ -290,30 +287,28 @@ DisplayOptionsPage::DisplayOptionsPage(QWidget *parent):
     coin_control_features->setToolTip(tr("Whether to show coin control features or not"));
     layout->addWidget(coin_control_features);
 
-     layout->addStretch();
-     setLayout(layout);
- }
+    layout->addStretch();
+    setLayout(layout);
+}
 
- void DisplayOptionsPage::setMapper(MonitoredDataMapper *mapper)
- {
-     mapper->addMapping(lang, OptionsModel::Language);
-     mapper->addMapping(unit, OptionsModel::DisplayUnit);
-     mapper->addMapping(display_addresses, OptionsModel::DisplayAddresses);
-     mapper->addMapping(coin_control_features, OptionsModel::CoinControlFeatures);
+void DisplayOptionsPage::setMapper(MonitoredDataMapper *mapper)
+{
+    mapper->addMapping(lang, OptionsModel::Language);
+    mapper->addMapping(unit, OptionsModel::DisplayUnit);
+    mapper->addMapping(display_addresses, OptionsModel::DisplayAddresses);
+    mapper->addMapping(coin_control_features, OptionsModel::CoinControlFeatures);
 }
 
 void DisplayOptionsPage::showRestartWarning()
 {
-    if(!restart_warning_displayed)
-    {
+    if (!restart_warning_displayed) {
         QMessageBox::warning(this, tr("Warning"), tr("This setting will take effect after restarting Paycoin."), QMessageBox::Ok);
         restart_warning_displayed = true;
     }
 }
 
 /* Window options */
-WindowOptionsPage::WindowOptionsPage(QWidget *parent):
-       OptionsPage(parent)
+WindowOptionsPage::WindowOptionsPage(QWidget *parent) : OptionsPage(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout();
     setWindowTitle(tr("Window"));
@@ -334,7 +329,7 @@ WindowOptionsPage::WindowOptionsPage(QWidget *parent):
 
 void WindowOptionsPage::setMapper(MonitoredDataMapper *mapper)
 {
-    // Map model to widgets
+// Map model to widgets
 #ifndef Q_OS_MAC
     mapper->addMapping(minimize_to_tray, OptionsModel::MinimizeToTray);
 #endif
@@ -344,8 +339,7 @@ void WindowOptionsPage::setMapper(MonitoredDataMapper *mapper)
 }
 
 /* Network options */
-NetworkOptionsPage::NetworkOptionsPage(QWidget *parent):
-       OptionsPage(parent)
+NetworkOptionsPage::NetworkOptionsPage(QWidget *parent) : OptionsPage(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout();
     setWindowTitle(tr("Network"));

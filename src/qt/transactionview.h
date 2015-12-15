@@ -28,8 +28,7 @@ public:
     void setModel(WalletModel *model);
 
     // Date ranges for filter
-    enum DateEnum
-    {
+    enum DateEnum {
         All,
         Today,
         ThisWeek,
@@ -70,7 +69,7 @@ private slots:
     void clearOrphans();
 
 signals:
-    void doubleClicked(const QModelIndex&);
+    void doubleClicked(const QModelIndex &);
 
 public slots:
     void chooseDate(int idx);
@@ -78,8 +77,7 @@ public slots:
     void changedPrefix(const QString &prefix);
     void changedAmount(const QString &amount);
     void exportClicked();
-    void focusTransaction(const QModelIndex&);
-
+    void focusTransaction(const QModelIndex &);
 };
 
 #endif // TRANSACTIONVIEW_H

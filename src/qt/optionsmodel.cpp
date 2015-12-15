@@ -5,8 +5,7 @@
 #include "init.h"
 #include "walletdb.h"
 
-OptionsModel::OptionsModel(QObject *parent) :
-    QAbstractListModel(parent)
+OptionsModel::OptionsModel(QObject *parent) : QAbstractListModel(parent)
 {
     Init();
 }
@@ -49,42 +48,38 @@ bool OptionsModel::Upgrade()
     CWalletDB walletdb("wallet.dat");
 
     QList<QString> intOptions;
-    intOptions << "nDisplayUnit" << "nTransactionFee";
-    foreach(QString key, intOptions)
-    {
+    intOptions << "nDisplayUnit"
+               << "nTransactionFee";
+    foreach (QString key, intOptions) {
         int value = 0;
-        if (walletdb.ReadSetting(key.toStdString(), value))
-        {
+        if (walletdb.ReadSetting(key.toStdString(), value)) {
             settings.setValue(key, value);
             walletdb.EraseSetting(key.toStdString());
         }
     }
     QList<QString> boolOptions;
-    boolOptions << "bDisplayAddresses" << "fMinimizeToTray" << "fMinimizeOnClose" << "fUseProxy" << "fUseUPnP";
-    foreach(QString key, boolOptions)
-    {
+    boolOptions << "bDisplayAddresses"
+                << "fMinimizeToTray"
+                << "fMinimizeOnClose"
+                << "fUseProxy"
+                << "fUseUPnP";
+    foreach (QString key, boolOptions) {
         bool value = false;
-        if (walletdb.ReadSetting(key.toStdString(), value))
-        {
+        if (walletdb.ReadSetting(key.toStdString(), value)) {
             settings.setValue(key, value);
             walletdb.EraseSetting(key.toStdString());
         }
     }
-    try
-    {
+    try {
         CAddress addrProxyAddress;
-        if (walletdb.ReadSetting("addrProxy", addrProxyAddress))
-        {
+        if (walletdb.ReadSetting("addrProxy", addrProxyAddress)) {
             addrProxy = addrProxyAddress;
             settings.setValue("addrProxy", addrProxy.ToStringIPPort().c_str());
             walletdb.EraseSetting("addrProxy");
         }
-    }
-    catch (std::ios_base::failure &e)
-    {
+    } catch (std::ios_base::failure &e) {
         // 0.6.0rc1 saved this as a CService, which causes failure when parsing as a CAddress
-        if (walletdb.ReadSetting("addrProxy", addrProxy))
-        {
+        if (walletdb.ReadSetting("addrProxy", addrProxy)) {
             settings.setValue("addrProxy", addrProxy.ToStringIPPort().c_str());
             walletdb.EraseSetting("addrProxy");
         }
@@ -95,18 +90,16 @@ bool OptionsModel::Upgrade()
 }
 
 
-int OptionsModel::rowCount(const QModelIndex & parent) const
+int OptionsModel::rowCount(const QModelIndex &parent) const
 {
     return OptionIDRowCount;
 }
 
-QVariant OptionsModel::data(const QModelIndex & index, int role) const
+QVariant OptionsModel::data(const QModelIndex &index, int role) const
 {
-    if(role == Qt::EditRole)
-    {
+    if (role == Qt::EditRole) {
         QSettings settings;
-        switch(index.row())
-        {
+        switch (index.row()) {
         case StartAtStartup:
             return QVariant(GetStartOnSystemStartup());
         case MinimizeToTray:
@@ -140,14 +133,12 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
     return QVariant();
 }
 
-bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, int role)
+bool OptionsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     bool successful = true; /* set to false on parse error */
-    if(role == Qt::EditRole)
-    {
+    if (role == Qt::EditRole) {
         QSettings settings;
-        switch(index.row())
-        {
+        switch (index.row()) {
         case StartAtStartup:
             successful = SetStartOnSystemStartup(value.toBool());
             break;
@@ -155,13 +146,11 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             fMinimizeToTray = value.toBool();
             settings.setValue("fMinimizeToTray", fMinimizeToTray);
             break;
-        case MapPortUPnP:
-            {
-                bool bUseUPnP = value.toBool();
-                settings.setValue("fUseUPnP", bUseUPnP);
-                MapPort(bUseUPnP);
-            }
-            break;
+        case MapPortUPnP: {
+            bool bUseUPnP = value.toBool();
+            settings.setValue("fUseUPnP", bUseUPnP);
+            MapPort(bUseUPnP);
+        } break;
         case MinimizeOnClose:
             fMinimizeOnClose = value.toBool();
             settings.setValue("fMinimizeOnClose", fMinimizeOnClose);
@@ -170,68 +159,52 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             fUseProxy = value.toBool();
             settings.setValue("fUseProxy", fUseProxy);
             break;
-        case ProxyIP:
-            {
-                // Use CAddress to parse and check IP
-                CNetAddr addr(value.toString().toStdString());
-                if (addr.IsValid())
-                {
-                    addrProxy.SetIP(addr);
-                    settings.setValue("addrProxy", addrProxy.ToStringIPPort().c_str());
-                }
-                else
-                {
-                    successful = false;
-                }
+        case ProxyIP: {
+            // Use CAddress to parse and check IP
+            CNetAddr addr(value.toString().toStdString());
+            if (addr.IsValid()) {
+                addrProxy.SetIP(addr);
+                settings.setValue("addrProxy", addrProxy.ToStringIPPort().c_str());
+            } else {
+                successful = false;
             }
-            break;
-        case ProxyPort:
-            {
-                int nPort = atoi(value.toString().toAscii().data());
-                if (nPort > 0 && nPort < std::numeric_limits<unsigned short>::max())
-                {
-                    addrProxy.SetPort(nPort);
-                    settings.setValue("addrProxy", addrProxy.ToStringIPPort().c_str());
-                }
-                else
-                {
-                    successful = false;
-                }
+        } break;
+        case ProxyPort: {
+            int nPort = atoi(value.toString().toAscii().data());
+            if (nPort > 0 && nPort < std::numeric_limits<unsigned short>::max()) {
+                addrProxy.SetPort(nPort);
+                settings.setValue("addrProxy", addrProxy.ToStringIPPort().c_str());
+            } else {
+                successful = false;
             }
-            break;
+        } break;
         case Fee: {
             nTransactionFee = value.toLongLong();
             settings.setValue("nTransactionFee", nTransactionFee);
             emit transactionFeeChanged(nTransactionFee);
-            }
-            break;
+        } break;
         case DisplayUnit: {
             int unit = value.toInt();
             nDisplayUnit = unit;
             settings.setValue("nDisplayUnit", nDisplayUnit);
             emit displayUnitChanged(unit);
-            }
-            break;
+        } break;
         case DisplayAddresses: {
             bDisplayAddresses = value.toBool();
             settings.setValue("bDisplayAddresses", bDisplayAddresses);
-            }
-            break;
+        } break;
         case DetachDatabases: {
             bitdb.SetDetach(value.toBool());
             settings.setValue("detachDB", bitdb.GetDetached());
-            }
-            break;
+        } break;
         case CoinControlFeatures: {
             fCoinControlFeatures = value.toBool();
             settings.setValue("fCoinControlFeatures", fCoinControlFeatures);
             emit coinControlFeaturesChanged(fCoinControlFeatures);
-            }
-            break;
+        } break;
         case Language: {
             settings.setValue("language", value);
-            }
-            break;
+        } break;
         default:
             break;
         }

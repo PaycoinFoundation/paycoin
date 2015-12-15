@@ -18,7 +18,6 @@ public:
 signals:
 
 public slots:
-
 };
 
 #endif // BITCOINADDRESSVALIDATOR_H

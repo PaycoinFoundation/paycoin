@@ -26,25 +26,23 @@ extern bool qt_mac_execute_apple_script(const QString &script, AEDesc *ret);
 const int FREEDESKTOP_NOTIFICATION_ICON_SIZE = 128;
 #endif
 
-Notificator::Notificator(const QString &programName, QSystemTrayIcon *trayicon, QWidget *parent):
-    QObject(parent),
-    parent(parent),
-    programName(programName),
-    mode(None),
-    trayIcon(trayicon)
+Notificator::Notificator(const QString &programName, QSystemTrayIcon *trayicon, QWidget *parent) : QObject(parent),
+                                                                                                   parent(parent),
+                                                                                                   programName(programName),
+                                                                                                   mode(None),
+                                                                                                   trayIcon(trayicon)
 #ifdef USE_DBUS
-    ,interface(0)
+                                                                                                   ,
+                                                                                                   interface(0)
 #endif
 {
-    if(trayicon && trayicon->supportsMessages())
-    {
+    if (trayicon && trayicon->supportsMessages()) {
         mode = QSystemTray;
     }
 #ifdef USE_DBUS
     interface = new QDBusInterface("org.freedesktop.Notifications",
-          "/org/freedesktop/Notifications", "org.freedesktop.Notifications");
-    if(interface->isValid())
-    {
+        "/org/freedesktop/Notifications", "org.freedesktop.Notifications");
+    if (interface->isValid()) {
         mode = Freedesktop;
     }
 #endif
@@ -105,27 +103,25 @@ const int CHANNELS = 4;
 const int BYTES_PER_PIXEL = 4;
 const int BITS_PER_SAMPLE = 8;
 
-FreedesktopImage::FreedesktopImage(const QImage &img):
-    width(img.width()),
-    height(img.height()),
-    stride(img.width() * BYTES_PER_PIXEL),
-    hasAlpha(true),
-    channels(CHANNELS),
-    bitsPerSample(BITS_PER_SAMPLE)
+FreedesktopImage::FreedesktopImage(const QImage &img) : width(img.width()),
+                                                        height(img.height()),
+                                                        stride(img.width() * BYTES_PER_PIXEL),
+                                                        hasAlpha(true),
+                                                        channels(CHANNELS),
+                                                        bitsPerSample(BITS_PER_SAMPLE)
 {
     // Convert 00xAARRGGBB to RGBA bytewise (endian-independent) format
     QImage tmp = img.convertToFormat(QImage::Format_ARGB32);
-    const uint32_t *data = reinterpret_cast<const uint32_t*>(tmp.constBits());
+    const uint32_t *data = reinterpret_cast<const uint32_t *>(tmp.constBits());
 
     unsigned int num_pixels = width * height;
     image.resize(num_pixels * BYTES_PER_PIXEL);
 
-    for(unsigned int ptr = 0; ptr < num_pixels; ++ptr)
-    {
-        image[ptr*BYTES_PER_PIXEL+0] = data[ptr] >> 16; // R
-        image[ptr*BYTES_PER_PIXEL+1] = data[ptr] >> 8;  // G
-        image[ptr*BYTES_PER_PIXEL+2] = data[ptr];       // B
-        image[ptr*BYTES_PER_PIXEL+3] = data[ptr] >> 24; // A
+    for (unsigned int ptr = 0; ptr < num_pixels; ++ptr) {
+        image[ptr * BYTES_PER_PIXEL + 0] = data[ptr] >> 16; // R
+        image[ptr * BYTES_PER_PIXEL + 1] = data[ptr] >> 8; // G
+        image[ptr * BYTES_PER_PIXEL + 2] = data[ptr]; // B
+        image[ptr * BYTES_PER_PIXEL + 3] = data[ptr] >> 24; // A
     }
 }
 
@@ -186,20 +182,23 @@ void Notificator::notifyDBus(Class cls, const QString &title, const QString &tex
 
     // If no icon specified, set icon based on class
     QIcon tmpicon;
-    if(icon.isNull())
-    {
+    if (icon.isNull()) {
         QStyle::StandardPixmap sicon = QStyle::SP_MessageBoxQuestion;
-        switch(cls)
-        {
-        case Information: sicon = QStyle::SP_MessageBoxInformation; break;
-        case Warning: sicon = QStyle::SP_MessageBoxWarning; break;
-        case Critical: sicon = QStyle::SP_MessageBoxCritical; break;
-        default: break;
+        switch (cls) {
+        case Information:
+            sicon = QStyle::SP_MessageBoxInformation;
+            break;
+        case Warning:
+            sicon = QStyle::SP_MessageBoxWarning;
+            break;
+        case Critical:
+            sicon = QStyle::SP_MessageBoxCritical;
+            break;
+        default:
+            break;
         }
         tmpicon = QApplication::style()->standardIcon(sicon);
-    }
-    else
-    {
+    } else {
         tmpicon = icon;
     }
     hints["icon_data"] = FreedesktopImage::toVariant(tmpicon.pixmap(FREEDESKTOP_NOTIFICATION_ICON_SIZE).toImage());
@@ -217,11 +216,17 @@ void Notificator::notifySystray(Class cls, const QString &title, const QString &
 {
     Q_UNUSED(icon);
     QSystemTrayIcon::MessageIcon sicon = QSystemTrayIcon::NoIcon;
-    switch(cls) // Set icon based on class
+    switch (cls) // Set icon based on class
     {
-    case Information: sicon = QSystemTrayIcon::Information; break;
-    case Warning: sicon = QSystemTrayIcon::Warning; break;
-    case Critical: sicon = QSystemTrayIcon::Critical; break;
+    case Information:
+        sicon = QSystemTrayIcon::Information;
+        break;
+    case Warning:
+        sicon = QSystemTrayIcon::Warning;
+        break;
+    case Critical:
+        sicon = QSystemTrayIcon::Critical;
+        break;
     }
     trayIcon->showMessage(title, text, sicon, millisTimeout);
 }
@@ -236,8 +241,7 @@ void Notificator::notifyGrowl(Class cls, const QString &title, const QString &te
         "  set the enabledNotificationsList to {\"Notification\"}\n" // -- Make a list of the notifications (enabled)
         "  register as application \"%1\" all notifications allNotificationsList default notifications enabledNotificationsList\n" // -- Register our script with Growl
         "  notify with name \"Notification\" title \"%2\" description \"%3\" application name \"%1\"%4\n" // -- Send a Notification
-        "end tell"
-    );
+        "end tell");
 
     QString notificationApp(QApplication::applicationName());
     if (notificationApp.isEmpty())
@@ -246,15 +250,19 @@ void Notificator::notifyGrowl(Class cls, const QString &title, const QString &te
     QPixmap notificationIconPixmap;
     if (icon.isNull()) { // If no icon specified, set icon based on class
         QStyle::StandardPixmap sicon = QStyle::SP_MessageBoxQuestion;
-        switch (cls)
-        {
-        case Information: sicon = QStyle::SP_MessageBoxInformation; break;
-        case Warning: sicon = QStyle::SP_MessageBoxWarning; break;
-        case Critical: sicon = QStyle::SP_MessageBoxCritical; break;
+        switch (cls) {
+        case Information:
+            sicon = QStyle::SP_MessageBoxInformation;
+            break;
+        case Warning:
+            sicon = QStyle::SP_MessageBoxWarning;
+            break;
+        case Critical:
+            sicon = QStyle::SP_MessageBoxCritical;
+            break;
         }
         notificationIconPixmap = QApplication::style()->standardPixmap(sicon);
-    }
-    else {
+    } else {
         QSize size = icon.actualSize(QSize(48, 48));
         notificationIconPixmap = icon.pixmap(size);
     }
@@ -277,8 +285,7 @@ void Notificator::notifyGrowl(Class cls, const QString &title, const QString &te
 
 void Notificator::notify(Class cls, const QString &title, const QString &text, const QIcon &icon, int millisTimeout)
 {
-    switch(mode)
-    {
+    switch (mode) {
 #ifdef USE_DBUS
     case Freedesktop:
         notifyDBus(cls, title, text, icon, millisTimeout);
@@ -294,8 +301,7 @@ void Notificator::notify(Class cls, const QString &title, const QString &text, c
         break;
 #endif
     default:
-        if(cls == Critical)
-        {
+        if (cls == Critical) {
             // Fall back to old fashioned pop-up dialog if critical and no other notification available
             QMessageBox::critical(parent, title, text, QMessageBox::Ok, QMessageBox::Ok);
         }

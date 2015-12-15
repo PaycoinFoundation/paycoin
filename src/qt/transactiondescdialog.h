@@ -3,8 +3,9 @@
 
 #include <QDialog>
 
-namespace Ui {
-    class TransactionDescDialog;
+namespace Ui
+{
+class TransactionDescDialog;
 }
 QT_BEGIN_NAMESPACE
 class QModelIndex;

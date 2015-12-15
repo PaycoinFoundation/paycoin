@@ -20,22 +20,19 @@ void ipcShutdown()
     message_queue::remove(BITCOINURI_QUEUE_NAME);
 }
 
-void ipcThread(void* parg)
+void ipcThread(void *parg)
 {
-    message_queue* mq = (message_queue*)parg;
+    message_queue *mq = (message_queue *)parg;
     char strBuf[257];
     size_t nSize;
     unsigned int nPriority;
-    for (;;)
-    {
+    for (;;) {
         ptime d = boost::posix_time::microsec_clock::universal_time() + millisec(100);
-        if(mq->timed_receive(&strBuf, sizeof(strBuf), nSize, nPriority, d))
-        {
+        if (mq->timed_receive(&strBuf, sizeof(strBuf), nSize, nPriority, d)) {
             ThreadSafeHandleURI(std::string(strBuf, nSize));
             Sleep(1000);
         }
-        if (fShutdown)
-        {
+        if (fShutdown) {
             ipcShutdown();
             break;
         }
@@ -56,7 +53,7 @@ void ipcInit()
     return;
 #endif
 
-    message_queue* mq;
+    message_queue *mq;
     char strBuf[257];
     size_t nSize;
     unsigned int nPriority;
@@ -64,26 +61,21 @@ void ipcInit()
         mq = new message_queue(open_or_create, BITCOINURI_QUEUE_NAME, 2, 256);
 
         // Make sure we don't lose any bitcoin: URIs
-        for (int i = 0; i < 2; i++)
-        {
+        for (int i = 0; i < 2; i++) {
             ptime d = boost::posix_time::microsec_clock::universal_time() + millisec(1);
-            if(mq->timed_receive(&strBuf, sizeof(strBuf), nSize, nPriority, d))
-            {
+            if (mq->timed_receive(&strBuf, sizeof(strBuf), nSize, nPriority, d)) {
                 ThreadSafeHandleURI(std::string(strBuf, nSize));
-            }
-            else
+            } else
                 break;
         }
 
         // Make sure only one bitcoin instance is listening
         message_queue::remove(BITCOINURI_QUEUE_NAME);
         mq = new message_queue(open_or_create, BITCOINURI_QUEUE_NAME, 2, 256);
-    }
-    catch (interprocess_exception &ex) {
+    } catch (interprocess_exception &ex) {
         return;
     }
-    if (!NewThread(ipcThread, mq))
-    {
+    if (!NewThread(ipcThread, mq)) {
         delete mq;
     }
 }

@@ -9,9 +9,8 @@ static const int64 nClientStartupTime = GetTime();
 
 #include <QDateTime>
 
-ClientModel::ClientModel(OptionsModel *optionsModel, QObject *parent) :
-    QObject(parent), optionsModel(optionsModel),
-    cachedNumConnections(0), cachedNumBlocks(0)
+ClientModel::ClientModel(OptionsModel *optionsModel, QObject *parent) : QObject(parent), optionsModel(optionsModel),
+                                                                        cachedNumConnections(0), cachedNumBlocks(0)
 {
     numBlocksAtStartup = -1;
 }
@@ -28,7 +27,8 @@ int ClientModel::getNumBlocks() const
 
 int ClientModel::getNumBlocksAtStartup()
 {
-    if (numBlocksAtStartup == -1) numBlocksAtStartup = getNumBlocks();
+    if (numBlocksAtStartup == -1)
+        numBlocksAtStartup = getNumBlocks();
     return numBlocksAtStartup;
 }
 
@@ -43,10 +43,9 @@ void ClientModel::update()
     int newNumBlocks = getNumBlocks();
     QString newStatusBar = getStatusBarWarnings();
 
-    if(cachedNumConnections != newNumConnections)
+    if (cachedNumConnections != newNumConnections)
         emit numConnectionsChanged(newNumConnections);
-    if(cachedNumBlocks != newNumBlocks || cachedStatusBar != newStatusBar)
-    {
+    if (cachedNumBlocks != newNumBlocks || cachedStatusBar != newStatusBar) {
         // Simply emit a numBlocksChanged for now in case the status message changes,
         // so that the view updates the status bar.
         // TODO: It should send a notification.

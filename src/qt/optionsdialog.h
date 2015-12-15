@@ -19,7 +19,7 @@ class OptionsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit OptionsDialog(QWidget *parent=0);
+    explicit OptionsDialog(QWidget *parent = 0);
 
     void setModel(OptionsModel *model);
 
@@ -43,7 +43,7 @@ private:
     MonitoredDataMapper *mapper;
     QPushButton *apply_button;
 
-    QList<OptionsPage*> pages;
+    QList<OptionsPage *> pages;
 };
 
 #endif // OPTIONSDIALOG_H

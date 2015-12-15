@@ -18,11 +18,10 @@
 #include <QComboBox>
 #include <QMessageBox>
 
-MintingView::MintingView(QWidget *parent) :
-    QWidget(parent), model(0), mintingView(0)
+MintingView::MintingView(QWidget *parent) : QWidget(parent), model(0), mintingView(0)
 {
     QHBoxLayout *hlayout = new QHBoxLayout();
-    hlayout->setContentsMargins(0,0,0,0);
+    hlayout->setContentsMargins(0, 0, 0, 0);
 
     QString legendBoxStyle = "background-color: rgb(%1,%2,%3); border: 1px solid black;";
 
@@ -31,24 +30,24 @@ MintingView::MintingView(QWidget *parent) :
     youngColor->setMaximumWidth(10);
     youngColor->setStyleSheet(legendBoxStyle.arg(COLOR_MINT_YOUNG.red()).arg(COLOR_MINT_YOUNG.green()).arg(COLOR_MINT_YOUNG.blue()));
     QLabel *youngLegend = new QLabel(tr("transaction is too young"));
-    youngLegend->setContentsMargins(5,0,15,0);
+    youngLegend->setContentsMargins(5, 0, 15, 0);
 
     QLabel *matureColor = new QLabel(" ");
     matureColor->setMaximumHeight(15);
     matureColor->setMaximumWidth(10);
     matureColor->setStyleSheet(legendBoxStyle.arg(COLOR_MINT_MATURE.red()).arg(COLOR_MINT_MATURE.green()).arg(COLOR_MINT_MATURE.blue()));
     QLabel *matureLegend = new QLabel(tr("transaction is mature"));
-    matureLegend->setContentsMargins(5,0,15,0);
+    matureLegend->setContentsMargins(5, 0, 15, 0);
 
     QLabel *oldColor = new QLabel(" ");
     oldColor->setMaximumHeight(15);
     oldColor->setMaximumWidth(10);
     oldColor->setStyleSheet(legendBoxStyle.arg(COLOR_MINT_OLD.red()).arg(COLOR_MINT_OLD.green()).arg(COLOR_MINT_OLD.blue()));
     QLabel *oldLegend = new QLabel(tr("transaction has reached maximum probability"));
-    oldLegend->setContentsMargins(5,0,15,0);
+    oldLegend->setContentsMargins(5, 0, 15, 0);
 
     QHBoxLayout *legendLayout = new QHBoxLayout();
-    legendLayout->setContentsMargins(10,10,0,0);
+    legendLayout->setContentsMargins(10, 10, 0, 0);
     legendLayout->addWidget(youngColor);
     legendLayout->addWidget(youngLegend);
     legendLayout->addWidget(matureColor);
@@ -71,7 +70,7 @@ MintingView::MintingView(QWidget *parent) :
     hlayout->addWidget(mintingCombo);
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
-    vlayout->setContentsMargins(0,0,0,0);
+    vlayout->setContentsMargins(0, 0, 0, 0);
     vlayout->setSpacing(0);
 
     QTableView *view = new QTableView(this);
@@ -81,9 +80,9 @@ MintingView::MintingView(QWidget *parent) :
 
     vlayout->setSpacing(0);
     int width = view->verticalScrollBar()->sizeHint().width();
-    // Cover scroll bar width with spacing
+// Cover scroll bar width with spacing
 #ifdef Q_OS_MAC
-    hlayout->addSpacing(width+2);
+    hlayout->addSpacing(width + 2);
 #else
     hlayout->addSpacing(width);
 #endif
@@ -95,15 +94,13 @@ MintingView::MintingView(QWidget *parent) :
     mintingView = view;
 
     connect(mintingCombo, SIGNAL(activated(int)), this, SLOT(chooseMintingInterval(int)));
-
 }
 
 
 void MintingView::setModel(WalletModel *model)
 {
     this->model = model;
-    if(model)
-    {
+    if (model) {
         mintingProxyModel = new MintingFilterProxy(this);
         mintingProxyModel->setSourceModel(model->getMintingTableModel());
         mintingProxyModel->setDynamicSortFilter(true);
@@ -118,37 +115,36 @@ void MintingView::setModel(WalletModel *model)
         mintingView->verticalHeader()->hide();
 
         mintingView->horizontalHeader()->resizeSection(
-                MintingTableModel::Address, 420);
+            MintingTableModel::Address, 420);
         mintingView->horizontalHeader()->setResizeMode(
-                MintingTableModel::TxHash, QHeaderView::Stretch);
+            MintingTableModel::TxHash, QHeaderView::Stretch);
         mintingView->horizontalHeader()->resizeSection(
-                MintingTableModel::Age, 120);
+            MintingTableModel::Age, 120);
         mintingView->horizontalHeader()->resizeSection(
-                MintingTableModel::Balance, 120);
+            MintingTableModel::Balance, 120);
         mintingView->horizontalHeader()->resizeSection(
-                MintingTableModel::CoinDay,120);
+            MintingTableModel::CoinDay, 120);
         mintingView->horizontalHeader()->resizeSection(
-                MintingTableModel::MintProbability, 160);
+            MintingTableModel::MintProbability, 160);
     }
 }
 
 void MintingView::chooseMintingInterval(int idx)
 {
     int interval = 10;
-    switch(mintingCombo->itemData(idx).toInt())
-    {
-        case Minting10min:
-            interval = 10;
-            break;
-        case Minting1day:
-            interval = 60*24;
-            break;
-        case Minting30days:
-            interval = 60*24*30;
-            break;
-        case Minting90days:
-            interval = 60*24*90;
-            break;
+    switch (mintingCombo->itemData(idx).toInt()) {
+    case Minting10min:
+        interval = 10;
+        break;
+    case Minting1day:
+        interval = 60 * 24;
+        break;
+    case Minting30days:
+        interval = 60 * 24 * 30;
+        break;
+    case Minting90days:
+        interval = 60 * 24 * 90;
+        break;
     }
     model->getMintingTableModel()->setMintingInterval(interval);
     mintingProxyModel->invalidate();
@@ -158,11 +154,12 @@ void MintingView::exportClicked()
 {
     // CSV is currently the only supported format
     QString filename = GUIUtil::getSaveFileName(
-            this,
-            tr("Export Minting Data"), QString(),
-            tr("Comma separated file (*.csv)"));
+        this,
+        tr("Export Minting Data"), QString(),
+        tr("Comma separated file (*.csv)"));
 
-    if (filename.isNull()) return;
+    if (filename.isNull())
+        return;
 
     CSVModelWriter writer(filename);
 
@@ -175,9 +172,8 @@ void MintingView::exportClicked()
     writer.addColumn(tr("Balance"), MintingTableModel::Balance);
     writer.addColumn(tr("MintingProbability"), MintingTableModel::MintProbability);
 
-    if(!writer.write())
-    {
+    if (!writer.write()) {
         QMessageBox::critical(this, tr("Error exporting"), tr("Could not write to file %1.").arg(filename),
-                              QMessageBox::Abort, QMessageBox::Abort);
+            QMessageBox::Abort, QMessageBox::Abort);
     }
 }

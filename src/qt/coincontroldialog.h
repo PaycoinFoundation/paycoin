@@ -10,8 +10,9 @@
 #include <QString>
 #include <QTreeWidgetItem>
 
-namespace Ui {
-    class CoinControlDialog;
+namespace Ui
+{
+class CoinControlDialog;
 }
 class WalletModel;
 class CCoinControl;
@@ -27,7 +28,7 @@ public:
     void setModel(WalletModel *model);
 
     // static because also called from sendcoinsdialog
-    static void updateLabels(WalletModel*, QDialog*);
+    static void updateLabels(WalletModel *, QDialog *);
     static QString getPriorityLabel(double);
 
     static QList<std::pair<QString, qint64> > payAddresses;
@@ -50,8 +51,7 @@ private:
     void updateView();
     void unselectSpent();
 
-    enum
-    {
+    enum {
         COLUMN_CHECKBOX,
         COLUMN_AMOUNT,
         COLUMN_LABEL,
@@ -84,9 +84,9 @@ private slots:
     void clipboardChange();
     void radioTreeMode(bool);
     void radioListMode(bool);
-    void viewItemChanged(QTreeWidgetItem*, int);
+    void viewItemChanged(QTreeWidgetItem *, int);
     void headerSectionClicked(int);
-    void buttonBoxClicked(QAbstractButton*);
+    void buttonBoxClicked(QAbstractButton *);
     void buttonSelectAllClicked();
     //void updateLabelLocked();
 };

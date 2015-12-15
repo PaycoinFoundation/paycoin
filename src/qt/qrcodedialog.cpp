@@ -10,8 +10,7 @@
 
 #define EXPORT_IMAGE_SIZE 256
 
-QRCodeDialog::QRCodeDialog(const QString &addr, const QString &label, bool enableReq, QWidget *parent) :
-    QDialog(parent), ui(new Ui::QRCodeDialog), address(addr)
+QRCodeDialog::QRCodeDialog(const QString &addr, const QString &label, bool enableReq, QWidget *parent) : QDialog(parent), ui(new Ui::QRCodeDialog), address(addr)
 {
     ui->setupUi(this);
     setWindowTitle(QString("%1").arg(address));
@@ -36,31 +35,26 @@ void QRCodeDialog::genCode()
 {
     QString uri = getURI();
 
-    if (uri != "")
-    {
+    if (uri != "") {
         ui->lblQRCode->setText("");
 
         QRcode *code = QRcode_encodeString(uri.toUtf8().constData(), 0, QR_ECLEVEL_L, QR_MODE_8, 1);
-        if (!code)
-        {
+        if (!code) {
             ui->lblQRCode->setText(tr("Error encoding URI into QR Code."));
             return;
         }
         myImage = QImage(code->width + 8, code->width + 8, QImage::Format_RGB32);
         myImage.fill(0xffffff);
         unsigned char *p = code->data;
-        for (int y = 0; y < code->width; y++)
-        {
-            for (int x = 0; x < code->width; x++)
-            {
+        for (int y = 0; y < code->width; y++) {
+            for (int x = 0; x < code->width; x++) {
                 myImage.setPixel(x + 4, y + 4, ((*p & 1) ? 0x0 : 0xffffff));
                 p++;
             }
         }
         QRcode_free(code);
         ui->lblQRCode->setPixmap(QPixmap::fromImage(myImage).scaled(300, 300));
-    }
-    else
+    } else
         ui->lblQRCode->setText(tr("Resulting URI too long, try to reduce the text for label / message."));
 }
 
@@ -69,26 +63,22 @@ QString QRCodeDialog::getURI()
     QString ret = QString("paycoin:%1").arg(address);
 
     int paramCount = 0;
-    if (ui->chkReqPayment->isChecked() && !ui->lnReqAmount->text().isEmpty())
-    {
+    if (ui->chkReqPayment->isChecked() && !ui->lnReqAmount->text().isEmpty()) {
         bool ok = false;
         ui->lnReqAmount->text().toDouble(&ok);
-        if (ok)
-        {
+        if (ok) {
             ret += QString("?amount=%1").arg(ui->lnReqAmount->text());
             paramCount++;
         }
     }
 
-    if (!ui->lnLabel->text().isEmpty())
-    {
+    if (!ui->lnLabel->text().isEmpty()) {
         QString lbl(QUrl::toPercentEncoding(ui->lnLabel->text()));
         ret += QString("%1label=%2").arg(paramCount == 0 ? "?" : "&").arg(lbl);
         paramCount++;
     }
 
-    if (!ui->lnMessage->text().isEmpty())
-    {
+    if (!ui->lnMessage->text().isEmpty()) {
         QString msg(QUrl::toPercentEncoding(ui->lnMessage->text()));
         ret += QString("%1message=%2").arg(paramCount == 0 ? "?" : "&").arg(msg);
         paramCount++;

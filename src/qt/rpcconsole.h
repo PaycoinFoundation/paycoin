@@ -3,13 +3,14 @@
 
 #include <QDialog>
 
-namespace Ui {
-    class RPCConsole;
+namespace Ui
+{
+class RPCConsole;
 }
 class ClientModel;
 
 /** Local Paycoin RPC console. */
-class RPCConsole: public QDialog
+class RPCConsole : public QDialog
 {
     Q_OBJECT
 
@@ -28,7 +29,7 @@ public:
     };
 
 protected:
-    virtual bool eventFilter(QObject* obj, QEvent *event);
+    virtual bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
     void on_lineEdit_returnPressed();

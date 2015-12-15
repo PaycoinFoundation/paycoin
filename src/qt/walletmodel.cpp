@@ -12,11 +12,10 @@
 
 #include <QSet>
 
-WalletModel::WalletModel(CWallet *wallet, OptionsModel *optionsModel, QObject *parent) :
-    QObject(parent), wallet(wallet), optionsModel(optionsModel), addressTableModel(0),
-    transactionTableModel(0),
-    cachedBalance(0), cachedStake(0), cachedUnconfirmedBalance(0), cachedNumTransactions(0),
-    cachedEncryptionStatus(Unencrypted)
+WalletModel::WalletModel(CWallet *wallet, OptionsModel *optionsModel, QObject *parent) : QObject(parent), wallet(wallet), optionsModel(optionsModel), addressTableModel(0),
+                                                                                         transactionTableModel(0),
+                                                                                         cachedBalance(0), cachedStake(0), cachedUnconfirmedBalance(0), cachedNumTransactions(0),
+                                                                                         cachedEncryptionStatus(Unencrypted)
 {
     addressTableModel = new AddressTableModel(wallet, this);
     mintingTableModel = new MintingTableModel(wallet, this);
@@ -61,13 +60,13 @@ void WalletModel::update()
     int newNumTransactions = getNumTransactions();
     EncryptionStatus newEncryptionStatus = getEncryptionStatus();
 
-    if(cachedBalance != newBalance || cachedStake != newStake || cachedUnconfirmedBalance != newUnconfirmedBalance)
+    if (cachedBalance != newBalance || cachedStake != newStake || cachedUnconfirmedBalance != newUnconfirmedBalance)
         emit balanceChanged(newBalance, newStake, newUnconfirmedBalance);
 
-    if(cachedNumTransactions != newNumTransactions)
+    if (cachedNumTransactions != newNumTransactions)
         emit numTransactionsChanged(newNumTransactions);
 
-    if(cachedEncryptionStatus != newEncryptionStatus)
+    if (cachedEncryptionStatus != newEncryptionStatus)
         emit encryptionStatusChanged(newEncryptionStatus);
 
     cachedBalance = newBalance;
@@ -93,29 +92,24 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(const QList<SendCoinsRecipie
     QSet<QString> setAddress;
     QString hex;
 
-    if(recipients.empty())
-    {
+    if (recipients.empty()) {
         return OK;
     }
 
     // Pre-check input data for validity
-    foreach(const SendCoinsRecipient &rcp, recipients)
-    {
-        if(!validateAddress(rcp.address))
-        {
+    foreach (const SendCoinsRecipient &rcp, recipients) {
+        if (!validateAddress(rcp.address)) {
             return InvalidAddress;
         }
         setAddress.insert(rcp.address);
 
-        if(rcp.amount < MIN_TXOUT_AMOUNT)
-        {
+        if (rcp.amount < MIN_TXOUT_AMOUNT) {
             return InvalidAmount;
         }
         total += rcp.amount;
     }
 
-    if(recipients.size() > setAddress.size())
-    {
+    if (recipients.size() > setAddress.size()) {
         return DuplicateAddress;
     }
 
@@ -123,16 +117,14 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(const QList<SendCoinsRecipie
     int64 nBalance = 0;
     std::vector<COutput> vCoins;
     wallet->AvailableCoins(vCoins, true, coinControl);
-    BOOST_FOREACH(const COutput& out, vCoins)
+    BOOST_FOREACH (const COutput &out, vCoins)
         nBalance += out.tx->vout[out.i].nValue;
 
-    if(total > nBalance)
-    {
+    if (total > nBalance) {
         return AmountExceedsBalance;
     }
 
-    if((total + nTransactionFee) > nBalance)
-    {
+    if ((total + nTransactionFee) > nBalance) {
         return SendCoinsReturn(AmountWithFeeExceedsBalance, nTransactionFee);
     }
 
@@ -141,8 +133,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(const QList<SendCoinsRecipie
 
         // Sendmany
         std::vector<std::pair<CScript, int64> > vecSend;
-        foreach(const SendCoinsRecipient &rcp, recipients)
-        {
+        foreach (const SendCoinsRecipient &rcp, recipients) {
             CScript scriptPubKey;
             scriptPubKey.SetDestination(CBitcoinAddress(rcp.address.toStdString()).Get());
             vecSend.push_back(make_pair(scriptPubKey, rcp.amount));
@@ -153,28 +144,23 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(const QList<SendCoinsRecipie
         int64 nFeeRequired = 0;
         bool fCreated = wallet->CreateTransaction(vecSend, wtx, keyChange, nFeeRequired, coinControl);
 
-        if(!fCreated)
-        {
-            if((total + nFeeRequired) > nBalance)
-            {
+        if (!fCreated) {
+            if ((total + nFeeRequired) > nBalance) {
                 return SendCoinsReturn(AmountWithFeeExceedsBalance, nFeeRequired);
             }
             return TransactionCreationFailed;
         }
-        if(!ThreadSafeAskFee(nFeeRequired, tr("Sending...").toStdString()))
-        {
+        if (!ThreadSafeAskFee(nFeeRequired, tr("Sending...").toStdString())) {
             return Aborted;
         }
-        if(!wallet->CommitTransaction(wtx, keyChange))
-        {
+        if (!wallet->CommitTransaction(wtx, keyChange)) {
             return TransactionCommitFailed;
         }
         hex = QString::fromStdString(wtx.GetHash().GetHex());
     }
 
     // Add addresses / update labels that we've sent to to the address book
-    foreach(const SendCoinsRecipient &rcp, recipients)
-    {
+    foreach (const SendCoinsRecipient &rcp, recipients) {
         std::string strAddress = rcp.address.toStdString();
         CTxDestination dest = CBitcoinAddress(strAddress).Get();
         std::string strLabel = rcp.label.toStdString();
@@ -184,8 +170,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(const QList<SendCoinsRecipie
             std::map<CTxDestination, std::string>::iterator mi = wallet->mapAddressBook.find(dest);
 
             // Check if we have a new address or an updated label
-            if (mi == wallet->mapAddressBook.end() || mi->second != strLabel)
-            {
+            if (mi == wallet->mapAddressBook.end() || mi->second != strLabel) {
                 wallet->SetAddressBookName(dest, strLabel);
             }
         }
@@ -216,29 +201,21 @@ TransactionTableModel *WalletModel::getTransactionTableModel()
 
 WalletModel::EncryptionStatus WalletModel::getEncryptionStatus() const
 {
-    if(!wallet->IsCrypted())
-    {
+    if (!wallet->IsCrypted()) {
         return Unencrypted;
-    }
-    else if(wallet->IsLocked())
-    {
+    } else if (wallet->IsLocked()) {
         return Locked;
-    }
-    else
-    {
+    } else {
         return Unlocked;
     }
 }
 
 bool WalletModel::setWalletEncrypted(bool encrypted, const SecureString &passphrase)
 {
-    if(encrypted)
-    {
+    if (encrypted) {
         // Encrypt
         return wallet->EncryptWallet(passphrase);
-    }
-    else
-    {
+    } else {
         // Decrypt -- TODO; not supported yet
         return false;
     }
@@ -246,13 +223,10 @@ bool WalletModel::setWalletEncrypted(bool encrypted, const SecureString &passphr
 
 bool WalletModel::setWalletLocked(bool locked, const SecureString &passPhrase)
 {
-    if(locked)
-    {
+    if (locked) {
         // Lock
         return wallet->Lock();
-    }
-    else
-    {
+    } else {
         // Unlock
         return wallet->Unlock(passPhrase);
     }
@@ -278,13 +252,11 @@ bool WalletModel::backupWallet(const QString &filename)
 WalletModel::UnlockContext WalletModel::requestUnlock()
 {
     bool was_locked = getEncryptionStatus() == Locked;
-    if ((!was_locked) && fWalletUnlockMintOnly)
-    {
+    if ((!was_locked) && fWalletUnlockMintOnly) {
         setWalletLocked(true);
         was_locked = getEncryptionStatus() == Locked;
     }
-    if(was_locked)
-    {
+    if (was_locked) {
         // Request UI to unlock wallet
         emit requireUnlock();
     }
@@ -294,46 +266,44 @@ WalletModel::UnlockContext WalletModel::requestUnlock()
     return UnlockContext(this, valid, was_locked && !fWalletUnlockMintOnly);
 }
 
-WalletModel::UnlockContext::UnlockContext(WalletModel *wallet, bool valid, bool relock):
-        wallet(wallet),
-        valid(valid),
-        relock(relock)
+WalletModel::UnlockContext::UnlockContext(WalletModel *wallet, bool valid, bool relock) : wallet(wallet),
+                                                                                          valid(valid),
+                                                                                          relock(relock)
 {
 }
 
 WalletModel::UnlockContext::~UnlockContext()
 {
-    if(valid && relock)
-    {
+    if (valid && relock) {
         wallet->setWalletLocked(true);
     }
 }
 
-void WalletModel::UnlockContext::CopyFrom(const UnlockContext& rhs)
+void WalletModel::UnlockContext::CopyFrom(const UnlockContext &rhs)
 {
     // Transfer context; old object no longer relocks wallet
     *this = rhs;
     rhs.relock = false;
 }
 
-bool WalletModel::getPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const
+bool WalletModel::getPubKey(const CKeyID &address, CPubKey &vchPubKeyOut) const
 {
     return wallet->GetPubKey(address, vchPubKeyOut);
 }
 
 // returns a list of COutputs from COutPoints
-void WalletModel::getOutputs(const std::vector<COutPoint>& vOutpoints, std::vector<COutput>& vOutputs)
+void WalletModel::getOutputs(const std::vector<COutPoint> &vOutpoints, std::vector<COutput> &vOutputs)
 {
-    BOOST_FOREACH(const COutPoint& outpoint, vOutpoints)
-    {
-        if (!wallet->mapWallet.count(outpoint.hash)) continue;
+    BOOST_FOREACH (const COutPoint &outpoint, vOutpoints) {
+        if (!wallet->mapWallet.count(outpoint.hash))
+            continue;
         COutput out(&wallet->mapWallet[outpoint.hash], outpoint.n, wallet->mapWallet[outpoint.hash].GetDepthInMainChain());
         vOutputs.push_back(out);
     }
 }
 
 // AvailableCoins + LockedCoins grouped by wallet address (put change in one group with wallet address)
-void WalletModel::listCoins(std::map<QString, std::vector<COutput> >& mapCoins) const
+void WalletModel::listCoins(std::map<QString, std::vector<COutput> > &mapCoins) const
 {
     std::vector<COutput> vCoins;
     wallet->AvailableCoins(vCoins);
@@ -341,25 +311,25 @@ void WalletModel::listCoins(std::map<QString, std::vector<COutput> >& mapCoins) 
     std::vector<COutPoint> vLockedCoins;
 
     // add locked coins
-    BOOST_FOREACH(const COutPoint& outpoint, vLockedCoins)
-    {
-        if (!wallet->mapWallet.count(outpoint.hash)) continue;
+    BOOST_FOREACH (const COutPoint &outpoint, vLockedCoins) {
+        if (!wallet->mapWallet.count(outpoint.hash))
+            continue;
         COutput out(&wallet->mapWallet[outpoint.hash], outpoint.n, wallet->mapWallet[outpoint.hash].GetDepthInMainChain());
         vCoins.push_back(out);
     }
 
-    BOOST_FOREACH(const COutput& out, vCoins)
-    {
+    BOOST_FOREACH (const COutput &out, vCoins) {
         COutput cout = out;
 
-        while (wallet->IsChange(cout.tx->vout[cout.i]) && cout.tx->vin.size() > 0 && wallet->IsMine(cout.tx->vin[0]))
-        {
-            if (!wallet->mapWallet.count(cout.tx->vin[0].prevout.hash)) break;
+        while (wallet->IsChange(cout.tx->vout[cout.i]) && cout.tx->vin.size() > 0 && wallet->IsMine(cout.tx->vin[0])) {
+            if (!wallet->mapWallet.count(cout.tx->vin[0].prevout.hash))
+                break;
             cout = COutput(&wallet->mapWallet[cout.tx->vin[0].prevout.hash], cout.tx->vin[0].prevout.n, 0);
         }
 
         CTxDestination address;
-        if(!ExtractDestination(cout.tx->vout[cout.i].scriptPubKey, address)) continue;
+        if (!ExtractDestination(cout.tx->vout[cout.i].scriptPubKey, address))
+            continue;
         mapCoins[CBitcoinAddress(address).ToString().c_str()].push_back(out);
     }
 }
@@ -369,17 +339,17 @@ bool WalletModel::isLockedCoin(uint256 hash, unsigned int n) const
     return false;
 }
 
-void WalletModel::lockCoin(COutPoint& output)
+void WalletModel::lockCoin(COutPoint &output)
 {
     return;
 }
 
-void WalletModel::unlockCoin(COutPoint& output)
+void WalletModel::unlockCoin(COutPoint &output)
 {
     return;
 }
 
-void WalletModel::listLockedCoins(std::vector<COutPoint>& vOutpts)
+void WalletModel::listLockedCoins(std::vector<COutPoint> &vOutpts)
 {
     return;
 }
@@ -389,7 +359,7 @@ void WalletModel::clearOrphans()
     wallet->ClearOrphans();
 }
 
-CWallet * WalletModel::getWallet()
+CWallet *WalletModel::getWallet()
 {
     return wallet;
 }

@@ -56,11 +56,9 @@ int64 MultisigInputEntry::getAmount()
     CTransaction tx;
     uint256 blockHash = 0;
 
-    if(GetTransaction(txHash, tx, blockHash))
-    {
-        if(nOutput < tx.vout.size())
-        {
-            const CTxOut& txOut = tx.vout[nOutput];
+    if (GetTransaction(txHash, tx, blockHash)) {
+        if (nOutput < tx.vout.size()) {
+            const CTxOut &txOut = tx.vout[nOutput];
             amount = txOut.nValue;
         }
     }
@@ -106,67 +104,59 @@ void MultisigInputEntry::on_pasteRedeemScriptButton_clicked()
 void MultisigInputEntry::on_transactionId_textChanged(const QString &transactionId)
 {
     ui->transactionOutput->clear();
-    if(transactionId.isEmpty())
+    if (transactionId.isEmpty())
         return;
 
     // Make list of transaction outputs
     txHash.SetHex(transactionId.toStdString().c_str());
     CTransaction tx;
     uint256 blockHash = 0;
-    if(!GetTransaction(txHash, tx, blockHash))
+    if (!GetTransaction(txHash, tx, blockHash))
         return;
-    for(int i = 0; i < tx.vout.size(); i++)
-    {
+    for (int i = 0; i < tx.vout.size(); i++) {
         QString idStr;
         idStr.setNum(i);
-        const CTxOut& txOut = tx.vout[i];
+        const CTxOut &txOut = tx.vout[i];
         int64 amount = txOut.nValue;
         QString amountStr;
-        amountStr.sprintf("%.6f", (double) amount / COIN);
+        amountStr.sprintf("%.6f", (double)amount / COIN);
         CScript script = txOut.scriptPubKey;
         CTxDestination addr;
-        if(ExtractDestination(script, addr))
-        {
+        if (ExtractDestination(script, addr)) {
             CBitcoinAddress address(addr);
             QString addressStr(address.ToString().c_str());
             ui->transactionOutput->addItem(idStr + QString(" - ") + addressStr + QString(" - ") + amountStr + QString(" XPY"));
-        }
-        else
+        } else
             ui->transactionOutput->addItem(idStr + QString(" - ") + amountStr + QString(" XPY"));
     }
 }
 
 void MultisigInputEntry::on_transactionOutput_currentIndexChanged(int index)
 {
-    if(ui->transactionOutput->itemText(index).isEmpty())
+    if (ui->transactionOutput->itemText(index).isEmpty())
         return;
 
     CTransaction tx;
     uint256 blockHash = 0;
-    if(!GetTransaction(txHash, tx, blockHash))
+    if (!GetTransaction(txHash, tx, blockHash))
         return;
-    const CTxOut& txOut = tx.vout[index];
+    const CTxOut &txOut = tx.vout[index];
     CScript script = txOut.scriptPubKey;
 
-    if(script.IsPayToScriptHash())
-    {
+    if (script.IsPayToScriptHash()) {
         ui->redeemScript->setEnabled(true);
 
-        if(model)
-        {
+        if (model) {
             // Try to find the redeem script
             CTxDestination dest;
-            if(ExtractDestination(script, dest))
-                {
-                    CScriptID scriptID = boost::get<CScriptID>(dest);
-                    CScript redeemScript;
-                    if(model->getWallet()->GetCScript(scriptID, redeemScript))
-                        ui->redeemScript->setText(HexStr(redeemScript.begin(), redeemScript.end()).c_str());
-                }
+            if (ExtractDestination(script, dest)) {
+                CScriptID scriptID = boost::get<CScriptID>(dest);
+                CScript redeemScript;
+                if (model->getWallet()->GetCScript(scriptID, redeemScript))
+                    ui->redeemScript->setText(HexStr(redeemScript.begin(), redeemScript.end()).c_str());
+            }
         }
-    }
-    else
-    {
+    } else {
         ui->redeemScript->setEnabled(false);
     }
 

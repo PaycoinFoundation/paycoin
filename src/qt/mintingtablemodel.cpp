@@ -22,16 +22,14 @@
 #include <QtAlgorithms>
 
 static int column_alignments[] = {
-    Qt::AlignLeft|Qt::AlignVCenter,
-    Qt::AlignLeft|Qt::AlignVCenter,
-    Qt::AlignRight|Qt::AlignVCenter,
-    Qt::AlignRight|Qt::AlignVCenter,
-    Qt::AlignRight|Qt::AlignVCenter,
-    Qt::AlignRight|Qt::AlignVCenter
-};
+    Qt::AlignLeft | Qt::AlignVCenter,
+    Qt::AlignLeft | Qt::AlignVCenter,
+    Qt::AlignRight | Qt::AlignVCenter,
+    Qt::AlignRight | Qt::AlignVCenter,
+    Qt::AlignRight | Qt::AlignVCenter,
+    Qt::AlignRight | Qt::AlignVCenter};
 
-struct TxLessThan
-{
+struct TxLessThan {
     bool operator()(const KernelRecord &a, const KernelRecord &b) const
     {
         return a.hash < b.hash;
@@ -49,9 +47,8 @@ struct TxLessThan
 class MintingTablePriv
 {
 public:
-    MintingTablePriv(CWallet *wallet, MintingTableModel *parent):
-        wallet(wallet),
-        parent(parent)
+    MintingTablePriv(CWallet *wallet, MintingTableModel *parent) : wallet(wallet),
+                                                                   parent(parent)
     {
     }
     CWallet *wallet;
@@ -67,15 +64,13 @@ public:
         cachedWallet.clear();
         {
             LOCK(wallet->cs_wallet);
-            for(std::map<uint256, CWalletTx>::iterator it = wallet->mapWallet.begin(); it != wallet->mapWallet.end(); ++it)
-            {
+            for (std::map<uint256, CWalletTx>::iterator it = wallet->mapWallet.begin(); it != wallet->mapWallet.end(); ++it) {
                 std::vector<KernelRecord> txList = KernelRecord::decomposeOutput(wallet, it->second);
-                BOOST_FOREACH(KernelRecord& kr, txList) {
-                    if(!kr.spent) {
+                BOOST_FOREACH (KernelRecord &kr, txList) {
+                    if (!kr.spent) {
                         cachedWallet.append(kr);
                     }
                 }
-
             }
         }
     }
@@ -87,7 +82,7 @@ public:
      */
     void updateWallet(const QList<uint256> &updated)
     {
-        // Walk through updated transactions, update model as needed.
+// Walk through updated transactions, update model as needed.
 #ifdef WALLET_UPDATE_DEBUG
         qDebug() << "updateWallet";
 #endif
@@ -99,8 +94,7 @@ public:
 
         {
             LOCK(wallet->cs_wallet);
-            for(int update_idx = updated_sorted.size()-1; update_idx >= 0; --update_idx)
-            {
+            for (int update_idx = updated_sorted.size() - 1; update_idx >= 0; --update_idx) {
                 const uint256 &hash = updated_sorted.at(update_idx);
                 // Find transaction in wallet
                 std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(hash);
@@ -115,53 +109,46 @@ public:
 
                 // Determine if transaction is in model already
                 bool inModel = false;
-                if(lower != upper)
-                {
+                if (lower != upper) {
                     inModel = true;
                 }
 
 #ifdef WALLET_UPDATE_DEBUG
                 qDebug() << "  " << QString::fromStdString(hash.ToString()) << inWallet << " " << inModel
-                        << lowerIndex << "-" << upperIndex;
+                         << lowerIndex << "-" << upperIndex;
 #endif
 
-                if(inWallet && !inModel)
-                {
+                if (inWallet && !inModel) {
                     // Added -- insert at the right position
                     std::vector<KernelRecord> toInsert =
-                            KernelRecord::decomposeOutput(wallet, mi->second);
-                    if(!toInsert.empty()) /* only if something to insert */
+                        KernelRecord::decomposeOutput(wallet, mi->second);
+                    if (!toInsert.empty()) /* only if something to insert */
                     {
-                        parent->beginInsertRows(QModelIndex(), lowerIndex, lowerIndex+toInsert.size()-1);
+                        parent->beginInsertRows(QModelIndex(), lowerIndex, lowerIndex + toInsert.size() - 1);
                         int insert_idx = lowerIndex;
-                        BOOST_FOREACH(const KernelRecord &rec, toInsert)
-                        {
-                            if(!rec.spent) {
+                        BOOST_FOREACH (const KernelRecord &rec, toInsert) {
+                            if (!rec.spent) {
                                 cachedWallet.insert(insert_idx, rec);
                                 insert_idx += 1;
                             }
                         }
                         parent->endInsertRows();
                     }
-                }
-                else if(!inWallet && inModel)
-                {
+                } else if (!inWallet && inModel) {
                     // Removed -- remove entire transaction from table
-                    parent->beginRemoveRows(QModelIndex(), lowerIndex, upperIndex-1);
+                    parent->beginRemoveRows(QModelIndex(), lowerIndex, upperIndex - 1);
                     cachedWallet.erase(lower, upper);
                     parent->endRemoveRows();
                 }
 
-                else if(inWallet && inModel)
-                {
+                else if (inWallet && inModel) {
                     // Remove spent transactions from the table model.
                     std::vector<KernelRecord> maybeRemove =
-                            KernelRecord::decomposeOutput(wallet, mi->second);
+                        KernelRecord::decomposeOutput(wallet, mi->second);
 
-                    BOOST_FOREACH(const KernelRecord &rec, maybeRemove)
-                    {
-                        if(rec.spent) {
-                            parent->beginRemoveRows(QModelIndex(), lowerIndex, upperIndex-1);
+                    BOOST_FOREACH (const KernelRecord &rec, maybeRemove) {
+                        if (rec.spent) {
+                            parent->beginRemoveRows(QModelIndex(), lowerIndex, upperIndex - 1);
                             cachedWallet.erase(lower, upper);
                             parent->endRemoveRows();
                         }
@@ -178,13 +165,10 @@ public:
 
     KernelRecord *index(int idx)
     {
-        if(idx >= 0 && idx < cachedWallet.size())
-        {
+        if (idx >= 0 && idx < cachedWallet.size()) {
             KernelRecord *rec = &cachedWallet[idx];
             return rec;
-        }
-        else
-        {
+        } else {
             return 0;
         }
     }
@@ -194,25 +178,22 @@ public:
         {
             LOCK(wallet->cs_wallet);
             std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(rec->hash);
-            if(mi != wallet->mapWallet.end())
-            {
+            if (mi != wallet->mapWallet.end()) {
                 return TransactionDesc::toHTML(wallet, mi->second);
             }
         }
         return QString("");
     }
-
 };
 
 
-MintingTableModel::MintingTableModel(CWallet *wallet, WalletModel *parent):
-        QAbstractTableModel(parent),
-        wallet(wallet),
-        walletModel(parent),
-        mintingInterval(10),
-        priv(new MintingTablePriv(wallet, this))
+MintingTableModel::MintingTableModel(CWallet *wallet, WalletModel *parent) : QAbstractTableModel(parent),
+                                                                             wallet(wallet),
+                                                                             walletModel(parent),
+                                                                             mintingInterval(10),
+                                                                             priv(new MintingTablePriv(wallet, this))
 {
-    columns << tr("Transaction") <<  tr("Address") << tr("Age") << tr("Balance") << tr("CoinDay") << tr("MintProbability");
+    columns << tr("Transaction") << tr("Address") << tr("Age") << tr("Balance") << tr("CoinDay") << tr("MintProbability");
     priv->refreshWallet();
 
     QTimer *timer = new QTimer(this);
@@ -232,18 +213,15 @@ void MintingTableModel::update()
     // Check if there are changes to wallet map
     {
         TRY_LOCK(wallet->cs_wallet, lockWallet);
-        if (lockWallet && !wallet->vMintingWalletUpdated.empty())
-        {
-            BOOST_FOREACH(uint256 hash, wallet->vMintingWalletUpdated)
-            {
+        if (lockWallet && !wallet->vMintingWalletUpdated.empty()) {
+            BOOST_FOREACH (uint256 hash, wallet->vMintingWalletUpdated) {
                 updated.append(hash);
             }
             wallet->vMintingWalletUpdated.clear();
         }
     }
 
-    if(!updated.empty())
-    {
+    if (!updated.empty()) {
         priv->updateWallet(updated);
     }
 }
@@ -262,15 +240,13 @@ int MintingTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant MintingTableModel::data(const QModelIndex &index, int role) const
 {
-    if(!index.isValid())
+    if (!index.isValid())
         return QVariant();
-    KernelRecord *rec = static_cast<KernelRecord*>(index.internalPointer());
+    KernelRecord *rec = static_cast<KernelRecord *>(index.internalPointer());
 
-    switch(role)
-    {
-      case Qt::DisplayRole:
-        switch(index.column())
-        {
+    switch (role) {
+    case Qt::DisplayRole:
+        switch (index.column()) {
         case Address:
             return formatTxAddress(rec, false);
         case TxHash:
@@ -285,24 +261,23 @@ QVariant MintingTableModel::data(const QModelIndex &index, int role) const
             return formatDayToMint(rec);
         }
         break;
-      case Qt::TextAlignmentRole:
+    case Qt::TextAlignmentRole:
         return column_alignments[index.column()];
         break;
-      case Qt::ToolTipRole:
-        switch(index.column())
-        {
+    case Qt::ToolTipRole:
+        switch (index.column()) {
         case MintProbability:
             int interval = this->mintingInterval;
             QString unit = tr("minutes");
 
             int hours = interval / 60;
-            int days = hours  / 24;
+            int days = hours / 24;
 
-            if(hours > 1) {
+            if (hours > 1) {
                 interval = hours;
                 unit = tr("hours");
             }
-            if(days > 1) {
+            if (days > 1) {
                 interval = days;
                 unit = tr("days");
             }
@@ -311,9 +286,8 @@ QVariant MintingTableModel::data(const QModelIndex &index, int role) const
             return str.arg(index.data().toString().toUtf8().constData()).arg(interval).arg(unit);
         }
         break;
-      case Qt::EditRole:
-        switch(index.column())
-        {
+    case Qt::EditRole:
+        switch (index.column()) {
         case Address:
             return formatTxAddress(rec, false);
         case TxHash:
@@ -328,23 +302,17 @@ QVariant MintingTableModel::data(const QModelIndex &index, int role) const
             return getDayToMint(rec);
         }
         break;
-      case Qt::BackgroundColorRole:
+    case Qt::BackgroundColorRole:
         int minAge = nStakeMinAge / 60 / 60 / 24;
         int maxAge = STAKE_MAX_AGE / 60 / 60 / 24;
-        if(rec->getAge() < minAge)
-        {
+        if (rec->getAge() < minAge) {
             return COLOR_MINT_YOUNG;
-        }
-        else if (rec->getAge() >= minAge && rec->getAge() < maxAge)
-        {
+        } else if (rec->getAge() >= minAge && rec->getAge() < maxAge) {
             return COLOR_MINT_MATURE;
-        }
-        else
-        {
+        } else {
             return COLOR_MINT_OLD;
         }
         break;
-
     }
     return QVariant();
 }
@@ -358,12 +326,10 @@ QString MintingTableModel::lookupAddress(const std::string &address, bool toolti
 {
     QString label = walletModel->getAddressTableModel()->labelForAddress(QString::fromStdString(address));
     QString description;
-    if(!label.isEmpty())
-    {
+    if (!label.isEmpty()) {
         description += label + QString(" ");
     }
-    if(label.isEmpty() || walletModel->getOptionsModel()->getDisplayAddresses() || tooltip)
-    {
+    if (label.isEmpty() || walletModel->getOptionsModel()->getDisplayAddresses() || tooltip) {
         description += QString("(") + QString::fromStdString(address) + QString(")");
     }
     return description;
@@ -413,19 +379,13 @@ QString MintingTableModel::formatTxBalance(const KernelRecord *wtx) const
 
 QVariant MintingTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if(orientation == Qt::Horizontal)
-    {
-        if(role == Qt::DisplayRole)
-        {
+    if (orientation == Qt::Horizontal) {
+        if (role == Qt::DisplayRole) {
             return columns[section];
-        }
-        else if (role == Qt::TextAlignmentRole)
-        {
+        } else if (role == Qt::TextAlignmentRole) {
             return column_alignments[section];
-        } else if (role == Qt::ToolTipRole)
-        {
-            switch(section)
-            {
+        } else if (role == Qt::ToolTipRole) {
+            switch (section) {
             case Address:
                 return tr("Destination address of the output.");
             case TxHash:
@@ -448,12 +408,9 @@ QModelIndex MintingTableModel::index(int row, int column, const QModelIndex &par
 {
     Q_UNUSED(parent);
     KernelRecord *data = priv->index(row);
-    if(data)
-    {
+    if (data) {
         return createIndex(row, column, priv->index(row));
-    }
-    else
-    {
+    } else {
         return QModelIndex();
     }
 }

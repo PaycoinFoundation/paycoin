@@ -11,14 +11,14 @@ class WalletModel;
 
 namespace Ui
 {
-    class MultisigInputEntry;
+class MultisigInputEntry;
 }
 
 class MultisigInputEntry : public QFrame
 {
     Q_OBJECT;
 
-  public:
+public:
     explicit MultisigInputEntry(QWidget *parent = 0);
     ~MultisigInputEntry();
     void setModel(WalletModel *model);
@@ -29,20 +29,20 @@ class MultisigInputEntry : public QFrame
     void setTransactionId(QString transactionId);
     void setTransactionOutputIndex(int index);
 
-  public slots:
+public slots:
     void setRemoveEnabled(bool enabled);
     void clear();
 
-  signals:
+signals:
     void removeEntry(MultisigInputEntry *entry);
     void updateAmount();
 
-  private:
+private:
     Ui::MultisigInputEntry *ui;
     WalletModel *model;
     uint256 txHash;
 
-  private slots:
+private slots:
     void on_transactionId_textChanged(const QString &transactionId);
     void on_pasteTransactionIdButton_clicked();
     void on_deleteButton_clicked();

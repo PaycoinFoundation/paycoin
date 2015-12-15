@@ -10,10 +10,9 @@
 #include <QApplication>
 #include <QClipboard>
 
-SendCoinsEntry::SendCoinsEntry(QWidget *parent) :
-    QFrame(parent),
-    ui(new Ui::SendCoinsEntry),
-    model(0)
+SendCoinsEntry::SendCoinsEntry(QWidget *parent) : QFrame(parent),
+                                                  ui(new Ui::SendCoinsEntry),
+                                                  model(0)
 {
     ui->setupUi(this);
 
@@ -40,12 +39,11 @@ void SendCoinsEntry::on_pasteButton_clicked()
 
 void SendCoinsEntry::on_addressBookButton_clicked()
 {
-    if(!model)
+    if (!model)
         return;
     AddressBookPage dlg(AddressBookPage::ForSending, AddressBookPage::SendingTab, this);
     dlg.setModel(model->getAddressTableModel());
-    if(dlg.exec())
-    {
+    if (dlg.exec()) {
         ui->payTo->setText(dlg.getReturnValue());
         ui->payAmount->setFocus();
     }
@@ -53,11 +51,11 @@ void SendCoinsEntry::on_addressBookButton_clicked()
 
 void SendCoinsEntry::on_payTo_textChanged(const QString &address)
 {
-    if(!model)
+    if (!model)
         return;
     // Fill in label from address book, if address has an associated label
     QString associatedLabel = model->getAddressTableModel()->labelForAddress(address);
-    if(!associatedLabel.isEmpty())
+    if (!associatedLabel.isEmpty())
         ui->addAsLabel->setText(associatedLabel);
 }
 
@@ -84,8 +82,7 @@ void SendCoinsEntry::clear()
     ui->addAsLabel->clear();
     ui->payAmount->clear();
     ui->payTo->setFocus();
-    if(model && model->getOptionsModel())
-    {
+    if (model && model->getOptionsModel()) {
         ui->payAmount->setDisplayUnit(model->getOptionsModel()->getDisplayUnit());
     }
 }
@@ -100,23 +97,18 @@ bool SendCoinsEntry::validate()
     // Check input validity
     bool retval = true;
 
-    if(!ui->payAmount->validate())
-    {
+    if (!ui->payAmount->validate()) {
         retval = false;
-    }
-    else
-    {
-        if(ui->payAmount->value() <= 0)
-        {
+    } else {
+        if (ui->payAmount->value() <= 0) {
             // Cannot send 0 coins or less
             ui->payAmount->setValid(false);
             retval = false;
         }
     }
 
-    if(!ui->payTo->hasAcceptableInput() ||
-       (model && !model->validateAddress(ui->payTo->text())))
-    {
+    if (!ui->payTo->hasAcceptableInput() ||
+        (model && !model->validateAddress(ui->payTo->text()))) {
         ui->payTo->setValid(false);
         retval = false;
     }

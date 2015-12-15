@@ -4,18 +4,16 @@
 
 #include "version.h"
 
-AboutDialog::AboutDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AboutDialog)
+AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent),
+                                            ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
 }
 
 void AboutDialog::setModel(ClientModel *model)
 {
-    if(model)
-    {
-        ui->versionLabel->setText( model->formatFullVersion());
+    if (model) {
+        ui->versionLabel->setText(model->formatFullVersion());
     }
 }
 
