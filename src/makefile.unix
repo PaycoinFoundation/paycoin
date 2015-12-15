@@ -114,7 +114,6 @@ OBJS= \
     obj/rpcnet.o \
     obj/rpcwallet.o \
     obj/rpcrawtransaction.o \
-    obj/rpcscrapes.o \
     obj/script.o \
     obj/sync.o \
     obj/util.o \

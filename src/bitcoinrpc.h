@@ -134,7 +134,6 @@ extern json_spirit::Value repairwallet(const json_spirit::Array& params, bool fH
 extern json_spirit::Value makekeypair(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value clearorphans(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value listmicroprimedata(const json_spirit::Array& params, bool fHelp);
-// In scrapesdb.cpp
 extern json_spirit::Value setscrapeaddress(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value getscrapeaddress(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value listscrapeaddresses(const json_spirit::Array& params, bool fHelp);
