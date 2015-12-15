@@ -7,8 +7,9 @@ QT_BEGIN_NAMESPACE
 class QDataWidgetMapper;
 QT_END_NAMESPACE
 
-namespace Ui {
-    class EditAddressDialog;
+namespace Ui
+{
+class EditAddressDialog;
 }
 class AddressTableModel;
 
@@ -36,6 +37,7 @@ public:
 
     QString getAddress() const;
     void setAddress(const QString &address);
+
 private:
     bool saveCurrentRow();
 

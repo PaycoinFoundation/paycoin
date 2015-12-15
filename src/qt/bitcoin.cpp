@@ -42,70 +42,66 @@ static SplashScreen *splashref;
 static WalletModel *walletmodel;
 static ClientModel *clientmodel;
 
-int ThreadSafeMessageBox(const std::string& message, const std::string& caption, int style)
+int ThreadSafeMessageBox(const std::string &message, const std::string &caption, int style)
 {
     // Message from network thread
-    if(guiref)
-    {
+    if (guiref) {
         bool modal = (style & wxMODAL);
         // in case of modal message, use blocking connection to wait for user to click OK
         QMetaObject::invokeMethod(guiref, "error",
-                                   modal ? GUIUtil::blockingGUIThreadConnection() : Qt::QueuedConnection,
-                                   Q_ARG(QString, QString::fromStdString(caption)),
-                                   Q_ARG(QString, QString::fromStdString(message)),
-                                   Q_ARG(bool, modal));
-    }
-    else
-    {
+            modal ? GUIUtil::blockingGUIThreadConnection() : Qt::QueuedConnection,
+            Q_ARG(QString, QString::fromStdString(caption)),
+            Q_ARG(QString, QString::fromStdString(message)),
+            Q_ARG(bool, modal));
+    } else {
         printf("%s: %s\n", caption.c_str(), message.c_str());
         fprintf(stderr, "%s: %s\n", caption.c_str(), message.c_str());
     }
     return 4;
 }
 
-bool ThreadSafeAskFee(int64 nFeeRequired, const std::string& strCaption)
+bool ThreadSafeAskFee(int64 nFeeRequired, const std::string &strCaption)
 {
-    if(!guiref)
+    if (!guiref)
         return false;
-    if(nFeeRequired < MIN_TX_FEE || nFeeRequired <= nTransactionFee || fDaemon)
+    if (nFeeRequired < MIN_TX_FEE || nFeeRequired <= nTransactionFee || fDaemon)
         return true;
     bool payFee = false;
 
     QMetaObject::invokeMethod(guiref, "askFee", GUIUtil::blockingGUIThreadConnection(),
-                               Q_ARG(qint64, nFeeRequired),
-                               Q_ARG(bool*, &payFee));
+        Q_ARG(qint64, nFeeRequired),
+        Q_ARG(bool *, &payFee));
 
     return payFee;
 }
 
-void ThreadSafeHandleURI(const std::string& strURI)
+void ThreadSafeHandleURI(const std::string &strURI)
 {
-    if(!guiref)
+    if (!guiref)
         return;
 
     QMetaObject::invokeMethod(guiref, "handleURI", GUIUtil::blockingGUIThreadConnection(),
-                               Q_ARG(QString, QString::fromStdString(strURI)));
+        Q_ARG(QString, QString::fromStdString(strURI)));
 }
 
 void MainFrameRepaint()
 {
-    if(clientmodel)
+    if (clientmodel)
         QMetaObject::invokeMethod(clientmodel, "update", Qt::QueuedConnection);
-    if(walletmodel)
+    if (walletmodel)
         QMetaObject::invokeMethod(walletmodel, "update", Qt::QueuedConnection);
 }
 
 void AddressBookRepaint()
 {
-    if(walletmodel)
+    if (walletmodel)
         QMetaObject::invokeMethod(walletmodel, "updateAddressList", Qt::QueuedConnection);
 }
 
 void InitMessage(const std::string &message)
 {
-    if(splashref)
-    {
-        splashref->showMessage(QString::fromStdString(message), Qt::AlignBottom|Qt::AlignHCenter, QColor(55,55,55));
+    if (splashref) {
+        splashref->showMessage(QString::fromStdString(message), Qt::AlignBottom | Qt::AlignHCenter, QColor(55, 55, 55));
         QApplication::instance()->processEvents();
     }
 }
@@ -118,7 +114,7 @@ void QueueShutdown()
 /*
    Translate string to current locale using Qt.
  */
-std::string _(const char* psz)
+std::string _(const char *psz)
 {
     return QCoreApplication::translate("bitcoin-core", psz).toStdString();
 }
@@ -140,24 +136,24 @@ public:
     HelpMessageBox(QWidget *parent = 0);
 
     void exec();
+
 private:
     QString header;
     QString coreOptions;
     QString uiOptions;
 };
 
-HelpMessageBox::HelpMessageBox(QWidget *parent):
-    QMessageBox(parent)
+HelpMessageBox::HelpMessageBox(QWidget *parent) : QMessageBox(parent)
 {
     header = tr("Paycoin-Qt") + " " + tr("version") + " " +
-            QString::fromStdString(FormatFullVersion()) + "\n\n" +
-        tr("Usage:") + "\n" +
-          "  paycoin-qt [options]                     " + "\n";
+             QString::fromStdString(FormatFullVersion()) + "\n\n" +
+             tr("Usage:") + "\n" +
+             "  paycoin-qt [options]                     " + "\n";
     coreOptions = QString::fromStdString(HelpMessage());
     uiOptions = tr("UI options") + ":\n" +
-            "  -lang=<lang>          " + tr("Set language, for example \"de_DE\" (default: system locale)") + "\n" +
-            "  -min                  " + tr("Start minimized") + "\n" +
-            "  -splash               " + tr("Show splash screen on startup (default: 1)") + "\n";
+                "  -lang=<lang>          " + tr("Set language, for example \"de_DE\" (default: system locale)") + "\n" +
+                "  -min                  " + tr("Start minimized") + "\n" +
+                "  -splash               " + tr("Show splash screen on startup (default: 1)") + "\n";
 
     setWindowTitle(tr("Paycoin-Qt"));
     setTextFormat(Qt::PlainText);
@@ -184,22 +180,19 @@ void HelpMessageBox::exec()
 int main(int argc, char *argv[])
 {
 #if !defined(MAC_OSX) && !defined(WIN32)
-// TODO: implement qtipcserver.cpp for Mac and Windows
+    // TODO: implement qtipcserver.cpp for Mac and Windows
 
     // Do this early as we don't want to bother initializing if we are just calling IPC
-    for (int i = 1; i < argc; i++)
-    {
-        if (boost::algorithm::istarts_with(argv[i], "paycoin:"))
-        {
+    for (int i = 1; i < argc; i++) {
+        if (boost::algorithm::istarts_with(argv[i], "paycoin:")) {
             const char *strURI = argv[i];
             try {
                 boost::interprocess::message_queue mq(boost::interprocess::open_only, BITCOINURI_QUEUE_NAME);
-                if(mq.try_send(strURI, strlen(strURI), 0))
+                if (mq.try_send(strURI, strlen(strURI), 0))
                     exit(0);
                 else
                     break;
-            }
-            catch (boost::interprocess::interprocess_exception &ex) {
+            } catch (boost::interprocess::interprocess_exception &ex) {
                 break;
             }
         }
@@ -220,8 +213,7 @@ int main(int argc, char *argv[])
     ParseParameters(argc, argv);
 
     // ... then bitcoin.conf:
-    if (!boost::filesystem::is_directory(GetDataDir(false)))
-    {
+    if (!boost::filesystem::is_directory(GetDataDir(false))) {
         fprintf(stderr, "Error: Specified directory does not exist\n");
         return 1;
     }
@@ -231,7 +223,7 @@ int main(int argc, char *argv[])
     // as it is used to locate QSettings)
     app.setOrganizationName("Paycoin");
     app.setOrganizationDomain("paycoin.org");
-    if(GetBoolArg("-testnet")) // Separate UI settings for testnet
+    if (GetBoolArg("-testnet")) // Separate UI settings for testnet
         app.setApplicationName("Paycoin-Qt-testnet");
     else
         app.setApplicationName("Paycoin-Qt");
@@ -268,16 +260,14 @@ int main(int argc, char *argv[])
 
     // Show help message immediately after parsing command-line options (for "-lang") and setting locale,
     // but before showing splash screen.
-    if (mapArgs.count("-?") || mapArgs.count("--help"))
-    {
+    if (mapArgs.count("-?") || mapArgs.count("--help")) {
         HelpMessageBox help;
         help.exec();
         return 1;
     }
 
     SplashScreen splash(QPixmap(), 0);
-    if (GetBoolArg("-splash", true) && !GetBoolArg("-min"))
-    {
+    if (GetBoolArg("-splash", true) && !GetBoolArg("-min")) {
         splash.show();
         splash.setAutoFillBackground(true);
         splashref = &splash;
@@ -287,14 +277,12 @@ int main(int argc, char *argv[])
 
     app.setQuitOnLastWindowClosed(false);
 
-    try
-    {
+    try {
         BitcoinGUI window;
         guiref = &window;
         // Set in AppInit for daemon so that RPC works properly
         fTestNet = GetBoolArg("-testnet");
-        if(AppInit2())
-        {
+        if (AppInit2()) {
             {
                 // Put this in a block, so that the Model objects are cleaned up before
                 // calling Shutdown().
@@ -313,31 +301,25 @@ int main(int argc, char *argv[])
                 window.setWalletModel(&walletModel);
 
                 // If -min option passed, start window minimized.
-                if(GetBoolArg("-min"))
-                {
+                if (GetBoolArg("-min")) {
                     window.showMinimized();
-                }
-                else
-                {
+                } else {
                     window.show();
                 }
 #if !defined(MAC_OSX) && !defined(WIN32)
-// TODO: implement qtipcserver.cpp for Mac and Windows
+                // TODO: implement qtipcserver.cpp for Mac and Windows
 
                 // Place this here as guiref has to be defined if we don't want to lose URIs
                 ipcInit();
 
                 // Check for URI in argv
-                for (int i = 1; i < argc; i++)
-                {
-                    if (boost::algorithm::istarts_with(argv[i], "paycoin:"))
-                    {
+                for (int i = 1; i < argc; i++) {
+                    if (boost::algorithm::istarts_with(argv[i], "paycoin:")) {
                         const char *strURI = argv[i];
                         try {
                             boost::interprocess::message_queue mq(boost::interprocess::open_only, BITCOINURI_QUEUE_NAME);
                             mq.try_send(strURI, strlen(strURI), 0);
-                        }
-                        catch (boost::interprocess::interprocess_exception &ex) {
+                        } catch (boost::interprocess::interprocess_exception &ex) {
                         }
                     }
                 }
@@ -353,12 +335,10 @@ int main(int argc, char *argv[])
             }
             // Shutdown the core and it's threads, but don't exit Bitcoin-Qt here
             Shutdown(NULL);
-        }
-        else
-        {
+        } else {
             return 1;
         }
-    } catch (std::exception& e) {
+    } catch (std::exception &e) {
         handleRunawayException(&e);
     } catch (...) {
         handleRunawayException(NULL);

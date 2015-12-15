@@ -18,8 +18,7 @@ public:
     /** Type filter bit field (all types) */
     static const quint32 ALL_TYPES = 0xFFFFFFFF;
 
-    static quint32 TYPE(int type) { return 1<<type; }
-
+    static quint32 TYPE(int type) { return 1 << type; }
     void setDateRange(const QDateTime &from, const QDateTime &to);
     void setAddressPrefix(const QString &addrPrefix);
     /**
@@ -32,8 +31,9 @@ public:
     void setLimit(int limit);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+
 protected:
-    bool filterAcceptsRow(int source_row, const QModelIndex & source_parent) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 private:
     QDateTime dateFrom;
@@ -46,7 +46,6 @@ private:
 signals:
 
 public slots:
-
 };
 
 #endif // TRANSACTIONFILTERPROXY_H

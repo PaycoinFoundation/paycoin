@@ -3,8 +3,9 @@
 
 #include <QFrame>
 
-namespace Ui {
-    class SendCoinsEntry;
+namespace Ui
+{
+class SendCoinsEntry;
 }
 class WalletModel;
 class SendCoinsRecipient;

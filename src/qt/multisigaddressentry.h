@@ -8,32 +8,32 @@ class WalletModel;
 
 namespace Ui
 {
-    class MultisigAddressEntry;
+class MultisigAddressEntry;
 }
 
 class MultisigAddressEntry : public QFrame
 {
     Q_OBJECT;
 
-  public:
+public:
     explicit MultisigAddressEntry(QWidget *parent = 0);
     ~MultisigAddressEntry();
     void setModel(WalletModel *model);
     bool validate();
     QString getPubkey();
 
-  public slots:
+public slots:
     void setRemoveEnabled(bool enabled);
     void clear();
 
-  signals:
+signals:
     void removeEntry(MultisigAddressEntry *entry);
 
-  private:
+private:
     Ui::MultisigAddressEntry *ui;
     WalletModel *model;
 
-  private slots:
+private slots:
     void on_pubkey_textChanged(const QString &pubkey);
     void on_pasteButton_clicked();
     void on_deleteButton_clicked();

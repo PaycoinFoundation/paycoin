@@ -16,12 +16,11 @@
 #include "qrcodedialog.h"
 #endif
 
-AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AddressBookPage),
-    model(0),
-    mode(mode),
-    tab(tab)
+AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) : QDialog(parent),
+                                                                         ui(new Ui::AddressBookPage),
+                                                                         model(0),
+                                                                         mode(mode),
+                                                                         tab(tab)
 {
     ui->setupUi(this);
 
@@ -36,8 +35,7 @@ AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
     ui->showQRCode->setVisible(false);
 #endif
 
-    switch(mode)
-    {
+    switch (mode) {
     case ForSending:
         connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
         ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -47,8 +45,7 @@ AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
         ui->buttonBox->setVisible(false);
         break;
     }
-    switch(tab)
-    {
+    switch (tab) {
     case SendingTab:
         ui->labelExplanation->setVisible(false);
         ui->deleteButton->setVisible(true);
@@ -73,14 +70,14 @@ AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
     contextMenu = new QMenu();
     contextMenu->addAction(copyAddressAction);
     contextMenu->addAction(copyLabelAction);
-    if(tab == ReceivingTab)
+    if (tab == ReceivingTab)
         contextMenu->addAction(copyScrapeAddrAction);
     contextMenu->addAction(editAction);
-    if(tab == SendingTab)
+    if (tab == SendingTab)
         contextMenu->addAction(deleteAction);
     contextMenu->addSeparator();
     contextMenu->addAction(showQRCodeAction);
-    if(tab == ReceivingTab)
+    if (tab == ReceivingTab)
         contextMenu->addAction(signMessageAction);
 
     // Connect signals for context menu actions
@@ -106,14 +103,13 @@ AddressBookPage::~AddressBookPage()
 void AddressBookPage::setModel(AddressTableModel *model)
 {
     this->model = model;
-    if(!model)
+    if (!model)
         return;
 
     proxyModel = new QSortFilterProxyModel(this);
     proxyModel->setSourceModel(model);
     proxyModel->setDynamicSortFilter(true);
-    switch(tab)
-    {
+    switch (tab) {
     case ReceivingTab:
         // Receive filter
         proxyModel->setFilterRole(AddressTableModel::TypeRole);
@@ -122,7 +118,7 @@ void AddressBookPage::setModel(AddressTableModel *model)
         ui->tableView->setModel(proxyModel);
         // Only display the scrape address for the receiving tab (cheap hack)
         ui->tableView->horizontalHeader()->resizeSection(
-                AddressTableModel::ScrapeAddress, 320);
+            AddressTableModel::ScrapeAddress, 320);
         break;
     case SendingTab:
         // Send filter
@@ -132,19 +128,19 @@ void AddressBookPage::setModel(AddressTableModel *model)
         ui->tableView->setModel(proxyModel);
         // Do not display the scrape address on the send tab (cheap hack)
         ui->tableView->horizontalHeader()->resizeSection(
-                AddressTableModel::ScrapeAddress, 0);
+            AddressTableModel::ScrapeAddress, 0);
         break;
     }
     ui->tableView->sortByColumn(0, Qt::AscendingOrder);
 
     // Set column widths
     ui->tableView->horizontalHeader()->resizeSection(
-            AddressTableModel::Address, 320);
+        AddressTableModel::Address, 320);
     ui->tableView->horizontalHeader()->setResizeMode(
-            AddressTableModel::Label, QHeaderView::Stretch);
+        AddressTableModel::Label, QHeaderView::Stretch);
 
-    connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            this, SLOT(selectionChanged()));
+    connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+        this, SLOT(selectionChanged()));
 
     selectionChanged();
 }
@@ -166,14 +162,14 @@ void AddressBookPage::on_copyScrapeAddrToClipboard_clicked()
 
 void AddressBookPage::onEditAction()
 {
-    if(!ui->tableView->selectionModel())
+    if (!ui->tableView->selectionModel())
         return;
     QModelIndexList indexes = ui->tableView->selectionModel()->selectedRows();
-    if(indexes.isEmpty())
+    if (indexes.isEmpty())
         return;
 
     EditAddressDialog dlg(
-            tab == SendingTab ?
+        tab == SendingTab ?
             EditAddressDialog::EditSendingAddress :
             EditAddressDialog::EditReceivingAddress);
     dlg.setModel(model);
@@ -192,22 +188,20 @@ void AddressBookPage::on_signMessage_clicked()
 
 void AddressBookPage::on_newAddressButton_clicked()
 {
-    if(!model)
+    if (!model)
         return;
     EditAddressDialog dlg(
-            tab == SendingTab ?
+        tab == SendingTab ?
             EditAddressDialog::NewSendingAddress :
             EditAddressDialog::NewReceivingAddress);
     dlg.setModel(model);
-    if(dlg.exec())
-    {
+    if (dlg.exec()) {
         // Select row for newly created address
         QString address = dlg.getAddress();
         QModelIndexList lst = proxyModel->match(proxyModel->index(0,
-                          AddressTableModel::Address, QModelIndex()),
-                          Qt::EditRole, address, 1, Qt::MatchExactly);
-        if(!lst.isEmpty())
-        {
+                                                    AddressTableModel::Address, QModelIndex()),
+            Qt::EditRole, address, 1, Qt::MatchExactly);
+        if (!lst.isEmpty()) {
             ui->tableView->setFocus();
             ui->tableView->selectRow(lst.at(0).row());
         }
@@ -217,11 +211,10 @@ void AddressBookPage::on_newAddressButton_clicked()
 void AddressBookPage::on_deleteButton_clicked()
 {
     QTableView *table = ui->tableView;
-    if(!table->selectionModel())
+    if (!table->selectionModel())
         return;
     QModelIndexList indexes = table->selectionModel()->selectedRows();
-    if(!indexes.isEmpty())
-    {
+    if (!indexes.isEmpty()) {
         table->model()->removeRow(indexes.at(0).row());
     }
 }
@@ -230,13 +223,11 @@ void AddressBookPage::selectionChanged()
 {
     // Set button states based on selected tab and selection
     QTableView *table = ui->tableView;
-    if(!table->selectionModel())
+    if (!table->selectionModel())
         return;
 
-    if(table->selectionModel()->hasSelection())
-    {
-        switch(tab)
-        {
+    if (table->selectionModel()->hasSelection()) {
+        switch (tab) {
         case SendingTab:
             // In sending tab, allow deletion of selection
             ui->deleteButton->setEnabled(true);
@@ -257,9 +248,7 @@ void AddressBookPage::selectionChanged()
         ui->copyToClipboard->setEnabled(true);
         ui->copyScrapeAddrToClipboard->setEnabled(true);
         ui->showQRCode->setEnabled(true);
-    }
-    else
-    {
+    } else {
         ui->deleteButton->setEnabled(false);
         ui->showQRCode->setEnabled(false);
         ui->copyToClipboard->setEnabled(false);
@@ -271,23 +260,21 @@ void AddressBookPage::selectionChanged()
 void AddressBookPage::done(int retval)
 {
     QTableView *table = ui->tableView;
-    if(!table->selectionModel() || !table->model())
+    if (!table->selectionModel() || !table->model())
         return;
     // When this is a tab/widget and not a model dialog, ignore "done"
-    if(mode == ForEditing)
+    if (mode == ForEditing)
         return;
 
     // Figure out which address was selected, and return it
     QModelIndexList indexes = table->selectionModel()->selectedRows(AddressTableModel::Address);
 
-    foreach (QModelIndex index, indexes)
-    {
+    foreach (QModelIndex index, indexes) {
         QVariant address = table->model()->data(index);
         returnValue = address.toString();
     }
 
-    if(returnValue.isEmpty())
-    {
+    if (returnValue.isEmpty()) {
         // If no address entry selected, return rejected
         retval = Rejected;
     }
@@ -299,11 +286,12 @@ void AddressBookPage::exportClicked()
 {
     // CSV is currently the only supported format
     QString filename = GUIUtil::getSaveFileName(
-            this,
-            tr("Export Address Book Data"), QString(),
-            tr("Comma separated file (*.csv)"));
+        this,
+        tr("Export Address Book Data"), QString(),
+        tr("Comma separated file (*.csv)"));
 
-    if (filename.isNull()) return;
+    if (filename.isNull())
+        return;
 
     CSVModelWriter writer(filename);
 
@@ -312,10 +300,9 @@ void AddressBookPage::exportClicked()
     writer.addColumn("Label", AddressTableModel::Label, Qt::EditRole);
     writer.addColumn("Address", AddressTableModel::Address, Qt::EditRole);
 
-    if(!writer.write())
-    {
+    if (!writer.write()) {
         QMessageBox::critical(this, tr("Error exporting"), tr("Could not write to file %1.").arg(filename),
-                              QMessageBox::Abort, QMessageBox::Abort);
+            QMessageBox::Abort, QMessageBox::Abort);
     }
 }
 
@@ -325,8 +312,7 @@ void AddressBookPage::on_showQRCode_clicked()
     QTableView *table = ui->tableView;
     QModelIndexList indexes = table->selectionModel()->selectedRows(AddressTableModel::Address);
 
-    foreach (QModelIndex index, indexes)
-    {
+    foreach (QModelIndex index, indexes) {
         QString address = index.data().toString(), label = index.sibling(index.row(), 0).data(Qt::EditRole).toString();
 
         QRCodeDialog *dialog = new QRCodeDialog(address, label, tab == ReceivingTab, this);
@@ -338,8 +324,7 @@ void AddressBookPage::on_showQRCode_clicked()
 void AddressBookPage::contextualMenu(const QPoint &point)
 {
     QModelIndex index = ui->tableView->indexAt(point);
-    if(index.isValid())
-    {
+    if (index.isValid()) {
         contextMenu->exec(QCursor::pos());
     }
 }

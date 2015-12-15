@@ -13,13 +13,12 @@ class CWalletTx;
 class TransactionStatus
 {
 public:
-    TransactionStatus():
-            confirmed(false), sortKey(""), maturity(Mature),
-            matures_in(0), status(Offline), depth(0), open_for(0), cur_num_blocks(-1)
-    { }
-
-    enum Maturity
+    TransactionStatus() : confirmed(false), sortKey(""), maturity(Mature),
+                          matures_in(0), status(Offline), depth(0), open_for(0), cur_num_blocks(-1)
     {
+    }
+
+    enum Maturity {
         Immature,
         Mature,
         MaturesWarning, /**< Transaction will likely not mature because no nodes have confirmed */
@@ -60,8 +59,7 @@ public:
 class TransactionRecord
 {
 public:
-    enum Type
-    {
+    enum Type {
         Other,
         Generated,
         SendToAddress,
@@ -76,22 +74,17 @@ public:
     /** Number of confirmation needed for transaction */
     static const int NumConfirmations = 6;
 
-    TransactionRecord():
-            hash(), time(0), type(Other), address(""), debit(0), credit(0), idx(0)
+    TransactionRecord() : hash(), time(0), type(Other), address(""), debit(0), credit(0), idx(0)
     {
     }
 
-    TransactionRecord(uint256 hash, int64 time):
-            hash(hash), time(time), type(Other), address(""), debit(0),
-            credit(0), idx(0)
+    TransactionRecord(uint256 hash, int64 time) : hash(hash), time(time), type(Other), address(""), debit(0),
+                                                  credit(0), idx(0)
     {
     }
 
-    TransactionRecord(uint256 hash, int64 time,
-                Type type, const std::string &address,
-                int64 debit, int64 credit):
-            hash(hash), time(time), type(type), address(address), debit(debit), credit(credit),
-            idx(0)
+    TransactionRecord(uint256 hash, int64 time, Type type, const std::string &address, int64 debit, int64 credit) : hash(hash), time(time), type(type), address(address), debit(debit), credit(credit),
+                                                                                                                    idx(0)
     {
     }
 

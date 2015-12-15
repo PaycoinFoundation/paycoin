@@ -4,8 +4,9 @@
 #include <QDialog>
 #include <QString>
 
-namespace Ui {
-    class SendCoinsDialog;
+namespace Ui
+{
+class SendCoinsDialog;
 }
 class WalletModel;
 class SendCoinsEntry;
@@ -49,7 +50,7 @@ private:
 private slots:
     void on_sendButton_clicked();
 
-    void removeEntry(SendCoinsEntry* entry);
+    void removeEntry(SendCoinsEntry *entry);
     void updateDisplayUnit();
     void coinControlFeatureChanged(bool);
     void coinControlButtonClicked();

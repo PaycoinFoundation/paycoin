@@ -65,13 +65,12 @@ void MultisigAddressEntry::on_deleteButton_clicked()
 
 void MultisigAddressEntry::on_addressBookButton_clicked()
 {
-    if(!model)
+    if (!model)
         return;
 
     AddressBookPage dlg(AddressBookPage::ForSending, AddressBookPage::ReceivingTab, this);
     dlg.setModel(model->getAddressTableModel());
-    if(dlg.exec())
-    {
+    if (dlg.exec()) {
         ui->address->setText(dlg.getReturnValue());
     }
 }
@@ -85,34 +84,33 @@ void MultisigAddressEntry::on_pubkey_textChanged(const QString &pubkey)
     CBitcoinAddress address(keyID);
     ui->address->setText(address.ToString().c_str());
 
-    if(!model)
+    if (!model)
         return;
 
     // Get label of address
     QString associatedLabel = model->getAddressTableModel()->labelForAddress(address.ToString().c_str());
-    if(!associatedLabel.isEmpty())
+    if (!associatedLabel.isEmpty())
         ui->label->setText(associatedLabel);
 }
 
 void MultisigAddressEntry::on_address_textChanged(const QString &address)
 {
-    if(!model)
+    if (!model)
         return;
 
     // Get public key of address
     CBitcoinAddress addr(address.toStdString().c_str());
     CKeyID keyID;
-    if(addr.GetKeyID(keyID))
-    {
+    if (addr.GetKeyID(keyID)) {
         CPubKey vchPubKey;
         model->getPubKey(keyID, vchPubKey);
         std::string pubkey = HexStr(vchPubKey.Raw());
-        if(!pubkey.empty())
+        if (!pubkey.empty())
             ui->pubkey->setText(pubkey.c_str());
     }
 
     // Get label of address
     QString associatedLabel = model->getAddressTableModel()->labelForAddress(address);
-    if(!associatedLabel.isEmpty())
+    if (!associatedLabel.isEmpty())
         ui->label->setText(associatedLabel);
 }

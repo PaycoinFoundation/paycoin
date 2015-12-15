@@ -3,8 +3,9 @@
 
 #include <QDialog>
 
-namespace Ui {
-    class AddressBookPage;
+namespace Ui
+{
+class AddressBookPage;
 }
 class AddressTableModel;
 
@@ -29,7 +30,7 @@ public:
 
     enum Mode {
         ForSending, /**< Open address book to pick address for sending */
-        ForEditing  /**< Open address book for editing */
+        ForEditing /**< Open address book for editing */
     };
 
     explicit AddressBookPage(Mode mode, Tabs tab, QWidget *parent = 0);
@@ -37,7 +38,6 @@ public:
 
     void setModel(AddressTableModel *model);
     const QString &getReturnValue() const { return returnValue; }
-
 public slots:
     void done(int retval);
     void exportClicked();

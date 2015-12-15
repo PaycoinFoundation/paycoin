@@ -2,25 +2,20 @@
 
 #include "guiconstants.h"
 
-QValidatedLineEdit::QValidatedLineEdit(QWidget *parent) :
-    QLineEdit(parent), valid(true)
+QValidatedLineEdit::QValidatedLineEdit(QWidget *parent) : QLineEdit(parent), valid(true)
 {
     connect(this, SIGNAL(textChanged(QString)), this, SLOT(markValid()));
 }
 
 void QValidatedLineEdit::setValid(bool valid)
 {
-    if(valid == this->valid)
-    {
+    if (valid == this->valid) {
         return;
     }
 
-    if(valid)
-    {
+    if (valid) {
         setStyleSheet("");
-    }
-    else
-    {
+    } else {
         setStyleSheet(STYLE_INVALID);
     }
     this->valid = valid;

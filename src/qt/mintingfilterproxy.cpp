@@ -1,7 +1,5 @@
 #include "mintingfilterproxy.h"
 
-MintingFilterProxy::MintingFilterProxy(QObject * parent) :
-    QSortFilterProxyModel(parent)
+MintingFilterProxy::MintingFilterProxy(QObject *parent) : QSortFilterProxyModel(parent)
 {
-
 }

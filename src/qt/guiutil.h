@@ -18,35 +18,35 @@ class SendCoinsRecipient;
  */
 namespace GUIUtil
 {
-    // Create human-readable string from date
-    QString dateTimeStr(const QDateTime &datetime);
-    QString dateTimeStr(qint64 nTime);
+// Create human-readable string from date
+QString dateTimeStr(const QDateTime &datetime);
+QString dateTimeStr(qint64 nTime);
 
-    // Render Paycoin addresses in monospace font
-    QFont bitcoinAddressFont();
+// Render Paycoin addresses in monospace font
+QFont bitcoinAddressFont();
 
-    // Set up widgets for address and amounts
-    void setupAddressWidget(QLineEdit *widget, QWidget *parent);
-    void setupAmountWidget(QLineEdit *widget, QWidget *parent);
+// Set up widgets for address and amounts
+void setupAddressWidget(QLineEdit *widget, QWidget *parent);
+void setupAmountWidget(QLineEdit *widget, QWidget *parent);
 
-    // Parse "bitcoin:" URI into recipient object, return true on successful parsing
-    // See Bitcoin URI definition discussion here: https://bitcointalk.org/index.php?topic=33490.0
-    bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out);
-    bool parseBitcoinURI(QString uri, SendCoinsRecipient *out);
+// Parse "bitcoin:" URI into recipient object, return true on successful parsing
+// See Bitcoin URI definition discussion here: https://bitcointalk.org/index.php?topic=33490.0
+bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out);
+bool parseBitcoinURI(QString uri, SendCoinsRecipient *out);
 
-    // HTML escaping for rich text controls
-    QString HtmlEscape(const QString& str, bool fMultiLine=false);
-    QString HtmlEscape(const std::string& str, bool fMultiLine=false);
+// HTML escaping for rich text controls
+QString HtmlEscape(const QString &str, bool fMultiLine = false);
+QString HtmlEscape(const std::string &str, bool fMultiLine = false);
 
-    /** Copy a field of the currently selected entry of a view to the clipboard. Does nothing if nothing
+/** Copy a field of the currently selected entry of a view to the clipboard. Does nothing if nothing
         is selected.
        @param[in] column  Data column to extract from the model
        @param[in] role    Data role to extract from the model
        @see  TransactionView::copyLabel, TransactionView::copyAmount, TransactionView::copyAddress
      */
-    void copyEntryData(QAbstractItemView *view, int column, int role=Qt::EditRole);
+void copyEntryData(QAbstractItemView *view, int column, int role = Qt::EditRole);
 
-    /** Get save filename, mimics QFileDialog::getSaveFileName, except that it appends a default suffix
+/** Get save filename, mimics QFileDialog::getSaveFileName, except that it appends a default suffix
         when no suffix is provided by the user.
 
       @param[in] parent  Parent window (or 0)
@@ -56,39 +56,37 @@ namespace GUIUtil
       @param[out] selectedSuffixOut  Pointer to return the suffix (file type) that was selected (or 0).
                   Can be useful when choosing the save file format based on suffix.
      */
-    QString getSaveFileName(QWidget *parent=0, const QString &caption=QString(),
-                                   const QString &dir=QString(), const QString &filter=QString(),
-                                   QString *selectedSuffixOut=0);
+QString getSaveFileName(QWidget *parent = 0, const QString &caption = QString(), const QString &dir = QString(), const QString &filter = QString(), QString *selectedSuffixOut = 0);
 
-    /** Get connection type to call object slot in GUI thread with invokeMethod. The call will be blocking.
+/** Get connection type to call object slot in GUI thread with invokeMethod. The call will be blocking.
 
        @returns If called from the GUI thread, return a Qt::DirectConnection.
                 If called from another thread, return a Qt::BlockingQueuedConnection.
     */
-    Qt::ConnectionType blockingGUIThreadConnection();
+Qt::ConnectionType blockingGUIThreadConnection();
 
-    // Determine whether a widget is hidden behind other windows
-    bool isObscured(QWidget *w);
+// Determine whether a widget is hidden behind other windows
+bool isObscured(QWidget *w);
 
-    // Open debug.log
-    void openDebugLogfile();
+// Open debug.log
+void openDebugLogfile();
 
-    /** Qt event filter that intercepts ToolTipChange events, and replaces the tooltip with a rich text
+/** Qt event filter that intercepts ToolTipChange events, and replaces the tooltip with a rich text
       representation if needed. This assures that Qt can word-wrap long tooltip messages.
       Tooltips longer than the provided size threshold (in characters) are wrapped.
      */
-    class ToolTipToRichTextFilter : public QObject
-    {
-        Q_OBJECT
-    public:
-        explicit ToolTipToRichTextFilter(int size_threshold, QObject *parent = 0);
+class ToolTipToRichTextFilter : public QObject
+{
+    Q_OBJECT
+public:
+    explicit ToolTipToRichTextFilter(int size_threshold, QObject *parent = 0);
 
-    protected:
-        bool eventFilter(QObject *obj, QEvent *evt);
+protected:
+    bool eventFilter(QObject *obj, QEvent *evt);
 
-    private:
-        int size_threshold;
-    };
+private:
+    int size_threshold;
+};
 
 } // namespace GUIUtil
 

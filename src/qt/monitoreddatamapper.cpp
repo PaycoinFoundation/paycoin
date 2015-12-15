@@ -4,8 +4,7 @@
 #include <QMetaObject>
 #include <QMetaProperty>
 
-MonitoredDataMapper::MonitoredDataMapper(QObject *parent) :
-    QDataWidgetMapper(parent)
+MonitoredDataMapper::MonitoredDataMapper(QObject *parent) : QDataWidgetMapper(parent)
 {
 }
 
@@ -29,8 +28,7 @@ void MonitoredDataMapper::addChangeMonitor(QWidget *widget)
     QMetaProperty prop = widget->metaObject()->userProperty();
     int signal = prop.notifySignalIndex();
     int method = this->metaObject()->indexOfMethod("viewModified()");
-    if(signal != -1 && method != -1)
-    {
+    if (signal != -1 && method != -1) {
         QMetaObject::connect(widget, signal, this, method);
     }
 }

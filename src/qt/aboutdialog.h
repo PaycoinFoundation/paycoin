@@ -3,8 +3,9 @@
 
 #include <QDialog>
 
-namespace Ui {
-    class AboutDialog;
+namespace Ui
+{
+class AboutDialog;
 }
 class ClientModel;
 
@@ -18,6 +19,7 @@ public:
     ~AboutDialog();
 
     void setModel(ClientModel *model);
+
 private:
     Ui::AboutDialog *ui;
 

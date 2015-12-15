@@ -10,14 +10,13 @@ const QDateTime TransactionFilterProxy::MIN_DATE = QDateTime::fromTime_t(0);
 // Last date that can be represented (far in the future)
 const QDateTime TransactionFilterProxy::MAX_DATE = QDateTime::fromTime_t(0xFFFFFFFF);
 
-TransactionFilterProxy::TransactionFilterProxy(QObject *parent) :
-    QSortFilterProxyModel(parent),
-    dateFrom(MIN_DATE),
-    dateTo(MAX_DATE),
-    addrPrefix(),
-    typeFilter(ALL_TYPES),
-    minAmount(0),
-    limitRows(-1)
+TransactionFilterProxy::TransactionFilterProxy(QObject *parent) : QSortFilterProxyModel(parent),
+                                                                  dateFrom(MIN_DATE),
+                                                                  dateTo(MAX_DATE),
+                                                                  addrPrefix(),
+                                                                  typeFilter(ALL_TYPES),
+                                                                  minAmount(0),
+                                                                  limitRows(-1)
 {
 }
 
@@ -31,13 +30,13 @@ bool TransactionFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
     QString label = index.data(TransactionTableModel::LabelRole).toString();
     qint64 amount = llabs(index.data(TransactionTableModel::AmountRole).toLongLong());
 
-    if(!(TYPE(type) & typeFilter))
+    if (!(TYPE(type) & typeFilter))
         return false;
-    if(datetime < dateFrom || datetime > dateTo)
+    if (datetime < dateFrom || datetime > dateTo)
         return false;
     if (!address.contains(addrPrefix, Qt::CaseInsensitive) && !label.contains(addrPrefix, Qt::CaseInsensitive))
         return false;
-    if(amount < minAmount)
+    if (amount < minAmount)
         return false;
 
     return true;
@@ -75,12 +74,9 @@ void TransactionFilterProxy::setLimit(int limit)
 
 int TransactionFilterProxy::rowCount(const QModelIndex &parent) const
 {
-    if(limitRows != -1)
-    {
+    if (limitRows != -1) {
         return std::min(QSortFilterProxyModel::rowCount(parent), limitRows);
-    }
-    else
-    {
+    } else {
         return QSortFilterProxyModel::rowCount(parent);
     }
 }
