@@ -39,6 +39,10 @@ void ThreadDNSAddressSeed2(void* parg);
 bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOutbound = NULL, const char *strDest = NULL, bool fOneShot = false);
 
 
+struct LocalServiceInfo {
+    int nScore;
+    int nPort;
+};
 
 //
 // Global state variables
@@ -48,7 +52,7 @@ static bool fUseUPnP = false;
 uint64 nLocalServices = (fClient ? 0 : NODE_NETWORK);
 CAddress addrSeenByPeer(CService("0.0.0.0", 0), nLocalServices);
 static CCriticalSection cs_mapLocalHost;
-static map<CService, int> mapLocalHost;
+static map<CNetAddr, LocalServiceInfo> mapLocalHost;
 static bool vfReachable[NET_MAX] = {};
 static bool vfLimited[NET_MAX] = {};
 static CNode* pnodeLocalHost = NULL;
@@ -107,23 +111,23 @@ bool GetLocal(CService& addr, const CNetAddr *paddrPeer)
     if (fUseProxy || mapArgs.count("-connect") || fNoListen)
         return false;
 
-    int nBestCount = -1;
+    int nBestScore = -1;
     int nBestReachability = -1;
     {
         LOCK(cs_mapLocalHost);
-        for (map<CService, int>::iterator it = mapLocalHost.begin(); it != mapLocalHost.end(); it++)
+        for (map<CNetAddr, LocalServiceInfo>::iterator it = mapLocalHost.begin(); it != mapLocalHost.end(); it++)
         {
-            int nCount = (*it).second;
+            int nScore = (*it).second.nScore;
             int nReachability = (*it).first.GetReachabilityFrom(paddrPeer);
-            if (nReachability > nBestReachability || (nReachability == nBestReachability && nCount > nBestCount))
+            if (nReachability > nBestReachability || (nReachability == nBestReachability && nScore > nBestScore))
             {
-                addr = (*it).first;
+                addr = CService((*it).first, (*it).second.nPort);
                 nBestReachability = nReachability;
-                nBestCount = nCount;
+                nBestScore = nScore;
             }
         }
     }
-    return nBestCount >= 0;
+    return nBestScore >= 0;
 }
 
 // get best local address for a particular peer as a CAddress
@@ -226,7 +230,12 @@ bool AddLocal(const CService& addr, int nScore)
 
     {
         LOCK(cs_mapLocalHost);
-        mapLocalHost[addr] = std::max(nScore, mapLocalHost[addr]) + (mapLocalHost.count(addr) ? 1 : 0);
+        bool fAlready = mapLocalHost.count(addr) > 0;
+        LocalServiceInfo &info = mapLocalHost[addr];
+        if (!fAlready || nScore >= info.nScore) {
+            info.nScore = nScore;
+            info.nPort = addr.GetPort() + (fAlready ? 1 : 0);
+        }
         enum Network net = addr.GetNetwork();
         vfReachable[net] = true;
         if (net == NET_IPV6) vfReachable[NET_IPV4] = true;
@@ -237,11 +246,9 @@ bool AddLocal(const CService& addr, int nScore)
     return true;
 }
 
-bool AddLocal(const CNetAddr& addr, int nScore, int port)
+bool AddLocal(const CNetAddr &addr, int nScore)
 {
-    if (port == -1)
-        port = GetListenPort();
-    return AddLocal(CService(addr, port), nScore);
+    return AddLocal(CService(addr, GetListenPort()), nScore);
 }
 
 /** Make a particular network entirely off-limits (no automatic connects to it) */
@@ -271,7 +278,7 @@ bool SeenLocal(const CService& addr)
         LOCK(cs_mapLocalHost);
         if (mapLocalHost.count(addr) == 0)
             return false;
-        mapLocalHost[addr]++;
+        mapLocalHost[addr].nScore++;
     }
 
     AdvertizeLocal();

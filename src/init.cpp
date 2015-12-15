@@ -555,7 +555,7 @@ bool AppInit2()
             if (!addrLocal.IsValid())
                 return InitError(strprintf(_("Cannot resolve -externalip address: '%s'"), strAddr.c_str()));
 
-            AddLocal(CNetAddr(strAddr, fNameLookup), LOCAL_MANUAL);
+            AddLocal(CService(strAddr, GetListenPort(), fNameLookup), LOCAL_MANUAL);
         }
     }
 
