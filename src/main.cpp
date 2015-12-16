@@ -4110,7 +4110,7 @@ void BitcoinMiner(CWallet *pwallet, bool fProofOfStake)
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
 
     // Make this thread recognisable as the mining or staking thread
-    fProofOfStake ? RenameThread("paycoin [staker]") : RenameThread("paycoin [miner]");
+    fProofOfStake ? RenameThread("paycoin-staker") : RenameThread("paycoin-miner");
 
     // Each thread has its own key and counter
     CReserveKey reservekey(pwallet);

@@ -664,7 +664,7 @@ void CNode::copyStats(CNodeStats &stats)
 void ThreadSocketHandler(void* parg)
 {
     // Make this thread recognisable as the networking thread
-    RenameThread("paycoin [net]");
+    RenameThread("paycoin-net");
 
     try
     {
@@ -1028,7 +1028,7 @@ void ThreadSocketHandler2(void* parg)
 void ThreadMapPort(void* parg)
 {
     // Make this thread recognisable as the UPnP thread
-    RenameThread("paycoin [UPnP]");
+    RenameThread("paycoin-UPnP");
 
     try
     {
@@ -1889,7 +1889,7 @@ void static Discover()
 void StartNode(void* parg)
 {
     // Make this thread recognisable as the startup Thread
-    RenameThread("paycoin [start]");
+    RenameThread("paycoin-start");
 
 #ifdef USE_UPNP
 #if USE_UPNP
