@@ -428,7 +428,7 @@ bool GetMyExternalIP(CNetAddr& ipRet)
 
 void ThreadGetMyExternalIP(void* parg)
 {
-    // Make this thread recognisable as the message handling thread
+    // Make this thread recognisable as the external IP detection thread
     RenameThread("paycoin-ext-ip");
 
     CNetAddr addrLocalHost;

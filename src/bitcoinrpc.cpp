@@ -1051,6 +1051,9 @@ private:
 
 void ThreadRPCServer(void* parg)
 {
+    // Rename thread to be recognisable as the rpc service runner thread
+    RenameThread("paycoin-rpcserv-runner");
+
     // getwork/getblocktemplate mining rewards paid here:
     pMiningKey = new CReserveKey(pwalletMain);
 
