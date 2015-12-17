@@ -293,34 +293,19 @@ QString TransactionTableModel::formatTxStatus(const TransactionRecord *wtx) cons
         status = tr("Confirmed (%1 confirmations)").arg(wtx->status.depth);
         break;
     }
-    if(wtx->type == TransactionRecord::Generated || wtx->type == TransactionRecord::StakeMint || wtx->type == TransactionRecord::ExternalScrape || wtx->type == TransactionRecord::LocalScrape)
+    if(wtx->type == TransactionRecord::Generated || wtx->type == TransactionRecord::StakeMint || wtx->type == TransactionRecord::ExternalScrape || wtx->type == TransactionRecord::LocalScrape || wtx->type == TransactionRecord::ScrapeToExternal)
     {
         switch(wtx->status.maturity)
         {
         case TransactionStatus::Immature:
-            status += "\n" + tr("Mined balance will be available in %n more blocks", "",
-                           wtx->status.matures_in);
+            wtx->type == TransactionRecord::ScrapeToExternal ? status += "\n" + tr("Minted balance will be available at reward address in %n more blocks", "",
+                                                                              wtx->status.matures_in) :
+                                                               status += "\n" + tr("Mined balance will be available in %n more blocks", "",
+                                                                              wtx->status.matures_in);
             break;
         case TransactionStatus::Mature:
-            break;
-        case TransactionStatus::MaturesWarning:
-            status += "\n" + tr("This block was not received by any other nodes and will probably not be accepted!");
-            break;
-        case TransactionStatus::NotAccepted:
-            status += "\n" + tr("Generated but not accepted");
-            break;
-        }
-    }
-    if(wtx->type == TransactionRecord::ScrapeToExternal)
-    {
-        switch(wtx->status.maturity)
-        {
-        case TransactionStatus::Immature:
-            status += "\n" + tr("Minted balance will be available at reward address in %n more blocks", "",
-                           wtx->status.matures_in);
-            break;
-        case TransactionStatus::Mature:
-            status += "\n" + tr("Minted balance is available at the reward address not found in this wallet.");
+            if (wtx->type == TransactionRecord::ScrapeToExternal)
+                status += "\n" + tr("Minted balance is available at the reward address not found in this wallet.");
             break;
         case TransactionStatus::MaturesWarning:
             status += "\n" + tr("This block was not received by any other nodes and will probably not be accepted!");
