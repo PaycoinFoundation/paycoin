@@ -46,17 +46,38 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
         if (wtx.IsCoinStake()) // paycoin: coinstake transaction
         {
             TransactionRecord sub(hash, nTime, TransactionRecord::StakeMint, "", -nDebit, wtx.GetValueOut());
-            CTxDestination address;
-            CTxOut txout = wtx.vout[1];
-
-            if (ExtractDestination(txout.scriptPubKey, address)) {
-                if (!IsMine(*wallet, address)) {
-                    sub.type = TransactionRecord::ExternalScrape;
-                    // Scrape balance is always in the last output.
-                    sub.credit = wtx.vout[wtx.vout.size() - 1].nValue;
+            CTxDestination stakingAddress, rewardAddress;
+            /* vout[0] is blank, just marks the transaction as stake
+             * vout[1] is the first stake output and therefore always related
+             * to the staking address. */
+            if (ExtractDestination(wtx.vout[1].scriptPubKey, stakingAddress)) {
+                if (ExtractDestination(wtx.vout[wtx.vout.size() - 1].scriptPubKey, rewardAddress)) {
+                    /* If the staking address isn't in the wallet than this is an
+                     * external scrape retrieved from another wallet. */
+                    if (!IsMine(*wallet, stakingAddress)) {
+                        sub.type = TransactionRecord::ExternalScrape;
+                        // In this instance the reward is always in the last output.
+                        sub.credit = wtx.vout[wtx.vout.size() - 1].nValue;
+                        sub.address = CBitcoinAddress(rewardAddress).ToString();
+                    /* The reward address is not in the wallet but the staking
+                     * address is so this reward went to a scrape, treat it
+                     * like a normal mint but display the scrape address. */
+                    } else if (!IsMine(*wallet, rewardAddress)) {
+                        sub.type = TransactionRecord::ScrapeToExternal;
+                        sub.address = CBitcoinAddress(rewardAddress).ToString();
+                    /* The address is in the wallet but it's different than the
+                     * display the reward address and the stake amount. */
+                    } else if (CBitcoinAddress(stakingAddress).ToString() != CBitcoinAddress(rewardAddress).ToString()) {
+                        sub.type = TransactionRecord::LocalScrape;
+                        sub.address = CBitcoinAddress(rewardAddress).ToString();
+                    // The reward went to the same address as the staking address (not a scrape)
+                    } else {
+                        sub.address = CBitcoinAddress(stakingAddress).ToString();
+                    }
+                // No destination in the last output (this should not happen)
+                } else {
+                    sub.address = CBitcoinAddress(stakingAddress).ToString();
                 }
-
-                sub.address = CBitcoinAddress(address).ToString();
             }
 
             parts.append(sub);
@@ -224,7 +245,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
     }
 
     // For generated transactions, determine maturity
-    if(type == TransactionRecord::Generated || type == TransactionRecord::StakeMint || TransactionRecord::ExternalScrape)
+    if(type == TransactionRecord::Generated || type == TransactionRecord::StakeMint || type == TransactionRecord::ExternalScrape || type == TransactionRecord::LocalScrape || type == TransactionRecord::ScrapeToExternal)
     {
         int64 nCredit = wtx.GetCredit(true);
         if (nCredit == 0)
