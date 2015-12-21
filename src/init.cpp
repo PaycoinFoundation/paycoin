@@ -530,8 +530,8 @@ bool AppInit2()
         std::string strError;
         if (mapArgs.count("-bind")) {
             BOOST_FOREACH(std::string strBind, mapMultiArgs["-bind"]) {
-                CService addrBind(strBind, GetListenPort(), false);
-                if (!addrBind.IsValid())
+                CService addrBind;
+                if (!Lookup(strBind.c_str(), addrBind, GetListenPort(), false))
                     return InitError(strprintf(_("Cannot resolve -bind address: '%s'"), strBind.c_str()));
 
                 fBound |= Bind(addrBind);
@@ -539,13 +539,15 @@ bool AppInit2()
         } else {
             struct in_addr inaddr_any;
             inaddr_any.s_addr = INADDR_ANY;
-            fBound |= Bind(CService(inaddr_any, GetListenPort()));
+            if (!IsLimited(NET_IPV4))
+                fBound |= Bind(CService(inaddr_any, GetListenPort()));
 #ifdef USE_IPV6
-            fBound |= Bind(CService(in6addr_any, GetListenPort()));
+            if (!IsLimited(NET_IPV6))
+                fBound |= Bind(CService(in6addr_any, GetListenPort()));
 #endif
         }
         if (!fBound)
-            return false;
+            return InitError(_("Not listening on any port"));
     }
 
     if (mapArgs.count("-externalip"))
