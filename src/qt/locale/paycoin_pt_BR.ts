@@ -376,6 +376,9 @@ Endereço: %4</translation>
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -403,7 +406,7 @@ Endereço: %4</translation>
         <source>Could not write to file %1.</source>
         <translation>Could not write to file %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -527,10 +530,6 @@ Endereço: %4</translation>
         <translation>Send to multiple recipients at once</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Clear all</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Balance:</translation>
     </message>
@@ -566,19 +565,7 @@ Endereço: %4</translation>
         <source>(no label)</source>
         <translation>(Sem rótulo)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Amount exceeds your balance</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Error: Transaction creation failed  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -776,7 +763,7 @@ Endereço: %4</translation>
         <source>Amount removed from or added to balance.</source>
         <translation>Amount removed from or added to balance.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -913,10 +900,6 @@ Endereço: %4</translation>
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Warning: Disk space is low  </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Usage:</translation>
     </message>
@@ -951,11 +934,6 @@ Endereço: %4</translation>
 </translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Start minimized
-</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Specify data directory
 </translation>
@@ -966,23 +944,8 @@ Endereço: %4</translation>
 </translation>
     </message>
     <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Connect through socks4 proxy
-</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Allow DNS lookups for addnode and connect
-</translation>
-    </message>
-    <message>
         <source>Connect only to the specified node</source>
         <translation>Connect only to the specified node
-</translation>
-    </message>
-    <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Accept command line and JSON-RPC commands
 </translation>
     </message>
     <message>
@@ -1004,11 +967,6 @@ Endereço: %4</translation>
         <source>Password for JSON-RPC connections</source>
         <translation>Password for JSON-RPC connections
 </translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332)
- {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1051,11 +1009,6 @@ Endereço: %4</translation>
 </translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>This help message
-</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>Loading addresses...</translation>
     </message>
@@ -1076,20 +1029,8 @@ Endereço: %4</translation>
         <translation>Done loading</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Invalid -proxy address</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Invalid amount for -paytxfee=&lt;amount&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Error: NewThread(StartNode) failed</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

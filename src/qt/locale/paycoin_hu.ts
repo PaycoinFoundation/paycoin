@@ -237,6 +237,9 @@
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -264,7 +267,7 @@
         <source>Could not write to file %1.</source>
         <translation>%1 fájlba való kiírás sikertelen.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -380,10 +383,6 @@
         <translation>Küldés több címzettnek egyszerre</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Mindent töröl</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Egyenleg:</translation>
     </message>
@@ -419,19 +418,7 @@
         <source>(no label)</source>
         <translation>(nincs címke)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Nincs ennyi Paycoin az egyenlegeden.</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Hiba: nem sikerült létrehozni a tranzakciót  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Hiba: a tranzakciót elutasították.  Ezt az okozhatja, ha már elköltöttél valamennyi érmét a tárcádból - például ha a wallet.dat-od egy másolatát használtad, és így az elköltés csak abban lett jelölve, de itt nem.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -618,7 +605,7 @@
         <source>Amount removed from or added to balance.</source>
         <translation>Az egyenleghez jóváírt vagy ráterhelt összeg.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>

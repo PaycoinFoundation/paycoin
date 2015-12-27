@@ -412,6 +412,9 @@ Dirección: %4</translation>
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -439,7 +442,7 @@ Dirección: %4</translation>
         <source>Could not write to file %1.</source>
         <translation>No se pudo escribir en el archivo %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -595,10 +598,6 @@ Dirección: %4</translation>
         <translation>Remover todos los campos de la transacción</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>&amp;Borra todos</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Balance:</translation>
     </message>
@@ -638,19 +637,7 @@ Dirección: %4</translation>
         <source>(no label)</source>
         <translation>(sin etiqueta)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>La cantidad sobrepasa tu saldo</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Error: La transacción no se pudo crear  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Error: La transacción fue rechazada. Esto puede haber ocurrido si alguna de las monedas ya estaba gastada o si ha usado una copia de wallet.dat y las monedas se gastaron en la copia pero no se han marcado como gastadas aqui.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -860,7 +847,7 @@ Dirección: %4</translation>
         <source>Amount removed from or added to balance.</source>
         <translation>Cantidad restada o añadida al balance</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1001,10 +988,6 @@ Dirección: %4</translation>
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Atención: Poco espacio en el disco duro</translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Uso:</translation>
     </message>
@@ -1039,11 +1022,6 @@ Dirección: %4</translation>
 </translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Arranca minimizado
-</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Especifica directorio para los datos
 </translation>
@@ -1052,20 +1030,6 @@ Dirección: %4</translation>
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>Especifica tiempo de espera para conexion (en milisegundos)
 </translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Conecta mediante proxy socks4
-</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Permite búsqueda DNS para addnode y connect
-</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Escuchar por conecciones en &lt;puerto&gt; (Por defecto: 8333 o red de prueba: 18333) {9901 ?} {9903)?}</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -1081,11 +1045,6 @@ Dirección: %4</translation>
         <translation>Umbral de desconección de clientes con mal comportamiento (por defecto: 100)</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Aceptar comandos consola y JSON-RPC
-</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Correr como demonio y acepta comandos
 </translation>
@@ -1094,10 +1053,6 @@ Dirección: %4</translation>
         <source>Use the test network</source>
         <translation>Usa la red de pruebas
 </translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Adjuntar informacion extra de depuracion</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1120,11 +1075,6 @@ Dirección: %4</translation>
         <source>Password for JSON-RPC connections</source>
         <translation>Contraseña para las conexiones JSON-RPC
 </translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Escucha conexiones JSON-RPC en el puerto &lt;port&gt; (predeterminado: 8332)
- {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1167,17 +1117,8 @@ Dirección: %4</translation>
 </translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>Este mensaje de ayuda
-</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>Cargando direcciónes...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Error cargando addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1208,20 +1149,8 @@ Dirección: %4</translation>
         <translation>Carga completa</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Dirección -proxy invalida</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Cantidad inválida para -paytxfee=&lt;amount&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Precaución: -paytxfee es muy alta. Esta es la comisión que pagarás si envias una transacción.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Error: NewThread(StartNode) fallido</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

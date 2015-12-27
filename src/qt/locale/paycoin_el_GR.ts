@@ -85,6 +85,9 @@
     <name>EditAddressDialog</name>
     </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -104,7 +107,7 @@
         <source>Could not write to file %1.</source>
         <translation>Αδυναμία εγγραφής στο αρχείο %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     </context>

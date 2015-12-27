@@ -100,7 +100,6 @@
         <file alias="et_EE">locale/paycoin_et_EE.qm</file>
         <file alias="eu_ES">locale/paycoin_eu_ES.qm</file>
         <file alias="fa">locale/paycoin_fa.qm</file>
-        <file alias="fa_IR">locale/paycoin_fa_IR.qm</file>
         <file alias="fi">locale/paycoin_fi.qm</file>
         <file alias="fr">locale/paycoin_fr.qm</file>
         <file alias="he">locale/paycoin_he.qm</file>

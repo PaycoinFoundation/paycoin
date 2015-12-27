@@ -436,6 +436,9 @@ Address: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -463,7 +466,7 @@ Address: %4
         <source>Could not write to file %1.</source>
         <translation>לא מסוגל לכתוב לקובץ %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -623,10 +626,6 @@ Address: %4
         <translation>הסר את כל השדות בפעולה</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>נקה הכל</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>יתרה:</translation>
     </message>
@@ -666,19 +665,7 @@ Address: %4
         <source>(no label)</source>
         <translation>(ללא כתובת)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>הכמות חורגת מהיתרה שלך.</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>שגיאה: יצירת הפעולה נכשלה  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>שגיאה: הפעולה נדחתה.  זה עשוי לקרות אם חלק מהמטבעות בארנק שלך כבר נוצלו, למשל אם השתמשת בעותק של הקובץ wallet.dat ומטבעות נוצלו בהעתק אך לא סומנו כמנוצלות כאן.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -884,7 +871,7 @@ Address: %4
         <source>Amount removed from or added to balance.</source>
         <translation>הכמות שהתווספה או הוסרה מהיתרה.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1025,10 +1012,6 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>אזהרה: מעט מקום בדיסק  </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>שימוש:</translation>
     </message>
@@ -1057,28 +1040,12 @@ Address: %4
         <translation>אל תייצר מטבעות</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>התחל ממוזער</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>ציין תיקיית נתונים</translation>
     </message>
     <message>
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>ציין הגבלת זמן לחיבור (במילישניות)</translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>התחבר דרך פרוקסי socks4</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>אפשר עיון ב-DNS להוספת צומת וחיבור</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>האזן לחיבורים ב&lt;פורט&gt; (ברירת מחדל: 8333 או ברשת הבדיקה: 18333) {9901 ?} {9903)?}</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -1105,20 +1072,12 @@ Address: %4
         <translation>חוצץ מירבי לשליחה לכל חיבור, &lt;n&gt;*1000 בתים (ברירת מחדל: 10000)</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>קבל פקודות משורת הפקודה ו- JSON-RPC</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>רוץ ברקע כדימון וקבל פקודות</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>השתמש ברשת הבדיקה</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>פלוט מידע דיבאג נוסף </translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1139,10 +1098,6 @@ Address: %4
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>סיסמה לחיבורי JSON-RPC</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>האזן לחיבורי JSON-RPC ב&lt;פורט&gt; (ברירת מחדל: 8332) {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1177,16 +1132,8 @@ Address: %4
         <translation>צפנים קבילים (ברירת מחדל: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>הודעת העזרה הזו</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>טוען כתובות...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>שגיאה בטעינת הקובץ addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1217,20 +1164,8 @@ Address: %4
         <translation>טעינה הושלמה</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>כתובת פרוקסי לא תקינה</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>כמות לא תקינה בפרמטר -paytxfee=&lt;amount&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>אזהרה: ערך גבוה מדי הושם בפרמטר -paytxfee.  זו העמלה שתשלם אם אתה שולח פעולה.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>שגיאה: כישלון ב- NewThread(StartNode)</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

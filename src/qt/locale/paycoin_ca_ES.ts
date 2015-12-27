@@ -65,6 +65,9 @@
     </message>
     </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -126,10 +129,6 @@
     <message>
         <source>Balance:</source>
         <translation>Balanç:</translation>
-    </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Import superi el saldo de la seva compte</translation>
     </message>
     </context>
 <context>

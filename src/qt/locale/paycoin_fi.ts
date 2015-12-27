@@ -436,6 +436,9 @@ Osoite: %4</translation>
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -463,7 +466,7 @@ Osoite: %4</translation>
         <source>Could not write to file %1.</source>
         <translation>Ei voida kirjoittaa tiedostoon %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -623,10 +626,6 @@ Osoite: %4</translation>
         <translation>Poista kaikki rahansiiron kentät</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Tyhjennä lista</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Saldo:</translation>
     </message>
@@ -666,19 +665,7 @@ Osoite: %4</translation>
         <source>(no label)</source>
         <translation>(ei nimeä)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Määrä on suurempi kuin tilisi tämänhetkinen saldo.</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Virhe: Rahansiirron luonti epäonnistui</translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Virhe: Rahansiirto hylättiin.  Tämä voi tapahtua jos jotkin Paycoineistasi on jo käytetty, esimerkiksi jos olet käyttänyt kopiota wallet.dat-lompakkotiedostosta ja Paycoinit on merkitty käytetyksi vain kopiossa.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -892,7 +879,7 @@ Osoite: %4</translation>
         <source>Amount removed from or added to balance.</source>
         <translation>Saldoon lisätty tai siitä vähennetty määrä.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1033,10 +1020,6 @@ Osoite: %4</translation>
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Varoitus: Kiintolevytila on loppumassa  </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Käyttö:</translation>
     </message>
@@ -1065,28 +1048,12 @@ Osoite: %4</translation>
         <translation>Älä generoi kolikoita</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Käynnistä pienennettynä</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Määritä data-hakemisto</translation>
     </message>
     <message>
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>Määritä yhteyden aikakatkaisu (millisekunneissa)</translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Yhteys socks4-proxyn kautta</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Salli DNS haut lisäsolmulle ja yhdistä</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Kuuntele yhteyksiä portista &lt;port&gt; (oletus: 8333 tai testnet: 18333) {9901 ?} {9903)?}</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -1113,20 +1080,12 @@ Osoite: %4</translation>
         <translation>Maksimi verkkoyhteyden lähetyspuskuri, &lt;n&gt;*1000 tavua (oletus: 10000)</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Hyväksy merkkipohjaiset- ja JSON-RPC-käskyt</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Aja taustalla daemonina ja hyväksy komennot</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>Käytä test -verkkoa</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Tulosta ylimääräistä debuggaustietoa</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1147,10 +1106,6 @@ Osoite: %4</translation>
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Salasana JSON-RPC-yhteyksille</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Kuuntele JSON-RPC -yhteyksiä portista &lt;port&gt; (oletus: 8332) {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1186,16 +1141,8 @@ Osoite: %4</translation>
 TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>Tämä ohjeviesti</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>Ladataan osoitteita...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Virhe ladattaessa addr.dat-tiedostoa</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1226,20 +1173,8 @@ TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
         <translation>Lataus on valmis</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Virheellinen proxy-osoite</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Virheellinen määrä -paytxfee=&lt;amount&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Varoitus:-paytxfee on erittäin korkea. Tämä on palkkio siirrosta minkä suoritat rahansiirrosta.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Virhe: NewThread(StartNode) epäonnistui</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

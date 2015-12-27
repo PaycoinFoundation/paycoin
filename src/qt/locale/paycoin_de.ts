@@ -54,6 +54,14 @@ Dieses Produkt enthält Software, die vom OpenSSL-Projekt zur Verwendung im Open
         <translation>Ausgewählte Adresse in die Zwischenablage kopieren</translation>
     </message>
     <message>
+        <source>&amp;New Address</source>
+        <translation>&amp;Neue Adresse</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Address</source>
+        <translation>&amp;Adresse kopieren</translation>
+    </message>
+    <message>
         <source>Show &amp;QR Code</source>
         <translation>&amp;QR-Code anzeigen</translation>
     </message>
@@ -72,6 +80,14 @@ Dieses Produkt enthält Software, die vom OpenSSL-Projekt zur Verwendung im Open
     <message>
         <source>&amp;Delete</source>
         <translation>&amp;Löschen</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Label</source>
+        <translation>Bezeichnung kopieren</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation>&amp;Bearbeiten</translation>
     </message>
     <message>
         <source>Export Address Book Data</source>
@@ -217,6 +233,10 @@ Sind Sie sich sicher, dass Sie Ihre Wallet verschlüsseln möchten?</translation
         <translation>Transaktionsverlauf durchsehen</translation>
     </message>
     <message>
+        <source>&amp;Minting</source>
+        <translation>&amp;Prägen</translation>
+    </message>
+    <message>
         <source>&amp;Address Book</source>
         <translation>&amp;Adressbuch</translation>
     </message>
@@ -325,12 +345,20 @@ Sind Sie sich sicher, dass Sie Ihre Wallet verschlüsseln möchten?</translation
         <translation>[Testnetz]</translation>
     </message>
     <message>
+        <source>This transaction is over the size limit. You can still send it for a fee of %1. Do you want to pay the fee?</source>
+        <translation>Diese Transaktion überschreitet das Größenlimit. Sie können es dennoch für eine Gebühr von %1 senden. Wollen Sie die Gebühr zahlen?</translation>
+    </message>
+    <message>
         <source>Paycoin Wallet</source>
         <translation>Paycoin Brieftasche</translation>
     </message>
     <message>
         <source>Send coins to a Paycoin address</source>
         <translation>Münzen an eine Paycoin-Adresse senden</translation>
+    </message>
+    <message>
+        <source>Sign &amp;message...</source>
+        <translation>Nachricht signieren</translation>
     </message>
     <message>
         <source>&amp;About Paycoin</source>
@@ -349,20 +377,52 @@ Sind Sie sich sicher, dass Sie Ihre Wallet verschlüsseln möchten?</translation
         <translation>Zeige oder verstecke das Paycoin Fenster</translation>
     </message>
     <message>
-        <source>Paycoin client</source>
-        <translation>Paycoin-Client</translation>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>&amp;Brieftasche verschlüsseln</translation>
     </message>
     <message>
-        <source>p-qt</source>
-        <translation>p-qt</translation>
+        <source>&amp;Backup Wallet...</source>
+        <translation>&amp;Brieftasche sichern</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation>Passphrase ändern</translation>
+    </message>
+    <message>
+        <source>Paycoin client</source>
+        <translation>Paycoin-Client</translation>
     </message>
     <message>
         <source>Synchronizing with network...</source>
         <translation>Synchronisiere mit Netzwerk...</translation>
     </message>
+    <message numerus="yes">
+        <source>~%n block(s) remaining</source>
+        <translation><numerusform>~%n Block übrig</numerusform><numerusform>~%n Blöcke übrig</numerusform></translation>
+    </message>
+    <message>
+        <source>Confirm transaction fee</source>
+        <translation>Bestätige Transaktionskosten</translation>
+    </message>
     <message>
         <source>Downloaded %1 blocks of transaction history.</source>
         <translation>%1 Blöcke des Transaktionsverlaufs heruntergeladen.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s) ago</source>
+        <translation><numerusform>Vor %n Sekunde </numerusform><numerusform>Vor %n Sekunden</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s) ago</source>
+        <translation><numerusform>Vor %n Minute</numerusform><numerusform>Vor %n Minuten</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s) ago</source>
+        <translation><numerusform>Vor %n Stunde</numerusform><numerusform>Vor %n Stunden</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s) ago</source>
+        <translation><numerusform>Vor %n Tag</numerusform><numerusform>Vor %n Tagen</numerusform></translation>
     </message>
     <message>
         <source>Up to date</source>
@@ -427,7 +487,7 @@ Adresse: %4</translation>
         <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation>Ein fataler Fehler trat auf. Paycoin kann nicht mehr sicher fortfahren und wird sich beenden. </translation>
     </message>
-</context>
+    </context>
 <context>
     <name>CoinControlDialog</name>
     <message>
@@ -606,9 +666,13 @@ Adresse: %4</translation>
         <source>(change)</source>
         <translation>(Wechselgeld)</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>DisplayOptionsPage</name>
+    <message>
+        <source>Display</source>
+        <translation>Anzeige</translation>
+    </message>
     <message>
         <source>&amp;Unit to show amounts in: </source>
         <translation>&amp;Einheit der Beträge:</translation>
@@ -690,16 +754,15 @@ Adresse: %4</translation>
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
-    <message>
-        <source>Detach databases at shutdown</source>
-        <translation>Datenbanken beim Schließen trennen</translation>
-    </message>
     <message>
         <source>Detach block and address databases at shutdown. This means they can be moved to another data directory, but it slows down shutdown. The wallet is always detached.</source>
         <translation>Datenbanken beim Schließen trennen. Dies bedeutet, dass die in ein anderes Datenverzeichnet verschoben werden können. Dies verlangsamt aber das Schließen. Die Brieftasche ist immer getrennt. </translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MintingTableModel</name>
     <message>
@@ -725,7 +788,7 @@ Adresse: %4</translation>
         <source>Could not write to file %1.</source>
         <translation>Konnte nicht in Datei %1 schreiben.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -898,10 +961,6 @@ Adresse: %4</translation>
         <translation>Clientversion</translation>
     </message>
     <message>
-        <source>Version</source>
-        <translation>Version</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>Netzwerk</translation>
     </message>
@@ -934,10 +993,6 @@ Adresse: %4</translation>
         <translation>Erstellungsdatum</translation>
     </message>
     <message>
-        <source>&gt;</source>
-        <translation>&gt;</translation>
-    </message>
-    <message>
         <source>Clear console</source>
         <translation>Konsole zurücksetzen</translation>
     </message>
@@ -945,7 +1000,7 @@ Adresse: %4</translation>
         <source>Welcome to the Paycoin RPC console.&lt;br&gt;Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.&lt;br&gt;Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
         <translation>Willkommen in der Paycoin-RPC-Konsole. &lt;br&gt; Nutze Pfeiltaste hoch und runter, um den Verlauf durchzublättern und &lt;b&gt;Strg-L&lt;/b&gt;, um die Konsole zurückzusetzen. &lt;br&gt;  Bitte &lt;b&gt;help&lt;/b&gt; eingeben, um eine Übersicht verfügbarer Befehle zu erhalten.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsDialog</name>
     <message>
@@ -1029,10 +1084,6 @@ Adresse: %4</translation>
         <translation>Alle Überweisungsfelder zurücksetzen</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Zurücksetzen</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Kontostand:</translation>
     </message>
@@ -1113,22 +1164,10 @@ Adresse: %4</translation>
         <translation>(keine Bezeichnung)</translation>
     </message>
     <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Der angegebene Betrag übersteigt Ihren Kontostand.</translation>
-    </message>
-    <message>
         <source>Enter a Paycoin address</source>
         <translation>Paycoin-Addresse eingeben</translation>
     </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Fehler: Transaktionserstellung fehlgeschlagen</translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Fehler: Die Transaktion wurde abgelehnt. Dies kann passieren, wenn einige Paycoins aus Ihrer Brieftasche bereits ausgegeben wurden. Beispielsweise weil Sie eine Kopie Ihrer wallet.dat genutzt, die Paycoins dort ausgegeben haben und dies daher in der derzeit aktiven Brieftasche nicht vermerkt ist.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -1470,7 +1509,7 @@ Adresse: %4</translation>
         <source>Amount removed from or added to balance.</source>
         <translation>Der Betrag, der dem Kontostand abgezogen oder hinzugefügt wurde.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1615,24 +1654,12 @@ Adresse: %4</translation>
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Warnung: Zu wenig freier Speicherplatz auf dem Datenträger!</translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Verwendung:</translation>
     </message>
     <message>
-        <source>Unable to bind to port %d on this computer.  Paycoin is probably already running.</source>
-        <translation>Kann Port %d auf diesem Computer nicht binden. Paycoin läuft wahrscheinlich bereits. </translation>
-    </message>
-    <message>
         <source>Paycoin version</source>
         <translation>Paycoin Version</translation>
-    </message>
-    <message>
-        <source>Send command to -server or paycoind</source>
-        <translation>Sende Befehl an -server oder paycoind</translation>
     </message>
     <message>
         <source>List commands</source>
@@ -1663,14 +1690,6 @@ Adresse: %4</translation>
         <translation>Keine Paycoins generieren</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Minimiert starten</translation>
-    </message>
-    <message>
-        <source>Show splash screen on startup (default: 1)</source>
-        <translation>Begrüßungsbildschirm beim Start anzeigen (Standard: 1)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Datenverzeichnis angeben</translation>
     </message>
@@ -1687,18 +1706,6 @@ Adresse: %4</translation>
         <translation>Verbindungstimeout angeben (in Millisekunden)</translation>
     </message>
     <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Über einen SOCKS4-Proxy verbinden:</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Erlaube DNS-Abfragen für -addnode und -connect</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>&lt;port&gt; nach Verbindungen abhören (Standard: 9901 oder Testnetz: 9903)</translation>
-    </message>
-    <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Maximal &lt;n&gt; Verbindungen zu Gegenstellen aufrechterhalten (Standard: 125)</translation>
     </message>
@@ -1711,16 +1718,8 @@ Adresse: %4</translation>
         <translation>Nur mit dem angegebenem Knoten verbinden</translation>
     </message>
     <message>
-        <source>Find peers using internet relay chat (default: 0)</source>
-        <translation>Gegenstellen via IRC finden (Standard: 0)</translation>
-    </message>
-    <message>
         <source>Accept connections from outside (default: 1)</source>
         <translation>Eingehende Verbindungen annehmen (Standard: 1)</translation>
-    </message>
-    <message>
-        <source>Set language, for example "de_DE" (default: system locale)</source>
-        <translation>Sprache festlegen, z.B. "de_DE" (Standard: Systemstandard)</translation>
     </message>
     <message>
         <source>Find peers using DNS lookup (default: 1)</source>
@@ -1755,20 +1754,12 @@ Adresse: %4</translation>
         <translation>Gebühr pro kB, die gesendeten Transaktionen hinzugefügt wird</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Kommandozeilenbefehle und JSON-RPC Befehle annehmen</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Als Hintergrunddienst ausführen und Befehle annehmen</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>Das test-Netzwerk verwenden</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Ausgabe zusätzlicher Debugging-Informationen</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1789,10 +1780,6 @@ Adresse: %4</translation>
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Passwort für JSON-RPC Verbindungen</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>&lt;port&gt; nach JSON-RPC-Verbindungen abhören (Standard: 9902)</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1827,11 +1814,6 @@ Adresse: %4</translation>
         <translation>Legt fest, wie gründlich die Blockverifikation von -checkblocks ist (0-6, Standard: 1)</translation>
     </message>
     <message>
-        <source>
-SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>SSL-Optionen (siehe Bitcoin-Wiki für SSL-Einrichtung)</translation>
-    </message>
-    <message>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>OpenSSL (https) für JSON-RPC-Verbindungen verwenden</translation>
     </message>
@@ -1846,14 +1828,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</source>
         <translation>Akzeptierte Chiffren (Standard: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
-    </message>
-    <message>
-        <source>This help message</source>
-        <translation>Dieser Hilfetext</translation>
-    </message>
-    <message>
-        <source>Usage</source>
-        <translation>Benutzung:</translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s.  Paycoin is probably already running.</source>
@@ -1878,10 +1852,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Loading addresses...</source>
         <translation>Lade Adressen...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Fehler beim Laden von addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1924,20 +1894,8 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
         <translation>Laden abgeschlossen</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Fehlerhafte Proxy-Adresse</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Ungültiger Betrag für -paytxfee=&lt;amount&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Warnung: -paytxfee ist auf einen sehr hohen Wert gesetzt. Dies ist die Gebühr die beim Senden einer Transaktion fällig wird.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Fehler: NewThread(StartNode) fehlgeschlagen</translation>
     </message>
     <message>
         <source>To use the %s option</source>

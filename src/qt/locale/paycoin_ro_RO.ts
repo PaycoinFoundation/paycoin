@@ -361,6 +361,9 @@
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -388,7 +391,7 @@
         <source>Could not write to file %1.</source>
         <translation>Fisierul %1 nu a putut fi accesat pentru scriere.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -508,10 +511,6 @@
         <translation>Trimite simultan către mai mulţi destinatari</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Şterge tot</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Balanţă:</translation>
     </message>
@@ -547,19 +546,7 @@
         <source>(no label)</source>
         <translation>(fără etichetă)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Suma depăşeşte soldul contului.</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Eroare: Tranyacţia nu a putut fi iniţiată </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Eroare: Tranyacţia a fost respinsă.  Acesta poate fi rezultatul cheltuirii prealabile a unei sume de Paycoin din portofelul electronic, ca în cazul folosirii unei copii a fisierului wallet.dat, în care s-au efectuat tranzacţii neînregistrate în fisierul curent.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -745,7 +732,7 @@
         <source>Amount removed from or added to balance.</source>
         <translation>Suma extrasă sau adăugată la sold.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>

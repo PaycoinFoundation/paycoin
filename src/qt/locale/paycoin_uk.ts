@@ -413,6 +413,9 @@ Address: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -440,7 +443,7 @@ Address: %4
         <source>Could not write to file %1.</source>
         <translation>Неможливо записати у файл %1</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -596,10 +599,6 @@ Address: %4
         <translation>Видалити всі поля транзакції</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Очистити все</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Баланс:</translation>
     </message>
@@ -639,19 +638,7 @@ Address: %4
         <source>(no label)</source>
         <translation>(немає назви)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Кількість монет для відправлення перевищує ваш баланс</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Помилка: не вдалося створити переказ  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Помилка: переказ було відхилено.  Це може статись, якщо декілька монет з вашого гаманця вже використані, наприклад, якщо ви використовуєте одну копію гаманця (wallet.dat), а монети були використані з іншої копії, але не позначені як використані в цій.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -853,7 +840,7 @@ Address: %4
         <source>Amount removed from or added to balance.</source>
         <translation>Сума, додана чи знята з балансу.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -994,10 +981,6 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Увага: На диску мало вільного місця</translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Вкористання:</translation>
     </message>
@@ -1032,11 +1015,6 @@ Address: %4
 </translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Запускати згорнутим
-</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Вкажіть робочий каталог
 </translation>
@@ -1045,20 +1023,6 @@ Address: %4
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>Вкажіть таймаут з’єднання (в мілісекундах)
 </translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Підключитись через SOCKS4-проксі
-</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Дозволити пошук в DNS для команд «addnode» і «connect»
-</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Чекати на з'єднання на порту (по замовченню 8333 або тестова мережа 18333) {9901 ?} {9903)?}</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -1086,11 +1050,6 @@ Address: %4
         <translation>Максимальній розмір виіхідного буферу на одне з'єднання (за замовчуванням 10000)</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Приймати команди із командного рядка та команди JSON-RPC
-</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Запустити в фоновому режимі (як демон) та приймати команди
 </translation>
@@ -1099,10 +1058,6 @@ Address: %4
         <source>Use the test network</source>
         <translation>Використовувати тестову мережу
 </translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Виводити більше налагоджувальної інформації</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1125,11 +1080,6 @@ Address: %4
         <source>Password for JSON-RPC connections</source>
         <translation>Пароль для JSON-RPC-з’єднань
 </translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Прослуховувати &lt;port&gt; для JSON-RPC-з’єднань (за промовчуванням: 8332)
- {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1172,17 +1122,8 @@ Address: %4
 </translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>Дана довідка
-</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>Завантаження адрес...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Помилка при завантаженні addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1213,20 +1154,8 @@ Address: %4
         <translation>Завантаження завершене</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Помилка в адресі проксі-сервера</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Помилка у величині комісії</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Увага: встановлено занадто велику комісію (-paytxfee).  Комісія зніматиметься кожен раз коли ви проводитимете перекази.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Помилка: NewThread(StartNode) дала збій</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

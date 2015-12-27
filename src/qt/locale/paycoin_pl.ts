@@ -261,6 +261,9 @@
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -288,7 +291,7 @@
         <source>Could not write to file %1.</source>
         <translation>Błąd zapisu do pliku %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -436,10 +439,6 @@
         <translation>Wyczyść wszystkie pola transakcji</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Wyczyść wszystko</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Saldo:</translation>
     </message>
@@ -478,14 +477,6 @@
     <message>
         <source>(no label)</source>
         <translation>(bez etykiety)</translation>
-    </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Kwota przekracza twoje saldo</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Błąd: Tworzenie transakcji nie powiodło się  </translation>
     </message>
     </context>
 <context>
@@ -689,7 +680,7 @@
         <source>Amount removed from or added to balance.</source>
         <translation>Kwota usunięta z lub dodana do konta.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>

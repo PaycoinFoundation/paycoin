@@ -413,6 +413,9 @@ Address: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -440,7 +443,7 @@ Address: %4
         <source>Could not write to file %1.</source>
         <translation>تا فایل %1 نمی شود نوشت</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -596,10 +599,6 @@ Address: %4
         <translation>پاک کردن تمام ستون‌های تراکنش</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>&gt;همه چیز پاک کنید</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>راز:</translation>
     </message>
@@ -635,19 +634,7 @@ Address: %4
         <source>(no label)</source>
         <translation>خطای صادرت</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>مبلغ از تزار بیشتر است </translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>خطا ایجاد معامله اشتباه است</translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>خطا . معامله رد شد.این هنگامی که سکه ها در والت شما هنوز ارسال شده اند ولی شما کپی والت استفاده می کنید و سکه ها روی کپی فرستاده شده اند و به عنوان ارسال شنه مشخص نشده اتفاقی می افتد.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -857,7 +844,7 @@ Address: %4
         <source>Amount removed from or added to balance.</source>
         <translation>مبلغ از تزار شما خارج یا وارد شده</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -998,10 +985,6 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>هشدار: جای دیسک پایین است </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>ستفاده :</translation>
     </message>
@@ -1030,28 +1013,12 @@ Address: %4
         <translation>تولید سکه ها</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>شروع حد اقل</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>دایرکتور اطلاعاتی خاص</translation>
     </message>
     <message>
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>(میلی ثانیه )فاصله ارتباط خاص</translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>socks4 proxy ارتباط توسط</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>اجازه متغیر دی ان اس برای اضافه گره یا ارتباط</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>برای اتصالات به &lt;port&gt; (پیش‌فرض: 8333 یا تست‌نت: 18333) گوش کنید {9901 ?} {9903)?}</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -1078,20 +1045,12 @@ Address: %4
         <translation>حداکثر بافر ارسالی در هر اتصال، 1000*&lt;n&gt; (پیش‌فرض: 10000)</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>JSON-RPC قابل فرمانها و</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>اجرای در پس زمینه به عنوان شبح و قبول فرمان ها</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>استفاده شبکه آزمایش</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>اطلاعات اشکال‌زدایی اضافی خروجی</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1112,10 +1071,6 @@ Address: %4
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>JSON-RPC عبارت عبور برای ارتباطات</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>( 8332پیش فرض :) &amp;lt;poort&amp;gt; JSON-RPC شنوایی برای ارتباطات {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1150,16 +1105,8 @@ Address: %4
         <translation>رمز های قابل قبول(  TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>پیام کمکی</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>بار گیری آدرس ها</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>خطا در بارگیری addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1190,20 +1137,8 @@ Address: %4
         <translation>بار گیری انجام شده است</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>آدرس پروکسی معتبر نیست </translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>paytxfee=&amp;lt;بالغ &amp;gt;مبلغ نا معتبر</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>خطا : پر داخت خیلی بالا است. این پر داخت معامله است که شما هنگام ارسال معامله باید پر داخت کنید</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>خطا :ایجاد موضوع(گره) اشتباه بود</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

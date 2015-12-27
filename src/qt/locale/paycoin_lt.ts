@@ -261,6 +261,9 @@
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -288,7 +291,7 @@
         <source>Could not write to file %1.</source>
         <translation>Neįmanoma įrašyti į failą %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -436,10 +439,6 @@
         <translation>Pašalinti visus sandorio laukus</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Ištrinti viską</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Balansas:</translation>
     </message>
@@ -479,19 +478,7 @@
         <source>(no label)</source>
         <translation>(nėra žymės)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Suma viršija jūsų balansą</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>KLAIDA:nepavyko sudaryti sandorio</translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Klaida: sandoris buvo atmestas.Tai gali įvykti, jei kai kurios monetos iš jūsų piniginėje jau buvo panaudotos, pvz. jei naudojote wallet.dat kopiją ir monetos buvo išleistos kopijoje, bet nepažymėtos kaip skirtos išleisti čia.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -693,7 +680,7 @@
         <source>Amount removed from or added to balance.</source>
         <translation>Suma pridėta ar išskaičiuota iš balanso</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
