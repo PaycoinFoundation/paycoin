@@ -15,6 +15,12 @@ For example a file changed in 2015 (with 2015 being the current year):
 would be changed to:
 ```// Copyright (c) 2013-2015 The Paycoin developers```
 
+optimize-pngs.py
+================
+
+A script to optimize png files in the paycoin
+repository (requires pngcrush).
+
 update-translations.py
 =======================
 
