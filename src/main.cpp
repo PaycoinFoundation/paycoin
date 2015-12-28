@@ -6,11 +6,11 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "checkpoints.h"
-#include "db.h"
 #include "net.h"
 #include "init.h"
 #include "ui_interface.h"
 #include "kernel.h"
+#include "primenodes.h" // for GetPrimeDBFile (also includes db.h)
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -1406,7 +1406,7 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs,
             // If vout[0] is not empty check if this is a prime stake.
             if (!vout[0].IsEmpty()) {
                 // Type ID is stored in vout[0] destination is stored in vout[1]
-                return IsPrimeStake(vout[0].scriptPubKey, vout[1].scriptPubKey, nTime, nValueIn, nValueOut, nCoinAge);
+                return IsPrimeStake(GetPrimeDBFile(), vout[0].scriptPubKey, vout[1].scriptPubKey, nTime, nValueIn, nValueOut, nCoinAge);
             } else {
                 if(GetValueOut() <= MINIMUM_FOR_ORION){
                     return DoS(100, error("ConnectInputs() : credit doesn't meet requirement for orion controller = %"PRI64d" while you only have %"PRI64d, MINIMUM_FOR_ORION, GetValueOut()));

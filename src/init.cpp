@@ -76,8 +76,6 @@ void Shutdown(void* parg)
     {
         fShutdown = true;
         nTransactionsUpdated++;
-        if (primeNodeDB)
-            primeNodeDB->Close();
         if (scrapesDB)
             scrapesDB->Close();
         bitdb.Flush(false);
@@ -86,8 +84,6 @@ void Shutdown(void* parg)
         boost::filesystem::remove(GetPidFile());
         UnregisterWallet(pwalletMain);
         delete pwalletMain;
-        if (primeNodeDB)
-            delete primeNodeDB;
         if (scrapesDB)
             delete scrapesDB;
         NewThread(ExitTimeout, NULL);
