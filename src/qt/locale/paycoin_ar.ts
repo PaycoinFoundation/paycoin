@@ -185,6 +185,9 @@
     <name>EditAddressDialog</name>
     </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -287,10 +290,6 @@
         <source>Copy change</source>
         <translation>انسخ الباقي</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>المبلغ يتجاوز رصيدك</translation>
-    </message>
     </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -362,10 +361,6 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>تحذير: المساحة التخزينية ضئيلة</translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>الاستخدام:</translation>
     </message>
@@ -386,14 +381,6 @@
         <translation>لا تولّد عملات</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>ابدأ التشغيل مُصغِّرًا النافذة</translation>
-    </message>
-    <message>
-        <source>Show splash screen on startup (default: 1)</source>
-        <translation>أظهر شاشة البدء عند بدء التشغيل (تلقائيًا: 1)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>حدد مُجلد البيانات</translation>
     </message>
@@ -410,18 +397,6 @@
         <translation>حدد مهلة الاتصال (بالمِلِّي ثانية)</translation>
     </message>
     <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>اتصل عبر وكيل socks4 </translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>اسمح لعمليات بحث دي.إن.إس لإضافة العقد والاتصال بها</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>أنصت للروابط على &lt;port&gt; (تلقائيًا: 9901 أو testnet: 9903 )</translation>
-    </message>
-    <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>حافظ على &lt;n&gt; روابط بالحد الأقصى مع الأنداد (تلقائيًا: 125)</translation>
     </message>
@@ -434,16 +409,8 @@
         <translation>اتصل فقط مع العُقد المحددة</translation>
     </message>
     <message>
-        <source>Find peers using internet relay chat (default: 0)</source>
-        <translation>جِد أندادًا يستخدمون المحادثة عبر انترنت (تلقائيًا: 0 )</translation>
-    </message>
-    <message>
         <source>Accept connections from outside (default: 1)</source>
         <translation>اقبل روابط من الخارج (تلقائيًا: 1)</translation>
-    </message>
-    <message>
-        <source>Set language, for example "de_DE" (default: system locale)</source>
-        <translation>حدد اللغة، مثال "ar-eg" (تلقائيًا: لغة نظام التشغيل)</translation>
     </message>
     <message>
         <source>Find peers using DNS lookup (default: 1)</source>
@@ -476,10 +443,6 @@
     <message>
         <source>Fee per KB to add to transactions you send</source>
         <translation>الرسم مقابل الكيلوبَيِت للمعاملات التي ترسلها</translation>
-    </message>
-    <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>اقبل سطر الأوامر وأوامر JSON-RPC</translation>
     </message>
     <message>
         <source>Paycoin</source>

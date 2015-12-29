@@ -253,6 +253,9 @@
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -280,7 +283,7 @@
         <source>Could not write to file %1.</source>
         <translation>Nedalo sa zapisovať do súboru %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -428,10 +431,6 @@
         <translation>Odobrať všetky políčka transakcie</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Zmazať všetko</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Zostatok:</translation>
     </message>
@@ -470,14 +469,6 @@
     <message>
         <source>(no label)</source>
         <translation>(bez popisu)</translation>
-    </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Suma je vyššia ako Váš zostatok</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Chyba: Zlyhalo vytvorenie transakcie</translation>
     </message>
     </context>
 <context>
@@ -661,7 +652,7 @@
         <source>Amount removed from or added to balance.</source>
         <translation>Suma pridaná alebo odobraná k zostatku.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>

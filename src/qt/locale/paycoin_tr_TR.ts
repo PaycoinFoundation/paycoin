@@ -437,6 +437,9 @@ Adres: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -464,7 +467,7 @@ Adres: %4
         <source>Could not write to file %1.</source>
         <translation>%1 dosyasına yazılamadı.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -624,10 +627,6 @@ Adres: %4
         <translation>Bütün muamele alanlarını kaldır</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Tümünü temizle</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Bakiye:</translation>
     </message>
@@ -667,19 +666,7 @@ Adres: %4
         <source>(no label)</source>
         <translation>(boş etiket)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Tutar bakiyenizden yüksektir</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Hata: Muamele oluşturması başarısız oldu  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Hata: Muamele reddedildi.  Cüzdanınızdaki madenî paraların bazıları zaten harcanmış olduğunda bu meydana gelebilir. Örneğin wallet.dat dosyasının bir kopyasını kullandıysanız ve kopyada para harcandığında ancak burada harcandığı işaretlenmediğinde.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -893,7 +880,7 @@ Adres: %4
         <source>Amount removed from or added to balance.</source>
         <translation>Bakiyeden alınan ya da bakiyeye eklenen miktar.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1034,10 +1021,6 @@ Adres: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Uyarı: Disk alanı düşük  </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Kullanım:</translation>
     </message>
@@ -1066,28 +1049,12 @@ Adres: %4
         <translation>Para oluşturma</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Küçültülmüş olarak başla</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Veri dizinini belirt</translation>
     </message>
     <message>
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>Bağlantı zaman aşım süresini milisaniye olarak belirt</translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Socks4 vekil sunucusu vasıtasıyla bağlan</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Düğüm ekleme ve bağlantı için DNS aramalarına izin ver</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Bağlantılar için dinlenecek &lt;port&gt; (varsayılan: 8333 ya da testnet: 18333) {9901 ?} {9903)?}</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -1114,20 +1081,12 @@ Adres: %4
         <translation>Her bağlantı için yollama tamponu, &lt;n&gt;*1000 bayt (varsayılan: 10000)</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Konut satırı ve JSON-RPC komutlarını kabul et</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Arka planda daemon (servis) olarak çalış ve komutları kabul et</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>Deneme şebekesini kullan</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>İlâve hata ayıklama verisi çıkar</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1148,10 +1107,6 @@ Adres: %4
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>JSON-RPC bağlantıları için parola</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>JSON-RPC bağlantıları için dinlenecek &lt;port&gt; (varsayılan: 8332) {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1186,16 +1141,8 @@ Adres: %4
         <translation>Kabul edilebilir şifreler (varsayılan: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>Bu yardım mesajı</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>Adresler yükleniyor...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>addr.dat dosyasının yüklenmesinde hata oluştu</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1226,20 +1173,8 @@ Adres: %4
         <translation>Yükleme tamamlandı</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Geçersiz -proxy adresi</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>-paytxfee=&lt;miktar&gt; için geçersiz miktar</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Uyarı: -paytxfee çok yüksek bir değere ayarlanmış.  Bu, muamele gönderirseniz ödeyeceğiniz muamele ücretidir.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Hata: NewThread(StartNode) başarısız oldu</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

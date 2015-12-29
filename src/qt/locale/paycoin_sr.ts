@@ -169,6 +169,9 @@
     </message>
     </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -196,7 +199,7 @@
         <source>Could not write to file %1.</source>
         <translation>Није могуће писати у фајл %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     </context>

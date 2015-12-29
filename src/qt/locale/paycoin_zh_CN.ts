@@ -353,10 +353,6 @@ Are you sure you wish to encrypt your wallet?</source>
         <translation>Paycoin客户端</translation>
     </message>
     <message>
-        <source>p-qt</source>
-        <translation>p-qt</translation>
-    </message>
-    <message>
         <source>Synchronizing with network...</source>
         <translation>正在与网络同步...</translation>
     </message>
@@ -428,7 +424,7 @@ Address: %4
         <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation>发生致命错误。Paycoin无法继续安全运行，将要退出。</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>CoinControlDialog</name>
     <message>
@@ -607,7 +603,7 @@ Address: %4
         <source>(change)</source>
         <translation>(零钱)</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>DisplayOptionsPage</name>
     <message>
@@ -691,16 +687,15 @@ Address: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
-    <message>
-        <source>Detach databases at shutdown</source>
-        <translation>关闭时断开数据库</translation>
-    </message>
     <message>
         <source>Detach block and address databases at shutdown. This means they can be moved to another data directory, but it slows down shutdown. The wallet is always detached.</source>
         <translation>关闭时断开块和地址数据库。这使它们能被移动到另外目录，但减慢关闭速度。钱包总是断开的。</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MintingTableModel</name>
     <message>
@@ -726,7 +721,7 @@ Address: %4
         <source>Could not write to file %1.</source>
         <translation>无法写入文件 %1。</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -899,10 +894,6 @@ Address: %4
         <translation>客户端版本</translation>
     </message>
     <message>
-        <source>Version</source>
-        <translation>版本</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>网络</translation>
     </message>
@@ -935,10 +926,6 @@ Address: %4
         <translation>创建日期</translation>
     </message>
     <message>
-        <source>&gt;</source>
-        <translation>&gt;</translation>
-    </message>
-    <message>
         <source>Clear console</source>
         <translation>清空控制台</translation>
     </message>
@@ -946,7 +933,7 @@ Address: %4
         <source>Welcome to the Paycoin RPC console.&lt;br&gt;Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.&lt;br&gt;Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
         <translation>欢迎来到Paycoin RPC 控制台。&lt;br&gt;使用上下方向键浏览历史,  &lt;b&gt;Ctrl-L&lt;/b&gt;清除屏幕。&lt;br&gt;使用 &lt;b&gt;help&lt;/b&gt; 命令显示帮助信息。</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsDialog</name>
     <message>
@@ -1030,10 +1017,6 @@ Address: %4
         <translation>移除所有交易项</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>清除全部</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>余额：</translation>
     </message>
@@ -1114,22 +1097,10 @@ Address: %4
         <translation>(没有标签)</translation>
     </message>
     <message>
-        <source>Amount exceeds your balance</source>
-        <translation>余额不足</translation>
-    </message>
-    <message>
         <source>Enter a Paycoin address</source>
         <translation>输入一个Paycoin地址</translation>
     </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>错误：交易创建失败 </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>错误：交易被拒绝。这种情况通常发生在您钱包中的一些币已经被用之后，比如您使用了一个wallet.dat的副本，而货币在那个副本中已经被消费，但在当前钱包中未被标记为已用掉。</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -1471,7 +1442,7 @@ Address: %4
         <source>Amount removed from or added to balance.</source>
         <translation>从余额添加或移除的金额</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1616,20 +1587,12 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>警告：磁盘空间低</translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>使用：</translation>
     </message>
     <message>
         <source>Paycoin version</source>
         <translation>Paycoin版本</translation>
-    </message>
-    <message>
-        <source>Send command to -server or paycoind</source>
-        <translation>向 -server或 paycoind发命令</translation>
     </message>
     <message>
         <source>List commands</source>
@@ -1661,15 +1624,6 @@ Address: %4
         <translation>不要生成货币</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>启动时最小化
-</translation>
-    </message>
-    <message>
-        <source>Show splash screen on startup (default: 1)</source>
-        <translation>启动时显示图片（缺省：1）</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>指定数据目录
 </translation>
@@ -1688,19 +1642,6 @@ Address: %4
 </translation>
     </message>
     <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>通过 socks4 代理连接</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>使用 addnode和 connect 选项时点时允许DNS查找
-</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>监听端口连接 &lt;port&gt; (缺省: 9901 或测试网络: 9903)</translation>
-    </message>
-    <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>最大连接数 &lt;n&gt;  (缺省: 125)</translation>
     </message>
@@ -1713,16 +1654,8 @@ Address: %4
         <translation>只连接到指定节点</translation>
     </message>
     <message>
-        <source>Find peers using internet relay chat (default: 0)</source>
-        <translation>通过IRC查找节点(缺省：0)</translation>
-    </message>
-    <message>
         <source>Accept connections from outside (default: 1)</source>
         <translation>接受来自外部的连接 (缺省: 1)</translation>
-    </message>
-    <message>
-        <source>Set language, for example "de_DE" (default: system locale)</source>
-        <translation>设置语言，例如"de_DE" (缺省：系统locale)</translation>
     </message>
     <message>
         <source>Find peers using DNS lookup (default: 1)</source>
@@ -1757,11 +1690,6 @@ Address: %4
         <translation>为付款交易支付费用(每kb)</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>接受命令行和 JSON-RPC 命令
-</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>在后台运行并接受命令</translation>
     </message>
@@ -1769,10 +1697,6 @@ Address: %4
         <source>Use the test network</source>
         <translation>使用测试网络
 </translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>输出更多调试信息</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1795,10 +1719,6 @@ Address: %4
         <source>Password for JSON-RPC connections</source>
         <translation>JSON-RPC连接密码
 </translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>JSON-RPC连接监听&lt;端口&gt; (默认为 9902)</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1835,11 +1755,6 @@ Address: %4
         <translation>块验证的全面程度(0-6，缺省：1)</translation>
     </message>
     <message>
-        <source>
-SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>SSL选项：(参见Bitcoin Wiki关于SSL设置栏目)</translation>
-    </message>
-    <message>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>为 JSON-RPC 连接使用 OpenSSL (https)连接</translation>
     </message>
@@ -1856,15 +1771,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
         <source>Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</source>
         <translation>可接受的加密器 (默认为 TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)
 </translation>
-    </message>
-    <message>
-        <source>This help message</source>
-        <translation>本帮助信息
-</translation>
-    </message>
-    <message>
-        <source>Usage</source>
-        <translation>使用</translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s.  Paycoin is probably already running.</source>
@@ -1889,10 +1795,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Loading addresses...</source>
         <translation>正在加载地址...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>addr.dat文件加载错误</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1935,20 +1837,8 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
         <translation>加载完成</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>代理地址不合法</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>非法金额 -paytxfee=&lt;amount&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>警告: -paytxfee 交易费设置很高。 每笔交易都将支付该数量的交易费.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>错误：NewThread(StartNode)失败</translation>
     </message>
     <message>
         <source>To use the %s option</source>

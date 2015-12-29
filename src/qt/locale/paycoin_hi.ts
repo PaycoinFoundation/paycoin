@@ -117,6 +117,9 @@
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -262,10 +265,6 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>चेतावनी: डिस्क भंडारण स्थान कम है </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>व्यवहार:</translation>
     </message>
@@ -294,14 +293,6 @@
         <translation>मुद्रांकन न करें</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>लघु किए शुरू करें</translation>
-    </message>
-    <message>
-        <source>Show splash screen on startup (default: 1)</source>
-        <translation>स्टार्टअप पर छप स्क्रीन दिखाएँ (डिफ़ॉल्ट : 1)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>डेटा डायरेक्टरी निर्दिष्ट करें</translation>
     </message>
@@ -316,18 +307,6 @@
     <message>
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>संबंध काल समापन निर्दिष्ट करें (मिलीसेकंड में )</translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>socks4 प्रॉक्सी के माध्यम से संबंध स्थापित करें</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>addnode के लिए DNS खोज की अनुमति दें और सम्बन्ध स्थापित करें </translation>
-    </message>
-    <message>
-        <source>This help message</source>
-        <translation>इस सहायता का सन्देश </translation>
     </message>
     <message>
         <source>Paycoin</source>

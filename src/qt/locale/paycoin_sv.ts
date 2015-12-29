@@ -393,6 +393,9 @@ Adress:%4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -420,7 +423,7 @@ Adress:%4
         <source>Could not write to file %1.</source>
         <translation>Kunde inte skriva till filen %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -560,10 +563,6 @@ Adress:%4
         <translation>Skicka till flera mottagare samtidigt</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Rensa alla</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Balans:</translation>
     </message>
@@ -595,19 +594,7 @@ Adress:%4
         <source>(no label)</source>
         <translation>(Ingen etikett)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Värdet överstiger ditt saldo</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Fel: Transaktionen gick inte att skapa</translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Fel: Transaktionen avslogs. Detta kan hända om några av mynten i plånboken redan spenderats, som om du använde en kopia av wallet.dat och mynt spenderades i kopian men inte markerats som spenderas här.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -970,20 +957,12 @@ Adress:%4
         <translation>Generera ej mynt</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Starta som minimerad</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Ange katalog för data</translation>
     </message>
     <message>
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>Ange timeout för uppkoppling (i millisekunder)</translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Koppla upp genom socks4 proxy</translation>
     </message>
     <message>
         <source>Connect only to the specified node</source>
@@ -996,10 +975,6 @@ Adress:%4
     <message>
         <source>Rescan the block chain for missing wallet transactions</source>
         <translation>Sök i block-kedjan efter saknade wallet transaktioner</translation>
-    </message>
-    <message>
-        <source>This help message</source>
-        <translation>Det här hjälp medelandet</translation>
     </message>
     <message>
         <source>Loading addresses...</source>
@@ -1028,14 +1003,6 @@ Adress:%4
     <message>
         <source>Done loading</source>
         <translation>Klar med laddning</translation>
-    </message>
-    <message>
-        <source>Invalid -proxy address</source>
-        <translation>Ogiltig proxyadress</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Ogiltigt belopp för -paytxfee=&lt;belopp&gt;</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

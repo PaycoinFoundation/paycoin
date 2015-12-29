@@ -28,7 +28,7 @@ Ce logiciel est en phase expérimentale.
 
 Distribué sous licence MIT, voir le fichier COPYING ou http://www.opensource.org/licenses/mit-license.php.
 
-Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisation dans la boite à outils OpenSSL (https://www.openssl.org/), un logiciel cryptographique écrit par Eric Young (eay@cryptsoft.com) et un logiciel UPnP écrit par Thomas Bernard. {2009-2014 ?} {11 ?}</translation>
+Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisation dans la boite à outils OpenSSL (https://www.openssl.org/), un logiciel cryptographique écrit par Eric Young (eay@cryptsoft.com) et un logiciel UPnP écrit par Thomas Bernard.</translation>
     </message>
 </context>
 <context>
@@ -43,7 +43,7 @@ Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisat
     </message>
     <message>
         <source>Double-click to edit address or label</source>
-        <translation>Double cliquez afin de modifier l'adresse ou l'étiquette</translation>
+        <translation>Double-cliquez afin de modifier l'adresse ou l'étiquette</translation>
     </message>
     <message>
         <source>Create a new address</source>
@@ -54,8 +54,24 @@ Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisat
         <translation>Copier l'adresse surlignée dans votre presse-papiers</translation>
     </message>
     <message>
+        <source>&amp;New Address</source>
+        <translation>&amp;Nouvelle Adresse</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Address</source>
+        <translation>&amp;Copier l'Adresse</translation>
+    </message>
+    <message>
+        <source>Copy the currently selected scrape address to the system clipboard</source>
+        <translation>Copier l'adresse de rendue de monnaie actuellement sélectionnée.</translation>
+    </message>
+    <message>
+        <source>Copy Scrape &amp;Address</source>
+        <translation>Copier l'&amp;Adresse de rendue de monnaie</translation>
+    </message>
+    <message>
         <source>Show &amp;QR Code</source>
-        <translation>Afficher le &amp;QR Code</translation>
+        <translation>Afficher le Code &amp;QR</translation>
     </message>
     <message>
         <source>Sign a message to prove you own this address</source>
@@ -74,12 +90,20 @@ Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisat
         <translation>&amp;Supprimer</translation>
     </message>
     <message>
+        <source>Copy &amp;Label</source>
+        <translation>Copier l'&amp;Étiquette</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation>&amp;Éditer</translation>
+    </message>
+    <message>
         <source>Export Address Book Data</source>
         <translation>Exporter les données du carnet d'adresses</translation>
     </message>
     <message>
         <source>Comma separated file (*.csv)</source>
-        <translation>Valeurs séparées par des virgules (*.csv)</translation>
+        <translation>Fichier à valeurs séparées par des virgules (*.csv)</translation>
     </message>
     <message>
         <source>Error exporting</source>
@@ -87,7 +111,7 @@ Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisat
     </message>
     <message>
         <source>Could not write to file %1.</source>
-        <translation>Impossible d'écrire sur le fichier %1.</translation>
+        <translation>Impossible d'écrire dans le fichier %1.</translation>
     </message>
 </context>
 <context>
@@ -101,12 +125,24 @@ Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisat
         <translation>Adresse</translation>
     </message>
     <message>
+        <source>Scrape Address</source>
+        <translation>Adresse de rendu de monnaie</translation>
+    </message>
+    <message>
         <source>(no label)</source>
         <translation>(aucune étiquette)</translation>
     </message>
-    </context>
+    <message>
+        <source>(no scrape address)</source>
+        <translation>(aucune adresse de rendu de monnaie)</translation>
+    </message>
+</context>
 <context>
     <name>AskPassphraseDialog</name>
+    <message>
+        <source>Passphrase Dialog</source>
+        <translation>Fenêtre de phrase de passe</translation>
+    </message>
     <message>
         <source>Enter passphrase</source>
         <translation>Entrez la phrase de passe</translation>
@@ -137,11 +173,11 @@ Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisat
     </message>
     <message>
         <source>This operation needs your wallet passphrase to decrypt the wallet.</source>
-        <translation>Cette opération nécessite votre phrase de passe pour décrypter le porte-monnaie.</translation>
+        <translation>Cette opération nécessite votre phrase de passe pour déchiffrer le porte-monnaie.</translation>
     </message>
     <message>
         <source>Decrypt wallet</source>
-        <translation>Décrypter le porte-monnaie</translation>
+        <translation>Déchiffrer le porte-monnaie</translation>
     </message>
     <message>
         <source>Change passphrase</source>
@@ -164,10 +200,14 @@ Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisat
         <translation>Le chiffrement du porte-monnaie a échoué</translation>
     </message>
     <message>
+        <source>Enter the old passphrase and new passphrase to the wallet.</source>
+        <translation>Entrez l'ancienne phrase de passe et la nouvelle phrase de passe du porte-monnaie</translation>
+    </message>
+    <message>
         <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
-        <translation>ATTENTION : si vous cryptez votre porte-monnaie et perdez votre mot de passe, vous &lt;b&gt;PERDREZ TOUS VOS PAYCOINS&lt;/b&gt; !
-Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
+        <translation>ATTENTION : si vous chiffrez votre porte-monnaie et perdez votre phrase de passe, vous &lt;b&gt;PERDREZ TOUS VOS PAYCOINS&lt;/b&gt; !
+Êtes-vous sûr de vouloir chiffrer votre porte-monnaie ?</translation>
     </message>
     <message>
         <source>Paycoin will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Paycoins from being stolen by malware infecting your computer.</source>
@@ -187,11 +227,11 @@ Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
     </message>
     <message>
         <source>The passphrase entered for the wallet decryption was incorrect.</source>
-        <translation>La phrase de passe entrée pour décrypter le porte-monnaie était incorrecte.</translation>
+        <translation>La phrase de passe entrée pour déchiffrer le porte-monnaie était incorrecte.</translation>
     </message>
     <message>
         <source>Wallet decryption failed</source>
-        <translation>Le décryptage du porte-monnaie a échoué</translation>
+        <translation>Le déchiffrement du porte-monnaie a échoué</translation>
     </message>
     <message>
         <source>Wallet passphrase was successfully changed.</source>
@@ -217,6 +257,14 @@ Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
         <translation>Parcourir l'historique des transactions</translation>
     </message>
     <message>
+        <source>&amp;Minting</source>
+        <translation>&amp;Frappe de monnaie</translation>
+    </message>
+    <message>
+        <source>Show your minting capacity</source>
+        <translation>Afficher la capacité de frappe de monnaie</translation>
+    </message>
+    <message>
         <source>&amp;Address Book</source>
         <translation>Carnet d'&amp;adresses</translation>
     </message>
@@ -226,7 +274,7 @@ Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
     </message>
     <message>
         <source>&amp;Receive coins</source>
-        <translation>&amp;Recevoir des pièces</translation>
+        <translation>&amp;Recevoir de la monnaie</translation>
     </message>
     <message>
         <source>Show the list of addresses for receiving payments</source>
@@ -234,7 +282,7 @@ Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
     </message>
     <message>
         <source>&amp;Send coins</source>
-        <translation>&amp;Envoyer des pièces</translation>
+        <translation>&amp;Envoyer de la monnaie</translation>
     </message>
     <message>
         <source>Prove you control an address</source>
@@ -274,7 +322,7 @@ Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
     </message>
     <message>
         <source>Encrypt or decrypt wallet</source>
-        <translation>Chiffrer ou décrypter le porte-monnaie</translation>
+        <translation>Chiffrer ou déchiffrer le porte-monnaie</translation>
     </message>
     <message>
         <source>&amp;Unlock Wallet for Minting Only</source>
@@ -282,7 +330,7 @@ Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
     </message>
     <message>
         <source>Unlock wallet only for minting. Sending coins will still require the passphrase.</source>
-        <translation>Déverrouiller uniquement pour la frappe de monnaie. Envoyer des pièces nécessite toujours d'entrer la phrase de passe.</translation>
+        <translation>Déverrouiller uniquement pour la frappe de monnaie. Envoyer de la monnaie nécessite toujours d'entrer la phrase de passe.</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -290,7 +338,7 @@ Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
     </message>
     <message>
         <source>Change the passphrase used for wallet encryption</source>
-        <translation>Modifier la phrase de passe utilisée pour le cryptage du porte-monnaie</translation>
+        <translation>Modifier la phrase de passe utilisée pour le chiffrement du porte-monnaie</translation>
     </message>
     <message>
         <source>&amp;Debug window</source>
@@ -298,7 +346,7 @@ Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
     </message>
     <message>
         <source>Open debugging and diagnostic console</source>
-        <translation>Ouvrir la console de débogage et de diagnostique</translation>
+        <translation>Ouvrir le terminal de débogage et de diagnostique</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -325,12 +373,29 @@ Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
         <translation>[testnet]</translation>
     </message>
     <message>
+        <source>Downloaded %1 of %2 blocks of transaction history (%3 percent done).</source>
+        <translation>%1 de %2 blocs de l'historique des transactions téléchargé (%3 pour-cent effectué).</translation>
+    </message>
+    <message>
+        <source>This transaction is over the size limit. You can still send it for a fee of %1. Do you want to pay the fee?</source>
+        <translation>Cette transaction dépasse la taille limite. Vous pouvez toujours l'envoyer en payant des frais à hauteur de %1.
+Voulez-vous payer les frais?</translation>
+    </message>
+    <message>
         <source>Paycoin Wallet</source>
         <translation>Porte-monnaie Paycoin</translation>
     </message>
     <message>
         <source>Send coins to a Paycoin address</source>
-        <translation>Envoyer des pièces à une adresse Paycoin</translation>
+        <translation>Envoyer de la monnaie à une adresse Paycoin</translation>
+    </message>
+    <message>
+        <source>Sign &amp;message...</source>
+        <translation>Signer le &amp;message...</translation>
+    </message>
+    <message>
+        <source>Multisig</source>
+        <translation>Multisignature</translation>
     </message>
     <message>
         <source>&amp;About Paycoin</source>
@@ -349,20 +414,56 @@ Etes-vous sûr de vouloir crypter votre porte-monnaie ?</translation>
         <translation>Afficher ou masquer la fenêtre Paycoin</translation>
     </message>
     <message>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>#Chiffrer le porte-monnaie...</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation>&amp;Sauvegarder le porte-monnaie...</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation>&amp;Changer la phrase de passe...</translation>
+    </message>
+    <message>
         <source>Paycoin client</source>
         <translation>Client Paycoin</translation>
     </message>
-    <message>
-        <source>p-qt</source>
-        <translation>p-qt</translation>
+    <message numerus="yes">
+        <source>%n active connection(s) to Paycoin network</source>
+        <translation><numerusform>%n connexion active au réseau Paycoin</numerusform><numerusform>%n connexions actives au réseau Paycoin</numerusform></translation>
     </message>
     <message>
         <source>Synchronizing with network...</source>
         <translation>Synchronisation avec le réseau...</translation>
     </message>
+    <message numerus="yes">
+        <source>~%n block(s) remaining</source>
+        <translation><numerusform>%n bloc restant</numerusform><numerusform>%n blocs restant</numerusform></translation>
+    </message>
+    <message>
+        <source>Confirm transaction fee</source>
+        <translation>Confirmer les frais de transaction</translation>
+    </message>
     <message>
         <source>Downloaded %1 blocks of transaction history.</source>
         <translation>%1 blocs de l'historique des transactions téléchargés.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s) ago</source>
+        <translation><numerusform>depuis %n seconde</numerusform><numerusform>depuis %n secondes</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s) ago</source>
+        <translation><numerusform>depuis %n minute</numerusform><numerusform>depuis %n minutes</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s) ago</source>
+        <translation><numerusform>depuis %n heure</numerusform><numerusform>depuis %n heures</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s) ago</source>
+        <translation><numerusform>depuis %n jour</numerusform><numerusform>depuis %n jours</numerusform></translation>
     </message>
     <message>
         <source>Up to date</source>
@@ -428,7 +529,7 @@ Adresse : %4
         <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation>Une erreur fatale a eu lieu. Paycoin ne peut plus continuer de manière sure et va se fermer.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>CoinControlDialog</name>
     <message>
@@ -510,6 +611,10 @@ Adresse : %4
     <message>
         <source>Confirmed</source>
         <translation>Confirmée</translation>
+    </message>
+    <message>
+        <source>Coin days</source>
+        <translation>Age de la monnaie</translation>
     </message>
     <message>
         <source>Priority</source>
@@ -596,6 +701,38 @@ Adresse : %4
         <translation>oui</translation>
     </message>
     <message>
+        <source>This label turns red if the transaction size is bigger than 10000 bytes.
+
+ This means a fee of at least %1 per kb is required.
+
+ Can vary +/- 1 Byte per input.</source>
+        <translation>L'étiquette devient rouge sur la taille de la transaction est supérieure à 10000 octets.
+
+Ceci veut dire que les frais à hauteur de %1 par kilo-octets sont requis.
+
+Peut varier +/- 1 Octet par entrée.</translation>
+    </message>
+    <message>
+        <source>Transactions with higher priority get more likely into a block.
+
+This label turns red if the priority is smaller than "medium".
+
+ This means a fee of at least %1 per kb is required.</source>
+        <translation>Les transactions qui ont une plus grande priorité ont plus de chances d'être dans un bloc.
+
+Si l'étiquette devient rouge si la priorité est inférieure à "moyen".
+
+Ceci veut dire que des frais à hauteur de %1 par kilo-octets sont requis.</translation>
+    </message>
+    <message>
+        <source>This label turns red if the change is smaller than %1.
+
+ This means a fee of at least %2 is required.</source>
+        <translation>L'étiquette devient rouge si la monnaie de change est plus petite que %1.
+
+Ceci veut dire que des frais à hauteur de %2 sont requis.</translation>
+    </message>
+    <message>
         <source>(no label)</source>
         <translation>(aucune étiquette)</translation>
     </message>
@@ -607,9 +744,21 @@ Adresse : %4
         <source>(change)</source>
         <translation>(monnaie)</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>DisplayOptionsPage</name>
+    <message>
+        <source>Display</source>
+        <translation>Affichage</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;Language: </source>
+        <translation>Interface Utilisateur &amp;Langue : </translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will only take effect after restarting Paycoin.</source>
+        <translation>La langue de l’interface utilisateur peut être définie ici. Les modifications prendront effet après le redémarrage de Paycoin.</translation>
+    </message>
     <message>
         <source>&amp;Unit to show amounts in: </source>
         <translation>&amp;Unité d'affichage des montants : </translation>
@@ -633,6 +782,14 @@ Adresse : %4
     <message>
         <source>Whether to show coin control features or not</source>
         <translation>Afficher ou non les fonctions de contrôle des pièces</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Attention</translation>
+    </message>
+    <message>
+        <source>This setting will take effect after restarting Paycoin.</source>
+        <translation>Les modifications prendront effet après le redémarrage de Paycoin.</translation>
     </message>
     </context>
 <context>
@@ -691,25 +848,128 @@ Adresse : %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     <message>
-        <source>Detach databases at shutdown</source>
-        <translation>Détacher les bases de données à la fermeture</translation>
+        <source>Main</source>
+        <translation>Principal</translation>
+    </message>
+    <message>
+        <source>Optional transaction fee per kB that helps make sure your transactions are processed quickly. Most transactions are 1 kB. Fee 0.01 recommended.</source>
+        <translation>Des frais optionnel par kilo-octets peuvent permettre à votre transaction d'être traitée plus vite. La plupart des transaction sont de moins de 1 kilo-octet. Des frais à hauteur de 0.01 sont recommandés.</translation>
+    </message>
+    <message>
+        <source>Pay transaction &amp;fee</source>
+        <translation>Payer les &amp;frais de transaction</translation>
     </message>
     <message>
         <source>Detach block and address databases at shutdown. This means they can be moved to another data directory, but it slows down shutdown. The wallet is always detached.</source>
         <translation>Détacher les bases de données des blocs et des adresses à la fermeture. Ceci signifie qu'elles pourront être déplacées vers un autre répertoire de données, mais cela ralentit la fermeture. Le porte-monnaie est toujours détaché.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MintingTableModel</name>
+    <message>
+        <source>Transaction</source>
+        <translation>Transaction</translation>
+    </message>
     <message>
         <source>Address</source>
         <translation>Adresse</translation>
     </message>
-    </context>
+    <message>
+        <source>Age</source>
+        <translation>Age</translation>
+    </message>
+    <message>
+        <source>Balance</source>
+        <translation>Solde</translation>
+    </message>
+    <message>
+        <source>CoinDay</source>
+        <translation>Age de la monnaie</translation>
+    </message>
+    <message>
+        <source>MintProbability</source>
+        <translation>Probabilité de frappe de monnaie</translation>
+    </message>
+    <message>
+        <source>minutes</source>
+        <translation>minutes</translation>
+    </message>
+    <message>
+        <source>hours</source>
+        <translation>heures</translation>
+    </message>
+    <message>
+        <source>days</source>
+        <translation>jours</translation>
+    </message>
+    <message>
+        <source>You have %1 chance to find a POS block if you mint %2 %3 at current difficulty.</source>
+        <translation>Vous avez %1 chance de trouver un POS bloc si vous frappez de la monnaie pendant %2 %3 à la difficulté courante.</translation>
+    </message>
+    <message>
+        <source>Destination address of the output.</source>
+        <translation>Adresse de destination de la transaction.</translation>
+    </message>
+    <message>
+        <source>Original transaction id.</source>
+        <translation>ID original de la transaction.</translation>
+    </message>
+    <message>
+        <source>Age of the transaction in days.</source>
+        <translation>Age de la transaction en jours</translation>
+    </message>
+    <message>
+        <source>Balance of the output.</source>
+        <translation>Solde de la sortie</translation>
+    </message>
+    <message>
+        <source>Coin age in the output.</source>
+        <translation>Age de la monnaie de la sortie</translation>
+    </message>
+    <message>
+        <source>Chance to mint a block within given time interval.</source>
+        <translation>Chance de miner un bloc dans l’intervalle de temps donné.</translation>
+    </message>
+</context>
 <context>
     <name>MintingView</name>
+    <message>
+        <source>transaction is too young</source>
+        <translation>la transaction est trop jeune</translation>
+    </message>
+    <message>
+        <source>transaction is mature</source>
+        <translation>la transaction est mature</translation>
+    </message>
+    <message>
+        <source>Display minting probability within : </source>
+        <translation>Afficher la probabilité de frappe de monnaie entre :</translation>
+    </message>
+    <message>
+        <source>10 min</source>
+        <translation>10 min</translation>
+    </message>
+    <message>
+        <source>24 hours</source>
+        <translation>24 heures</translation>
+    </message>
+    <message>
+        <source>30 days</source>
+        <translation>30 jours</translation>
+    </message>
+    <message>
+        <source>90 days</source>
+        <translation>90 jours</translation>
+    </message>
+    <message>
+        <source>Export Minting Data</source>
+        <translation>Exporter les données de frappe de monnaie</translation>
+    </message>
     <message>
         <source>Comma separated file (*.csv)</source>
         <translation>Valeurs séparées par des virgules (*.csv)</translation>
@@ -719,6 +979,26 @@ Adresse : %4
         <translation>Adresse</translation>
     </message>
     <message>
+        <source>Transaction</source>
+        <translation>Transaction</translation>
+    </message>
+    <message>
+        <source>Age</source>
+        <translation>Age</translation>
+    </message>
+    <message>
+        <source>CoinDay</source>
+        <translation>Age de la monnaie</translation>
+    </message>
+    <message>
+        <source>Balance</source>
+        <translation>Solde</translation>
+    </message>
+    <message>
+        <source>MintingProbability</source>
+        <translation>Probabilité de frappe de monnaie</translation>
+    </message>
+    <message>
         <source>Error exporting</source>
         <translation>Erreur lors de l'exportation</translation>
     </message>
@@ -726,7 +1006,7 @@ Adresse : %4
         <source>Could not write to file %1.</source>
         <translation>Impossible d'écrire sur le fichier %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -734,8 +1014,40 @@ Adresse : %4
         <translation>Formulaire</translation>
     </message>
     <message>
+        <source>Public &amp;key:</source>
+        <translation>&amp;Clé publique : </translation>
+    </message>
+    <message>
+        <source>The public key of an address</source>
+        <translation>La clé public d'une adresse</translation>
+    </message>
+    <message>
+        <source>Enter a public key</source>
+        <translation>Entrez une clé publique</translation>
+    </message>
+    <message>
+        <source>Paste public key from clipboard</source>
+        <translation>Coller la clé publique depuis le presse-papiers</translation>
+    </message>
+    <message>
         <source>Alt+P</source>
         <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Remove this public key</source>
+        <translation>Enlevez cette clé publique</translation>
+    </message>
+    <message>
+        <source>&amp;Address:</source>
+        <translation>&amp;Adresse : </translation>
+    </message>
+    <message>
+        <source>Address associated to the public key</source>
+        <translation>Adresse associée à la clé publique</translation>
+    </message>
+    <message>
+        <source>Enter one of your addresses to get its public key</source>
+        <translation>Entrez une de vos adresse pour avoir sa clé publique</translation>
     </message>
     <message>
         <source>Choose address from address book</source>
@@ -753,12 +1065,124 @@ Adresse : %4
 <context>
     <name>MultisigDialog</name>
     <message>
+        <source>Multisig</source>
+        <translation>Multisignature</translation>
+    </message>
+    <message>
+        <source>&amp;Create Address</source>
+        <translation>&amp;Créer une Adresse</translation>
+    </message>
+    <message>
+        <source>Add a member to the signing pool</source>
+        <translation>Ajouter un membre au serveur de signature</translation>
+    </message>
+    <message>
+        <source>&amp;Add public key...</source>
+        <translation>&amp;Ajouter une clé publique...</translation>
+    </message>
+    <message>
+        <source>Remove all public key fields</source>
+        <translation>Enlever tous les champs de clés publiques</translation>
+    </message>
+    <message>
         <source>Clear all</source>
         <translation>Tout effacer</translation>
     </message>
     <message>
+        <source>Required signatures:</source>
+        <translation>Signature requise : </translation>
+    </message>
+    <message>
+        <source>Enter a number</source>
+        <translation>Entrez un nombre</translation>
+    </message>
+    <message>
+        <source>/ 1</source>
+        <translation>/ 1</translation>
+    </message>
+    <message>
+        <source>Create multisig address</source>
+        <translation>Créer une adresse multisignée</translation>
+    </message>
+    <message>
+        <source>Multisig address:</source>
+        <translation>Adresse multisignée : </translation>
+    </message>
+    <message>
+        <source>Copy the multisig address to the system clipboard</source>
+        <translation>Copier l'adresse multisignée dans le presse-papiers</translation>
+    </message>
+    <message>
+        <source>Redeem script:</source>
+        <translation>Script de réclamation : </translation>
+    </message>
+    <message>
+        <source>Copy the redeem script to the system clipboard</source>
+        <translation>Copier le script de réclamation dans le presse-papiers</translation>
+    </message>
+    <message>
+        <source>The redeem script will be required to spend the funds sent to the multisig address</source>
+        <translation>Le script de réclamation est requis pour dépenser les fonds envoyé à une adresse mutisignée</translation>
+    </message>
+    <message>
+        <source>Save redeem script</source>
+        <translation>Sauver le script de réclamation</translation>
+    </message>
+    <message>
+        <source>Add the multisig address to your personal addresses</source>
+        <translation>Ajouter une adresse multisigné à votre adresse personnelle</translation>
+    </message>
+    <message>
+        <source>Add address to wallet</source>
+        <translation>Ajouter une adresse dans le porte-monnaie</translation>
+    </message>
+    <message>
+        <source>&amp;Spend Funds</source>
+        <translation>&amp;Dépenser les fonds</translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation>Entrées</translation>
+    </message>
+    <message>
+        <source>Inputs amount:</source>
+        <translation>Montant en entrée : </translation>
+    </message>
+    <message>
+        <source>123.456</source>
+        <translation>123.456</translation>
+    </message>
+    <message>
+        <source>XPY</source>
+        <translation>XPY</translation>
+    </message>
+    <message>
+        <source>Add input...</source>
+        <translation>Ajouter une entrée...</translation>
+    </message>
+    <message>
+        <source>Outputs</source>
+        <translation>Sorties</translation>
+    </message>
+    <message>
+        <source>Outputs amount:</source>
+        <translation>Montant en sortie : </translation>
+    </message>
+    <message>
         <source>Fee:</source>
         <translation>Frais :</translation>
+    </message>
+    <message>
+        <source>Add output...</source>
+        <translation>Ajouter une sortie...</translation>
+    </message>
+    <message>
+        <source>Create transaction</source>
+        <translation>Créer une transaction</translation>
+    </message>
+    <message>
+        <source>Enter a raw transaction or create a new one</source>
+        <translation>Entrez la transaction à l'état brut ou en créer une nouvelle</translation>
     </message>
     <message>
         <source>Paste address from clipboard</source>
@@ -768,7 +1192,35 @@ Adresse : %4
         <source>Alt+P</source>
         <translation>Alt+P</translation>
     </message>
-    </context>
+    <message>
+        <source>Sign transaction</source>
+        <translation>Signer la transaction</translation>
+    </message>
+    <message>
+        <source>Send transaction</source>
+        <translation>Envoyer la transaction</translation>
+    </message>
+    <message>
+        <source>Transaction signature is complete</source>
+        <translation>La signature de la transaction est effectuée</translation>
+    </message>
+    <message>
+        <source>Transaction is NOT completely signed</source>
+        <translation>La transaction n'est PAS complètement signée</translation>
+    </message>
+    <message>
+        <source>Confirm send transaction</source>
+        <translation>Confirmez l'envoi de la transaction</translation>
+    </message>
+    <message>
+        <source>The fee of the transaction (%1 XPY) is smaller than the expected fee (%2 XPY). Do you want to send the transaction anyway?</source>
+        <translation>Les frais de la transaction (%1 XPY) sont plus faible que les frais attendu (%2 XPY). Voulez-vous quand même envoyer la transaction?</translation>
+    </message>
+    <message>
+        <source>The fee of the transaction (%1 XPY) is bigger than the expected fee (%2 XPY). Do you want to send the transaction anyway?</source>
+        <translation>Les frais de la transaction (%1 XPY) sont plus gros que les frais attendu (%2 XPY). Voulez-vous quand même envoyer la transaction?</translation>
+    </message>
+</context>
 <context>
     <name>MultisigInputEntry</name>
     <message>
@@ -776,8 +1228,28 @@ Adresse : %4
         <translation>Formulaire</translation>
     </message>
     <message>
+        <source>Enter a transaction id</source>
+        <translation>Entrez l'ID de la transaction</translation>
+    </message>
+    <message>
         <source>Alt+P</source>
         <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Transaction id:</source>
+        <translation>ID de la transaction : </translation>
+    </message>
+    <message>
+        <source>Transaction output:</source>
+        <translation>Sortie de la transaction : </translation>
+    </message>
+    <message>
+        <source>Redeem script:</source>
+        <translation>Script de réclamation : </translation>
+    </message>
+    <message>
+        <source>Enter the redeem script of the address in the transaction output</source>
+        <translation>Inclure le script de reclamation lié à l'adresse dans la transaction de sortie</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -789,6 +1261,34 @@ Adresse : %4
     <message>
         <source>Network</source>
         <translation>Réseau</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>Ouvrir le port avec l'&amp;UPnP</translation>
+    </message>
+    <message>
+        <source>Automatically open the Paycoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Ouvrir automatiquement le port du client Paycoin sur le routeur. Ceci ne fonctionne que si votre routeur supporte le protocole UPnP et l'a activé.</translation>
+    </message>
+    <message>
+        <source>&amp;Connect through SOCKS4 proxy:</source>
+        <translation>&amp;Connexion à travers un proxy SOCKS4 :</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP: </source>
+        <translation>&amp;IP du proxy : </translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. 127.0.0.1)</source>
+        <translation>Adresse IP du proxy (par ex. 127.0.0.1)</translation>
+    </message>
+    <message>
+        <source>&amp;Port: </source>
+        <translation>&amp;Port : </translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 1234)</source>
+        <translation>Port du proxy (par ex. 1234)</translation>
     </message>
     </context>
 <context>
@@ -833,6 +1333,10 @@ Adresse : %4
         <translation>Votre solde actuel</translation>
     </message>
     <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Paycoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>L'information affichée peut être obsolète. Votre porte-monnaie va se synchroniser automatiquement dès qu'une connexion au réseau Paycoin sera établie, mais ce processus n'a pas pu encore être effectué.</translation>
+    </message>
+    <message>
         <source>Your current stake</source>
         <translation>Vos nouvelles pièces frappées</translation>
     </message>
@@ -844,9 +1348,17 @@ Adresse : %4
         <source>Total number of transactions in wallet</source>
         <translation>Nombre total de transactions dans le porte-monnaie</translation>
     </message>
-    </context>
+    <message>
+        <source>out of sync</source>
+        <translation>désynchronisé</translation>
+    </message>
+</context>
 <context>
     <name>QRCodeDialog</name>
+    <message>
+        <source>QR Code Dialog</source>
+        <translation>Fenêtre de code QR</translation>
+    </message>
     <message>
         <source>QR Code</source>
         <translation>Code QR</translation>
@@ -858,6 +1370,10 @@ Adresse : %4
     <message>
         <source>Amount:</source>
         <translation>Montant :</translation>
+    </message>
+    <message>
+        <source>XPY</source>
+        <translation>XPY</translation>
     </message>
     <message>
         <source>Label:</source>
@@ -880,12 +1396,24 @@ Adresse : %4
         <translation>URI trop long, essayez de réduire la taille du texte de l'étiquette ou du message.</translation>
     </message>
     <message>
+        <source>Save QR Code</source>
+        <translation>Sauver le Code QR</translation>
+    </message>
+    <message>
         <source>PNG Images (*.png)</source>
         <translation>Images PNG (*.png)</translation>
     </message>
 </context>
 <context>
     <name>RPCConsole</name>
+    <message>
+        <source>Paycoin debug window</source>
+        <translation>Fenêtre de débogage Paycoin</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Informations</translation>
+    </message>
     <message>
         <source>Client name</source>
         <translation>Nom du client</translation>
@@ -897,10 +1425,6 @@ Adresse : %4
     <message>
         <source>Client version</source>
         <translation>Version du client</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation>Version</translation>
     </message>
     <message>
         <source>Network</source>
@@ -931,12 +1455,28 @@ Adresse : %4
         <translation>Horodatage du dernier bloc</translation>
     </message>
     <message>
+        <source>Debug logfile</source>
+        <translation>Journaux de débogage</translation>
+    </message>
+    <message>
+        <source>Open the Paycoin debug logfile from the current data directory. This can take a few seconds for large logfiles.</source>
+        <translation>Ouvrir les journaux de débogage depuis le répertoire de données courant. Ceci peut prendre plusieurs secondes pour de large journaux.</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Ouvrir</translation>
+    </message>
+    <message>
         <source>Build date</source>
         <translation>Date de construction</translation>
     </message>
     <message>
-        <source>&gt;</source>
-        <translation>&gt;</translation>
+        <source>&amp;Console</source>
+        <translation>&amp;Terminal</translation>
+    </message>
+    <message>
+        <source>For more information on these commands, see the Wiki</source>
+        <translation>Pour obtenir plus d'informations sur cette commande, regardez sur le Wiki</translation>
     </message>
     <message>
         <source>Clear console</source>
@@ -946,7 +1486,7 @@ Adresse : %4
         <source>Welcome to the Paycoin RPC console.&lt;br&gt;Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.&lt;br&gt;Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
         <translation>Bienvenue dans la console RPC de Paycoin.&lt;br&gt;Utilisez les flèches haut et bas pour naviguer dans l'historique, et &lt;b&gt;Ctrl-L&lt;/b&gt; pour nettoyer l'écran.&lt;br&gt;Tapper &lt;b&gt;help&lt;/b&gt; pour avoir un aperçu des commandes disponibles.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsDialog</name>
     <message>
@@ -1026,12 +1566,12 @@ Adresse : %4
         <translation>Envoyer des pièces à plusieurs destinataires à la fois</translation>
     </message>
     <message>
-        <source>Remove all transaction fields</source>
-        <translation>Enlever tous les champs de transaction</translation>
+        <source>&amp;Add Recipient</source>
+        <translation>&amp;Ajouter Destinataire</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Tout effacer</translation>
+        <source>Remove all transaction fields</source>
+        <translation>Enlever tous les champs de transaction</translation>
     </message>
     <message>
         <source>Balance:</source>
@@ -1098,6 +1638,10 @@ Adresse : %4
         <translation> et </translation>
     </message>
     <message>
+        <source>The recipient address is not valid. Please recheck.</source>
+        <translation>L'adresse du destinataire est invalide. Veuillez revérifier.</translation>
+    </message>
+    <message>
         <source>The amount to pay must be at least one cent (0.01).</source>
         <translation>Le montant à payer doit être d'au moins un centime (0.01).</translation>
     </message>
@@ -1114,22 +1658,10 @@ Adresse : %4
         <translation>(aucune étiquette)</translation>
     </message>
     <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Le montant dépasse votre solde</translation>
-    </message>
-    <message>
         <source>Enter a Paycoin address</source>
         <translation>Entrez une adresse Paycoin</translation>
     </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Erreur : échec de la création de la transaction  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Erreur : la transaction a été rejetée.  Cela peut arriver si certaines pièces de votre porte-monnaie ont déjà été dépensées, par exemple si vous avez utilisé une copie de wallet.dat et si des pièces ont été dépensées avec cette copie sans être marquées comme telles ici.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -1155,6 +1687,10 @@ Adresse : %4
     <message>
         <source>The address to send the payment to</source>
         <translation>L'adresse à laquelle le paiement sera envoyé</translation>
+    </message>
+    <message>
+        <source>Enter a Paycoin address (e.g. PNS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
+        <translation>Entrez une adresse Paycoin (par ex. PNS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     <message>
         <source>Choose address from address book</source>
@@ -1327,6 +1863,10 @@ Adresse : %4
 <context>
     <name>SplashScreen</name>
     <message>
+        <source>The Paycoin developers</source>
+        <translation>Les développeurs de Paycoin</translation>
+    </message>
+    <message>
         <source>[testnet]</source>
         <translation>[testnet]</translation>
     </message>
@@ -1337,6 +1877,14 @@ Adresse : %4
         <source>Open until %1</source>
         <translation>Ouvert jusqu'à %1</translation>
     </message>
+    <message numerus="yes">
+        <source>Open for %n block(s)</source>
+        <translation><numerusform>Ouvert pour %n bloc</numerusform><numerusform>Ouvert pour %n blocs</numerusform></translation>
+    </message>
+    <message>
+        <source>%1/offline</source>
+        <translation>%1/hors ligne</translation>
+    </message>
     <message>
         <source>%1/unconfirmed</source>
         <translation>%1/non confirmée</translation>
@@ -1346,12 +1894,108 @@ Adresse : %4
         <translation>%1 confirmations</translation>
     </message>
     <message>
+        <source>Status</source>
+        <translation>Status</translation>
+    </message>
+    <message numerus="yes">
+        <source>, broadcast through %n node(s)</source>
+        <translation><numerusform>, envoyé à travers %n node</numerusform><numerusform>, envoyé à travers %n nodes</numerusform></translation>
+    </message>
+    <message>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
+        <source>Source</source>
+        <translation>Source</translation>
+    </message>
+    <message>
+        <source>Generated</source>
+        <translation>Généré</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>Émetteur</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>Destinataire</translation>
+    </message>
+    <message>
+        <source>own address</source>
+        <translation>adresse possédée</translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation>Étiquette</translation>
+    </message>
+    <message>
+        <source>Credit</source>
+        <translation>Crédit</translation>
+    </message>
+    <message numerus="yes">
+        <source>matures in %n more block(s)</source>
+        <translation><numerusform>maturité dans %n bloc(s)</numerusform><numerusform>maturité dans %n bloc(s)</numerusform></translation>
+    </message>
+    <message>
+        <source>not accepted</source>
+        <translation>Non accepté</translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation>Débit</translation>
+    </message>
+    <message>
+        <source>Transaction fee</source>
+        <translation>Frais de transaction</translation>
+    </message>
+    <message>
+        <source>Net amount</source>
+        <translation>Montant net</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Message</translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation>Commentaire</translation>
+    </message>
+    <message>
+        <source>Transaction ID</source>
+        <translation>ID de la transaction</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature 120 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation>La monnaie qui a été frappée nécessite 120 blocs de maturité avant de pouvoir être dépensée. Quand vous générez un bloc, il est envoyé sur tous le réseau pour être ajouté à la chaîne de blocs. S'il ne réussi pas à entrée dans la chaîne, son état change en "non accepté" et il ne sera pas possible de le dépenser. Ceci peu arriver occasionnellement si un nœud à généré un bloc en même temps que vous.</translation>
+    </message>
+    <message>
+        <source>Staked coins must mature 120 blocks before they can be spent. When you generated this Proof-of-Stake block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a Proof-of-Stake block within a few seconds of yours.</source>
+        <translation>La monnaie qui a été frappée nécessite 120 blocs de maturité avant de pouvoir être dépensée. Quand vous générez un Proof-of-Stake bloc, il est envoyé sur tous le réseau pour être ajouté à la chaîne de blocs. S'il ne réussi pas à entrée dans la chaîne, son état change en "non accepté" et il ne sera pas possible de le dépenser. Ceci peu arriver occasionnellement si un nœud à généré un Proof-of-Stake bloc en même temps que vous.</translation>
+    </message>
+    <message>
+        <source>Debug information</source>
+        <translation>Information de débogage</translation>
+    </message>
+    <message>
+        <source>Transaction</source>
+        <translation>Transaction</translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation>Entrées</translation>
+    </message>
+    <message>
         <source>Amount</source>
         <translation>Montant</translation>
+    </message>
+    <message>
+        <source>true</source>
+        <translation>vrai</translation>
+    </message>
+    <message>
+        <source>false</source>
+        <translation>faux</translation>
     </message>
     <message>
         <source>, has not been successfully broadcast yet</source>
@@ -1471,7 +2115,7 @@ Adresse : %4
         <source>Amount removed from or added to balance.</source>
         <translation>Montant ajouté au ou enlevé du solde.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1547,8 +2191,24 @@ Adresse : %4
         <translation>Copier le montant</translation>
     </message>
     <message>
+        <source>Copy transaction id</source>
+        <translation>Copier l'id de la transaction</translation>
+    </message>
+    <message>
+        <source>Open transaction in ledger</source>
+        <translation>Ouvrir la transaction dans le livre des comptes</translation>
+    </message>
+    <message>
         <source>Edit label</source>
         <translation>Éditer l'étiquette</translation>
+    </message>
+    <message>
+        <source>Show transaction details</source>
+        <translation>Afficher les détails de la transaction</translation>
+    </message>
+    <message>
+        <source>Clear orphans</source>
+        <translation>Supprimer les orphelins</translation>
     </message>
     <message>
         <source>Export Transaction Data</source>
@@ -1612,28 +2272,36 @@ Adresse : %4
 </context>
 <context>
     <name>WindowOptionsPage</name>
-    </context>
+    <message>
+        <source>Window</source>
+        <translation>Fenêtre</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;Minimiser dans la barre système au lieu de la barre des tâches Windows</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window</source>
+        <translation>Montrer uniquement une icône dans la barre des tâches Windows après réduction de la fenêtre.</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>Fermer en R&amp;éduisant</translation>
+    </message>
+    <message>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Quit in the menu.</source>
+        <translation>Réduire l'application au lieu de la fermer quand la fenêtre est fermée. Quand cette option est activée, l'application sera fermée seulement lors de la sélection de l'option Quitter dans le menu.</translation>
+    </message>
+</context>
 <context>
     <name>bitcoin-core</name>
-    <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Attention : l'espace disque est faible</translation>
-    </message>
     <message>
         <source>Usage:</source>
         <translation>Utilisation :</translation>
     </message>
     <message>
-        <source>Unable to bind to port %d on this computer.  Paycoin is probably already running.</source>
-        <translation>Impossible de se lier au port %d de cet ordinateur. Paycoin est probablement déjà en cours de fonctionnement.</translation>
-    </message>
-    <message>
         <source>Paycoin version</source>
         <translation>Version de Paycoin</translation>
-    </message>
-    <message>
-        <source>Send command to -server or paycoind</source>
-        <translation>Envoyer une commande à -server ou à paycoind</translation>
     </message>
     <message>
         <source>List commands</source>
@@ -1664,14 +2332,6 @@ Adresse : %4
         <translation>Ne pas générer de pièces</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Démarrer sous forme minimisée</translation>
-    </message>
-    <message>
-        <source>Show splash screen on startup (default: 1)</source>
-        <translation>Afficher l'écran d'accueil au démarrage (par défaut : 1)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Spécifier le répertoire de données</translation>
     </message>
@@ -1688,18 +2348,6 @@ Adresse : %4
         <translation>Spécifier le délai d'expiration de la connexion (en millisecondes)</translation>
     </message>
     <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Connexion via un proxy socks4</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Autoriser les recherches DNS pour l'ajout de nœuds et la connexion</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Écouter les connexions sur le &lt;port&gt; (par défaut : 9901 ou testnet : 9903)</translation>
-    </message>
-    <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Garder au plus &lt;n&gt; connexions avec les pairs (par défaut : 125)</translation>
     </message>
@@ -1712,16 +2360,8 @@ Adresse : %4
         <translation>Ne se connecter qu'au nœud spécifié</translation>
     </message>
     <message>
-        <source>Find peers using internet relay chat (default: 0)</source>
-        <translation>Trouver des pairs en utilisant IRC (internet relay chat) (par défaut : 0)</translation>
-    </message>
-    <message>
         <source>Accept connections from outside (default: 1)</source>
         <translation>Accepter les connexions venant de l'extérieur (par défaut : 1)</translation>
-    </message>
-    <message>
-        <source>Set language, for example "de_DE" (default: system locale)</source>
-        <translation>Configurer la langue, par exemple "de_DE" (par défaut : locale système)</translation>
     </message>
     <message>
         <source>Find peers using DNS lookup (default: 1)</source>
@@ -1756,20 +2396,12 @@ Adresse : %4
         <translation>Frais par Ko à ajouter aux transactions que vous envoyez</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Accepter les commandes de JSON-RPC et de la ligne de commande</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Fonctionner en arrière-plan en tant que démon et accepter les commandes</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>Utiliser le réseau de test</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Informations de débogage supplémentaires</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1790,10 +2422,6 @@ Adresse : %4
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Mot de passe pour les connexions JSON-RPC</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Écouter les connexions JSON-RPC sur le &lt;port&gt; (par défaut : 9902)</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1828,11 +2456,6 @@ Adresse : %4
         <translation>Avec quelle minutie les blocs sont vérifiés (0-6, par défaut : 1)</translation>
     </message>
     <message>
-        <source>
-SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>Options SSL : (voir le wiki Bitcoin pour les instructions de configuration de SSL)</translation>
-    </message>
-    <message>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>Utiliser OpenSSL (https) pour les connexions JSON-RPC</translation>
     </message>
@@ -1847,14 +2470,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</source>
         <translation>Chiffrements acceptables (par défaut : TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
-    </message>
-    <message>
-        <source>This help message</source>
-        <translation>Ce message d'aide</translation>
-    </message>
-    <message>
-        <source>Usage</source>
-        <translation>Utilisation</translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s.  Paycoin is probably already running.</source>
@@ -1879,10 +2494,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Loading addresses...</source>
         <translation>Chargement des adresses...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Erreur lors du chargement de addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1925,20 +2536,8 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
         <translation>Chargement terminé</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Adresse -proxy invalide</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Montant invalide pour -paytxfee=&lt;montant&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Attention : -paytxfee est réglée sur un montant très élevé.  Il s'agit des frais de transaction que vous payerez si vous envoyez une transaction.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Erreur : NewThread(StartNode) a échoué</translation>
     </message>
     <message>
         <source>To use the %s option</source>

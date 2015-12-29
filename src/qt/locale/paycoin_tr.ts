@@ -261,6 +261,9 @@
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -288,7 +291,7 @@
         <source>Could not write to file %1.</source>
         <translation>%1 dosyasına yazılamadı.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -440,10 +443,6 @@
         <translation>Bütün muamele alanlarını kaldır</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Tümünü temizle</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Bakiye:</translation>
     </message>
@@ -483,19 +482,7 @@
         <source>(no label)</source>
         <translation>(boş etiket)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Tutar bakiyenizden yüksektir</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Hata: Muamele oluşturması başarısız oldu  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Hata: Muamele reddedildi.  Cüzdanınızdaki madenî paraların bazıları zaten harcanmış olduğunda bu meydana gelebilir. Örneğin wallet.dat dosyasının bir kopyasını kullandıysanız ve kopyada para harcandığında ancak burada harcandığı işaretlenmediğinde.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -689,7 +676,7 @@
         <source>Amount removed from or added to balance.</source>
         <translation>Bakiyeden alınan ya da bakiyeye eklenen miktar.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>

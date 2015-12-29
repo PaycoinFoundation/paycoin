@@ -45,6 +45,9 @@
     <name>EditAddressDialog</name>
     </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>

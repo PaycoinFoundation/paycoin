@@ -351,10 +351,6 @@ Apakah Anda yakin ingin mengenkripsi dompet Anda?</translation>
         <translation>Klien Paycoin</translation>
     </message>
     <message>
-        <source>p-qt</source>
-        <translation>p-qt</translation>
-    </message>
-    <message>
         <source>Synchronizing with network...</source>
         <translation>Sinkronisasi dengan jaringan ...</translation>
     </message>
@@ -425,7 +421,7 @@ Alamat: %4</translation>
         <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation>Sebuah error fatal terjadi. Paycoin tidak bisa lagi melanjutkan dengan aman dan akan berhenti.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>CoinControlDialog</name>
     <message>
@@ -604,7 +600,7 @@ Alamat: %4</translation>
         <source>(change)</source>
         <translation>(perubahan)</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>DisplayOptionsPage</name>
     <message>
@@ -688,16 +684,15 @@ Alamat: %4</translation>
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
-    <message>
-        <source>Detach databases at shutdown</source>
-        <translation>Lepaskan database di shutdown</translation>
-    </message>
     <message>
         <source>Detach block and address databases at shutdown. This means they can be moved to another data directory, but it slows down shutdown. The wallet is always detached.</source>
         <translation>Lepaskan blok dan database alamat di shutdown. Ini berarti mereka dapat dipindahkan ke direktori data lain, tetapi memperlambat shutdown. Dompet selalu terpisah.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MintingTableModel</name>
     <message>
@@ -723,7 +718,7 @@ Alamat: %4</translation>
         <source>Could not write to file %1.</source>
         <translation>Tidak dapat menulis untuk file %1,</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -896,10 +891,6 @@ Alamat: %4</translation>
         <translation>Versi klien</translation>
     </message>
     <message>
-        <source>Version</source>
-        <translation>Versi</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>Jaringan</translation>
     </message>
@@ -932,10 +923,6 @@ Alamat: %4</translation>
         <translation>Membangun tanggal</translation>
     </message>
     <message>
-        <source>&gt;</source>
-        <translation>&gt;</translation>
-    </message>
-    <message>
         <source>Clear console</source>
         <translation>Hapus konsol</translation>
     </message>
@@ -943,7 +930,7 @@ Alamat: %4</translation>
         <source>Welcome to the Paycoin RPC console.&lt;br&gt;Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.&lt;br&gt;Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
         <translation>Selamat datang di konsol Paycoin RPC. &lt;br&gt;Gunakan panah atas dan bawah untuk menavigasi sejarah, dan &lt;b&gt;Ctrl-L&lt;/b&gt; untuk menghapus layar. &lt;br&gt;Type &lt;b&gt;help&lt;/b&gt;  untuk overview command yang tersedia.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsDialog</name>
     <message>
@@ -1027,10 +1014,6 @@ Alamat: %4</translation>
         <translation>Hapus semua bidang transaksi</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Hapus semua</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Saldo:</translation>
     </message>
@@ -1111,22 +1094,10 @@ Alamat: %4</translation>
         <translation>(no label)</translation>
     </message>
     <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Jumlah melebihi saldo Anda</translation>
-    </message>
-    <message>
         <source>Enter a Paycoin address</source>
         <translation>Masukkan alamat Paycoin</translation>
     </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Error: Transaksi gagal diciptakan</translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Error: Transaksi ditolak. Hal ini dapat terjadi jika beberapa koin dalam dompet Anda sudah dihabiskan, seperti jika Anda menggunakan salinan wallet.dat dan koin dihabiskan di copy tapi tidak ditandai telah dihabiskan di sini.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -1468,7 +1439,7 @@ Alamat: %4</translation>
         <source>Amount removed from or added to balance.</source>
         <translation>Jumlah dihapus dari atau ditambahkan untuk saldo.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1613,24 +1584,12 @@ Alamat: %4</translation>
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Peringatan: Disk space sedikit</translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Penggunaan:</translation>
     </message>
     <message>
-        <source>Unable to bind to port %d on this computer.  Paycoin is probably already running.</source>
-        <translation>Tidak dapat mengikat ke port %d di komputer ini. Paycoin mungkin sudah berjalan.</translation>
-    </message>
-    <message>
         <source>Paycoin version</source>
         <translation>Versi Paycoin</translation>
-    </message>
-    <message>
-        <source>Send command to -server or paycoind</source>
-        <translation>Kirim command ke -server atau paycoind</translation>
     </message>
     <message>
         <source>List commands</source>
@@ -1661,14 +1620,6 @@ Alamat: %4</translation>
         <translation>Jangan menghasilkan koin</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Mulai diminimalkan</translation>
-    </message>
-    <message>
-        <source>Show splash screen on startup (default: 1)</source>
-        <translation>Tampilkan splash screen pada startup (default: 1)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Tentukan direktori data</translation>
     </message>
@@ -1685,18 +1636,6 @@ Alamat: %4</translation>
         <translation>Tentukan batas waktu koneksi (dalam milidetik)</translation>
     </message>
     <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Koneksi melalui proxy socks4</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Memperbolehkan lookup DNS untuk addnode dan menyambung</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Mendengarkan koneksi pada &lt;port&gt; (default: 9901 or testnet: 9903)</translation>
-    </message>
-    <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Memelihara yang paling &lt;n&gt; koneksi ke peers (default: 125)</translation>
     </message>
@@ -1709,16 +1648,8 @@ Alamat: %4</translation>
         <translation>Terkoneksi hanya pada node yang ditentukan</translation>
     </message>
     <message>
-        <source>Find peers using internet relay chat (default: 0)</source>
-        <translation>Cari peers menggunakan internet relay chat (default: 0)</translation>
-    </message>
-    <message>
         <source>Accept connections from outside (default: 1)</source>
         <translation>Menerima koneksi dari luar (default: 1)</translation>
-    </message>
-    <message>
-        <source>Set language, for example "de_DE" (default: system locale)</source>
-        <translation>Mengatur bahasa, misalnya "de_DE" (default: system locale)</translation>
     </message>
     <message>
         <source>Find peers using DNS lookup (default: 1)</source>
@@ -1753,20 +1684,12 @@ Alamat: %4</translation>
         <translation>Biaya per KB untuk menambah transaksi yang Anda kirim</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Terima baris command dan command JSON-RPC</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Berjalan di latar belakang sebagai daemon dan menerima command</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>Menggunakan network test</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Extra output informasi debug</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1787,10 +1710,6 @@ Alamat: %4</translation>
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Password untuk koneksi JSON-RPC</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Mendengarkan koneksi JSON-RPC pada &lt;port&gt; (default: 9902)</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1825,11 +1744,6 @@ Alamat: %4</translation>
         <translation>Bagaimana meneliti verifikasi blok (0-6, default: 1)</translation>
     </message>
     <message>
-        <source>
-SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>Pilihan SSL: (lihat Bitcoin Wiki untuk instruksi pemasangan SSL)</translation>
-    </message>
-    <message>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>Gunakan OpenSSL (https) untuk koneksi JSON-RPC</translation>
     </message>
@@ -1844,14 +1758,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</source>
         <translation>Ciphers diterima (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
-    </message>
-    <message>
-        <source>This help message</source>
-        <translation>Ini Pesan Bantuan</translation>
-    </message>
-    <message>
-        <source>Usage</source>
-        <translation>Penggunaan</translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s.  Paycoin is probably already running.</source>
@@ -1876,10 +1782,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Loading addresses...</source>
         <translation>Loading alamat...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Error loading addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1922,20 +1824,8 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
         <translation>Loading selesai</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Alamat -Proxy tidak valid</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Jumlah tidak valid untuk -paytxfee=&lt;amount&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Peringatan: -paytxfee diatur sangat tinggi. Ini adalah biaya transaksi Anda yang akan dibayar jika Anda mengirim transaksi.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Error: NewThread (StartNode) gagal</translation>
     </message>
     <message>
         <source>To use the %s option</source>

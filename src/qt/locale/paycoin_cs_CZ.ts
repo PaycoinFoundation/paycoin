@@ -437,6 +437,9 @@ Adresa: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -464,7 +467,7 @@ Adresa: %4
         <source>Could not write to file %1.</source>
         <translation>Nemohu zapisovat do souboru %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -624,10 +627,6 @@ Adresa: %4
         <translation>Smaž všechny transakční formuláře</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Všechno smaž</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Stav účtu:</translation>
     </message>
@@ -667,19 +666,7 @@ Adresa: %4
         <source>(no label)</source>
         <translation>(bez označení)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Částka překračuje stav účtu</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Chyba: Vytvoření transakce selhalo  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Chyba Transakce byla odmítnuta.  Tohle může nastat, pokud nějaké mince z tvé peněženky už jednou byly utraceny, například pokud používáš kopii souboru wallet.dat a mince byly utraceny v druhé kopii, ale nebyly označeny jako utracené v této.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -885,7 +872,7 @@ Adresa: %4
         <source>Amount removed from or added to balance.</source>
         <translation>Částka odečtená z nebo přičtená k účtu.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1026,10 +1013,6 @@ Adresa: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Upozornění: Na disku je málo místa  </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Užití:</translation>
     </message>
@@ -1058,28 +1041,12 @@ Adresa: %4
         <translation>Negenerovat mince</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Startovat minimalizovaně</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Adresář pro data</translation>
     </message>
     <message>
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>Zadej časový limit spojení (v milisekundách)</translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Připojovat se přes socks4 proxy</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Povolit DNS dotazy pro addnode (přidání uzlu) a connect (připojení)</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Čekat na spojení na &lt;portu&gt; (výchozí: 8333 nebo testnet: 18333) {9901 ?} {9903)?}</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -1106,20 +1073,12 @@ Adresa: %4
         <translation>Maximální velikost odesílacího bufferu pro každé spojení, &lt;n&gt;*1000 bytů (výchozí: 10000)</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Akceptovat příkazy z příkazové řádky a přes JSON-RPC</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Běžet na pozadí jako démon a akceptovat příkazy</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>Použít testovací síť (testnet)</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Tisknout speciální ladící informace</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1140,10 +1099,6 @@ Adresa: %4
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Heslo pro JSON-RPC spojení</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Čekat na JSON-RPC spojení na &lt;portu&gt; (výchozí: 8332) {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1178,16 +1133,8 @@ Adresa: %4
         <translation>Akceptovatelné šifry (výchozí: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>Tato nápověda</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>Načítám adresy...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Chyba při načítání addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1218,20 +1165,8 @@ Adresa: %4
         <translation>Načítání dokončeno</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Neplatná -proxy adresa</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Neplatná částka pro -paytxfee=&lt;částka&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Upozornění: -paytxfee je nastaveno velmi vysoko.  Toto je transakční poplatek, který zaplatíš za každou poslanou transakci.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Chyba: Selhalo NewThread(StartNode)</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

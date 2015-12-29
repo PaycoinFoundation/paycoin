@@ -8,7 +8,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;b&gt;Paycoin&lt;/b&gt; versjon</translation>
     </message>
     <message>
         <source>Copyright © 2009-2012 Bitcoin Developers
@@ -51,6 +51,22 @@ Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i Op
         <translation>Kopier den valgte adressen til systemets utklippstavle</translation>
     </message>
     <message>
+        <source>&amp;New Address</source>
+        <translation>&amp;Ny Adresse</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Address</source>
+        <translation>&amp;Kopier Adresse</translation>
+    </message>
+    <message>
+        <source>Copy the currently selected scrape address to the system clipboard</source>
+        <translation>Kopier den valgte skrape-adressen til systemets utklippstavle</translation>
+    </message>
+    <message>
+        <source>Copy Scrape &amp;Address</source>
+        <translation>Kopier Skrape-&amp;Adresse</translation>
+    </message>
+    <message>
         <source>Show &amp;QR Code</source>
         <translation>Vis &amp;QR-kode</translation>
     </message>
@@ -69,6 +85,14 @@ Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i Op
     <message>
         <source>&amp;Delete</source>
         <translation>&amp;Slett</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Label</source>
+        <translation>Kopier &amp;Merkelapp</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation>&amp;Rediger</translation>
     </message>
     <message>
         <source>Export Address Book Data</source>
@@ -98,10 +122,18 @@ Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i Op
         <translation>Adresse</translation>
     </message>
     <message>
+        <source>Scrape Address</source>
+        <translation>Skrape-Adresse</translation>
+    </message>
+    <message>
         <source>(no label)</source>
         <translation>(ingen merkelapp)</translation>
     </message>
-    </context>
+    <message>
+        <source>(no scrape address)</source>
+        <translation>(ingen skrape-adresse)</translation>
+    </message>
+</context>
 <context>
     <name>AskPassphraseDialog</name>
     <message>
@@ -161,6 +193,10 @@ Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i Op
         <translation>Kryptering av lommebok feilet</translation>
     </message>
     <message>
+        <source>Enter the old passphrase and new passphrase to the wallet.</source>
+        <translation>Skriv inn det gamle og det nye passordet til lommeboken.</translation>
+    </message>
+    <message>
         <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
 Are you sure you wish to encrypt your wallet?</source>
         <translation>ADVARSEL: Hvis du krypterer lommeboken og mister passordet, så vil du &lt;b&gt;MISTE ALLE DINE PAYCOINS&lt;/b&gt;!
@@ -212,6 +248,14 @@ Er du sikker på at du vil kryptere lommeboken din?</translation>
     <message>
         <source>Browse transaction history</source>
         <translation>Vis transaksjonshistorikk</translation>
+    </message>
+    <message>
+        <source>&amp;Minting</source>
+        <translation>&amp;Preging</translation>
+    </message>
+    <message>
+        <source>Show your minting capacity</source>
+        <translation>Vis din pregingskapasitet</translation>
     </message>
     <message>
         <source>&amp;Address Book</source>
@@ -322,12 +366,24 @@ Er du sikker på at du vil kryptere lommeboken din?</translation>
         <translation>[testnett]</translation>
     </message>
     <message>
+        <source>Downloaded %1 of %2 blocks of transaction history (%3 percent done).</source>
+        <translation>Lastet ned %1 av %2 blokker med transaksjonshistorikk (%3 prosent ferdig).</translation>
+    </message>
+    <message>
+        <source>This transaction is over the size limit. You can still send it for a fee of %1. Do you want to pay the fee?</source>
+        <translation>Denne transaksjonen er over størrelsesgrensen. Du kan sende den med et gebyr på %1. Vil du betale gebyret?</translation>
+    </message>
+    <message>
         <source>Paycoin Wallet</source>
         <translation>Paycoin Lommebok</translation>
     </message>
     <message>
         <source>Send coins to a Paycoin address</source>
         <translation>Send mynter til en Paycoin-adresse</translation>
+    </message>
+    <message>
+        <source>Sign &amp;message...</source>
+        <translation>Signer &amp;melding...</translation>
     </message>
     <message>
         <source>&amp;About Paycoin</source>
@@ -346,20 +402,56 @@ Er du sikker på at du vil kryptere lommeboken din?</translation>
         <translation>Vis eller skjul Paycoin-vinduet</translation>
     </message>
     <message>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>&amp;Krypter Lommebok...</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation>&amp;Sikkerhetskopier Lommebok...</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation>&amp;Endre Passord...</translation>
+    </message>
+    <message>
         <source>Paycoin client</source>
         <translation>Paycoin klient</translation>
     </message>
-    <message>
-        <source>p-qt</source>
-        <translation>p-qt</translation>
+    <message numerus="yes">
+        <source>%n active connection(s) to Paycoin network</source>
+        <translation><numerusform>%n aktiv tilkobling til Paycoin-nettverket</numerusform><numerusform>%n aktive tilkoblinger til Paycoin-nettverket</numerusform></translation>
     </message>
     <message>
         <source>Synchronizing with network...</source>
         <translation>Synkroniserer med nettverket...</translation>
     </message>
+    <message numerus="yes">
+        <source>~%n block(s) remaining</source>
+        <translation><numerusform>~%n blokk resterende</numerusform><numerusform>~%n blokker resterende</numerusform></translation>
+    </message>
+    <message>
+        <source>Confirm transaction fee</source>
+        <translation>Bekreft transaksjonsgebyr</translation>
+    </message>
     <message>
         <source>Downloaded %1 blocks of transaction history.</source>
         <translation>Lastet ned %1 blokker med transaksjonshistorikk.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s) ago</source>
+        <translation><numerusform>%n sekund siden</numerusform><numerusform>%n sekund siden</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s) ago</source>
+        <translation><numerusform>%n minutt siden</numerusform><numerusform>%n minutter siden</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s) ago</source>
+        <translation><numerusform>%n time siden</numerusform><numerusform>%n timer siden</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s) ago</source>
+        <translation><numerusform>%n dag siden</numerusform><numerusform>%n dager siden</numerusform></translation>
     </message>
     <message>
         <source>Up to date</source>
@@ -425,7 +517,7 @@ Adresse: %4
         <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation>En fatal feil har inntruffet. Det er ikke trygt å fortsette og Paycoin må derfor avslutte.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>CoinControlDialog</name>
     <message>
@@ -507,6 +599,10 @@ Adresse: %4
     <message>
         <source>Confirmed</source>
         <translation>Bekreftet</translation>
+    </message>
+    <message>
+        <source>Coin days</source>
+        <translation>Myntdager</translation>
     </message>
     <message>
         <source>Priority</source>
@@ -604,9 +700,13 @@ Adresse: %4
         <source>(change)</source>
         <translation>(veksel)</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>DisplayOptionsPage</name>
+    <message>
+        <source>Display</source>
+        <translation>Visning</translation>
+    </message>
     <message>
         <source>&amp;Unit to show amounts in: </source>
         <translation>&amp;Enhet å vise beløp i: </translation>
@@ -630,6 +730,10 @@ Adresse: %4
     <message>
         <source>Whether to show coin control features or not</source>
         <translation>Skal funksjoner for myntkontroll vises eller ikke</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Advarsel</translation>
     </message>
     </context>
 <context>
@@ -688,25 +792,64 @@ Adresse: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
-    <message>
-        <source>Detach databases at shutdown</source>
-        <translation>Løsriv databaser ved nedstenging</translation>
-    </message>
     <message>
         <source>Detach block and address databases at shutdown. This means they can be moved to another data directory, but it slows down shutdown. The wallet is always detached.</source>
         <translation>Løsriv databasene for blokker og adresser ved nedstenging. Dette betyr at de kan flyttes til en annen datamappe, men det forsinker nedstengingen. Lommeboken er bestandig løsrevet.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MintingTableModel</name>
+    <message>
+        <source>Transaction</source>
+        <translation>Transaksjon</translation>
+    </message>
     <message>
         <source>Address</source>
         <translation>Adresse</translation>
     </message>
+    <message>
+        <source>Age</source>
+        <translation>Alder</translation>
+    </message>
+    <message>
+        <source>Balance</source>
+        <translation>Saldo</translation>
+    </message>
+    <message>
+        <source>minutes</source>
+        <translation>minutter</translation>
+    </message>
+    <message>
+        <source>hours</source>
+        <translation>timer</translation>
+    </message>
+    <message>
+        <source>days</source>
+        <translation>dager</translation>
+    </message>
     </context>
 <context>
     <name>MintingView</name>
+    <message>
+        <source>10 min</source>
+        <translation>10 min</translation>
+    </message>
+    <message>
+        <source>24 hours</source>
+        <translation>24 timer</translation>
+    </message>
+    <message>
+        <source>30 days</source>
+        <translation>30 dager</translation>
+    </message>
+    <message>
+        <source>90 days</source>
+        <translation>90 dager</translation>
+    </message>
     <message>
         <source>Comma separated file (*.csv)</source>
         <translation>Kommaseparert fil (*.csv)</translation>
@@ -716,6 +859,18 @@ Adresse: %4
         <translation>Adresse</translation>
     </message>
     <message>
+        <source>Transaction</source>
+        <translation>Transaksjon</translation>
+    </message>
+    <message>
+        <source>Age</source>
+        <translation>Alder</translation>
+    </message>
+    <message>
+        <source>Balance</source>
+        <translation>Saldo</translation>
+    </message>
+    <message>
         <source>Error exporting</source>
         <translation>Feil ved eksportering</translation>
     </message>
@@ -723,7 +878,7 @@ Adresse: %4
         <source>Could not write to file %1.</source>
         <translation>Kunne ikke skrive til fil %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -731,8 +886,32 @@ Adresse: %4
         <translation>Skjema</translation>
     </message>
     <message>
+        <source>Public &amp;key:</source>
+        <translation>Offentlig &amp;nøkkel:</translation>
+    </message>
+    <message>
+        <source>The public key of an address</source>
+        <translation>Den offentlige nøkkelen for en adresse</translation>
+    </message>
+    <message>
+        <source>Enter a public key</source>
+        <translation>Skriv inn en offentlig adresse</translation>
+    </message>
+    <message>
+        <source>Paste public key from clipboard</source>
+        <translation>Lim inn offentlig adresse fra utklippstavlen</translation>
+    </message>
+    <message>
         <source>Alt+P</source>
         <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Remove this public key</source>
+        <translation>Fjern denne offentlige adressen</translation>
+    </message>
+    <message>
+        <source>&amp;Address:</source>
+        <translation>&amp;Adresse:</translation>
     </message>
     <message>
         <source>Choose address from address book</source>
@@ -754,6 +933,14 @@ Adresse: %4
         <translation>Tøm alt</translation>
     </message>
     <message>
+        <source>123.456</source>
+        <translation>123.456</translation>
+    </message>
+    <message>
+        <source>XPY</source>
+        <translation>XPY</translation>
+    </message>
+    <message>
         <source>Fee:</source>
         <translation>Gebyr:</translation>
     </message>
@@ -764,6 +951,10 @@ Adresse: %4
     <message>
         <source>Alt+P</source>
         <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Sign transaction</source>
+        <translation>Signer transaksjon</translation>
     </message>
     </context>
 <context>
@@ -841,7 +1032,11 @@ Adresse: %4
         <source>Total number of transactions in wallet</source>
         <translation>Totalt antall transaksjoner i lommeboken</translation>
     </message>
-    </context>
+    <message>
+        <source>out of sync</source>
+        <translation>usynkronisert</translation>
+    </message>
+</context>
 <context>
     <name>QRCodeDialog</name>
     <message>
@@ -855,6 +1050,10 @@ Adresse: %4
     <message>
         <source>Amount:</source>
         <translation>Beløp:</translation>
+    </message>
+    <message>
+        <source>XPY</source>
+        <translation>XPY</translation>
     </message>
     <message>
         <source>Label:</source>
@@ -884,6 +1083,10 @@ Adresse: %4
 <context>
     <name>RPCConsole</name>
     <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Informasjon</translation>
+    </message>
+    <message>
         <source>Client name</source>
         <translation>Klientnavn</translation>
     </message>
@@ -894,10 +1097,6 @@ Adresse: %4
     <message>
         <source>Client version</source>
         <translation>Klientversjon</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation>Versjon</translation>
     </message>
     <message>
         <source>Network</source>
@@ -928,12 +1127,20 @@ Adresse: %4
         <translation>Tidspunkt for siste blokk</translation>
     </message>
     <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Åpne</translation>
+    </message>
+    <message>
         <source>Build date</source>
         <translation>Byggedato</translation>
     </message>
     <message>
-        <source>&gt;</source>
-        <translation>&gt;</translation>
+        <source>&amp;Console</source>
+        <translation>&amp;Konsoll</translation>
+    </message>
+    <message>
+        <source>For more information on these commands, see the Wiki</source>
+        <translation>For mer informasjon om disse kommandoene, se Wikien</translation>
     </message>
     <message>
         <source>Clear console</source>
@@ -943,7 +1150,7 @@ Adresse: %4
         <source>Welcome to the Paycoin RPC console.&lt;br&gt;Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.&lt;br&gt;Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
         <translation>Velkommen til Paycoin sin RPC-konsoll.&lt;br&gt;Bruk opp og ned pil for å navigere historikken, og &lt;b&gt;Ctrl-L&lt;/b&gt; for å tømme skjermen.&lt;br&gt;Skriv &lt;b&gt;help&lt;/b&gt; for en oversikt over kommandoer.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsDialog</name>
     <message>
@@ -1023,12 +1230,12 @@ Adresse: %4
         <translation>Send til flere enn en mottaker</translation>
     </message>
     <message>
-        <source>Remove all transaction fields</source>
-        <translation>Fjern alle transaksjonsfelter</translation>
+        <source>&amp;Add Recipient</source>
+        <translation>&amp;Legg til Mottaker</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Tøm alt</translation>
+        <source>Remove all transaction fields</source>
+        <translation>Fjern alle transaksjonsfelter</translation>
     </message>
     <message>
         <source>Balance:</source>
@@ -1111,22 +1318,10 @@ Adresse: %4
         <translation>(ingen merkelapp)</translation>
     </message>
     <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Beløpet overstiger saldoen din</translation>
-    </message>
-    <message>
         <source>Enter a Paycoin address</source>
         <translation>Angi en Paycoin-adresse</translation>
     </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Feil: Opprettelse av transaksjon feilet</translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Feil: Transaksjonen ble avvist! Dette kan skje hvis noen av myntene i lommeboken allerede er blitt brukt, som om du brukte en kopi av wallet.dat og myntene ble brukt i kopien, men ikke markert som brukt her.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -1152,6 +1347,10 @@ Adresse: %4
     <message>
         <source>The address to send the payment to</source>
         <translation>Adressen å sende betalingen til</translation>
+    </message>
+    <message>
+        <source>Enter a Paycoin address (e.g. PNS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
+        <translation>Skriv inn en Paycoin-addresse (f.eks. PNS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     <message>
         <source>Choose address from address book</source>
@@ -1324,6 +1523,10 @@ Adresse: %4
 <context>
     <name>SplashScreen</name>
     <message>
+        <source>The Paycoin developers</source>
+        <translation>Paycoin utviklerne</translation>
+    </message>
+    <message>
         <source>[testnet]</source>
         <translation>[testnett]</translation>
     </message>
@@ -1343,8 +1546,64 @@ Adresse: %4
         <translation>%1 bekreftelser</translation>
     </message>
     <message>
+        <source>Status</source>
+        <translation>Status</translation>
+    </message>
+    <message numerus="yes">
+        <source>, broadcast through %n node(s)</source>
+        <translation><numerusform>, kringkastet gjennom %n node</numerusform><numerusform>, kringkastet gjennom %n noder</numerusform></translation>
+    </message>
+    <message>
         <source>Date</source>
         <translation>Dato</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation>Kilde</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>Fra</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>Til</translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation>merkelapp</translation>
+    </message>
+    <message>
+        <source>not accepted</source>
+        <translation>ikke akseptert</translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation>Debet</translation>
+    </message>
+    <message>
+        <source>Transaction fee</source>
+        <translation>Transaksjonsgebyr</translation>
+    </message>
+    <message>
+        <source>Net amount</source>
+        <translation>Nettobeløp</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Melding</translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation>Kommentar</translation>
+    </message>
+    <message>
+        <source>Debug information</source>
+        <translation>Feilsøkingsinformasjon</translation>
+    </message>
+    <message>
+        <source>Transaction</source>
+        <translation>Transaksjon</translation>
     </message>
     <message>
         <source>Amount</source>
@@ -1468,7 +1727,7 @@ Adresse: %4
         <source>Amount removed from or added to balance.</source>
         <translation>Beløp fjernet eller lagt til saldo.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1544,8 +1803,16 @@ Adresse: %4
         <translation>Kopier beløp</translation>
     </message>
     <message>
+        <source>Copy transaction id</source>
+        <translation>Kopier transaksjons-id</translation>
+    </message>
+    <message>
         <source>Edit label</source>
         <translation>Rediger merkelapp</translation>
+    </message>
+    <message>
+        <source>Show transaction details</source>
+        <translation>Vis transaksjonsdetaljer</translation>
     </message>
     <message>
         <source>Export Transaction Data</source>
@@ -1609,28 +1876,36 @@ Adresse: %4
 </context>
 <context>
     <name>WindowOptionsPage</name>
-    </context>
+    <message>
+        <source>Window</source>
+        <translation>Vindu</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;Minimer til systemkurv istedenfor oppgavelinjen</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window</source>
+        <translation>Vis kun ikon i systemkurv etter minimering av vinduet</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>M&amp;inimer ved lukking</translation>
+    </message>
+    <message>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Quit in the menu.</source>
+        <translation>Minimerer vinduet istedenfor å avslutte applikasjonen når vinduet lukkes. Når dette er slått på avsluttes applikasjonen kun ved å velge avslutt i menyen.</translation>
+    </message>
+</context>
 <context>
     <name>bitcoin-core</name>
-    <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Advarsel: Lite ledig lagringsplass</translation>
-    </message>
     <message>
         <source>Usage:</source>
         <translation>Bruk:</translation>
     </message>
     <message>
-        <source>Unable to bind to port %d on this computer.  Paycoin is probably already running.</source>
-        <translation>Ute av stand til å binde til port %d på denne datamaskinen. Paycoin kjører sannsynligvis allerede.</translation>
-    </message>
-    <message>
         <source>Paycoin version</source>
         <translation>Paycoin versjon</translation>
-    </message>
-    <message>
-        <source>Send command to -server or paycoind</source>
-        <translation>Send kommando til -server eller paycoind</translation>
     </message>
     <message>
         <source>List commands</source>
@@ -1661,14 +1936,6 @@ Adresse: %4
         <translation>Ikke generer mynter</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Start minimert</translation>
-    </message>
-    <message>
-        <source>Show splash screen on startup (default: 1)</source>
-        <translation>Vis splashskjerm ved oppstart (standardverdi: 1)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Angi mappe for datafiler</translation>
     </message>
@@ -1685,18 +1952,6 @@ Adresse: %4
         <translation>Angi tidsavbrudd for forbindelse (i millisekunder)</translation>
     </message>
     <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Koble til via SOCKS4 proxy</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Tillat oppslag i DNS for -addnode og -connect</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Lytt etter tilkoblinger på &lt;port&gt; (standardverdi: 9901 eller testnett: 9903)</translation>
-    </message>
-    <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Hold maks &lt;n&gt; koblinger åpne til andre noder (standardverdi: 125)</translation>
     </message>
@@ -1709,16 +1964,8 @@ Adresse: %4
         <translation>Koble kun til angitt node</translation>
     </message>
     <message>
-        <source>Find peers using internet relay chat (default: 0)</source>
-        <translation>Finn andre noder gjennom IRC (standardverdi: 0)</translation>
-    </message>
-    <message>
         <source>Accept connections from outside (default: 1)</source>
         <translation>Ta imot tilkoblinger fra utsiden (standardverdi: 1)</translation>
-    </message>
-    <message>
-        <source>Set language, for example "de_DE" (default: system locale)</source>
-        <translation>Sett språk, for eksempel "nb_NO" (standardverdi: fra operativsystem)</translation>
     </message>
     <message>
         <source>Find peers using DNS lookup (default: 1)</source>
@@ -1753,20 +2000,12 @@ Adresse: %4
         <translation>Gebyr per kB for transaksjoner du sender</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Ta imot kommandolinje- og JSON-RPC-kommandoer</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Kjør i bakgrunnen som daemon og ta imot kommandoer</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>Bruk testnettverket</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Ta ut ekstra feilsøkingsinformasjon</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1787,10 +2026,6 @@ Adresse: %4
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Passord for JSON-RPC forbindelser</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Lytt etter JSON-RPC tilkoblinger på &lt;port&gt; (standardverdi: 9902)</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1825,11 +2060,6 @@ Adresse: %4
         <translation>Hvor grundig verifisering av blokker gjøres (0-6, standardverdi: 1)</translation>
     </message>
     <message>
-        <source>
-SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>SSL valg: (se Bitcoin Wiki for instruksjoner for oppsett av SSL)</translation>
-    </message>
-    <message>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>Bruk OpenSSL (https) for JSON-RPC forbindelser</translation>
     </message>
@@ -1844,14 +2074,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</source>
         <translation>Akseptable krypteringsmetoder (standardverdi: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
-    </message>
-    <message>
-        <source>This help message</source>
-        <translation>Denne hjelpemeldingen</translation>
-    </message>
-    <message>
-        <source>Usage</source>
-        <translation>Bruk</translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s.  Paycoin is probably already running.</source>
@@ -1876,10 +2098,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Loading addresses...</source>
         <translation>Laster adresser...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Feil ved lasting av addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1922,20 +2140,8 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
         <translation>Ferdig med lasting</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Ugyldig -proxy adresse</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Ugyldig beløp for -paytxfee=&lt;beløp&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Advarsel: -paytxfee er satt veldig høyt. Dette er transaksjonsgebyret du betaler hvis du sender en transaksjon.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Feil: NewThread(StartNode) feilet</translation>
     </message>
     <message>
         <source>To use the %s option</source>

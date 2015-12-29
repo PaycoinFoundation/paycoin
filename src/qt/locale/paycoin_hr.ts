@@ -237,6 +237,9 @@
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -264,7 +267,7 @@
         <source>Could not write to file %1.</source>
         <translation>Ne mogu pisati u datoteku %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -380,10 +383,6 @@
         <translation>Pošalji k nekoliko primatelja odjednom</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Obriši sve</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Stanje:</translation>
     </message>
@@ -419,19 +418,7 @@
         <source>(no label)</source>
         <translation>(bez oznake)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Iznos je veći od stanja računa</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Greška: priprema transakcije nije uspjela</translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Generirani novčići moraju pričekati nastanak 120 blokova prije nego što ih je moguće potrošiti. Kad ste generirali taj blok, on je bio emitiran u mrežu kako bi bio dodan postojećim lancima blokova. Ako ne uspije biti dodan, njegov status bit će promijenjen u "nije prihvatljiv" i on neće biti potrošiv. S vremena na vrijeme tako nešto se može desiti ako neki drugi nod približno istovremeno generira blok.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -625,7 +612,7 @@
         <source>Amount removed from or added to balance.</source>
         <translation>Iznos odbijen od ili dodan k saldu.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>

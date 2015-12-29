@@ -2,6 +2,14 @@
 <defaultcodec>UTF-8</defaultcodec>
 <context>
     <name>AboutDialog</name>
+    <message>
+        <source>About Paycoin</source>
+        <translation>關於Paycoin</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
+        <translation>Paycoin版本</translation>
+    </message>
     </context>
 <context>
     <name>AddressBookPage</name>
@@ -22,6 +30,14 @@
         <translation>複製目前選取的位址到系統剪貼簿</translation>
     </message>
     <message>
+        <source>&amp;New Address</source>
+        <translation>新地址</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Address</source>
+        <translation>複製位址</translation>
+    </message>
+    <message>
         <source>Show &amp;QR Code</source>
         <translation>顯示 &amp;QR 條碼</translation>
     </message>
@@ -40,6 +56,14 @@
     <message>
         <source>&amp;Delete</source>
         <translation>刪除</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Label</source>
+        <translation>複製標記</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation>編輯</translation>
     </message>
     <message>
         <source>Export Address Book Data</source>
@@ -132,6 +156,11 @@
         <translation>錢包加密失敗</translation>
     </message>
     <message>
+        <source>WARNING: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAYCOINS&lt;/b&gt;!
+Are you sure you wish to encrypt your wallet?</source>
+        <translation>警告! 一旦加密錢包後又忘了密碼, 你將會失去所有paycoin! 你確定想要加密你的錢包嗎?</translation>
+    </message>
+    <message>
         <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
         <translation>錢包加密因程式內部有誤而失敗. 你的錢包還是沒有加密.</translation>
     </message>
@@ -207,6 +236,10 @@
         <translation>結束應用程式</translation>
     </message>
     <message>
+        <source>Show information about Paycoin</source>
+        <translation>顯示有關於 Paycoin 的資訊</translation>
+    </message>
+    <message>
         <source>About &amp;Qt</source>
         <translation>關於 &amp;Qt</translation>
     </message>
@@ -237,6 +270,14 @@
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>變更錢包加密用的密碼</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>除錯視窗</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>開啟除錯診斷主控台</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -329,6 +370,10 @@ Address: %4
 <context>
     <name>CoinControlDialog</name>
     <message>
+        <source>Quantity:</source>
+        <translation>數量</translation>
+    </message>
+    <message>
         <source>0</source>
         <translation>0</translation>
     </message>
@@ -339,6 +384,22 @@ Address: %4
     <message>
         <source>0.00 BTC</source>
         <translation>123.456 BTC {0.00 ?}</translation>
+    </message>
+    <message>
+        <source>Priority:</source>
+        <translation>優先度</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>手續費</translation>
+    </message>
+    <message>
+        <source>Tree mode</source>
+        <translation>樹狀模式</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>列表模式</translation>
     </message>
     <message>
         <source>Amount</source>
@@ -355,6 +416,10 @@ Address: %4
     <message>
         <source>Confirmed</source>
         <translation>已確認</translation>
+    </message>
+    <message>
+        <source>Priority</source>
+        <translation>優先度</translation>
     </message>
     <message>
         <source>Copy address</source>
@@ -436,6 +501,9 @@ Address: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -463,7 +531,7 @@ Address: %4
         <source>Could not write to file %1.</source>
         <translation>無法寫入至 %1 檔案.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -492,6 +560,10 @@ Address: %4
     <message>
         <source>Clear all</source>
         <translation>全部清掉</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>手續費</translation>
     </message>
     <message>
         <source>Paste address from clipboard</source>
@@ -603,6 +675,10 @@ Address: %4
         <translation>付錢</translation>
     </message>
     <message>
+        <source>Quantity:</source>
+        <translation>數量</translation>
+    </message>
+    <message>
         <source>0</source>
         <translation>0</translation>
     </message>
@@ -615,16 +691,20 @@ Address: %4
         <translation>123.456 BTC {0.00 ?}</translation>
     </message>
     <message>
+        <source>Priority:</source>
+        <translation>優先度</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>手續費</translation>
+    </message>
+    <message>
         <source>Send to multiple recipients at once</source>
         <translation>一次付給多個人</translation>
     </message>
     <message>
         <source>Remove all transaction fields</source>
         <translation>移除所有交易欄位</translation>
-    </message>
-    <message>
-        <source>Clear all</source>
-        <translation>全部清掉</translation>
     </message>
     <message>
         <source>Balance:</source>
@@ -666,19 +746,7 @@ Address: %4
         <source>(no label)</source>
         <translation>(沒有標記)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>金額超過了你的餘額</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>錯誤: 交易產生失敗</translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>錯誤: 交易被拒絕. 有時候會發生這種錯誤, 是因為你錢包中的一些錢已經被花掉了. 比如說你複製了錢包檔 wallet.dat, 然後用複製的錢包花掉了錢, 你現在所用的原來的錢包中卻沒有該筆交易紀錄.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -892,7 +960,7 @@ Address: %4
         <source>Amount removed from or added to balance.</source>
         <translation>減去或加入至餘額的金額</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1033,10 +1101,6 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>警告: 磁碟空間很少</translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>用法:</translation>
     </message>
@@ -1071,11 +1135,6 @@ Address: %4
 </translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>啓動時最小化
-</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>指定資料目錄
 </translation>
@@ -1084,20 +1143,6 @@ Address: %4
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>指定連線逾時時間 (毫秒)
 </translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>透過 socks4 代理伺服器連線
-</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>允許 addnode 和 connect 時做域名解析
-</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>在通訊埠 &lt;port&gt; 聽候連線 (預設: 8333, 或若為測試網路: 18333) {9901 ?} {9903)?}</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -1125,11 +1170,6 @@ Address: %4
         <translation>每個連線的傳送緩衝區大小上限為 &lt;n&gt;*1000 位元組 (預設: 10000)</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>接受命令列與 JSON-RPC 指令
-</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>以背景程式執行並接受指令</translation>
     </message>
@@ -1137,10 +1177,6 @@ Address: %4
         <source>Use the test network</source>
         <translation>使用測試網路
 </translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>輸出額外的除錯資訊</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1161,10 +1197,6 @@ Address: %4
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>JSON-RPC 連線密碼</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>在通訊埠 &lt;port&gt; 聽候 JSON-RPC 連線 (預設: 8332) {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1205,17 +1237,8 @@ Address: %4
 </translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>此協助訊息
-</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>載入位址中...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>載入 addr.dat 失敗</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1246,20 +1269,8 @@ Address: %4
         <translation>載入完成</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>無效的 -proxy 位址</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>-paytxfee=&lt;金額&gt; 中的金額無效</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>警告: -paytxfee 設定得很高. 這是當你交易付款時所要支付的手續費.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>錯誤: NewThread(StartNode) 失敗</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

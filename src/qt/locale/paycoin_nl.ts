@@ -51,6 +51,14 @@ Dit product bevat code ontwikkeld door het OpenSSL project voor het gebruik in h
         <translation>Kopieer het huidig geselecteerde adres naar het klembord</translation>
     </message>
     <message>
+        <source>&amp;New Address</source>
+        <translation>&amp;Nieuw Adres</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Address</source>
+        <translation>&amp;Kopieer Adres</translation>
+    </message>
+    <message>
         <source>Show &amp;QR Code</source>
         <translation>Toon &amp;QR-Code</translation>
     </message>
@@ -69,6 +77,14 @@ Dit product bevat code ontwikkeld door het OpenSSL project voor het gebruik in h
     <message>
         <source>&amp;Delete</source>
         <translation>&amp;Verwijder</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Label</source>
+        <translation>Kopieer &amp;Label</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation>&amp;Bewerken</translation>
     </message>
     <message>
         <source>Export Address Book Data</source>
@@ -346,12 +362,16 @@ Weet je zeker dat je de portemonee wilt versleutelen?</translation>
         <translation>Toon of verberg het Paycoin scherm</translation>
     </message>
     <message>
-        <source>Paycoin client</source>
-        <translation>Paycoin client</translation>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>&amp;Versleutel Portemonnee</translation>
     </message>
     <message>
-        <source>p-qt</source>
-        <translation>p-qt</translation>
+        <source>&amp;Backup Wallet...</source>
+        <translation>&amp;Backup Portemonnee</translation>
+    </message>
+    <message>
+        <source>Paycoin client</source>
+        <translation>Paycoin client</translation>
     </message>
     <message>
         <source>Synchronizing with network...</source>
@@ -360,6 +380,22 @@ Weet je zeker dat je de portemonee wilt versleutelen?</translation>
     <message>
         <source>Downloaded %1 blocks of transaction history.</source>
         <translation>%1 blokken van transactiehistorie opgehaald.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s) ago</source>
+        <translation><numerusform>%n seconde geleden</numerusform><numerusform>%n seconde geleden</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s) ago</source>
+        <translation><numerusform>%n minuut geleden</numerusform><numerusform>%n minuten geleden</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s) ago</source>
+        <translation><numerusform>%n uur geleden</numerusform><numerusform>%n uur geleden</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s) ago</source>
+        <translation><numerusform>%n dag geleden</numerusform><numerusform>%n dagen geleden</numerusform></translation>
     </message>
     <message>
         <source>Up to date</source>
@@ -425,7 +461,7 @@ Adres: %4
         <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation>Een fatale fout heeft plaatsgevonden. Paycoin kan niet langer veilig doorgaan en zal afsluiten.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>CoinControlDialog</name>
     <message>
@@ -604,7 +640,7 @@ Adres: %4
         <source>(change)</source>
         <translation>(wijzig)</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>DisplayOptionsPage</name>
     <message>
@@ -630,6 +666,10 @@ Adres: %4
     <message>
         <source>Whether to show coin control features or not</source>
         <translation>Munt controle mogelijkheden of niet</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Waarschuwing</translation>
     </message>
     </context>
 <context>
@@ -688,25 +728,64 @@ Adres: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
-    <message>
-        <source>Detach databases at shutdown</source>
-        <translation>Ontkoppel database tijdens afsluiten</translation>
-    </message>
     <message>
         <source>Detach block and address databases at shutdown. This means they can be moved to another data directory, but it slows down shutdown. The wallet is always detached.</source>
         <translation>Ontkoppel blok en adres database tijdens afsluiten. Dit betekent dat ze kunnen worden verplaatst naar een andere bestandslokatie, maar het afsluiten is daardoor langzamer.  De portomonnee is altijd ontkoppeld.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MintingTableModel</name>
+    <message>
+        <source>Transaction</source>
+        <translation>Transactie</translation>
+    </message>
     <message>
         <source>Address</source>
         <translation>Adres</translation>
     </message>
+    <message>
+        <source>Age</source>
+        <translation>Leeftijd</translation>
+    </message>
+    <message>
+        <source>Balance</source>
+        <translation>Balans</translation>
+    </message>
+    <message>
+        <source>minutes</source>
+        <translation>minuten</translation>
+    </message>
+    <message>
+        <source>hours</source>
+        <translation>uren</translation>
+    </message>
+    <message>
+        <source>days</source>
+        <translation>dagen</translation>
+    </message>
     </context>
 <context>
     <name>MintingView</name>
+    <message>
+        <source>10 min</source>
+        <translation>10 min</translation>
+    </message>
+    <message>
+        <source>24 hours</source>
+        <translation>24 uur</translation>
+    </message>
+    <message>
+        <source>30 days</source>
+        <translation>30 dagen</translation>
+    </message>
+    <message>
+        <source>90 days</source>
+        <translation>90 dagen</translation>
+    </message>
     <message>
         <source>Comma separated file (*.csv)</source>
         <translation>Kommagescheiden bestand (*.csv)</translation>
@@ -716,6 +795,18 @@ Adres: %4
         <translation>Adres</translation>
     </message>
     <message>
+        <source>Transaction</source>
+        <translation>Transactie</translation>
+    </message>
+    <message>
+        <source>Age</source>
+        <translation>Leeftijd</translation>
+    </message>
+    <message>
+        <source>Balance</source>
+        <translation>Balans</translation>
+    </message>
+    <message>
         <source>Error exporting</source>
         <translation>Fout bij exporteren</translation>
     </message>
@@ -723,7 +814,7 @@ Adres: %4
         <source>Could not write to file %1.</source>
         <translation>Kon niet schrijven naar bestand %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -733,6 +824,10 @@ Adres: %4
     <message>
         <source>Alt+P</source>
         <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>&amp;Address:</source>
+        <translation>&amp;Adres</translation>
     </message>
     <message>
         <source>Choose address from address book</source>
@@ -896,10 +991,6 @@ Adres: %4
         <translation>Client versie</translation>
     </message>
     <message>
-        <source>Version</source>
-        <translation>Versie</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>Netwerk</translation>
     </message>
@@ -932,10 +1023,6 @@ Adres: %4
         <translation>Bouwdatum</translation>
     </message>
     <message>
-        <source>&gt;</source>
-        <translation>&gt;</translation>
-    </message>
-    <message>
         <source>Clear console</source>
         <translation>Console opschonen</translation>
     </message>
@@ -943,7 +1030,7 @@ Adres: %4
         <source>Welcome to the Paycoin RPC console.&lt;br&gt;Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.&lt;br&gt;Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
         <translation>Welkom bij de Paycoin RPC console. &lt;br&gt;Gebruik pijltjes naar boven en naar beneden om de geschiedenis te navigeren, en &lt;b&gt;Ctrl-L&lt;/b&gt; om het scherm te wissen.&lt;br&gt;Typ &lt;b&gt;help&lt;/b&gt; voor een overzicht met commandos.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsDialog</name>
     <message>
@@ -1027,10 +1114,6 @@ Adres: %4
         <translation>Verwijder alle transactievelden</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Verwijder alles</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Saldo:</translation>
     </message>
@@ -1111,22 +1194,10 @@ Adres: %4
         <translation>(geen label)</translation>
     </message>
     <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Bedrag overschrijdt uw huidige saldo</translation>
-    </message>
-    <message>
         <source>Enter a Paycoin address</source>
         <translation>Voer een Paycoin adres in</translation>
     </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Fout: Aanmaak transactie mislukt</translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Fout: De transactie was afgewezen. Dit kan gebeuren als u eerder uitgegeven munten opnieuw wilt versturen, zoals wanneer u een kopie van uw wallet.dat heeft gebruikt en in de kopie deze munten zijn gemarkeerd als uitgegeven, maar in de huidige nog niet.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -1347,6 +1418,10 @@ Adres: %4
         <translation>Datum</translation>
     </message>
     <message>
+        <source>Transaction</source>
+        <translation>Transactie</translation>
+    </message>
+    <message>
         <source>Amount</source>
         <translation>Bedrag</translation>
     </message>
@@ -1468,7 +1543,7 @@ Adres: %4
         <source>Amount removed from or added to balance.</source>
         <translation>Bedrag verwijderd van of toegevoegd aan saldo</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1613,24 +1688,12 @@ Adres: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Waarschuwing: Weinig schijfruimte over  </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Gebruik:</translation>
     </message>
     <message>
-        <source>Unable to bind to port %d on this computer.  Paycoin is probably already running.</source>
-        <translation>Onmogelijk om poort %d te verbinden op deze computer. Paycoin is mogelijk al eerder opgestart.</translation>
-    </message>
-    <message>
         <source>Paycoin version</source>
         <translation>Paycoin versie</translation>
-    </message>
-    <message>
-        <source>Send command to -server or paycoind</source>
-        <translation>Zend commando naar -server of paycoind</translation>
     </message>
     <message>
         <source>List commands</source>
@@ -1666,15 +1729,6 @@ Adres: %4
         <translation>Genereer geen munten</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Geminimaliseerd starten
-</translation>
-    </message>
-    <message>
-        <source>Show splash screen on startup (default: 1)</source>
-        <translation>Toon welkom scherm bij het opstarten (standaard: 1)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Stel datamap in
 </translation>
@@ -1693,20 +1747,6 @@ Adres: %4
 </translation>
     </message>
     <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Verbind via socks4 proxy
-</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Sta DNS-naslag toe voor addnode en connect
-</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Luister voor verbindingen op &lt;port&gt; (standaard:9901 of testnet: 9903)</translation>
-    </message>
-    <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Onderhoud maximaal &lt;n&gt; verbindingen naar peers (standaard: 125)</translation>
     </message>
@@ -1720,16 +1760,8 @@ Adres: %4
 </translation>
     </message>
     <message>
-        <source>Find peers using internet relay chat (default: 0)</source>
-        <translation>Zoek anderen via internet chat (standaard: 0)</translation>
-    </message>
-    <message>
         <source>Accept connections from outside (default: 1)</source>
         <translation>Connecties van buiten accepteren (standaard: 1)</translation>
-    </message>
-    <message>
-        <source>Set language, for example "de_DE" (default: system locale)</source>
-        <translation>Taal instellen, bijv "de_DE" (standaard: system locale)</translation>
     </message>
     <message>
         <source>Find peers using DNS lookup (default: 1)</source>
@@ -1764,11 +1796,6 @@ Adres: %4
         <translation>Kosten per kB voor te versturen transacties</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Aanvaard commandoregel en JSON-RPC commando's
-</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Draai in de achtergrond als daemon en aanvaard commando's
 </translation>
@@ -1777,10 +1804,6 @@ Adres: %4
         <source>Use the test network</source>
         <translation>Gebruik het testnetwerk
 </translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Toon extra debuggingsinformatie</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1802,11 +1825,6 @@ Adres: %4
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Wachtwoord voor JSON-RPC verbindingen
-</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Luister voor JSON-RPC verbindingen op &lt;port&gt; (standaard: 9902)
 </translation>
     </message>
     <message>
@@ -1845,11 +1863,6 @@ Adres: %4
         <translation>Grondigheid blok verificatie (0-6, standaard: 1)</translation>
     </message>
     <message>
-        <source>
-SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>SSL opties: (zie de Bitcoin wiki voor SSL installatie instructies)</translation>
-    </message>
-    <message>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>Gebruik OpenSSL (https) voor JSON-RPC verbindingen
 </translation>
@@ -1867,14 +1880,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</source>
         <translation>Aanvaardbare sleuteltypen (standaard: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
-    </message>
-    <message>
-        <source>This help message</source>
-        <translation>Dit hulpbericht</translation>
-    </message>
-    <message>
-        <source>Usage</source>
-        <translation>Gebruik</translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s.  Paycoin is probably already running.</source>
@@ -1899,10 +1904,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Loading addresses...</source>
         <translation>Adressen aan het laden...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Fout bij laden addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1945,20 +1946,8 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
         <translation>Klaar met laden</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Foutief -proxy adres</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Ongeldig bedrag voor -paytxfee=&lt;amount&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Waarschuwing: -paytxfee is zeer hoog ingesteld.  Dit zijn de transactiekosten die u betaalt bij het versturen van een transactie.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Fout: NewThread(StartNode) is mislukt</translation>
     </message>
     <message>
         <source>To use the %s option</source>

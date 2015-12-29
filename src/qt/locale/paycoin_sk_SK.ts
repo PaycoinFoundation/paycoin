@@ -388,6 +388,9 @@ Adresa: %4</translation>
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -415,7 +418,7 @@ Adresa: %4</translation>
         <source>Could not write to file %1.</source>
         <translation>Nedalo sa zapisovať do súboru %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -571,10 +574,6 @@ Adresa: %4</translation>
         <translation>Odobrať všetky políčka transakcie</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Zmazať všetko</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Zostatok:</translation>
     </message>
@@ -613,14 +612,6 @@ Adresa: %4</translation>
     <message>
         <source>(no label)</source>
         <translation>(bez popisu)</translation>
-    </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Suma je vyššia ako Váš zostatok</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Chyba: Zlyhalo vytvorenie transakcie</translation>
     </message>
     </context>
 <context>
@@ -812,7 +803,7 @@ Adresa: %4</translation>
         <source>Amount removed from or added to balance.</source>
         <translation>Suma pridaná alebo odobraná k zostatku.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -953,10 +944,6 @@ Adresa: %4</translation>
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Varovanie: Málo voľného miesta na disku </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Použitie:</translation>
     </message>
@@ -985,28 +972,12 @@ Adresa: %4</translation>
         <translation>Nepočítaj Paycoins</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Spustiť minimalizované</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Určiť priečinok s dátami</translation>
     </message>
     <message>
         <source>Specify connection timeout (in milliseconds)</source>
         <translation>Určiť aut spojenia (v milisekundách)</translation>
-    </message>
-    <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Pripojenie cez socks4 proxy</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Povoliť vyhľadávanie DNS pre pridanie nódy a spojenie</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Načúvať spojeniam na &lt;port&gt; (prednastavené: 8333 alebo testovacia sieť: 18333) {9901 ?} {9903)?}</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -1017,20 +988,12 @@ Adresa: %4</translation>
         <translation>Pripojiť sa len k určenej nóde</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Prijímať príkazy z príkazového riadku a JSON-RPC</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Bežať na pozadí ako démon a prijímať príkazy</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>Použiť testovaciu sieť</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Produkovať extra ladiace informácie</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1051,10 +1014,6 @@ Adresa: %4</translation>
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Heslo pre JSON-rPC spojenia</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Počúvať JSON-RPC spojeniam na &lt;port&gt; (predvolené: 8332) {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1085,16 +1044,8 @@ Adresa: %4</translation>
         <translation>Prijateľné šifry (predvolené: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>Táto pomocná správa</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>Načítavanie adries...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Chyba načítania addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1121,20 +1072,8 @@ Adresa: %4</translation>
         <translation>Dokončené načítavanie</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Neplatná adresa proxy</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Neplatná suma pre -paytxfee=&lt;amount&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Varovanie: -paytxfee je nastavené veľmi vysoko. Toto sú transakčné poplatky ktoré zaplatíte ak odošlete transakciu.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Chyba: zlyhalo NewThread(StartNode)</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

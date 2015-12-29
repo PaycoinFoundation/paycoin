@@ -4,7 +4,7 @@
     <name>AboutDialog</name>
     <message>
         <source>About Paycoin</source>
-        <translation>О Paycoin</translation>
+        <translation>Об Paycoin</translation>
     </message>
     <message>
         <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
@@ -49,6 +49,14 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <source>Copy the currently selected address to the system clipboard</source>
         <translation>Копировать текущий выделенный адрес в буфер обмена</translation>
+    </message>
+    <message>
+        <source>&amp;New Address</source>
+        <translation>&amp;Новый адрес</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Address</source>
+        <translation>&amp;Копировать адрес</translation>
     </message>
     <message>
         <source>Show &amp;QR Code</source>
@@ -351,12 +359,12 @@ Are you sure you wish to encrypt your wallet?</source>
         <translation>Клиент Paycoin </translation>
     </message>
     <message>
-        <source>p-qt</source>
-        <translation>p-qt</translation>
-    </message>
-    <message>
         <source>Synchronizing with network...</source>
         <translation>Синхронизация с сетью...</translation>
+    </message>
+    <message>
+        <source>Confirm transaction fee</source>
+        <translation>Подтвердите плата за транзакцию</translation>
     </message>
     <message>
         <source>Downloaded %1 blocks of transaction history.</source>
@@ -426,7 +434,7 @@ Address: %4
         <source>A fatal error occurred. Paycoin can no longer continue safely and will quit.</source>
         <translation>Произошла фатальная ошибка. Paycoin не может продолжать работать нормально и закрывается. </translation>
     </message>
-</context>
+    </context>
 <context>
     <name>CoinControlDialog</name>
     <message>
@@ -605,7 +613,7 @@ Address: %4
         <source>(change)</source>
         <translation>(изменение)</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>DisplayOptionsPage</name>
     <message>
@@ -689,25 +697,56 @@ Address: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
-    <message>
-        <source>Detach databases at shutdown</source>
-        <translation>Отсоединять базы данных при завершении работы</translation>
-    </message>
     <message>
         <source>Detach block and address databases at shutdown. This means they can be moved to another data directory, but it slows down shutdown. The wallet is always detached.</source>
         <translation>Отсоединять базы данных блоков и адресов при завершении работы. Это значит, что они  могут быть перемещены в другую директорию базы данных, но это замедляет завершение работы. Кошелек всегда отсоединен. </translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MintingTableModel</name>
     <message>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
+    <message>
+        <source>Balance</source>
+        <translation>Баланс</translation>
+    </message>
+    <message>
+        <source>minutes</source>
+        <translation>минут</translation>
+    </message>
+    <message>
+        <source>hours</source>
+        <translation>часов</translation>
+    </message>
+    <message>
+        <source>days</source>
+        <translation>дней</translation>
+    </message>
     </context>
 <context>
     <name>MintingView</name>
+    <message>
+        <source>10 min</source>
+        <translation>10 минут</translation>
+    </message>
+    <message>
+        <source>24 hours</source>
+        <translation>24 часа</translation>
+    </message>
+    <message>
+        <source>30 days</source>
+        <translation>30 дней</translation>
+    </message>
+    <message>
+        <source>90 days</source>
+        <translation>90 дней</translation>
+    </message>
     <message>
         <source>Comma separated file (*.csv)</source>
         <translation>Текс, разделённый запятыми (*.csv)</translation>
@@ -717,6 +756,10 @@ Address: %4
         <translation>Адрес</translation>
     </message>
     <message>
+        <source>Balance</source>
+        <translation>Баланс</translation>
+    </message>
+    <message>
         <source>Error exporting</source>
         <translation>Ошибка экспорта</translation>
     </message>
@@ -724,7 +767,7 @@ Address: %4
         <source>Could not write to file %1.</source>
         <translation>Невозможно записать в файл %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -732,8 +775,16 @@ Address: %4
         <translation>Форма</translation>
     </message>
     <message>
+        <source>Enter a public key</source>
+        <translation>Введите публичный ключ</translation>
+    </message>
+    <message>
         <source>Alt+P</source>
         <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>&amp;Address:</source>
+        <translation>&amp;Адрес</translation>
     </message>
     <message>
         <source>Choose address from address book</source>
@@ -753,6 +804,14 @@ Address: %4
     <message>
         <source>Clear all</source>
         <translation>Очистить всё</translation>
+    </message>
+    <message>
+        <source>/ 1</source>
+        <translation>/ 1</translation>
+    </message>
+    <message>
+        <source>XPY</source>
+        <translation>XPY</translation>
     </message>
     <message>
         <source>Fee:</source>
@@ -858,6 +917,10 @@ Address: %4
         <translation>Количество:</translation>
     </message>
     <message>
+        <source>XPY</source>
+        <translation>XPY</translation>
+    </message>
+    <message>
         <source>Label:</source>
         <translation>Метка:</translation>
     </message>
@@ -897,10 +960,6 @@ Address: %4
         <translation>Версия клиента </translation>
     </message>
     <message>
-        <source>Version</source>
-        <translation>Версия</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>Сеть</translation>
     </message>
@@ -933,10 +992,6 @@ Address: %4
         <translation>Дата создания</translation>
     </message>
     <message>
-        <source>&gt;</source>
-        <translation>&gt;</translation>
-    </message>
-    <message>
         <source>Clear console</source>
         <translation>Очистить консоль</translation>
     </message>
@@ -944,7 +999,7 @@ Address: %4
         <source>Welcome to the Paycoin RPC console.&lt;br&gt;Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.&lt;br&gt;Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
         <translation>Добро пожаловать в консоль Paycoin RPC. &lt;br&gt;Используйте стрелки вверх и вниз, для перемещения по истории, и &lt;b&gt;Ctrl-L&lt;/b&gt; чтобы очистить экран.&lt;br&gt;Введите &lt;b&gt;help&lt;/b&gt; для обзора доступных команд.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsDialog</name>
     <message>
@@ -1028,10 +1083,6 @@ Address: %4
         <translation>Удалить все поля транзакции</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Очистить всё</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Баланс:</translation>
     </message>
@@ -1112,22 +1163,10 @@ Address: %4
         <translation>[нет метки]</translation>
     </message>
     <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Количество отправляемых монет превышает Ваш баланс</translation>
-    </message>
-    <message>
         <source>Enter a Paycoin address</source>
         <translation>Введите адрес Paycoin </translation>
     </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Ошибка: Создание транзакции не удалось  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Ошибка: В транзакции отказано.  Такое может произойти, если некоторые монеты уже были потрачены, например, если Вы используете одну копию бумажника (wallet.dat), а монеты были потрачены из другой копии, но не были отмечены как потраченные в этой.  Или в случае кражи (компрометации) Вашего бумажника.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -1461,7 +1500,7 @@ Address: %4
         <source>Amount removed from or added to balance.</source>
         <translation>Сумма, добавленная, или снятая с баланса.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -1606,24 +1645,12 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>ВНИМАНИЕ: На диске заканчивается свободное пространство  </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Использование:</translation>
     </message>
     <message>
-        <source>Unable to bind to port %d on this computer.  Paycoin is probably already running.</source>
-        <translation>Невозможно связаться с портом %d на компьютере. Paycoin, вероятно, уже запущена. </translation>
-    </message>
-    <message>
         <source>Paycoin version</source>
         <translation>Версия Paycoin</translation>
-    </message>
-    <message>
-        <source>Send command to -server or paycoind</source>
-        <translation>Отправить команду на -server или paycoind</translation>
     </message>
     <message>
         <source>List commands</source>
@@ -1655,14 +1682,6 @@ Address: %4
         <translation>Не генерировать монеты</translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Запускать свёрнутым</translation>
-    </message>
-    <message>
-        <source>Show splash screen on startup (default: 1)</source>
-        <translation>Показывать экран заставки при запуске компьютера (default: 1)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Укажите каталог данных</translation>
     </message>
@@ -1679,18 +1698,6 @@ Address: %4
         <translation>Укажите таймаут соединения (в миллисекундах)</translation>
     </message>
     <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Подключаться через socks4 прокси</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Разрешить обращения к DNS для addnode и подключения</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 9901 or testnet: 9903)</source>
-        <translation>Принимать входящие подключения на &lt;port&gt; (по умолчанию: 8333 или 18333 в тестовой сети) {9901 ?} {9903)?}</translation>
-    </message>
-    <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
         <translation>Поддерживать не более &lt;n&gt; подключений к узлам (по умолчанию: 125)</translation>
     </message>
@@ -1703,16 +1710,8 @@ Address: %4
         <translation>Подключаться только к указанному узлу</translation>
     </message>
     <message>
-        <source>Find peers using internet relay chat (default: 0)</source>
-        <translation>Найти пиры, используя интернет чат (default: 0)</translation>
-    </message>
-    <message>
         <source>Accept connections from outside (default: 1)</source>
         <translation>Принять подключение извне (default: 1)</translation>
-    </message>
-    <message>
-        <source>Set language, for example "de_DE" (default: system locale)</source>
-        <translation>Установить язык, например "de_DE" (default: system locale)</translation>
     </message>
     <message>
         <source>Find peers using DNS lookup (default: 1)</source>
@@ -1747,20 +1746,12 @@ Address: %4
         <translation>Плата за каждый килобайт для добавления к посылаемым транзакциям</translation>
     </message>
     <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Принимать командную строку и команды JSON-RPC</translation>
-    </message>
-    <message>
         <source>Run in the background as a daemon and accept commands</source>
         <translation>Запускаться в фоне как демон и принимать команды</translation>
     </message>
     <message>
         <source>Use the test network</source>
         <translation>Использовать тестовую сеть</translation>
-    </message>
-    <message>
-        <source>Output extra debugging information</source>
-        <translation>Выводить дополнительную отладочную информацию</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp</source>
@@ -1781,10 +1772,6 @@ Address: %4
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Пароль для подключений JSON-RPC</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Ожидать подключения JSON-RPC на &lt;порт&gt; (по умолчанию: 8332) {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1819,11 +1806,6 @@ Address: %4
         <translation>Насколько тщательно проверять блок (0-6, default: 1)</translation>
     </message>
     <message>
-        <source>
-SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>SSL опции: (смотри в Bitcoin Wiki инструкцию установки SSL)</translation>
-    </message>
-    <message>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>Использовать OpenSSL (https) для подключений JSON-RPC</translation>
     </message>
@@ -1838,14 +1820,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Acceptable ciphers (default: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</source>
         <translation>Разрешённые алгоритмы (по умолчанию: TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH)</translation>
-    </message>
-    <message>
-        <source>This help message</source>
-        <translation>Эта справка</translation>
-    </message>
-    <message>
-        <source>Usage</source>
-        <translation>Использование</translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s.  Paycoin is probably already running.</source>
@@ -1870,10 +1844,6 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
     <message>
         <source>Loading addresses...</source>
         <translation>Загрузка адресов...</translation>
-    </message>
-    <message>
-        <source>Error loading addr.dat</source>
-        <translation>Ошибка загрузки addr.dat</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -1916,20 +1886,8 @@ SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
         <translation>Загрузка завершена</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Ошибка в адресе прокси</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Ошибка в сумме комиссии</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>ВНИМАНИЕ: Установлена слишком большая комиссия (-paytxfee=).  Данный параметр отвечает за комиссию, которую Вы будете добавлять к сумме при осуществлении транзакций.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Ошибка: Созданиние потока (запуск узла) не удался</translation>
     </message>
     <message>
         <source>To use the %s option</source>

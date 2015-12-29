@@ -2,12 +2,24 @@
 <defaultcodec>UTF-8</defaultcodec>
 <context>
     <name>AboutDialog</name>
+    <message>
+        <source>About Paycoin</source>
+        <translation>Om Paycoin</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
+        <translation>&lt;b&gt;Paycoin&lt;/b&gt; Version</translation>
+    </message>
     </context>
 <context>
     <name>AddressBookPage</name>
     <message>
         <source>Address Book</source>
         <translation>Adressebog</translation>
+    </message>
+    <message>
+        <source>These are your Paycoin addresses for receiving payments.  You may want to give a different one to each sender so you can keep track of who is paying you.</source>
+        <translation>Det her er dine Paycoin adresser for at modtage betalinger. Du kan have lyst til at give forskellige adresser, til hver sender så du kan holde styr på hvem der betaler dig.</translation>
     </message>
     <message>
         <source>Double-click to edit address or label</source>
@@ -20,6 +32,26 @@
     <message>
         <source>Copy the currently selected address to the system clipboard</source>
         <translation>Kopier den valgte adresse til systemets udklipsholder</translation>
+    </message>
+    <message>
+        <source>&amp;New Address</source>
+        <translation>&amp;Nye adresser</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Address</source>
+        <translation>&amp;Kopier adresse</translation>
+    </message>
+    <message>
+        <source>Copy the currently selected scrape address to the system clipboard</source>
+        <translation>Kopier den valgte "Scrape" adresse til dit clipboard</translation>
+    </message>
+    <message>
+        <source>Copy Scrape &amp;Address</source>
+        <translation>Kopier og skrab &amp;Address</translation>
+    </message>
+    <message>
+        <source>Show &amp;QR Code</source>
+        <translation>Vis &amp;QR Kode</translation>
     </message>
     <message>
         <source>Delete the currently selected address from the list. Only sending addresses can be deleted.</source>
@@ -377,6 +409,9 @@ Adresse: %4
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -404,7 +439,7 @@ Adresse: %4
         <source>Could not write to file %1.</source>
         <translation>Kunne ikke skrive til filen %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -528,10 +563,6 @@ Adresse: %4
         <translation>Send til flere modtagere på én gang</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Ryd alle</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Saldo:</translation>
     </message>
@@ -567,19 +598,7 @@ Adresse: %4
         <source>(no label)</source>
         <translation>(ingen etiket)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Beløbet overstiger din saldo</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Fejl: Oprettelse af transaktionen mislykkedes  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Fejl: Transaktionen blev afvist. Dette kan ske hvis nogle af dine coins i din tegnebog allerede var brugt, som hvis du brugte en kopi af wallet.dat og dine coins er blevet brugt i kopien, men ikke er markeret som brugt her.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -777,7 +796,7 @@ Adresse: %4
         <source>Amount removed from or added to balance.</source>
         <translation>Beløb fjernet eller tilføjet balance.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
@@ -914,10 +933,6 @@ Adresse: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Warning: Disk space is low  </source>
-        <translation>Advarsel: Diskplads er lav  </translation>
-    </message>
-    <message>
         <source>Usage:</source>
         <translation>Anvendelse:</translation>
     </message>
@@ -952,11 +967,6 @@ Adresse: %4
 </translation>
     </message>
     <message>
-        <source>Start minimized</source>
-        <translation>Start minimeret
-</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Angiv databibliotek
 </translation>
@@ -967,23 +977,8 @@ Adresse: %4
 </translation>
     </message>
     <message>
-        <source>Connect through socks4 proxy</source>
-        <translation>Tilslut via SOCKS4 proxy
-</translation>
-    </message>
-    <message>
-        <source>Allow DNS lookups for addnode and connect</source>
-        <translation>Tillad DNS-opslag for addnode og connect
-</translation>
-    </message>
-    <message>
         <source>Connect only to the specified node</source>
         <translation>Tilslut kun til den angivne node
-</translation>
-    </message>
-    <message>
-        <source>Accept command line and JSON-RPC commands</source>
-        <translation>Accepter kommandolinje- og JSON-RPC-kommandoer
 </translation>
     </message>
     <message>
@@ -1005,11 +1000,6 @@ Adresse: %4
         <source>Password for JSON-RPC connections</source>
         <translation>Password til JSON-RPC-forbindelser
 </translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 9902)</source>
-        <translation>Lyt til JSON-RPC-forbindelser på &lt;port&gt; (standard: 8332)
- {9902)?}</translation>
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified IP address</source>
@@ -1052,11 +1042,6 @@ Adresse: %4
 </translation>
     </message>
     <message>
-        <source>This help message</source>
-        <translation>Denne hjælpebesked
-</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>Indlæser adresser...</translation>
     </message>
@@ -1077,20 +1062,8 @@ Adresse: %4
         <translation>Indlæsning gennemført</translation>
     </message>
     <message>
-        <source>Invalid -proxy address</source>
-        <translation>Ugyldig -proxy adresse</translation>
-    </message>
-    <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;</source>
-        <translation>Ugyldigt beløb for -paytxfee=&lt;amount&gt;</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high.  This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Advarsel:-paytxfee er sat meget højt.  Dette er det gebyr du vil betale, hvis du sender en transaktion.</translation>
-    </message>
-    <message>
-        <source>Error: NewThread(StartNode) failed</source>
-        <translation>Fejl: NewThread(StartNode) mislykkedes</translation>
     </message>
     <message>
         <source>Error: Transaction creation failed  </source>

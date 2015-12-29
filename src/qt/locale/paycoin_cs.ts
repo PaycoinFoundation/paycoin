@@ -261,6 +261,9 @@
     </message>
 </context>
 <context>
+    <name>HelpMessageBox</name>
+    </context>
+<context>
     <name>MainOptionsPage</name>
     </context>
 <context>
@@ -288,7 +291,7 @@
         <source>Could not write to file %1.</source>
         <translation>Nemohu zapisovat do souboru %1.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>MultisigAddressEntry</name>
     <message>
@@ -440,10 +443,6 @@
         <translation>Smaž všechny transakční formuláře</translation>
     </message>
     <message>
-        <source>Clear all</source>
-        <translation>Všechno smaž</translation>
-    </message>
-    <message>
         <source>Balance:</source>
         <translation>Stav účtu:</translation>
     </message>
@@ -483,19 +482,7 @@
         <source>(no label)</source>
         <translation>(bez označení)</translation>
     </message>
-    <message>
-        <source>Amount exceeds your balance</source>
-        <translation>Částka překračuje stav účtu</translation>
-    </message>
-    <message>
-        <source>Error: Transaction creation failed  </source>
-        <translation>Chyba: Vytvoření transakce selhalo  </translation>
-    </message>
-    <message>
-        <source>Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>Chyba Transakce byla odmítnuta.  Tohle může nastat, pokud nějaké mince z tvé peněženky už jednou byly utraceny, například pokud používáš kopii souboru wallet.dat a mince byly utraceny v druhé kopii, ale nebyly označeny jako utracené v této.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -689,7 +676,7 @@
         <source>Amount removed from or added to balance.</source>
         <translation>Částka odečtená z nebo přičtená k účtu.</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>TransactionView</name>
     <message>
