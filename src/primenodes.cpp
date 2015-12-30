@@ -2,7 +2,6 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include "base58.h"
-#include "db.h"
 #include "util.h"
 #include "primenodes.h"
 
@@ -158,10 +157,10 @@ bool CTransaction::IsPrimeStake(string strFileName, CScript scriptPubKeyType, CS
          * microPrimeGroup. This should not occur and will only happen if
          * someone attempts to hack the stake rate. */
         if (nValueIn > group * COIN)
-            return DoS(100, error("IsPrimeStake() : nValueIn %"PRI64d" exceeds max balance for microprime group %"PRI64d, nValueIn, group));
+            return DoS(100, error("IsPrimeStake() : nValueIn %" PRI64d " exceeds max balance for microprime group %" PRI64d, nValueIn, group));
 
         if (nTime >= MICROPRIMES_STAGGER_DOWN && nValueIn < group * COIN)
-            return DoS(100, error("IsPrimeStake() : nValueIn %"PRI64d" is below required amount for microprime group %"PRI64d, nValueIn, group));
+            return DoS(100, error("IsPrimeStake() : nValueIn %" PRI64d " is below required amount for microprime group %" PRI64d, nValueIn, group));
 
         if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
             return DoS(100, error("IsPrimeStake() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
@@ -219,9 +218,9 @@ bool CTransaction::IsPrimeStake(string strFileName, CScript scriptPubKeyType, CS
 
     // Confirm the stake passes the minimum for a primenode
     if (nTime >= END_PRIME_PHASE_ONE && nValueOut < MINIMUM_FOR_PRIMENODE_PHASE2)
-        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %"PRI64d" while you only have %"PRI64d, MINIMUM_FOR_PRIMENODE_PHASE2, nValueOut));
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %" PRI64d " while you only have %" PRI64d, MINIMUM_FOR_PRIMENODE_PHASE2, nValueOut));
     if (nValueOut < MINIMUM_FOR_PRIMENODE_PHASE1)
-        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %"PRI64d" while you only have %"PRI64d, MINIMUM_FOR_PRIMENODE_PHASE1, nValueOut));
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %" PRI64d " while you only have %" PRI64d, MINIMUM_FOR_PRIMENODE_PHASE1, nValueOut));
 
     /* Reset the primeNodeRate to 100 on the Legacy Phase 1 primenodes after the
      * specified time. Stakes existing prior to that or created after the end of
