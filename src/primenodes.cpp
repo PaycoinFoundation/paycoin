@@ -50,7 +50,6 @@ bool initPrimeNodes(string &str) {
     CPrimeNodeDB::dbtype db = CPrimeNodeDB::nodb;
     // Check if the primenodes database exists and check the version if it does.
     string primedbfile = GetPrimeDBFile();
-    boost::filesystem::path primedat = primedbfile;
     if (boost::filesystem::exists(boost::filesystem::path(primedbfile))) {
         if (maybeWipePrimeDB(primedbfile))
             db = CPrimeNodeDB::fulldb;
