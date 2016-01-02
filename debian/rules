@@ -11,7 +11,7 @@ override_dh_auto_build:
 	$(MAKE)
 
 override_dh_auto_configure:
-	qmake-qt4 -makefile paycoin.pro USE_QRCODE=1 USE_UPNP=1
+	qmake-qt4 -makefile paycoin-qt.pro USE_QRCODE=1 USE_UPNP=1
 
 %:
 	dh $@ 

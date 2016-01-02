@@ -8,7 +8,7 @@ Release Process
 ### Update (commit) version in sources
 
 	doc/README*
-	paycoin.pro
+	paycoin-qt.pro
 	share/setup.nsi
 	src/version.h
 
