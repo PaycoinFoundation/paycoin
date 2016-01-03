@@ -319,7 +319,7 @@
        <item row="16" column="0">
         <widget class="QPushButton" name="showCLOptionsButton">
          <property name="toolTip">
-          <string>Show the Bitcoin-Qt help message to get a list with possible Bitcoin command-line options.</string>
+          <string>Show the Paycoin-Qt help message to get a list with possible Paycoin command-line options.</string>
          </property>
          <property name="text">
           <string>&amp;Show</string>
