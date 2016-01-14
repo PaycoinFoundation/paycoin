@@ -15,11 +15,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>Copyright © 2009-2012 Bitcoin Developers
 Copyright © 2011-2014 Peercoin Developers
-Copyright © 2014-2015 Paycoin Developers
-
+Copyright © 2014-2015 Paycoin Developers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>
 This is experimental software.
 
 Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -1087,15 +1091,15 @@ This label turns red if the priority is smaller than &quot;medium&quot;.
     </message>
 </context>
 <context>
-    <name>HelpMessageBox</name>
+    <name>GUIUtil::HelpMessageBox</name>
     <message>
-        <location filename="../bitcoin.cpp" line="+21"/>
-        <location line="+10"/>
+        <location filename="../guiutil.cpp" line="+422"/>
+        <location line="+12"/>
         <source>Paycoin-Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-10"/>
+        <location line="-12"/>
         <source>version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1105,7 +1109,12 @@ This label turns red if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
+        <source>command-line options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>UI options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1869,7 +1878,7 @@ This label turns red if the priority is smaller than &quot;medium&quot;.
         <location line="+53"/>
         <location line="+23"/>
         <location line="+23"/>
-        <location filename="../rpcconsole.cpp" line="+352"/>
+        <location filename="../rpcconsole.cpp" line="+355"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1934,7 +1943,22 @@ This label turns red if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+231"/>
+        <location line="+223"/>
+        <source>Command-line options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Show the Bitcoin-Qt help message to get a list with possible Bitcoin command-line options.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;Show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
         <source>&amp;Console</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1954,7 +1978,7 @@ This label turns red if the priority is smaller than &quot;medium&quot;.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../forms/rpcconsole.ui" line="-333"/>
+        <location filename="../forms/rpcconsole.ui" line="-356"/>
         <source>Client</source>
         <translation type="unfinished"></translation>
     </message>
