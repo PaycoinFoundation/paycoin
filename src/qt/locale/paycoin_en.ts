@@ -535,9 +535,9 @@ Are you sure you wish to encrypt your wallet?</source>
     <message numerus="yes">
         <location line="+73"/>
         <source>%n active connection(s) to Paycoin network</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n active connection to Paycoin network</numerusform>
+            <numerusform>%n active connections to Paycoin network</numerusform>
         </translation>
     </message>
     <message>
@@ -548,7 +548,7 @@ Are you sure you wish to encrypt your wallet?</source>
     <message numerus="yes">
         <location line="+2"/>
         <source>~%n block(s) remaining</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>~%n block remaining</numerusform>
             <numerusform>~%n blocks remaining</numerusform>
         </translation>
@@ -566,7 +566,7 @@ Are you sure you wish to encrypt your wallet?</source>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n second(s) ago</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n second ago</numerusform>
             <numerusform>%n seconds ago</numerusform>
         </translation>
@@ -574,7 +574,7 @@ Are you sure you wish to encrypt your wallet?</source>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n minute(s) ago</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n minute ago</numerusform>
             <numerusform>%n minutes ago</numerusform>
         </translation>
@@ -582,7 +582,7 @@ Are you sure you wish to encrypt your wallet?</source>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n hour(s) ago</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n hour ago</numerusform>
             <numerusform>%n hours ago</numerusform>
         </translation>
@@ -590,7 +590,7 @@ Are you sure you wish to encrypt your wallet?</source>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n day(s) ago</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n day ago</numerusform>
             <numerusform>%n days ago</numerusform>
         </translation>
@@ -953,7 +953,7 @@ This label turns red if the priority is smaller than &quot;medium&quot;.
         <location line="-96"/>
         <source>This label turns red if any recipient receives an amount smaller than %1.
 
- This means a fee of at least %2 is required. 
+ This means a fee of at least %2 is required.
 
  Amounts below 0.546 times the minimum relay fee are shown as DUST.</source>
         <translation type="unfinished"></translation>
@@ -2527,7 +2527,7 @@ This label turns red if the priority is smaller than &quot;medium&quot;.
     <message numerus="yes">
         <location line="-2"/>
         <source>Open for %n block(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>Open for %n block</numerusform>
             <numerusform>Open for %n blocks</numerusform>
         </translation>
@@ -2555,9 +2555,9 @@ This label turns red if the priority is smaller than &quot;medium&quot;.
     <message numerus="yes">
         <location line="+7"/>
         <source>, broadcast through %n node(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>, broadcast through %n node</numerusform>
+            <numerusform>, broadcast through %n nodes</numerusform>
         </translation>
     </message>
     <message>
@@ -2611,9 +2611,9 @@ This label turns red if the priority is smaller than &quot;medium&quot;.
     <message numerus="yes">
         <location line="-104"/>
         <source>matures in %n more block(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>matures in %n more block</numerusform>
+            <numerusform>matures in %n more blocks</numerusform>
         </translation>
     </message>
     <message>
