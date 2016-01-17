@@ -10,24 +10,7 @@
         <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
-        <source>Copyright © 2009-2012 Bitcoin Developers
-Copyright © 2011-2014 Peercoin Developers
-Copyright © 2014-2015 Paycoin Developers
-
-This is experimental software.
-
-Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>Право собственности © 2009-2014 Bitcoin Developers
-Право собственности © 2011-2014 Peercoin Developers
-Право собственности © 2014 Paycoin Developers
-Это экспериментальное программное обеспечение.
-Распространяется под лицензией программного обеспечения MIT, смотри прилагаемый файл COPYING или http://www.opensource.org/licenses/mit-license.php.
-Этот продукт включает программное обеспечение, разработанное OpenSSL Project для использования в OpenSSL Toolkit (https://www.openssl.org/) и криптографическое программное обеспечение, разработанное Эриком Янгом (eay@cryptsoft.com) и программное обеспечеие UPnP, разработанное Томасом Бернардом. </translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -59,6 +42,14 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;Копировать адрес</translation>
     </message>
     <message>
+        <source>Copy the currently selected scrape address to the system clipboard</source>
+        <translation>Скопируйте выбранный передряги адрес в буфер обмена</translation>
+    </message>
+    <message>
+        <source>Copy Scrape &amp;Address</source>
+        <translation>Копировать Скрип &amp;Адрес</translation>
+    </message>
+    <message>
         <source>Show &amp;QR Code</source>
         <translation>Показать &amp;QR код</translation>
     </message>
@@ -77,6 +68,10 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <source>&amp;Delete</source>
         <translation>&amp;Удалить</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Label</source>
+        <translation>Копировать &amp;Этикетка</translation>
     </message>
     <message>
         <source>Export Address Book Data</source>
@@ -697,7 +692,7 @@ Address: %4
     </message>
 </context>
 <context>
-    <name>HelpMessageBox</name>
+    <name>GUIUtil::HelpMessageBox</name>
     </context>
 <context>
     <name>MainOptionsPage</name>

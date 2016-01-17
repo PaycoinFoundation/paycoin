@@ -436,7 +436,7 @@ Address: %4
     </message>
 </context>
 <context>
-    <name>HelpMessageBox</name>
+    <name>GUIUtil::HelpMessageBox</name>
     </context>
 <context>
     <name>MainOptionsPage</name>

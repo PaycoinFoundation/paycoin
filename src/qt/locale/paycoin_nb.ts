@@ -10,24 +10,7 @@
         <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
         <translation>&lt;b&gt;Paycoin&lt;/b&gt; versjon</translation>
     </message>
-    <message>
-        <source>Copyright © 2009-2012 Bitcoin Developers
-Copyright © 2011-2014 Peercoin Developers
-Copyright © 2014-2015 Paycoin Developers
-
-This is experimental software.
-
-Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>Copyright © 2009-2012 Bitcoin Utviklerne
-Copyright © 2011-2014 Peercoin Utviklerne
-Copyright © 2014 Paycoin Utviklerne
-Dette er eksperimentell programvare.
-Distribuert under MIT programvarelisensen, se medfølgende fil COPYING eller http://www.opensource.org/licenses/mit-license.php.
-Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i OpenSSL Toolkit (https://www.openssl.org/), kryptografisk programvare skrevet av Eric Young (eay@cryptsoft.com) og UPnP programvare skrevet av Thomas Bernard.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -792,7 +775,7 @@ Adresse: %4
     </message>
 </context>
 <context>
-    <name>HelpMessageBox</name>
+    <name>GUIUtil::HelpMessageBox</name>
     </context>
 <context>
     <name>MainOptionsPage</name>
