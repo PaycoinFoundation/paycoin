@@ -10,25 +10,7 @@
         <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
-        <source>Copyright © 2009-2012 Bitcoin Developers
-Copyright © 2011-2014 Peercoin Developers
-Copyright © 2014-2015 Paycoin Developers
-
-This is experimental software.
-
-Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>Copyright © 2009-2014 Bitcoin Developers
-Copyright © 2011-2014 Peercoin Developers
-Copyright © 2014-2015 Paycoin Developers
-
-Ini adalah perangkat lunak eksperimental.
-Didistribusikan di bawah lisensi software MIT, melihat file terlampir COPYING or http://www.opensource.org/licenses/mit-license.php.
-Produk ini berisi software yang dikembangkan oleh OpenSSL Project untuk digunakan dalam OpenSSL Toolkit (https://www.openssl.org/) dan software kriptografi yang ditulis oleh Eric Young (eay@cryptsoft.com) dan software UPnP yang ditulis oleh Thomas Bernard.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -684,7 +666,7 @@ Alamat: %4</translation>
     </message>
 </context>
 <context>
-    <name>HelpMessageBox</name>
+    <name>GUIUtil::HelpMessageBox</name>
     </context>
 <context>
     <name>MainOptionsPage</name>

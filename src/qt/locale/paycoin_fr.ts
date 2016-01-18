@@ -8,29 +8,9 @@
     </message>
     <message>
         <source>&lt;b&gt;Paycoin&lt;/b&gt; version</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Paycoin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>Version de &lt;b&gt;Paycoin&lt;/b&gt;</translation>
     </message>
-    <message>
-        <source>Copyright © 2009-2012 Bitcoin Developers
-Copyright © 2011-2014 Peercoin Developers
-Copyright © 2014-2015 Paycoin Developers
-
-This is experimental software.
-
-Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>Copyright © 2009-2012 Développeurs de Bitcoin
-Copyright © 2011-2014 Développeurs de Peercoin
-Copyright © 2014-2015 Développeurs de Paycoin
-
-Ce logiciel est en phase expérimentale.
-
-Distribué sous licence MIT, voir le fichier COPYING ou http://www.opensource.org/licenses/mit-license.php.
-
-Ce produit inclut des logiciels développés par le projet OpenSSL pour utilisation dans la boite à outils OpenSSL (https://www.openssl.org/), un logiciel cryptographique écrit par Eric Young (eay@cryptsoft.com) et un logiciel UPnP écrit par Thomas Bernard.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -848,7 +828,7 @@ Ceci veut dire que des frais à hauteur de %2 sont requis.</translation>
     </message>
 </context>
 <context>
-    <name>HelpMessageBox</name>
+    <name>GUIUtil::HelpMessageBox</name>
     </context>
 <context>
     <name>MainOptionsPage</name>
@@ -867,6 +847,14 @@ Ceci veut dire que des frais à hauteur de %2 sont requis.</translation>
     <message>
         <source>Detach block and address databases at shutdown. This means they can be moved to another data directory, but it slows down shutdown. The wallet is always detached.</source>
         <translation>Détacher les bases de données des blocs et des adresses à la fermeture. Ceci signifie qu'elles pourront être déplacées vers un autre répertoire de données, mais cela ralentit la fermeture. Le porte-monnaie est toujours détaché.</translation>
+    </message>
+    <message>
+        <source>&amp;Start Paycoin on system login</source>
+        <translation>&amp;Démarrer Paycoin lors de l'ouverture d'une session</translation>
+    </message>
+    <message>
+        <source>Automatically start Paycoin after logging in to the system</source>
+        <translation>Démarrer Paycoin automatiquement après avoir ouvert une session sur le système.</translation>
     </message>
     </context>
 <context>
@@ -1486,7 +1474,15 @@ Ceci veut dire que des frais à hauteur de %2 sont requis.</translation>
         <source>Welcome to the Paycoin RPC console.&lt;br&gt;Use up and down arrows to navigate history, and &lt;b&gt;Ctrl-L&lt;/b&gt; to clear screen.&lt;br&gt;Type &lt;b&gt;help&lt;/b&gt; for an overview of available commands.</source>
         <translation>Bienvenue dans la console RPC de Paycoin.&lt;br&gt;Utilisez les flèches haut et bas pour naviguer dans l'historique, et &lt;b&gt;Ctrl-L&lt;/b&gt; pour nettoyer l'écran.&lt;br&gt;Tapper &lt;b&gt;help&lt;/b&gt; pour avoir un aperçu des commandes disponibles.</translation>
     </message>
-    </context>
+    <message>
+        <source>Client</source>
+        <translation>Nom du client</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Heure de démarrage</translation>
+    </message>
+</context>
 <context>
     <name>SendCoinsDialog</name>
     <message>
@@ -1660,6 +1656,14 @@ Ceci veut dire que des frais à hauteur de %2 sont requis.</translation>
     <message>
         <source>Enter a Paycoin address</source>
         <translation>Entrez une adresse Paycoin</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>&amp;Tout nettoyer</translation>
+    </message>
+    <message>
+        <source>The amount exceeds your balance.</source>
+        <translation>Le montant dépasse votre solde.</translation>
     </message>
     </context>
 <context>
@@ -2478,6 +2482,28 @@ Ceci veut dire que des frais à hauteur de %2 sont requis.</translation>
     <message>
         <source>Paycoin</source>
         <translation>Paycoin</translation>
+    </message>
+    <message>
+        <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
+        <translation>Autoriser les recherches DNS pour -addnode, -seednode et -connect</translation>
+    </message>
+    <message>
+        <source>Listen for connections on &lt;port&gt; (default: 8998 or testnet: 9000)</source>
+        <translation>Écouter les connexions sur le &lt;port&gt; (par défaut : 8998 ou testnet : 9000)</translation>
+    </message>
+    <message>
+        <source>Connect to a node to retrieve peer addresses, and disconnect</source>
+        <translation>Se connecter à un nœud pour obtenir des adresses de pairs puis se déconnecter</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>Spécifier votre propre adresse publique</translation>
+    </message>
+    <message>
+        <source>
+SSL options: (see the Paycoin Wiki for SSL setup instructions)</source>
+        <translation>
+Options SSL : (voir le Wiki de Paycoin pour les instructions de configuration du SSL)</translation>
     </message>
     <message>
         <source>Error loading wallet.dat: Wallet requires newer version of Paycoin</source>
