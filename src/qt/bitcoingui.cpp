@@ -54,7 +54,6 @@
 #include <QFileDialog>
 #include <QDesktopServices>
 #include <QTimer>
-
 #include <QDragEnterEvent>
 #include <QUrl>
 #include <QStyle>
@@ -75,7 +74,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     spinnerFrame(0)
 {
     resize(850, 550);
-    setWindowTitle(tr("Paycoin Wallet"));
+    setWindowTitle(tr("Paycoin") + " - " + tr("Wallet"));
 #ifndef Q_OS_MAC
     setWindowIcon(QIcon(":icons/paycoin_icon"));
 #else
