@@ -33,4 +33,6 @@ static const int TOOLTIP_WRAP_THRESHOLD = 80;
 /* Number of frames in spinner animation */
 #define SPINNER_FRAMES 35
 
+static const int SETTINGS_VERSION = 1;
+
 #endif // GUICONSTANTS_H
