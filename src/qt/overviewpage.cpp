@@ -135,6 +135,7 @@ void OverviewPage::setBalance(qint64 balance, qint64 stake, qint64 unconfirmedBa
     ui->labelBalance->setText(BitcoinUnits::formatWithUnit(unit, balance));
     ui->labelStake->setText(BitcoinUnits::formatWithUnit(unit, stake));
     ui->labelUnconfirmed->setText(BitcoinUnits::formatWithUnit(unit, unconfirmedBalance));
+    ui->labelCombinedTotal->setText(BitcoinUnits::formatWithUnit(unit, (balance + stake + unconfirmedBalance)));
 }
 
 void OverviewPage::setNumTransactions(int count)
