@@ -53,7 +53,7 @@ script: |
   install -s paycoin-qt $BINDIR
 
   cd src
-  make -f makefile.unix STATIC=1 $MAKEOPTS paycoind USE_UPNP=1 BDB_INCLUDE_PATH=$STAGING/include BDB_LIB_PATH=$STAGING/lib BOOST_LIB_SUFFIX=-mt DEBUGFLAGS=
+  make -f makefile.unix STATIC=1 $MAKEOPTS paycoind BDB_INCLUDE_PATH=$STAGING/include BDB_LIB_PATH=$STAGING/lib BOOST_LIB_SUFFIX=-mt DEBUGFLAGS=
   install -s paycoind $BINDIR
 
   # sort distribution tar file and normalize user/group/mtime information for deterministic output
