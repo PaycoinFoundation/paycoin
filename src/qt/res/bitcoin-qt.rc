@@ -13,7 +13,7 @@ BEGIN
             VALUE "CompanyName",        "Paycoin"
             VALUE "FileDescription",    "Paycoin-Qt (OSS GUI client for Paycoin)"
             VALUE "InternalName",       "paycoin-qt"
-            VALUE "LegalCopyright",     "2014-2015 The Paycoin developers"
+            VALUE "LegalCopyright",     "2014-2016 The Paycoin developers"
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
             VALUE "OriginalFilename",   "paycoin-qt.exe"
             VALUE "ProductName",        "Paycoin-Qt"
