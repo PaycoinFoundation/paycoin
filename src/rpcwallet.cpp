@@ -1795,7 +1795,7 @@ Value listmicroprimedata(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "listmicroprimedata\n"
+            "listmicroprimedata <address>\n"
             "List the data regarding a given microprime address (only lists\n"
             "valid addresses found in wallet).");
 
