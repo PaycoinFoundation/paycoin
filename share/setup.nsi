@@ -107,6 +107,10 @@ Section -post SEC0001
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
+    WriteRegStr HKCR "paycoin" "URL Protocol" ""
+    WriteRegStr HKCR "paycoin" "" "URL:Paycoin"
+    WriteRegStr HKCR "paycoin\DefaultIcon" "" $INSTDIR\paycoin.exe
+    WriteRegStr HKCR "paycoin\shell\open\command" "" '"$INSTDIR\paycoin.exe" "%1"'
 SectionEnd
 
 # Macro for selecting uninstaller sections
