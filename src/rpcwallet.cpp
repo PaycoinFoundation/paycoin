@@ -1422,11 +1422,15 @@ Value keypoolrefill(const Array& params, bool fHelp)
 
 void ThreadTopUpKeyPool(void* parg)
 {
+    // Make this thread recognisable as the key-topping-up thread
+    RenameThread("paycoin-key-top");
     pwalletMain->TopUpKeyPool();
 }
 
 void ThreadCleanWalletPassphrase(void* parg)
 {
+    // Make this thread recognisable as the wallet unlocking thread
+    RenameThread("paycoin-lock-wa");
     int64 nMyWakeTime = GetTimeMillis() + *((int64*)parg) * 1000;
 
     ENTER_CRITICAL_SECTION(cs_nWalletUnlockTime);

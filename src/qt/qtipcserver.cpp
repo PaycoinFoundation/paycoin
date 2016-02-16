@@ -33,6 +33,9 @@ void ipcShutdown()
 
 void ipcThread(void* parg)
 {
+    // Rename thread to be recognisable as the ipc thread
+    RenameThread("paycoin-ipc");
+
     message_queue* mq = (message_queue*)parg;
     char strBuf[257];
     size_t nSize;

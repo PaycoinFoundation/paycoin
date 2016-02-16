@@ -1051,6 +1051,9 @@ private:
 
 void ThreadRPCServer(void* parg)
 {
+    // Rename thread to be recognisable as the rpc service runner thread
+    RenameThread("paycoin-rpcserv-runner");
+
     // getwork/getblocktemplate mining rewards paid here:
     pMiningKey = new CReserveKey(pwalletMain);
 
@@ -1128,6 +1131,9 @@ static string JSONRPCExecBatch(const Array& vReq)
 
 void ThreadRPCServer2(void* parg)
 {
+    // Make this thread recognisable as the RPC server
+    RenameThread("paycoin-rpcserv");
+
     printf("ThreadRPCServer started\n");
 
     strRPCUserColonPass = mapArgs["-rpcuser"] + ":" + mapArgs["-rpcpassword"];
