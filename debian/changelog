@@ -1,8 +1,11 @@
-paycoin (0.3.3.0) precise; urgency=low
+paycoin (0.3.3.1) precise; urgency=low
 
   * Fix support for paycoin-qt’s paycoin: URI support.
+  * Fix periodic crash when sending/staking coins.
+  * Adjusted change log cause we didn't release URI support for 0.3.3.0
 
  -- Mitchell Cash (mitchellcash) <mitchell@fastmail.com.au>  Tue, 16 Feb 2016 09:17:00 +1000
+ -- Nathan Bass (IngCr3at1on) <nathan@xpydev.org> Wed, 17 Feb 2016 13:16:02 -0600
 
 paycoin (0.1.2.26) stable; urgency=low
 
