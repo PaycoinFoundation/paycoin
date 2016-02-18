@@ -51,7 +51,6 @@ public:
 
 private:
     std::set<COutPoint> setSelected;
-
 };
 
 #endif // COINCONTROL_H

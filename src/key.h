@@ -48,56 +48,60 @@ public:
 class CKeyID : public uint160
 {
 public:
-    CKeyID() : uint160(0) { }
-    CKeyID(const uint160 &in) : uint160(in) { }
+    CKeyID() : uint160(0) {}
+    CKeyID(const uint160& in) : uint160(in) {}
 };
 
 /** A reference to a CScript: the Hash160 of its serialization (see script.h) */
 class CScriptID : public uint160
 {
 public:
-    CScriptID() : uint160(0) { }
-    CScriptID(const uint160 &in) : uint160(in) { }
+    CScriptID() : uint160(0) {}
+    CScriptID(const uint160& in) : uint160(in) {}
 };
 
 /** An encapsulated public key. */
-class CPubKey {
+class CPubKey
+{
 private:
     std::vector<unsigned char> vchPubKey;
     friend class CKey;
 
 public:
-    CPubKey() { }
-    CPubKey(const std::vector<unsigned char> &vchPubKeyIn) : vchPubKey(vchPubKeyIn) { }
-    friend bool operator==(const CPubKey &a, const CPubKey &b) { return a.vchPubKey == b.vchPubKey; }
-    friend bool operator!=(const CPubKey &a, const CPubKey &b) { return a.vchPubKey != b.vchPubKey; }
-    friend bool operator<(const CPubKey &a, const CPubKey &b) { return a.vchPubKey < b.vchPubKey; }
-
+    CPubKey() {}
+    CPubKey(const std::vector<unsigned char>& vchPubKeyIn) : vchPubKey(vchPubKeyIn) {}
+    friend bool operator==(const CPubKey& a, const CPubKey& b) { return a.vchPubKey == b.vchPubKey; }
+    friend bool operator!=(const CPubKey& a, const CPubKey& b) { return a.vchPubKey != b.vchPubKey; }
+    friend bool operator<(const CPubKey& a, const CPubKey& b) { return a.vchPubKey < b.vchPubKey; }
     IMPLEMENT_SERIALIZE(
-        READWRITE(vchPubKey);
-    )
+        READWRITE(vchPubKey);)
 
-    CKeyID GetID() const {
+    CKeyID GetID() const
+    {
         return CKeyID(Hash160(vchPubKey));
     }
 
-    uint256 GetHash() const {
+    uint256 GetHash() const
+    {
         return Hash(vchPubKey.begin(), vchPubKey.end());
     }
 
-    bool IsValid() const {
+    bool IsValid() const
+    {
         return vchPubKey.size() == 33 || vchPubKey.size() == 65;
     }
 
-    bool IsCompressed() const {
+    bool IsCompressed() const
+    {
         return vchPubKey.size() == 33;
     }
 
-    std::vector<unsigned char> Raw() const {
+    std::vector<unsigned char> Raw() const
+    {
         return vchPubKey;
     }
 
-    bool RecoverCompact(const uint256 &hash, const std::vector<unsigned char>& vchSig);
+    bool RecoverCompact(const uint256& hash, const std::vector<unsigned char>& vchSig);
     bool IsFullyValid() const;
 };
 
@@ -119,7 +123,6 @@ protected:
     void SetCompressedPubKey();
 
 public:
-
     void Reset();
 
     CKey();
@@ -135,7 +138,7 @@ public:
     void MakeNewKey(bool fCompressed);
     bool SetPrivKey(const CPrivKey& vchPrivKey);
     bool SetSecret(const CSecret& vchSecret, bool fCompressed = false);
-    CSecret GetSecret(bool &fCompressed) const;
+    CSecret GetSecret(bool& fCompressed) const;
     CPrivKey GetPrivKey() const;
     bool SetPubKey(const CPubKey& vchPubKey);
     CPubKey GetPubKey() const;
