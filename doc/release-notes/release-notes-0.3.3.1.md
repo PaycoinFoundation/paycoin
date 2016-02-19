@@ -2,8 +2,7 @@ Paycoin version 0.3.3.1 is now available from:
 
   https://github.com/PaycoinFoundation/paycoin/releases
 
-This is a mandatory update, including microprimes updates, replacement prime node
-keys and multiple bug fixes.
+This is an optional update including URI support and multiple bug fixes.
 
 Please report bugs using the issue tracker at github:
 
