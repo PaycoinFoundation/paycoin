@@ -266,7 +266,7 @@ std::string HelpMessage()
         "  -testnet              "   + _("Use the test network") + "\n" +
         "  -debug                "   + _("Output extra debugging information. Implies all other -debug* options") + "\n" +
         "  -debugnet             "   + _("Output extra network debugging information") + "\n" +
-        "  -logtimestamps        "   + _("Prepend debug output with timestamp") + "\n" +
+        "  -logtimestamps        "   + _("Prepend debug output with timestamp (enabled by default if debug is enabled)") + "\n" +
         "  -printtoconsole       "   + _("Send trace/debug info to console instead of debug.log file") + "\n" +
 #ifdef WIN32
         "  -printtodebugger      "   + _("Send trace/debug info to debugger") + "\n" +
@@ -397,6 +397,11 @@ bool AppInit2()
 #endif
     fPrintToConsole = GetBoolArg("-printtoconsole");
     fPrintToDebugger = GetBoolArg("-printtodebugger");
+
+    // Enable timestambs if in debug mode.
+    if (fDebug)
+        SoftSetBoolArg("-logtimestamps", true);
+
     fLogTimestamps = GetBoolArg("-logtimestamps");
 
     if (mapArgs.count("-timeout"))
