@@ -387,16 +387,7 @@ QString MintingTableModel::formatDayToMint(KernelRecord *wtx) const
 
 QString MintingTableModel::formatTxAddress(const KernelRecord *wtx, bool tooltip) const
 {
-    QString label = walletModel->getAddressTableModel()->labelForAddress(QString::fromStdString(wtx->address));
-    QString description;
-    if (!label.isEmpty()) {
-        description += label + QString(" ");
-    }
-    if (label.isEmpty() || walletModel->getOptionsModel()->getDisplayAddresses() || tooltip) {
-        description += QString("(") + QString::fromStdString(wtx->address) + QString(")");
-    }
-
-    return description;
+    return lookupAddress(wtx->address, tooltip);
 }
 
 QString MintingTableModel::formatTxHash(const KernelRecord *wtx) const
