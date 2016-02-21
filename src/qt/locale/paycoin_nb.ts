@@ -402,7 +402,7 @@ Er du sikker på at du vil kryptere lommeboken din?</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Paycoin network</source>
-        <translation><numerusform>%n aktiv tilkobling til Paycoin-nettverket</numerusform><numerusform>%n aktive tilkoblinger til Paycoin-nettverket</numerusform></translation>
+        <translation><numerusform>%n aktiv forbindelse til Paycoin-nettverket</numerusform><numerusform>%n aktive forbindelser til Paycoin-nettverket</numerusform></translation>
     </message>
     <message>
         <source>Synchronizing with network...</source>
@@ -1534,7 +1534,7 @@ Adresse: %4
     </message>
     <message numerus="yes">
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, kringkastet gjennom %n node</numerusform><numerusform>, kringkastet gjennom %n noder</numerusform></translation>
+        <translation><numerusform>, kringkast gjennom %n node</numerusform><numerusform>, kringkast gjennom %n noder</numerusform></translation>
     </message>
     <message>
         <source>Date</source>

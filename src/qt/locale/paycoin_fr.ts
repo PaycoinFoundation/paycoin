@@ -411,7 +411,7 @@ Voulez-vous payer les frais?</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Paycoin network</source>
-        <translation><numerusform>%n connexion active au réseau Paycoin</numerusform><numerusform>%n connexions actives au réseau Paycoin</numerusform></translation>
+        <translation><numerusform>%n connexion active avec le réseau Paycoin</numerusform><numerusform>%n connexions actives avec le réseau Paycoin</numerusform></translation>
     </message>
     <message>
         <source>Synchronizing with network...</source>
@@ -1903,7 +1903,7 @@ Ceci veut dire que des frais à hauteur de %2 sont requis.</translation>
     </message>
     <message numerus="yes">
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>, envoyé à travers %n node</numerusform><numerusform>, envoyé à travers %n nodes</numerusform></translation>
+        <translation><numerusform>, diffusée à travers %n nœud</numerusform><numerusform>, diffusée à travers %n nœuds</numerusform></translation>
     </message>
     <message>
         <source>Date</source>
@@ -1939,7 +1939,7 @@ Ceci veut dire que des frais à hauteur de %2 sont requis.</translation>
     </message>
     <message numerus="yes">
         <source>matures in %n more block(s)</source>
-        <translation><numerusform>maturité dans %n bloc(s)</numerusform><numerusform>maturité dans %n bloc(s)</numerusform></translation>
+        <translation><numerusform>arrive à maturité dans %n bloc de plus</numerusform><numerusform>arrive à maturité dans %n blocs de plus</numerusform></translation>
     </message>
     <message>
         <source>not accepted</source>
