@@ -36,7 +36,6 @@
         <file alias="lock_open">res/icons/lock_open.png</file>
         <file alias="key">res/icons/key.png</file>
         <file alias="filesave">res/icons/filesave.png</file>
-        <file>res/icons/horizontal_trans-no-shadow.png</file>
         <file>res/icons/paycoin_testnet.png</file>
         <file alias="paycoin_tooltip">res/icons/paycoin.png</file>
         <file>res/icons/paycoin.ico</file>
