@@ -137,7 +137,7 @@ Value getblockhash(const Array& params, bool fHelp)
 
     int nHeight = params[0].get_int();
     if (nHeight < 0 || nHeight > nBestHeight)
-        throw runtime_error("Block number out of range.");
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Block number out of range.");
 
     CBlockIndex* pblockindex = FindBlockByHeight(nHeight);
     return pblockindex->phashBlock->GetHex();
@@ -156,7 +156,7 @@ Value getblock(const Array& params, bool fHelp)
     uint256 hash(strHash);
 
     if (mapBlockIndex.count(hash) == 0)
-        throw JSONRPCError(-5, "Block not found");
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Block not found");
 
     CBlock block;
     CBlockIndex* pblockindex = mapBlockIndex[hash];
