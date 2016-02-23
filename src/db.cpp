@@ -37,19 +37,15 @@ void CDBEnv::EnvShutdown()
         return;
 
     fDbEnvInit = false;
-    try
-    {
-        dbenv.close(0);
-    }
-    catch (const DbException& e)
-    {
-        printf("EnvShutdown exception: %s (%d)\n", e.what(), e.get_errno());
-    }
+    int ret = dbenv.close(0);
+    if (ret != 0)
+        printf("EnvShutdown exception: %s (%d)\n", DbEnv::strerror(ret), ret);
+
     if (!fMockDb)
         DbEnv(0).remove(GetDataDir().string().c_str(), 0);
 }
 
-CDBEnv::CDBEnv() : dbenv(0)
+CDBEnv::CDBEnv() : dbenv(DB_CXX_NO_EXCEPTIONS)
 {
 }
 
@@ -96,8 +92,8 @@ bool CDBEnv::Open(const boost::filesystem::path& path)
                      DB_THREAD     |
                      DB_RECOVER,
                      S_IRUSR | S_IWUSR);
-    if (ret > 0)
-        return error("CDB() : error %d opening database environment", ret);
+    if (ret != 0)
+        return error("CDB() : error %s (%d) opening database environment", DbEnv::strerror(ret), ret);
 
     fDbEnvInit = true;
     fMockDb = false;
@@ -186,7 +182,7 @@ CDB::CDB(const char *pszFile, const char* pszMode) :
                             nFlags,    // Flags
                             0);
 
-            if (ret > 0)
+            if (ret != 0)
             {
                 delete pdb;
                 pdb = NULL;

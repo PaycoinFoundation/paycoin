@@ -433,8 +433,11 @@ bool AppInit2()
     FILE* file = fopen(pathLockFile.string().c_str(), "a"); // empty lock file; created if it doesn't exist.
     if (file) fclose(file);
     static boost::interprocess::file_lock lock(pathLockFile.string().c_str());
+    /* Set a cstring to hold the datadir path cause we use it several times
+     * throughout init. */
+    const char* pszDataDir = GetDataDir().string().c_str();
     if (!lock.try_lock())
-        return InitError(strprintf(_("Cannot obtain a lock on data directory %s.  Paycoin is probably already running."), GetDataDir().string().c_str()));
+        return InitError(strprintf(_("Cannot obtain a lock on data directory %s.  Paycoin is probably already running."), pszDataDir));
 
 #if !defined(WIN32) && !defined(QT_GUI)
     if (fDaemon)
@@ -465,7 +468,7 @@ bool AppInit2()
     printf("Using OpenSSL version %s\n", SSLeay_version(SSLEAY_VERSION));
     printf("Startup time: %s\n", DateTimeStrFormat("%x %H:%M:%S", GetTime()).c_str());
     printf("Default data directory %s\n", GetDefaultDataDir().string().c_str());
-    printf("Used data directory %s\n", GetDataDir().string().c_str());
+    printf("Used data directory %s\n", pszDataDir);
 
     // Check and update minium version protocol after a given time.
     if (time(NULL) >= MICROPRIMES_STAGGER_DOWN)
@@ -477,6 +480,15 @@ bool AppInit2()
     //
     if (fDaemon)
         fprintf(stdout, "Paycoin server starting\n");
+
+    if (!bitdb.Open(GetDataDir()))
+    {
+        string msg = strprintf(_("Error initializing database environment %s!"
+                                 " To recover, BACKUP THAT DIRECTORY, then remove"
+                                 " everything from it except for wallet.dat."), pszDataDir);
+        return InitError(msg);
+    }
+
     int64 nStart;
 
     // ********************************************************* Step 5: network initialization
@@ -590,7 +602,7 @@ bool AppInit2()
     printf("Loading block index...\n");
     nStart = GetTimeMillis();
     if (!LoadBlockIndex())
-        strErrors << _("Error loading blkindex.dat") << "\n";
+        return InitError(_("Error loading blkindex.dat"));
 
     // as LoadBlockIndex can take several minutes, it's possible the user
     // requested to kill bitcoin-qt during the last operation. If so, exit.
