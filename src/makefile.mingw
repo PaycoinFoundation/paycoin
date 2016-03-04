@@ -127,13 +127,22 @@ OBJS= \
     obj/kernel.o \
     obj/primenodes.o \
     obj/primekeys.o \
-    obj/mpkeys.o \
-    obj/mpkeys_test.o \
-    obj/scrapesdb.o
+    obj/scrapesdb.o \
+    obj/microprimes/addresses1.o \
+    obj/microprimes/addresses2.o \
+    obj/microprimes/addresses3.o \
+    obj/microprimes/addresses4.o \
+    obj/microprimes/testnet_addresses1.o \
+    obj/microprimes/testnet_addresses2.o \
+    obj/microprimes/testnet_addresses3.o \
+    obj/microprimes/testnet_addresses4.o
 
 all: paycoind.exe
 
 obj/%.o: %.cpp $(HEADERS)
+	g++ -c $(CFLAGS) -o $@ $<
+
+obj/%.o: microprimes/%.cpp $(HEADERS)
 	g++ -c $(CFLAGS) -o $@ $<
 
 paycoind.exe: $(OBJS:obj/%=obj/%)

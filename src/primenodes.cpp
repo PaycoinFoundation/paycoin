@@ -302,7 +302,7 @@ void InflatePrimeNodeDB(CPrimeNodeDB::dbtype db) {
         primeNodeDB->WritePrimeNodeDB();
 
     if (db == CPrimeNodeDB::microdb || db == CPrimeNodeDB::fulldb)
-        fTestNet ? primeNodeDB->WriteTestMicroPrimeDB() : primeNodeDB->WriteMicroPrimeDB();
+        fTestNet ? primeNodeDB->WriteTestMicroPrimeDB1() : primeNodeDB->WriteMicroPrimeDB1();
 
     /* Close Db and reopen it w/ read-only privs because we won't need to write
      * to it again. */

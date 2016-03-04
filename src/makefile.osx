@@ -108,15 +108,15 @@ OBJS= \
     obj/kernel.o \
     obj/primenodes.o \
     obj/primekeys.o \
-    obj/mpkeys.o \
-    obj/mpkeys_test.o \
-    obj/scrapesdb.o
-
-# This isn't present in Clang but without it in GCC the key files are compiled
-# twice (once with var-tracking-assignments which fails then again without).
-ifeq ($(CXX), g++)
-    obj/mpkeys.o obj/mpkeys_test.o : xCXXFLAGS += -fno-var-tracking-assignments
-endif
+    obj/scrapesdb.o \
+    obj/microprimes/addresses1.o \
+    obj/microprimes/addresses2.o \
+    obj/microprimes/addresses3.o \
+    obj/microprimes/addresses4.o \
+    obj/microprimes/testnet_addresses1.o \
+    obj/microprimes/testnet_addresses2.o \
+    obj/microprimes/testnet_addresses3.o \
+    obj/microprimes/testnet_addresses4.o
 
 ifdef USE_UPNP
 	DEFS += -DUSE_UPNP=$(USE_UPNP)
@@ -139,6 +139,13 @@ version.cpp: obj/build.h
 DEFS += -DHAVE_BUILD_INFO
 
 obj/%.o: %.cpp
+	$(CXX) -c $(CFLAGS) -MMD -o $@ $<
+	@cp $(@:%.o=%.d) $(@:%.o=%.P); \
+	  sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+	      -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
+	  rm -f $(@:%.o=%.d)
+
+obj/%.o: microprimes/%.cpp
 	$(CXX) -c $(CFLAGS) -MMD -o $@ $<
 	@cp $(@:%.o=%.d) $(@:%.o=%.P); \
 	  sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \

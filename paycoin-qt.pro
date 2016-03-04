@@ -211,8 +211,14 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/scrapesdb.cpp \
     src/primenodes.cpp \
     src/primekeys.cpp \
-    src/mpkeys.cpp \
-    src/mpkeys_test.cpp \
+    src/microprimes/addresses1.cpp \
+    src/microprimes/addresses2.cpp \
+    src/microprimes/addresses3.cpp \
+    src/microprimes/addresses4.cpp \
+    src/microprimes/testnet_addresses1.cpp \
+    src/microprimes/testnet_addresses2.cpp \
+    src/microprimes/testnet_addresses3.cpp \
+    src/microprimes/testnet_addresses4.cpp \
     src/json/json_spirit_writer.cpp \
     src/json/json_spirit_value.cpp \
     src/json/json_spirit_reader.cpp \
