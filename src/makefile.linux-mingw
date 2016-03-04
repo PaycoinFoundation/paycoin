@@ -12,7 +12,7 @@ INCLUDEPATHS= \
  -I"$(DEPSDIR)" \
  -I"$(DEPSDIR)/include" \
  -I"$(CURDIR)/obj" \
- -I"$(CURDIR)
+ -I"$(CURDIR)"
 
 LIBPATHS= \
  -L"$(DEPSDIR)" \
