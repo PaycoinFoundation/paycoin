@@ -109,14 +109,14 @@ OBJS= \
     obj/primenodes.o \
     obj/primekeys.o \
     obj/scrapesdb.o \
-    obj/microprimes/addresses1.o \
-    obj/microprimes/addresses2.o \
-    obj/microprimes/addresses3.o \
-    obj/microprimes/addresses4.o \
-    obj/microprimes/testnet_addresses1.o \
-    obj/microprimes/testnet_addresses2.o \
-    obj/microprimes/testnet_addresses3.o \
-    obj/microprimes/testnet_addresses4.o
+    obj/addresses1.o \
+    obj/addresses2.o \
+    obj/addresses3.o \
+    obj/addresses4.o \
+    obj/testnet_addresses1.o \
+    obj/testnet_addresses2.o \
+    obj/testnet_addresses3.o \
+    obj/testnet_addresses4.o
 
 ifdef USE_UPNP
 	DEFS += -DUSE_UPNP=$(USE_UPNP)
