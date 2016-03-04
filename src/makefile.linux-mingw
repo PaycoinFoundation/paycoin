@@ -11,7 +11,8 @@ USE_UPNP:=0
 INCLUDEPATHS= \
  -I"$(DEPSDIR)" \
  -I"$(DEPSDIR)/include" \
- -I"$(CURDIR)/obj"
+ -I"$(CURDIR)/obj" \
+ -I"$(CURDIR)
 
 LIBPATHS= \
  -L"$(DEPSDIR)" \
