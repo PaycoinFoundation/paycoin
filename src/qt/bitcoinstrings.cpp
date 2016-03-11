@@ -43,9 +43,9 @@ QT_TRANSLATE_NOOP("bitcoin-core", ""
 "Number of seconds to keep misbehaving peers from reconnecting (default: "
 "86400)"),
 QT_TRANSLATE_NOOP("bitcoin-core", ""
-"Unable to bind to %s on this computer.  Paycoin is probably already running."),
+"Unable to bind to %s on this computer. Paycoin is probably already running."),
 QT_TRANSLATE_NOOP("bitcoin-core", ""
-"Warning: -paytxfee is set very high.  This is the transaction fee you will "
+"Warning: -paytxfee is set very high. This is the transaction fee you will "
 "pay if you send a transaction."),
 QT_TRANSLATE_NOOP("bitcoin-core", ""
 "Warning: Please check that your computer's date and time are correct.  If "
