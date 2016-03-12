@@ -464,7 +464,7 @@ bool CTransaction::CheckTransaction() const
 
     // Check for negative or overflow output values
     int64 nValueOut = 0;
-    for (int i = 0; i < vout.size(); i++)
+    for (unsigned int i = 0; i < vout.size(); i++)
     {
         const CTxOut& txout = vout[i];
         if (txout.IsEmpty() && (!IsCoinBase()) && (!IsCoinStake()))
@@ -2039,7 +2039,7 @@ bool CBlock::CheckBlock(int64 nHeight) const
             return DoS(100, error("CheckBlock() : more than one coinbase"));
 
     // paycoin: only the second transaction can be the optional coinstake
-    for (int i = 2; i < vtx.size(); i++)
+    for (unsigned int i = 2; i < vtx.size(); i++)
         if (vtx[i].IsCoinStake())
             return DoS(100, error("CheckBlock() : coinstake in wrong position"));
 
@@ -2385,7 +2385,7 @@ bool CheckDiskSpace(uint64 nAdditionalBytes)
 
 FILE* OpenBlockFile(unsigned int nFile, unsigned int nBlockPos, const char* pszMode)
 {
-    if (nFile == -1)
+    if ((nFile < 1) || (nFile == (unsigned int) -1))
         return NULL;
     FILE* file = fopen((GetDataDir() / strprintf("blk%04d.dat", nFile)).string().c_str(), pszMode);
     if (!file)
@@ -2414,7 +2414,7 @@ FILE* AppendBlockFile(unsigned int& nFileRet)
         if (fseek(file, 0, SEEK_END) != 0)
             return NULL;
         // FAT32 filesize max 4GB, fseek and ftell max 2GB, so we must stay under 2GB
-        if (ftell(file) < 0x7F000000 - MAX_SIZE)
+        if (ftell(file) < 0x7F000000 - (int)MAX_SIZE)
         {
             nFileRet = nCurrentBlockFile;
             return file;

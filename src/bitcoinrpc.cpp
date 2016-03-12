@@ -639,7 +639,7 @@ Value gettxout(const Array& params, bool fHelp)
         if (mempool.exists(hash))
         {
             tx = mempool.lookup(hash);
-            if (n >= tx.vout.size())
+            if (n >= (int)tx.vout.size())
                 return Value::null;
             fFound = true;
             fInMempool = true;
@@ -652,7 +652,7 @@ Value gettxout(const Array& params, bool fHelp)
         CTxIndex txindex;
         if (!txdb.ReadTxIndex(hash, txindex))
             return Value::null;
-        if (n >= txindex.vSpent.size())
+        if (n >= (int)txindex.vSpent.size())
             return Value::null;
         if (!txindex.vSpent[n].IsNull())
             return Value::null;
