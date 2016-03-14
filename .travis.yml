@@ -6,6 +6,7 @@ sudo: false
 
 compiler:
   - gcc
+  - clang
 
 addons:
   apt:
@@ -19,7 +20,7 @@ addons:
       - libqrencode-dev
 
 script:
-  - qmake USE_QRCODE=1
+  - qmake USE_QRCODE=1 QMAKE_CXX=$CXX QMAKE_CC=$CC
   - make clean
   - make
   - cd src

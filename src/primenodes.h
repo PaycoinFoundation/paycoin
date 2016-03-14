@@ -70,10 +70,17 @@ private:
     bool WritePrimeNodeKey(const std::string /*key*/, unsigned int /*valid_starting*/, unsigned int /*valid_until*/);
     bool WriteMicroPrimeAddr(const std::string /*address*/, int64 /*group*/);
     bool WritePrimeNodeDBVersion(int /*version*/);
+
+    void WriteMicroPrimeDB2();
+    void WriteMicroPrimeDB3();
+    void WriteMicroPrimeDB4();
+    void WriteTestMicroPrimeDB2();
+    void WriteTestMicroPrimeDB3();
+    void WriteTestMicroPrimeDB4();
 public:
     void WritePrimeNodeDB();
-    void WriteMicroPrimeDB();
-    void WriteTestMicroPrimeDB();
+    void WriteMicroPrimeDB1();
+    void WriteTestMicroPrimeDB1();
 
     bool CheckPrimeNodeDBVersion(int &/*version*/);
 
