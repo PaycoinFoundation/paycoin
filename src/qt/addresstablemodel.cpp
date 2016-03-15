@@ -239,6 +239,11 @@ bool AddressTableModel::setData(const QModelIndex & index, const QVariant & valu
                     return false;
                 }
 
+                /* Confirm we are not setting the scrape address to the same
+                 * address as the staking address. */
+                if (rec->address == value.toString())
+                    return false;
+
                 if (!scrapesDB->WriteScrapeAddress(rec->address.toStdString(), value.toString().toStdString()))
                     return false;
             }
