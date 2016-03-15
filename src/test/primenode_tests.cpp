@@ -35,45 +35,45 @@ BOOST_AUTO_TEST_CASE(primenode_validity)
     vchPrivKey = ParseHex(strPrivKey);
     BOOST_CHECK(NewScriptPrimeID(scriptPubKeyTypeValid, vchPrivKey, nTime));
 
-    primeNodeDB = new CPrimeNodeDB("cr");
+    CPrimeNodeDB("primenodes.dat", "cr");
     CPrimeNodeDBEntry entry;
 
     // Empty database, returns false.
-    BOOST_CHECK(!primeNodeDB->IsPrimeNodeKey(scriptPubKeyTypeValid, nTime, entry));
-    BOOST_CHECK(!primeNodeDB->IsPrimeNodeKey(scriptPubKeyTypeInvalid, nTime, entry));
-    BOOST_CHECK(!primeNodeDB->CheckMicroPrime(strMicroPrimeValid));
-    BOOST_CHECK(!primeNodeDB->CheckMicroPrime(strMicroPrimeInvalid));
+    BOOST_CHECK(!CPrimeNodeDB("primenodes.dat").IsPrimeNodeKey(scriptPubKeyTypeValid, nTime, entry));
+    BOOST_CHECK(!CPrimeNodeDB("primenodes.dat").IsPrimeNodeKey(scriptPubKeyTypeInvalid, nTime, entry));
+    BOOST_CHECK(!CPrimeNodeDB("primenodes.dat").CheckMicroPrime(strMicroPrimeValid));
+    BOOST_CHECK(!CPrimeNodeDB("primenodes.dat").CheckMicroPrime(strMicroPrimeInvalid));
 
     // Inflate just the microprime database.
-    InflatePrimeNodeDB(CPrimeNodeDB::microdb);
+    InflatePrimeNodeDB("primenodes.dat", CPrimeNodeDB::microdb);
     // Database is only inflated with microprime keys, still return false.
-    BOOST_CHECK(!primeNodeDB->IsPrimeNodeKey(scriptPubKeyTypeValid, nTime, entry));
+    BOOST_CHECK(!CPrimeNodeDB("primenodes.dat").IsPrimeNodeKey(scriptPubKeyTypeValid, nTime, entry));
 
-    BOOST_CHECK(primeNodeDB->CheckMicroPrime(strMicroPrimeValid));
-    BOOST_CHECK(!primeNodeDB->CheckMicroPrime(strMicroPrimeInvalid));
+    BOOST_CHECK(CPrimeNodeDB("primenodes.dat").CheckMicroPrime(strMicroPrimeValid));
+    BOOST_CHECK(!CPrimeNodeDB("primenodes.dat").CheckMicroPrime(strMicroPrimeInvalid));
 
     // Inflate the primenode side of the database.
-    InflatePrimeNodeDB(CPrimeNodeDB::primedb);
-    BOOST_CHECK(primeNodeDB->IsPrimeNodeKey(scriptPubKeyTypeValid, nTime, entry));
-    BOOST_CHECK(!primeNodeDB->IsPrimeNodeKey(scriptPubKeyTypeInvalid, nTime, entry));
+    InflatePrimeNodeDB("primenodes.dat", CPrimeNodeDB::primedb);
+    BOOST_CHECK(CPrimeNodeDB("primenodes.dat").IsPrimeNodeKey(scriptPubKeyTypeValid, nTime, entry));
+    BOOST_CHECK(!CPrimeNodeDB("primenodes.dat").IsPrimeNodeKey(scriptPubKeyTypeInvalid, nTime, entry));
 
     CBitcoinAddress addr(strMicroPrimeValid);
     scriptPubKeyAddress.SetDestination(addr.Get());
 
     CTransaction tx;
-    BOOST_CHECK(tx.IsPrimeStake(scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 5000 * COIN, 0, 0));
+    BOOST_CHECK(tx.IsPrimeStake("primenodes.dat", scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 5000 * COIN, 0, 0));
     // Value in exceeds max stakeable balance of address (microPrimeGroup)
-    BOOST_CHECK(!tx.IsPrimeStake(scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 5000 * COIN + 1, 0, 0));
+    BOOST_CHECK(!tx.IsPrimeStake("primenodes.dat", scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 5000 * COIN + 1, 0, 0));
     // Value in is too low for microprime after given date.
-    BOOST_CHECK(!tx.IsPrimeStake(scriptMicroPrimeOP, scriptPubKeyAddress, MICROPRIMES_STAGGER_DOWN, 5000 * COIN - 1, 0, 0));
+    BOOST_CHECK(!tx.IsPrimeStake("primenodes.dat", scriptMicroPrimeOP, scriptPubKeyAddress, MICROPRIMES_STAGGER_DOWN, 5000 * COIN - 1, 0, 0));
     // Excessive reward.
-    BOOST_CHECK(!tx.IsPrimeStake(scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 4000 * COIN, 6000 * COIN, 0));
+    BOOST_CHECK(!tx.IsPrimeStake("primenodes.dat", scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 4000 * COIN, 6000 * COIN, 0));
 
     // Invalid microprime address.
     addr = CBitcoinAddress(strMicroPrimeInvalid);
     scriptPubKeyAddress.clear();
     scriptPubKeyAddress.SetDestination(addr.Get());
-    BOOST_CHECK(!tx.IsPrimeStake(scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 4000 * COIN, 0, 0));
+    BOOST_CHECK(!tx.IsPrimeStake("primenodes.dat", scriptMicroPrimeOP, scriptPubKeyAddress, nTime, 4000 * COIN, 0, 0));
 
     // Sign a script with an old primenode OP code.
     CKey key;
@@ -86,20 +86,20 @@ BOOST_AUTO_TEST_CASE(primenode_validity)
     key.Sign(hashScriptTime, vchSig);
     scriptPubKeyTypeOld << OP_PRIMENODE350 << vchSig;
     // Returns false when processing the OP code (without checking anything else)
-    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeOld, scriptPubKeyAddress, nTime, 0, 0, 0));
+    BOOST_CHECK(!tx.IsPrimeStake("primenodes.dat", scriptPubKeyTypeOld, scriptPubKeyAddress, nTime, 0, 0, 0));
     // Returns false at signature check
-    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeInvalid, scriptPubKeyAddress, nTime, 0, 0, 0));
+    BOOST_CHECK(!tx.IsPrimeStake("primenodes.dat", scriptPubKeyTypeInvalid, scriptPubKeyAddress, nTime, 0, 0, 0));
 
     /* Can't test database ranges because it's impossible to get a valid signature
      * from IsPrimeNodeKey with the nTime being so far off from something real. */
 
     // Returns false at MINIMUM_FOR_PRIMENODE check
-    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, 0, MINIMUM_FOR_PRIMENODE_PHASE2 - 1, 0));
-    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeOld, scriptPubKeyAddress, END_PRIME_PHASE_ONE - 1000, 0, MINIMUM_FOR_PRIMENODE_PHASE1 - 1, 0));
+    BOOST_CHECK(!tx.IsPrimeStake("primenodes.dat", scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, 0, MINIMUM_FOR_PRIMENODE_PHASE2 - 1, 0));
+    BOOST_CHECK(!tx.IsPrimeStake("primenodes.dat", scriptPubKeyTypeOld, scriptPubKeyAddress, END_PRIME_PHASE_ONE - 1000, 0, MINIMUM_FOR_PRIMENODE_PHASE1 - 1, 0));
     // Return false at coin age / reward check
-    BOOST_CHECK(!tx.IsPrimeStake(scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, 0, MINIMUM_FOR_PRIMENODE_PHASE2, 0));
+    BOOST_CHECK(!tx.IsPrimeStake("primenodes.dat", scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, 0, MINIMUM_FOR_PRIMENODE_PHASE2, 0));
     // Pass
-    BOOST_CHECK(tx.IsPrimeStake(scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, MINIMUM_FOR_PRIMENODE_PHASE2 - 10000, MINIMUM_FOR_PRIMENODE_PHASE2, 500));
+    BOOST_CHECK(tx.IsPrimeStake("primenodes.dat", scriptPubKeyTypeValid, scriptPubKeyAddress, nTime, MINIMUM_FOR_PRIMENODE_PHASE2 - 10000, MINIMUM_FOR_PRIMENODE_PHASE2, 500));
 
     fTestNet = false;
 }

@@ -1808,14 +1808,15 @@ Value listmicroprimedata(const Array& params, bool fHelp)
     if (!IsMine(*pwalletMain, address.Get()))
         throw runtime_error("Address must be in wallet.");
 
-    if (!primeNodeDB->CheckMicroPrime(strAddress))
+    string primedbfile = GetPrimeDBFile();
+    if (!CPrimeNodeDB(primedbfile).CheckMicroPrime(strAddress))
         throw runtime_error("Address is not a valid microprime address.");
 
     int primeNodeRate;
     int64 group;
     CScript scriptMPAddress;
     scriptMPAddress.SetDestination(address.Get());
-    if (!primeNodeDB->IsMicroPrime(scriptMPAddress, primeNodeRate, group, GetTime()))
+    if (!CPrimeNodeDB(primedbfile).IsMicroPrime(scriptMPAddress, primeNodeRate, group, GetTime()))
         throw runtime_error("Address is not a valid microprime address.");
 
     Object obj;

@@ -2,15 +2,12 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include "base58.h"
-#include "db.h"
 #include "util.h"
 #include "primenodes.h"
 
 using namespace std;
 
 extern void CloseDb(const string& strFile);
-
-CPrimeNodeDB* primeNodeDB;
 
 // Reset all primenode stakerates to 100% after the given date
 static const unsigned int RESET_PRIMERATES = 1429531200; // Mon, 20 Apr 2015 12:00:00 GMT
@@ -30,28 +27,36 @@ bool NewScriptPrimeID(CScript &scriptPrimeID, vector<unsigned char> vchPrivKey, 
     return true;
 }
 
-bool maybeWipePrimeDB() {
+bool maybeWipePrimeDB(string strFileName) {
     int dbversion;
-    if (primeNodeDB->CheckPrimeNodeDBVersion(dbversion)) {
+    if (CPrimeNodeDB(strFileName).CheckPrimeNodeDBVersion(dbversion)) {
         if (dbversion == 4)
             return false;
     }
 
     // No version set or version is invalid, wipe the DB.
     printf("maybeWipePrimeDB() : primenode database is outdated, removing for recreation\n");
-    primeNodeDB->Close();
+    CPrimeNodeDB(strFileName).Close();
     bitdb.CloseDb("primenodes.dat");
-    delete primeNodeDB;
-    boost::filesystem::remove(GetDataDir() / "primenodes.dat");
-    // This will be re-opened with write credentials during inflate.
-    primeNodeDB = new CPrimeNodeDB("cr");
+    boost::filesystem::remove(strFileName);
     // Return true so we know to re-inflate the DB.
     return true;
 }
 
+/* This function should not be called by tests (is not currently required for
+ * them) as it will use the primenodes.dat found in the datadir instead of the
+ * mockdb. */
 bool initPrimeNodes(string &str) {
-    // Create our database if it doesn't exist..
-    primeNodeDB = new CPrimeNodeDB("cr");
+    CPrimeNodeDB::dbtype db = CPrimeNodeDB::nodb;
+    // Check if the primenodes database exists and check the version if it does.
+    string primedbfile = GetPrimeDBFile();
+    if (boost::filesystem::exists(boost::filesystem::path(primedbfile))) {
+        if (maybeWipePrimeDB(primedbfile))
+            db = CPrimeNodeDB::fulldb;
+    }
+
+    // Create our database if it doesn't exist.
+    CPrimeNodeDB(primedbfile, "cr");
 
     /* For whatever reason the database statistics don't return usable
      * information (same stats on all existing databases). Check for the
@@ -67,39 +72,39 @@ bool initPrimeNodes(string &str) {
      *
      * total_hours_wasted_here = 5
      */
-     CPrimeNodeDB::dbtype db = CPrimeNodeDB::nodb;
-     if (maybeWipePrimeDB()) {
-         db = CPrimeNodeDB::fulldb;
-     } else if (fTestNet) {
-         if (!primeNodeDB->CheckPrimeNodeKey(string("04d445518d115243639d0dfd057a99da588e8334039ce674f177943d4c660957c810f924a5371a352b1e827121846500a588a4dc47dc6d5d9e5317dfa48c562aa7"))
-             || !primeNodeDB->CheckPrimeNodeKey(string("0443e5bf72234d77a591ca2132c5995cccdba377a7022eb014d25e27ebe6ffaf85cd3a214588612186ee1771cfb905d1ec2137193bc01563dbc36d1e28f013e00d")))
-             db = CPrimeNodeDB::primedb;
 
-         if (!primeNodeDB->CheckMicroPrime(string("muVEJW5YZpZc4QxUaDMJVxcy1vQcMrPhmQ"))
-             || !primeNodeDB->CheckMicroPrime(string("mpCYzc3XqcLYGBHtJxAFQQ1nz7YZwecE3v")))
-         {
-             if (db == CPrimeNodeDB::primedb) {
-                 db = CPrimeNodeDB::fulldb;
-             } else {
-                 db = CPrimeNodeDB::microdb;
-             }
-         }
-     } else {
-         if (!primeNodeDB->CheckPrimeNodeKey(string("04388d05d6cdbf75a37540e9b94c1c0b4e9b41a109c1466a33b3cf3cbca9e244f7761686502a0a593831fac02753ea5c2c8fc14ed59b9060da2088d2cb674e041d"))
-             || !primeNodeDB->CheckPrimeNodeKey(string("049bee18cacc1d51282633a0d269f53bfc4366342c3043e229f3c5534b9184bce83440e4d3164ceb158515c6af8867091e0b1045f53c5b3756fc4413265266e759")))
-             db = CPrimeNodeDB::primedb;
-         if (!primeNodeDB->CheckMicroPrime(string("P9Yo3PtaxuzeBZAimsGzz6mdTmdDtU6vhf"))
-             || !primeNodeDB->CheckMicroPrime(string("PT9pCj8Xzmxyrk8JUGBTMSaN2W2oeFBrke")))
-         {
-             if (db == CPrimeNodeDB::primedb) {
-                 db = CPrimeNodeDB::fulldb;
-             } else {
-                 db = CPrimeNodeDB::microdb;
-             }
-         }
-     }
-     if (db != CPrimeNodeDB::nodb)
-         InflatePrimeNodeDB(db);
+    if (db != CPrimeNodeDB::fulldb && fTestNet) {
+        if (!CPrimeNodeDB(primedbfile).CheckPrimeNodeKey(string("04d445518d115243639d0dfd057a99da588e8334039ce674f177943d4c660957c810f924a5371a352b1e827121846500a588a4dc47dc6d5d9e5317dfa48c562aa7"))
+            || !CPrimeNodeDB(primedbfile).CheckPrimeNodeKey(string("0443e5bf72234d77a591ca2132c5995cccdba377a7022eb014d25e27ebe6ffaf85cd3a214588612186ee1771cfb905d1ec2137193bc01563dbc36d1e28f013e00d")))
+            db = CPrimeNodeDB::primedb;
+
+        if (!CPrimeNodeDB(primedbfile).CheckMicroPrime(string("muVEJW5YZpZc4QxUaDMJVxcy1vQcMrPhmQ"))
+            || !CPrimeNodeDB(primedbfile).CheckMicroPrime(string("mpCYzc3XqcLYGBHtJxAFQQ1nz7YZwecE3v")))
+        {
+            if (db == CPrimeNodeDB::primedb) {
+                db = CPrimeNodeDB::fulldb;
+            } else {
+                db = CPrimeNodeDB::microdb;
+            }
+        }
+    } else if (db != CPrimeNodeDB::fulldb) {
+        if (!CPrimeNodeDB(primedbfile).CheckPrimeNodeKey(string("04388d05d6cdbf75a37540e9b94c1c0b4e9b41a109c1466a33b3cf3cbca9e244f7761686502a0a593831fac02753ea5c2c8fc14ed59b9060da2088d2cb674e041d"))
+            || !CPrimeNodeDB(primedbfile).CheckPrimeNodeKey(string("049bee18cacc1d51282633a0d269f53bfc4366342c3043e229f3c5534b9184bce83440e4d3164ceb158515c6af8867091e0b1045f53c5b3756fc4413265266e759")))
+            db = CPrimeNodeDB::primedb;
+
+        if (!CPrimeNodeDB(primedbfile).CheckMicroPrime(string("P9Yo3PtaxuzeBZAimsGzz6mdTmdDtU6vhf"))
+            || !CPrimeNodeDB(primedbfile).CheckMicroPrime(string("PT9pCj8Xzmxyrk8JUGBTMSaN2W2oeFBrke")))
+        {
+            if (db == CPrimeNodeDB::primedb) {
+                db = CPrimeNodeDB::fulldb;
+            } else {
+                db = CPrimeNodeDB::microdb;
+            }
+        }
+    }
+
+    if (db != CPrimeNodeDB::nodb)
+        InflatePrimeNodeDB(primedbfile, db);
 
     // If there is a primenode key in the conf file, confirm it's valid.
     if (mapArgs.count("-primenodekey")) {
@@ -116,7 +121,7 @@ bool initPrimeNodes(string &str) {
 
         // We don't use this entry, we just want to know that the key is valid.
         CPrimeNodeDBEntry entry;
-        if (!primeNodeDB->IsPrimeNodeKey(scriptPrimeID, nTime, entry)) {
+        if (!CPrimeNodeDB(primedbfile).IsPrimeNodeKey(scriptPrimeID, nTime, entry)) {
             str = "initPrimeNode() : invalid primenode key";
             return false;
         }
@@ -130,7 +135,7 @@ bool initPrimeNodes(string &str) {
 bool IsPrimeNodeKey(CScript /*scriptPubKeyType*/, unsigned int /*nTime*/, CPrimeNodeDBEntry &/*entry*/);
 
 // Check if a stake is either a prime or microprime stake.
-bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, int64 nValueOut, uint64 nCoinAge) {
+bool CTransaction::IsPrimeStake(string strFileName, CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, int64 nValueOut, uint64 nCoinAge) {
     int primeNodeRate = 0;
     int64 nStakeReward = nValueOut - nValueIn;
 
@@ -143,18 +148,18 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
          * IsMicroPrime returns the DB return value which will always return
          * true for a read even if nothing has been read, check that the address
          * exists before trying to read the related entries. */
-        if (!primeNodeDB->CheckMicroPrime(scriptPubKeyAddress))
+        if (!CPrimeNodeDB(strFileName).CheckMicroPrime(scriptPubKeyAddress))
             return DoS(100, error("IsPrimeStake() : invalid microprime address, HAXORS!!!"));
 
-        primeNodeDB->IsMicroPrime(scriptPubKeyAddress, primeNodeRate, group, nTime);
+        CPrimeNodeDB(strFileName).IsMicroPrime(scriptPubKeyAddress, primeNodeRate, group, nTime);
         /* Confirm the nValueIn is not greater than the balance allowed per
          * microPrimeGroup. This should not occur and will only happen if
          * someone attempts to hack the stake rate. */
         if (nValueIn > group * COIN)
-            return DoS(100, error("IsPrimeStake() : nValueIn %"PRI64d" exceeds max balance for microprime group %"PRI64d, nValueIn, group));
+            return DoS(100, error("IsPrimeStake() : nValueIn %" PRI64d " exceeds max balance for microprime group %" PRI64d, nValueIn, group));
 
         if (nTime >= MICROPRIMES_STAGGER_DOWN && nValueIn < group * COIN)
-            return DoS(100, error("IsPrimeStake() : nValueIn %"PRI64d" is below required amount for microprime group %"PRI64d, nValueIn, group));
+            return DoS(100, error("IsPrimeStake() : nValueIn %" PRI64d " is below required amount for microprime group %" PRI64d, nValueIn, group));
 
         if (nStakeReward > GetProofOfStakeReward(nCoinAge, nTime, primeNodeRate) - GetMinFee() + MIN_TX_FEE)
             return DoS(100, error("IsPrimeStake() : %s stake reward exceeded", GetHash().ToString().substr(0,10).c_str()));
@@ -196,7 +201,7 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
      */
     if (scriptPubKeyType[0] == OP_PRIMENODEP2) {
         CPrimeNodeDBEntry entry;
-        if (!primeNodeDB->IsPrimeNodeKey(scriptPubKeyType, nTime, entry))
+        if (!CPrimeNodeDB(strFileName).IsPrimeNodeKey(scriptPubKeyType, nTime, entry))
             return DoS(10, error("IsPrimeStake() : verify signature failed"));
 
         // Confirm the transaction time is within the valid time of the key used.
@@ -206,15 +211,15 @@ bool CTransaction::IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAd
          * may be set temperately when it's known that a release will be done
          * that ensures people update before the real valid_until time occurs
          * and the real end date is unknown at the time of updating the keys. */
-        if (entry.valid_until != -1 && nTime >= entry.valid_until)
+        if (entry.valid_until != (unsigned int)-1 && nTime >= entry.valid_until)
             return DoS(100, error("IsPrimeStake() : prime node staking has ended for the given keypair"));
     }
 
     // Confirm the stake passes the minimum for a primenode
     if (nTime >= END_PRIME_PHASE_ONE && nValueOut < MINIMUM_FOR_PRIMENODE_PHASE2)
-        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %"PRI64d" while you only have %"PRI64d, MINIMUM_FOR_PRIMENODE_PHASE2, nValueOut));
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %" PRI64d " while you only have %" PRI64d, MINIMUM_FOR_PRIMENODE_PHASE2, nValueOut));
     if (nValueOut < MINIMUM_FOR_PRIMENODE_PHASE1)
-        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %"PRI64d" while you only have %"PRI64d, MINIMUM_FOR_PRIMENODE_PHASE1, nValueOut));
+        return DoS(100, error("IsPrimeStake() : credit doesn't meet requirement for primenode = %" PRI64d " while you only have %" PRI64d, MINIMUM_FOR_PRIMENODE_PHASE1, nValueOut));
 
     /* Reset the primeNodeRate to 100 on the Legacy Phase 1 primenodes after the
      * specified time. Stakes existing prior to that or created after the end of
@@ -290,26 +295,14 @@ bool CPrimeNodeDB::IsPrimeNodeKey(CScript scriptPubKeyType, unsigned int nTime, 
 }
 
 // Inflate the primenode table in the primeNodeDB
-void InflatePrimeNodeDB(CPrimeNodeDB::dbtype db) {
+void InflatePrimeNodeDB(string strFileName, CPrimeNodeDB::dbtype db) {
     printf("InflatePrimeNodeDB() : Primenode database is inconsistent, inflating database.\n");
-    // Db is open in read-only mode, close and reopen it with write privs.
-    primeNodeDB->Close();
-    bitdb.CloseDb("primenodes.dat");
-    delete primeNodeDB;
-    primeNodeDB = new CPrimeNodeDB("w+");
 
     if (db == CPrimeNodeDB::primedb || db == CPrimeNodeDB::fulldb)
-        primeNodeDB->WritePrimeNodeDB();
+        CPrimeNodeDB(strFileName, "w+").WritePrimeNodeDB();
 
     if (db == CPrimeNodeDB::microdb || db == CPrimeNodeDB::fulldb)
-        fTestNet ? primeNodeDB->WriteTestMicroPrimeDB() : primeNodeDB->WriteMicroPrimeDB();
-
-    /* Close Db and reopen it w/ read-only privs because we won't need to write
-     * to it again. */
-    primeNodeDB->Close();
-    bitdb.CloseDb("primenodes.dat");
-    delete primeNodeDB;
-    primeNodeDB = new CPrimeNodeDB("r");
+        fTestNet ? CPrimeNodeDB(strFileName, "w+").WriteTestMicroPrimeDB() : CPrimeNodeDB(strFileName, "w+").WriteMicroPrimeDB();
 }
 
 bool CPrimeNodeDB::WritePrimeNodeDBVersion(int version)

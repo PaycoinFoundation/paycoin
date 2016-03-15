@@ -60,7 +60,7 @@ public:
         fulldb
     };
 
-    CPrimeNodeDB(const char* pszMode="r+") : CDB("primenodes.dat", pszMode) { }
+    CPrimeNodeDB(std::string strFileName, const char* pszMode="r+") : CDB(strFileName.c_str(), pszMode) { }
 private:
     mutable CCriticalSection cs;
 
@@ -84,8 +84,12 @@ public:
     bool CheckMicroPrime(CScript /*scriptPubKeyAddress*/);
 };
 
-void InflatePrimeNodeDB(CPrimeNodeDB::dbtype /*db*/);
+/* Pass the filename instead of getting it in the function so that we can
+ * properly run tests in a mock db instead of using the db in the datadir.*/
+void InflatePrimeNodeDB(std::string strFileName, CPrimeNodeDB::dbtype /*db*/);
 
-extern CPrimeNodeDB* primeNodeDB;
+inline std::string GetPrimeDBFile() {
+    return (GetDataDir() / "primenodes.dat").string();
+}
 
 #endif // PRIMENODES_H

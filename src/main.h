@@ -556,9 +556,11 @@ public:
 
     /** Check if a stake transaction is a prime or microprime stake
         this is defined in primekeys.cpp and is utilized in ConnectInputs.
+        Passes the database filename so that tests can be ran on a mockdb
+        instead of using the db in the datadir.
         @ return True for either and DoS for anything else.
     */
-    bool IsPrimeStake(CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, int64 nValoueOut, uint64 nCoinAge);
+    bool IsPrimeStake(std::string strFileName, CScript scriptPubKeyType, CScript scriptPubKeyAddress, unsigned int nTime, int64 nValueIn, int64 nValoueOut, uint64 nCoinAge);
 
     /** Check for standard transaction types
         @return True if all outputs (scriptPubKeys) use only standard transaction forms
