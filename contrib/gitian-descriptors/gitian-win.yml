@@ -72,7 +72,7 @@ script: |
     cp -f release/paycoin.exe $BINDIR/
 
     cd src
-    make -f makefile.linux-mingw $MAKEOPTS HOST=$HOST DEPSDIR=$STAGING paycoind.exe USE_UPNP=1 DEBUGFLAGS="-frandom-seed=paycoin"
+    make -f makefile.linux-mingw $MAKEOPTS HOST=$HOST DEPSDIR=$STAGING paycoind.exe DEBUGFLAGS="-frandom-seed=paycoin"
     ${HOST}-strip paycoind.exe
     cp -f paycoind.exe $BINDIR/
 
