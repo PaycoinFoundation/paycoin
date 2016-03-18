@@ -9,6 +9,7 @@
 #include "bitcoinrpc.h"
 #include "kernelrecord.h"
 #include "primenodes.h"
+#include "ui_interface.h"
 #include "wallet.h"
 #include "walletdb.h"
 
@@ -1789,8 +1790,11 @@ Value clearorphans(const Array& params, bool fHelp)
             "clearorphans\n"
             "Clears orphaned transactions from the wallet file.");
 
+#ifdef QT_GUI
+    QTClearOrphans();
+#else
     pwalletMain->ClearOrphans();
-
+#endif
     return true;
 }
 

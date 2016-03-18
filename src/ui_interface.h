@@ -47,4 +47,7 @@ extern void QueueShutdown();
 extern void InitMessage(const std::string &message);
 extern std::string _(const char* psz);
 
+/* This only exists here and not in noui.cpp as otherwise bitcoinrpc.cpp calls  ClearOrphans directly in wallet.cpp */
+extern void QTClearOrphans();
+
 #endif

@@ -189,4 +189,6 @@ private slots:
     void editConfig();
 };
 
+void GUIClearOrphans();
+
 #endif // BITCOINGUI_H
