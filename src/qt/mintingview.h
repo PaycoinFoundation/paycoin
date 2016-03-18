@@ -17,6 +17,7 @@ class MintingView : public QWidget
     Q_OBJECT
 public:
     explicit MintingView(QWidget *parent = 0);
+    ~MintingView();
     void setModel(WalletModel *model);
 
     enum MintingEnum

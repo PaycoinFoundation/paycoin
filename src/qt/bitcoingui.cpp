@@ -57,6 +57,7 @@
 #include <QDragEnterEvent>
 #include <QUrl>
 #include <QStyle>
+#include <QSettings>
 
 #include <iostream>
 
@@ -74,7 +75,13 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     spinnerFrame(0)
 {
     resize(850, 550);
+    // Restore previous geometry (if any)
+    QSettings settings;
+    if (settings.contains("main-geometry"))
+        restoreGeometry(settings.value("main-geometry").toByteArray());
+
     setWindowTitle(tr("Paycoin") + " - " + tr("Wallet"));
+
 #ifndef Q_OS_MAC
     setWindowIcon(QIcon(":icons/paycoin"));
 #else
@@ -193,6 +200,8 @@ BitcoinGUI::~BitcoinGUI()
 #ifdef Q_OS_MAC
     delete appMenuBar;
 #endif
+    QSettings settings;
+    settings.setValue("main-geometry", saveGeometry());
 }
 
 void BitcoinGUI::createActions()

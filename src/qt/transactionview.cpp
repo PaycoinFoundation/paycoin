@@ -11,6 +11,7 @@
 #include "editaddressdialog.h"
 #include "optionsmodel.h"
 #include "guiutil.h"
+#include "guiconstants.h"
 #include "wallet.h"
 
 #include <QScrollBar>
@@ -30,6 +31,7 @@
 #include <QDateTimeEdit>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QSettings>
 
 TransactionView::TransactionView(QWidget *parent) :
     QWidget(parent), model(0), transactionProxyModel(0),
@@ -165,6 +167,12 @@ TransactionView::TransactionView(QWidget *parent) :
     connect(clearOrphansAction, SIGNAL(triggered()), this, SLOT(clearOrphans()));
 }
 
+TransactionView::~TransactionView()
+{
+    QSettings settings;
+    settings.setValue("transaction-headers", transactionView->horizontalHeader()->saveState());
+}
+
 void TransactionView::setModel(WalletModel *model)
 {
     this->model = model;
@@ -186,16 +194,21 @@ void TransactionView::setModel(WalletModel *model)
         transactionView->sortByColumn(TransactionTableModel::Date, Qt::DescendingOrder);
         transactionView->verticalHeader()->hide();
 
-        transactionView->horizontalHeader()->resizeSection(
+        QSettings settings;
+        if (settings.value("settings-version").toInt() == SETTINGS_VERSION) {
+            transactionView->horizontalHeader()->restoreState(settings.value("transaction-headers").toByteArray());
+        } else {
+            transactionView->horizontalHeader()->resizeSection(
                 TransactionTableModel::Status, 23);
-        transactionView->horizontalHeader()->resizeSection(
+            transactionView->horizontalHeader()->resizeSection(
                 TransactionTableModel::Date, 120);
-        transactionView->horizontalHeader()->resizeSection(
+            transactionView->horizontalHeader()->resizeSection(
                 TransactionTableModel::Type, 120);
-        transactionView->horizontalHeader()->setResizeMode(
+            transactionView->horizontalHeader()->setResizeMode(
                 TransactionTableModel::ToAddress, QHeaderView::Stretch);
-        transactionView->horizontalHeader()->resizeSection(
+            transactionView->horizontalHeader()->resizeSection(
                 TransactionTableModel::Amount, 100);
+        }
     }
 }
 

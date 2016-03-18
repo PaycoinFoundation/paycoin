@@ -17,6 +17,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QMessageBox>
+#include <QSettings>
 
 MintingView::MintingView(QWidget *parent) :
     QWidget(parent), model(0), mintingView(0)
@@ -98,6 +99,11 @@ MintingView::MintingView(QWidget *parent) :
 
 }
 
+MintingView::~MintingView()
+{
+    QSettings settings;
+    settings.setValue("minting-headers", mintingView->horizontalHeader()->saveState());
+}
 
 void MintingView::setModel(WalletModel *model)
 {
@@ -117,18 +123,23 @@ void MintingView::setModel(WalletModel *model)
         mintingView->sortByColumn(MintingTableModel::CoinDay, Qt::DescendingOrder);
         mintingView->verticalHeader()->hide();
 
-        mintingView->horizontalHeader()->resizeSection(
+        QSettings settings;
+        if (settings.value("settings-version").toInt() == SETTINGS_VERSION) {
+            mintingView->horizontalHeader()->restoreState(settings.value("minting-headers").toByteArray());
+        } else {
+            mintingView->horizontalHeader()->resizeSection(
                 MintingTableModel::Address, 420);
-        mintingView->horizontalHeader()->setResizeMode(
+            mintingView->horizontalHeader()->setResizeMode(
                 MintingTableModel::TxHash, QHeaderView::Stretch);
-        mintingView->horizontalHeader()->resizeSection(
+            mintingView->horizontalHeader()->resizeSection(
                 MintingTableModel::Age, 120);
-        mintingView->horizontalHeader()->resizeSection(
+            mintingView->horizontalHeader()->resizeSection(
                 MintingTableModel::Balance, 120);
-        mintingView->horizontalHeader()->resizeSection(
+            mintingView->horizontalHeader()->resizeSection(
                 MintingTableModel::CoinDay,120);
-        mintingView->horizontalHeader()->resizeSection(
+            mintingView->horizontalHeader()->resizeSection(
                 MintingTableModel::MintProbability, 160);
+        }
     }
 }
 

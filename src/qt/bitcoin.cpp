@@ -21,6 +21,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QSettings>
 
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -304,6 +305,11 @@ int main(int argc, char *argv[])
             }
             // Shutdown the core and it's threads, but don't exit Bitcoin-Qt here
             Shutdown(NULL);
+
+            // Do this last to make sure all settings are written
+            QSettings settings;
+            if (settings.value("settings-version").toInt() != SETTINGS_VERSION)
+                settings.setValue("settings-version", SETTINGS_VERSION);
         }
         else
         {
