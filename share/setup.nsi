@@ -85,9 +85,9 @@ Section -Main SEC0000
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 
-    # Remove old wxwidgets-based-bitcoin executable and locales:
-    #Delete /REBOOTOK $INSTDIR\bitcoin.exe
-    #RMDir /r /REBOOTOK $INSTDIR\locale
+    # Remove old wxwidgets-based-paycoin executable and locales:
+    Delete /REBOOTOK $INSTDIR\paycoin.exe
+    RMDir /r /REBOOTOK $INSTDIR\locale
 SectionEnd
 
 Section -post SEC0001
