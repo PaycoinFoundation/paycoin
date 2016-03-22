@@ -1,4 +1,5 @@
 #include "mintingtablemodel.h"
+#include "mintingfilterproxy.h"
 #include "transactiontablemodel.h"
 #include "guiutil.h"
 #include "kernelrecord.h"
@@ -132,16 +133,16 @@ public:
                             KernelRecord::decomposeOutput(wallet, mi->second);
                     if(!toInsert.empty()) /* only if something to insert */
                     {
-                        parent->beginInsertRows(QModelIndex(), lowerIndex, lowerIndex+toInsert.size()-1);
                         int insert_idx = lowerIndex;
                         BOOST_FOREACH(const KernelRecord &rec, toInsert)
                         {
                             if(!rec.spent) {
+                                parent->beginInsertRows(QModelIndex(), insert_idx, insert_idx);
                                 cachedWallet.insert(insert_idx, rec);
                                 insert_idx += 1;
+                                parent->endInsertRows();
                             }
                         }
-                        parent->endInsertRows();
                     }
                 }
                 else if(!inWallet && inModel)
@@ -153,7 +154,30 @@ public:
                 }
                 else if(inWallet && inModel)
                 {
-                    // Updated -- nothing to do, status update will take care of this
+                    // Updated -- remove spent coins from table
+                    std::vector<KernelRecord> toCheck = KernelRecord::decomposeOutput(wallet, mi->second);
+                    if(!toCheck.empty())
+                    {
+                        BOOST_FOREACH(const KernelRecord &rec, toCheck)
+                        {
+                            if(rec.spent)
+                            {
+                                for(int i = lowerIndex; i < upperIndex; i++)
+                                {
+                                    KernelRecord cachedRec = cachedWallet.at(i);
+                                    if((rec.address == cachedRec.address)
+                                       && (rec.nValue == cachedRec.nValue)
+                                       && (rec.idx == cachedRec.idx))
+                                    {
+                                        parent->beginRemoveRows(QModelIndex(), i, i);
+                                        cachedWallet.removeAt(i);
+                                        parent->endRemoveRows();
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -233,7 +257,13 @@ void MintingTableModel::update()
     if(!updated.empty())
     {
         priv->updateWallet(updated);
+        mintingProxyModel->invalidate(); // Force deletion of empty rows
     }
+}
+
+void MintingTableModel::setMintingProxyModel(MintingFilterProxy *mintingProxy)
+{
+    mintingProxyModel = mintingProxy;
 }
 
 int MintingTableModel::rowCount(const QModelIndex &parent) const
@@ -445,4 +475,3 @@ QModelIndex MintingTableModel::index(int row, int column, const QModelIndex &par
         return QModelIndex();
     }
 }
-
