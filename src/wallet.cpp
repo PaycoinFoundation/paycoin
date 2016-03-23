@@ -1325,23 +1325,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     unsigned int primeNodeRate = 0;
     int64 microPrimeGroup;
 
-    if (mapArgs.count("-primenodekey"))
-    {
-        CScript scriptPrimeNode;
-        string strPrivKey = GetArg("-primenodekey", "");
-        vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
-        if (!NewScriptPrimeID(scriptPrimeNode, vchPrivKey, txNew.nTime))
-            return false;
-
-        primeNodeRate = 25;
-        nCombineThreshold = MINIMUM_FOR_PRIMENODE;
-        microPrimeGroup = 0;
-
-        txNew.vout.push_back(CTxOut(0, scriptPrimeNode));
-     }
-
-    /* Wait to mark non-primenode stakes until after we know what coins are
-     * staking. */
+    // Wait to mark stakes until after we know what coins are staking.
 
     // Choose coins to use
     int64 nBalance = GetBalance();
@@ -1422,33 +1406,37 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
                 txNew.nTime -= n;
                 /* We found a kernel so we can check if it's address matches
-                 * a micro prime address. Do this now before splitting the
-                 * stake so that microprimes don't split their stake (same
-                 * as primenodes) and before adding the PubKeyOut to the
-                 * transaction. */
-                 if (primeNodeRate == 0) {
-                     CScript scriptStake;
-                     if (primeNodeDB->CheckMicroPrime(scriptPubKeyOut)
-                        /* Don't allow microprimes to stake until after the
-                         * given time (on mainnet) to avoid any implosion. */
-                        && (fTestNet || txNew.nTime >= ENABLE_MICROPRIMES)) {
-                         // Mark the stake and set the stake rate.
-                         scriptStake << OP_MICROPRIME;
-                         // Set the microprime group and rate from the database.
-                         int rate;
-                         primeNodeDB->IsMicroPrime(scriptPubKeyOut, rate, microPrimeGroup, txNew.nTime);
-                         primeNodeRate = rate;
-                     } else {
-                         /* If not a microprime go ahead and mark a standard
-                          * coin stake. */
-                         scriptStake.clear();
-                         microPrimeGroup = 0;
-                     }
-                     txNew.vout.push_back(CTxOut(0, scriptStake));
-                 }
-
-                printf("MicroPrimeStake : primenode rate = %d\n", primeNodeRate);
-
+                 * a micro prime address. Do this before checking for a
+                 * primenode key so that we can have microprimes stake properly
+                 * in a primenode wallet. */
+                CScript scriptStake;
+                if (primeNodeDB->CheckMicroPrime(scriptPubKeyOut)
+                   /* Don't allow microprimes to stake until after the
+                    * given time (on mainnet) to avoid any implosion. */
+                   && (fTestNet || txNew.nTime >= ENABLE_MICROPRIMES)) {
+                    // Mark the stake and set the stake rate.
+                    scriptStake << OP_MICROPRIME;
+                    // Set the microprime group and rate from the database.
+                    int rate;
+                    primeNodeDB->IsMicroPrime(scriptPubKeyOut, rate, microPrimeGroup, txNew.nTime);
+                    primeNodeRate = rate;
+                } else if (mapArgs.count("-primenodekey")) {
+                    // Set our stake script as a primenode ID script.
+                    string strPrivKey = GetArg("-primenodekey", "");
+                    vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
+                    if (!NewScriptPrimeID(scriptStake, vchPrivKey, txNew.nTime))
+                        return false;
+                    // Current primenode rate and minimums.
+                    primeNodeRate = 25;
+                    nCombineThreshold = MINIMUM_FOR_PRIMENODE;
+                    microPrimeGroup = 0;
+                } else {
+                    /* If not a microprime go ahead and mark a standard
+                     * coin stake. */
+                    scriptStake.clear();
+                    microPrimeGroup = 0;
+                }
+                txNew.vout.push_back(CTxOut(0, scriptStake));
                 txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
                 nCredit += pcoin.first->vout[pcoin.second].nValue;
                 vwtxPrev.push_back(pcoin.first);
