@@ -108,11 +108,9 @@ Value sendalert(const Array& params, bool fHelp)
     vector<unsigned char> vchPrivKey = ParseHex(params[1].get_str());
     key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end())); // if key is not correct openssl may crash
     if (!key.Sign(Hash(alert.vchMsg.begin(), alert.vchMsg.end()), alert.vchSig))
-        throw runtime_error(
-            "Unable to sign alert, check private key?\n");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to sign alert, check private key?\n");
     if(!alert.ProcessAlert())
-        throw runtime_error(
-            "Failed to process alert.\n");
+        throw JSONRPCError(RPC_MISC_ERROR, "Failed to process alert.\n");
     // Relay alert
     {
         LOCK(cs_vNodes);

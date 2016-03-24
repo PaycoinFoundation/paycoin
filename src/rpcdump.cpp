@@ -20,8 +20,6 @@
 using namespace json_spirit;
 using namespace std;
 
-extern Object JSONRPCError(int code, const string& message);
-
 class CTxDump
 {
 public:
@@ -54,11 +52,11 @@ Value importprivkey(const Array& params, bool fHelp)
     CBitcoinSecret vchSecret;
     bool fGood = vchSecret.SetString(strSecret);
 
-    if (!fGood) throw JSONRPCError(-5,"Invalid private key");
+    if (!fGood) throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY,"Invalid private key");
     if (pwalletMain->IsLocked())
-        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+        throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Please enter the wallet passphrase with walletpassphrase first.");
     if (fWalletUnlockMintOnly) // paycoin: no importprivkey in mint-only mode
-        throw JSONRPCError(-102, "Wallet is unlocked for minting only (unlock with walletpassphrase).");
+        throw JSONRPCError(RPC_WALLET_WRONG_ENC_STATE, "Wallet is unlocked for minting only (unlock with walletpassphrase).");
 
     CKey key;
     bool fCompressed;
@@ -72,7 +70,7 @@ Value importprivkey(const Array& params, bool fHelp)
         pwalletMain->SetAddressBookName(vchAddress, strLabel);
 
         if (!pwalletMain->AddKey(key))
-            throw JSONRPCError(-4,"Error adding key to wallet");
+            throw JSONRPCError(RPC_WALLET_ERROR, "Error adding key to wallet");
 
         pwalletMain->ScanForWalletTransactions(pindexGenesisBlock, true);
         pwalletMain->ReacceptWalletTransactions();
@@ -93,17 +91,17 @@ Value dumpprivkey(const Array& params, bool fHelp)
     string strAddress = params[0].get_str();
     CBitcoinAddress address;
     if (!address.SetString(strAddress))
-        throw JSONRPCError(-5, "Invalid Paycoin address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Paycoin address");
     if (pwalletMain->IsLocked())
-        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+        throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Please enter the wallet passphrase with walletpassphrase first.");
     if (fWalletUnlockMintOnly) // paycoin: no dumpprivkey in mint-only mode
-        throw JSONRPCError(-102, "Wallet is unlocked for minting only (unlock with walletpassphrase).");
+        throw JSONRPCError(RPC_WALLET_WRONG_ENC_STATE, "Wallet is unlocked for minting only (unlock with walletpassphrase).");
     CKeyID keyID;
     if (!address.GetKeyID(keyID))
-        throw JSONRPCError(-3, "Address does not refer to a key");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Address does not refer to a key");
     CSecret vchSecret;
     bool fCompressed;
     if (!pwalletMain->GetSecret(keyID, vchSecret, fCompressed))
-        throw JSONRPCError(-4,"Private key for address " + strAddress + " is not known");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Private key for address " + strAddress + " is not known");
     return CBitcoinSecret(vchSecret, fCompressed).ToString();
 }

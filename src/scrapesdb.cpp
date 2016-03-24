@@ -21,7 +21,7 @@ Value setscrapeaddress(const Array& params, bool fHelp)
     }
 
     if (pwalletMain->IsLocked())
-        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+        throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Please enter the wallet passphrase with walletpassphrase first.");
 
     string strAddress = params[0].get_str();
     CBitcoinAddress address(strAddress);
@@ -29,16 +29,16 @@ Value setscrapeaddress(const Array& params, bool fHelp)
     CBitcoinAddress scrapeAddress(strScrapeAddress);
 
     if (!address.IsValid())
-        throw JSONRPCError(-5, "Invalid Paycoin address.");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Paycoin address.");
 
     if (address.Get() == scrapeAddress.Get())
-        throw JSONRPCError(-1, "Cannot set scrape address to the same as staking address.");
+        throw JSONRPCError(RPC_WALLET_ERROR, "Cannot set scrape address to the same as staking address.");
 
     if (!IsMine(*pwalletMain, address.Get()))
-        throw JSONRPCError(-1, "Staking address must be in wallet.");
+        throw JSONRPCError(RPC_WALLET_ERROR, "Staking address must be in wallet.");
 
     if (!scrapeAddress.IsValid())
-        throw JSONRPCError(-5, "Invalid scrape address.");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid scrape address.");
 
     string oldScrapeAddress;
     bool warn = false;
@@ -59,7 +59,7 @@ Value setscrapeaddress(const Array& params, bool fHelp)
     }
 
     // This should never happen.
-    throw JSONRPCError(-1, "setscrapeaddress: unknown error");
+    throw JSONRPCError(RPC_MISC_ERROR, "setscrapeaddress: unknown error");
 }
 
 Value getscrapeaddress(const Array& params, bool fHelp)
@@ -74,16 +74,16 @@ Value getscrapeaddress(const Array& params, bool fHelp)
     CBitcoinAddress address(strAddress);
 
     if (!address.IsValid())
-        throw JSONRPCError(-5, "Invalid Paycoin address.");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Paycoin address.");
 
     if (!IsMine(*pwalletMain, address.Get()))
-        throw JSONRPCError(-1, "Staking address must be in wallet.");
+        throw JSONRPCError(RPC_WALLET_ERROR, "Staking address must be in wallet.");
 
     string strScrapeAddress;
     if (!scrapesDB->ReadScrapeAddress(strAddress, strScrapeAddress)) {
         string ret = "No scrape address set for address ";
         ret += strAddress;
-        throw JSONRPCError(-1, ret);
+        throw JSONRPCError(RPC_WALLET_ERROR, ret);
     }
 
     Object obj;
@@ -116,21 +116,21 @@ Value deletescrapeaddress(const Array& params, bool fHelp)
     }
 
     if (pwalletMain->IsLocked())
-        throw JSONRPCError(-13, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+        throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Please enter the wallet passphrase with walletpassphrase first.");
 
     string strAddress = params[0].get_str();
     CBitcoinAddress address(strAddress);
 
     if (!address.IsValid())
-        throw JSONRPCError(-5, "Invalid Paycoin address.");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Paycoin address.");
 
     if (!IsMine(*pwalletMain, address.Get()))
-        throw JSONRPCError(-1, "Staking address must be in wallet.");
+        throw JSONRPCError(RPC_WALLET_ERROR, "Staking address must be in wallet.");
 
     if (!scrapesDB->HasScrapeAddress(strAddress)) {
         string ret = "No scrape address set for address ";
         ret += strAddress;
-        throw JSONRPCError(-1, ret);
+        throw JSONRPCError(RPC_WALLET_ERROR, ret);
     }
 
     return scrapesDB->EraseScrapeAddress(strAddress);

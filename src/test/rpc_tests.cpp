@@ -46,18 +46,18 @@ BOOST_AUTO_TEST_CASE(rpc_addmultisig)
     address.SetString(v.get_str());
     BOOST_CHECK(address.IsValid() && address.IsScript());
 
-    BOOST_CHECK_THROW(addmultisig(createArgs(0), false), runtime_error);
-    BOOST_CHECK_THROW(addmultisig(createArgs(1), false), runtime_error);
-    BOOST_CHECK_THROW(addmultisig(createArgs(2, address1Hex), false), runtime_error);
+    BOOST_CHECK_THROW(addmultisig(createArgs(0), false), Object);
+    BOOST_CHECK_THROW(addmultisig(createArgs(1), false), Object);
+    BOOST_CHECK_THROW(addmultisig(createArgs(2, address1Hex), false), Object);
 
-    BOOST_CHECK_THROW(addmultisig(createArgs(1, ""), false), runtime_error);
-    BOOST_CHECK_THROW(addmultisig(createArgs(1, "NotAValidPubkey"), false), runtime_error);
+    BOOST_CHECK_THROW(addmultisig(createArgs(1, ""), false), Object);
+    BOOST_CHECK_THROW(addmultisig(createArgs(1, "NotAValidPubkey"), false), Object);
 
     string short1(address1Hex, address1Hex+sizeof(address1Hex)-2); // last byte missing
-    BOOST_CHECK_THROW(addmultisig(createArgs(2, short1.c_str()), false), runtime_error);
+    BOOST_CHECK_THROW(addmultisig(createArgs(2, short1.c_str()), false), Object);
 
     string short2(address1Hex+2, address1Hex+sizeof(address1Hex)); // first byte missing
-    BOOST_CHECK_THROW(addmultisig(createArgs(2, short2.c_str()), false), runtime_error);
+    BOOST_CHECK_THROW(addmultisig(createArgs(2, short2.c_str()), false), Object);
 }
 
 // Run RPC tests over RPC...
@@ -104,7 +104,7 @@ BOOST_FIXTURE_TEST_CASE(rpc_scrapes, RPCServerFixture)
     string strValidPrivKey = "U9nhhCCbFfY64wozUZ6ScrNNvBqhGtoi8cNHXmaLm3wi1VHtjhr8";
     string strValidAddress2 = "PAjArWaTwv8P32b13iTn1bL7aN25Y9pMmJ";
 
-    // error: {"code":-1,"message":"Staking address must be in wallet."}
+    // error: {"code":-4,"message":"Staking address must be in wallet."}
     string strMethod = "setscrapeaddress";
     vector<string> strParams;
     strParams.push_back(strValidAddress);
@@ -114,7 +114,7 @@ BOOST_FIXTURE_TEST_CASE(rpc_scrapes, RPCServerFixture)
 
     int error_code;
     BOOST_CHECK(!readResponse(obj, error_code));
-    BOOST_CHECK_EQUAL(error_code, -1);
+    BOOST_CHECK_EQUAL(error_code, RPC_WALLET_ERROR);
 
     strMethod = "getscrapeaddress";
     strParams.clear();
@@ -123,14 +123,14 @@ BOOST_FIXTURE_TEST_CASE(rpc_scrapes, RPCServerFixture)
     obj = callRPC(strMethod, strParams);
 
     BOOST_CHECK(!readResponse(obj, error_code));
-    BOOST_CHECK_EQUAL(error_code, -1);
+    BOOST_CHECK_EQUAL(error_code, RPC_WALLET_ERROR);
 
     strMethod = "deletescrapeaddress";
 
     obj = callRPC(strMethod, strParams);
 
     BOOST_CHECK(!readResponse(obj, error_code));
-    BOOST_CHECK_EQUAL(error_code, -1);
+    BOOST_CHECK_EQUAL(error_code, RPC_WALLET_ERROR);
 
     // Import a valid private key for testing on.
     strMethod = "importprivkey";
@@ -151,7 +151,7 @@ BOOST_FIXTURE_TEST_CASE(rpc_scrapes, RPCServerFixture)
     obj = callRPC(strMethod, strParams);
 
     BOOST_CHECK(!readResponse(obj, error_code));
-    BOOST_CHECK_EQUAL(error_code, -5);
+    BOOST_CHECK_EQUAL(error_code, RPC_INVALID_ADDRESS_OR_KEY);
 
     strMethod = "getscrapeaddress";
     strParams.clear();
@@ -160,14 +160,14 @@ BOOST_FIXTURE_TEST_CASE(rpc_scrapes, RPCServerFixture)
     obj = callRPC(strMethod, strParams);
 
     BOOST_CHECK(!readResponse(obj, error_code));
-    BOOST_CHECK_EQUAL(error_code, -5);
+    BOOST_CHECK_EQUAL(error_code, RPC_INVALID_ADDRESS_OR_KEY);
 
     strMethod = "deletescrapeaddress";
 
     obj = callRPC(strMethod, strParams);
 
     BOOST_CHECK(!readResponse(obj, error_code));
-    BOOST_CHECK_EQUAL(error_code, -5);
+    BOOST_CHECK_EQUAL(error_code, RPC_INVALID_ADDRESS_OR_KEY);
 
     // error: {"code":-5,"message":"Invalid scrape address."}
     strMethod = "setscrapeaddress";
@@ -178,9 +178,9 @@ BOOST_FIXTURE_TEST_CASE(rpc_scrapes, RPCServerFixture)
     obj = callRPC(strMethod, strParams);
 
     BOOST_CHECK(!readResponse(obj, error_code));
-    BOOST_CHECK_EQUAL(error_code, -5);
+    BOOST_CHECK_EQUAL(error_code, RPC_INVALID_ADDRESS_OR_KEY);
 
-    // error: {"code":-1,"message":"Cannot set scrape address to the same as staking address."}
+    // error: {"code":-4,"message":"Cannot set scrape address to the same as staking address."}
     strParams.clear();
     strParams.push_back(strValidAddress);
     strParams.push_back(strValidAddress);
@@ -188,9 +188,9 @@ BOOST_FIXTURE_TEST_CASE(rpc_scrapes, RPCServerFixture)
     obj = callRPC(strMethod, strParams);
 
     BOOST_CHECK(!readResponse(obj, error_code));
-    BOOST_CHECK_EQUAL(error_code, -1);
+    BOOST_CHECK_EQUAL(error_code, RPC_WALLET_ERROR);
 
-    // error: ("code":-1,"message":"No scrape address set for address <staking address>")
+    // error: ("code":-4,"message":"No scrape address set for address <staking address>")
     strMethod = "getscrapeaddress";
     strParams.clear();
     strParams.push_back(strValidAddress);
@@ -198,14 +198,14 @@ BOOST_FIXTURE_TEST_CASE(rpc_scrapes, RPCServerFixture)
     obj = callRPC(strMethod, strParams);
 
     BOOST_CHECK(!readResponse(obj, error_code));
-    BOOST_CHECK_EQUAL(error_code, -1);
+    BOOST_CHECK_EQUAL(error_code, RPC_WALLET_ERROR);
 
     strMethod = "deletescrapeaddress";
 
     obj = callRPC(strMethod, strParams);
 
     BOOST_CHECK(!readResponse(obj, error_code));
-    BOOST_CHECK_EQUAL(error_code, -1);
+    BOOST_CHECK_EQUAL(error_code, RPC_WALLET_ERROR);
 
     // Valid setscrapeaddress
     strMethod = "setscrapeaddress";
