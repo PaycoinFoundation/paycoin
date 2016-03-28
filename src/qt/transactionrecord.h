@@ -70,7 +70,9 @@ public:
         RecvFromOther,
         SendToSelf,
         StakeMint,
-        ExternalScrape
+        ExternalScrape,
+        LocalScrape,
+        ScrapeToExternal
     };
 
     /** Number of confirmation needed for transaction */
