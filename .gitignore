@@ -8,6 +8,7 @@ build/
 *.qm
 Makefile
 paycoin-qt
+Paycoin-Qt.app
 
 # Resources cpp
 qrc_*.cpp
