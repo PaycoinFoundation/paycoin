@@ -1538,12 +1538,14 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         /* Check the staking address against the scrapes database and see if
          * it has a scrape address for it, if it does send the reward to the
          * scrape address. */
-         CTxDestination address;
-         ExtractDestination(txNew.vout[1].scriptPubKey, address);
-         CBitcoinAddress addr(address);
+        CTxDestination address;
+        ExtractDestination(txNew.vout[1].scriptPubKey, address);
+        CBitcoinAddress addr(address);
 
         string strScrapeAddress;
-        if (scrapesDB->ReadScrapeAddress(addr.ToString(), strScrapeAddress)) {
+        if (scrapesDB->ReadScrapeAddress(addr.ToString(), strScrapeAddress)
+            // Only use a scrape address that's different than the staking address.
+            && strScrapeAddress != addr.ToString()) {
             CScript stakescript;
             CBitcoinAddress scrapeaddr(strScrapeAddress);
             CTxDestination scrape = scrapeaddr.Get();
