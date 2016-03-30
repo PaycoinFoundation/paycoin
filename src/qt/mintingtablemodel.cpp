@@ -375,7 +375,7 @@ QString MintingTableModel::formatDayToMint(KernelRecord *wtx) const
 
 QString MintingTableModel::formatTxAddress(const KernelRecord *wtx, bool tooltip) const
 {
-    return QString::fromStdString(wtx->address);
+    return lookupAddress(wtx->address, tooltip);
 }
 
 QString MintingTableModel::formatTxHash(const KernelRecord *wtx) const
