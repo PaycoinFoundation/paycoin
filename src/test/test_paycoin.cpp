@@ -2,13 +2,11 @@
 #include <boost/test/unit_test.hpp>
 
 #include "main.h"
-#include "scrapesdb.h"
 #include "wallet.h"
 
 int MIN_PROTO_VERSION = 70002;
 
 CWallet* pwalletMain;
-CScrapesDB* scrapesDB;
 
 extern bool fPrintToConsole;
 struct TestingSetup {
@@ -21,7 +19,6 @@ struct TestingSetup {
         pwalletMain = new CWallet("wallet.dat");
         pwalletMain->LoadWallet(fFirstRun);
         RegisterWallet(pwalletMain);
-        scrapesDB = new CScrapesDB("cw");
     }
     ~TestingSetup()
     {

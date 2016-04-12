@@ -5,23 +5,17 @@
 #define SCRAPESDB_H
 
 #include "db.h"
-#include "json/json_spirit_value.h"
 
 class CScrapesDB : public CDB
 {
 public:
-    CScrapesDB(const char* pszMode="r+") : CDB("scrapes.dat", pszMode) { }
+    CScrapesDB(std::string strFilename, const char* pszMode="r+") : CDB(strFilename.c_str(), pszMode) { }
 private:
-    mutable CCriticalSection(cs);
 
     CScrapesDB(const CScrapesDB&);
     void operator=(const CScrapesDB);
 public:
-    bool WriteScrapeAddress(const std::string /*strAddress*/, const std::string /*strScrapeAddress*/);
-    bool EraseScrapeAddress(const std::string /*strAddress*/);
-    bool ReadScrapeAddress(const std::string /*strAddress*/, std::string &/*strScrapeAddress*/);
-    bool DumpScrapeAddresses(json_spirit::Object &/*ScrapeAddresses*/);
-    bool HasScrapeAddress(const std::string /*strAddress*/);
+    bool ImportScrapeAddressesToWallet();
 };
 
 #endif // SCRAPESDB_H

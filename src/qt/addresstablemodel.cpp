@@ -4,15 +4,12 @@
 
 #include "wallet.h"
 #include "base58.h"
-#include "scrapesdb.h"
 
 #include <QFont>
 #include <QColor>
 
 const QString AddressTableModel::Send = "S";
 const QString AddressTableModel::Receive = "R";
-
-extern CScrapesDB* scrapesDB;
 
 struct AddressTableEntry
 {
@@ -57,8 +54,8 @@ public:
 
                 if (fMine) {
                     std::string addr;
-                    if (scrapesDB->HasScrapeAddress(address.ToString()))
-                        scrapesDB->ReadScrapeAddress(address.ToString(), addr);
+                    if (wallet->HasScrapeAddress(address.ToString()))
+                        wallet->ReadScrapeAddress(address.ToString(), addr);
 
                     cachedAddressTable.append(AddressTableEntry(AddressTableEntry::Receiving,
                                        QString::fromStdString(strName),
@@ -229,8 +226,8 @@ bool AddressTableModel::setData(const QModelIndex & index, const QVariant & valu
             /* If passing an empty string delete the current scrape address
              * if one exists. */
             if (value.toString().toStdString().empty()) {
-                if (scrapesDB->HasScrapeAddress(rec->address.toStdString()))
-                    if (!scrapesDB->EraseScrapeAddress(rec->address.toStdString()))
+                if (wallet->HasScrapeAddress(rec->address.toStdString()))
+                    if (!wallet->EraseScrapeAddress(rec->address.toStdString()))
                         return false;
             } else {
                 // Confirm the scrape address is a valid address before setting it
@@ -239,7 +236,7 @@ bool AddressTableModel::setData(const QModelIndex & index, const QVariant & valu
                     return false;
                 }
 
-                if (!scrapesDB->WriteScrapeAddress(rec->address.toStdString(), value.toString().toStdString()))
+                if (!wallet->WriteScrapeAddress(rec->address.toStdString(), value.toString().toStdString()))
                     return false;
             }
 

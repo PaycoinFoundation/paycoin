@@ -31,8 +31,9 @@ using namespace std;
 using namespace boost;
 
 CWallet* pwalletMain;
-CScrapesDB* scrapesDB;
 int MIN_PROTO_VERSION = 70005;
+
+bool scrapesdbimported = false;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -78,8 +79,6 @@ void Shutdown(void* parg)
         nTransactionsUpdated++;
         if (primeNodeDB)
             primeNodeDB->Close();
-        if (scrapesDB)
-            scrapesDB->Close();
         bitdb.Flush(false);
         StopNode();
         bitdb.Flush(true);
@@ -88,11 +87,13 @@ void Shutdown(void* parg)
         delete pwalletMain;
         if (primeNodeDB)
             delete primeNodeDB;
-        if (scrapesDB)
-            delete scrapesDB;
         NewThread(ExitTimeout, NULL);
         Sleep(50);
-        printf("Paycoin exited\n\n");
+
+        if (scrapesdbimported)
+            boost::filesystem::remove(GetDataDir() / "scrapes.dat");
+
+        printf("Paycoin exiting\n\n");
         fExit = true;
 #ifndef QT_GUI
         // ensure non-UI client get's exited here, but let Bitcoin-Qt reach return 0; in bitcoin.cpp
@@ -734,9 +735,18 @@ bool AppInit2()
            addrman.size(), GetTimeMillis() - nStart);
 
     // ********************************************************* Step 9: load primenode and scrape databases
+    // This can be removed along with the import function after a few releases.
+    boost::filesystem::path scrapesdat = GetDataDir() / "scrapes.dat";
+    if (boost::filesystem::exists(scrapesdat)) {
+        InitMessage(_("Importing legacy scrapes database into wallet..."));
+        printf("Importing legacy scrapes database into wallet...\n");
+        CScrapesDB(scrapesdat.string()).ImportScrapeAddressesToWallet();
+        // Set imported as true so we know to remove the file during shutdown.
+        scrapesdbimported = true;
+    }
 
     InitMessage(_("Loading prime nodes..."));
-    printf("Loading prime nodes...");
+    printf("Loading prime nodes...\n");
     nStart = GetTimeMillis();
     /* Handle primenode keys on start to confirm their validity.
      * If it fails for any reason prompt with a QT friendly message. */
@@ -748,12 +758,6 @@ bool AppInit2()
         printf("%s\n", ret.c_str());
     }
     printf(" prime nodes %15"PRI64d"ms\n", GetTimeMillis() - nStart);
-
-    InitMessage(_("Loading scrapes..."));
-    printf("Loading scrapes...\n");
-    nStart = GetTimeMillis();
-    scrapesDB = new CScrapesDB("cw");
-    printf(" scrapes     %15"PRI64d"ms\n", GetTimeMillis() - nStart);
 
     // ********************************************************* Step 10: start node
 

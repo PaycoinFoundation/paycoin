@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
+// Copyright (c) 2015 The Paycoin developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef BITCOIN_WALLETDB_H
@@ -7,6 +8,7 @@
 
 #include "db.h"
 #include "base58.h"
+#include "json/json_spirit_value.h"
 
 class CKeyPool;
 class CAccount;
@@ -143,6 +145,12 @@ public:
     bool WriteAccountingEntry(const CAccountingEntry& acentry);
     int64 GetAccountCreditDebit(const std::string& strAccount);
     void ListAccountCreditDebit(const std::string& strAccount, std::list<CAccountingEntry>& acentries);
+
+    bool WriteScrapeAddress(const std::string strAddress, const std::string strScrapeAddress);
+    bool EraseScrapeAddress(const std::string strAddress);
+    bool ReadScrapeAddress(const std::string strAddress, std::string& strScrapeAddress);
+    bool DumpScrapeAddresses(json_spirit::Object& ScrapeAddresses);
+    bool HasScrapeAddress(const std::string strAddress);
 
     int LoadWallet(CWallet* pwallet);
 };

@@ -12,13 +12,10 @@
 #include "base58.h"
 #include "coincontrol.h"
 #include "kernel.h"
-#include "scrapesdb.h"
 #include "primenodes.h"
 #include <boost/algorithm/string/replace.hpp>
 
 using namespace std;
-
-extern CScrapesDB* scrapesDB;
 
 // This is only needed to make sure that it is safe to stake microprimes
 static const unsigned int ENABLE_MICROPRIMES = 1445644800; // Sat, 24 Oct 2015 00:00:00 GMT
@@ -1543,7 +1540,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
          CBitcoinAddress addr(address);
 
         string strScrapeAddress;
-        if (scrapesDB->ReadScrapeAddress(addr.ToString(), strScrapeAddress)) {
+        if (HasScrapeAddress(addr.ToString()) && ReadScrapeAddress(addr.ToString(), strScrapeAddress)) {
             CScript stakescript;
             CBitcoinAddress scrapeaddr(strScrapeAddress);
             CTxDestination scrape = scrapeaddr.Get();
