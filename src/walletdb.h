@@ -91,6 +91,18 @@ public:
         return Read(std::string("bestblock"), locator);
     }
 
+    bool WriteOrderPosNext(int64 nOrderPosNext)
+    {
+        nWalletDBUpdated++;
+        return Write(std::string("orderposnext"), nOrderPosNext);
+    }
+
+    bool ReadDefaultKey(std::vector<unsigned char>& vchPubKey)
+    {
+        vchPubKey.clear();
+        return Read(std::string("defaultkey"), vchPubKey);
+    }
+
     bool WriteDefaultKey(const CPubKey& vchPubKey)
     {
         nWalletDBUpdated++;
@@ -140,10 +152,14 @@ public:
 
     bool ReadAccount(const std::string& strAccount, CAccount& account);
     bool WriteAccount(const std::string& strAccount, const CAccount& account);
+private:
+    bool WriteAccountingEntry(const uint64 nAccEntryNum, const CAccountingEntry& acentry);
+public:
     bool WriteAccountingEntry(const CAccountingEntry& acentry);
     int64 GetAccountCreditDebit(const std::string& strAccount);
     void ListAccountCreditDebit(const std::string& strAccount, std::list<CAccountingEntry>& acentries);
 
+    int ReorderTransactions(CWallet*);
     int LoadWallet(CWallet* pwallet);
 };
 
