@@ -77,7 +77,7 @@ CFLAGS = -g
 endif
 
 # ppc doesn't work because we don't support big-endian
-CFLAGS += -w -Wextra -Wno-sign-compare -Wno-invalid-offsetof -Wformat-security \
+CFLAGS += -w -Wextra -Wno-invalid-offsetof -Wformat-security \
     $(DEBUGFLAGS) $(DEFS) $(INCLUDEPATHS)
 
 OBJS= \
